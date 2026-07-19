@@ -1,0 +1,674 @@
+<?php
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/BaseModel.php';
+
+class ContentModel extends BaseModel
+{
+    public function home(): array
+    {
+        return [
+            'settings' => $this->demo['settings'],
+            'sliders' => $this->allFromDemo('sliders'),
+            'services' => $this->allFromDemo('services'),
+            'campaigns' => array_slice($this->all('campaigns'), 0, 5),
+            'events' => array_slice($this->all('events'), 0, 10),
+            'portfolio' => $this->all('portfolio'),
+            'blogs' => array_slice($this->all('blogs'), 0, 3),
+            'testimonials' => $this->allFromDemo('testimonials'),
+            'team' => $this->allFromDemo('team'),
+            'stats' => $this->allFromDemo('stats'),
+            'gallery' => $this->allGallery(20),
+            'newspaper_cuttings' => $this->allNewspaperCuttings(8),
+        ];
+    }
+
+    public function all(string $type): array
+    {
+        if (!$this->db) {
+            return $this->allFromDemo($type);
+        }
+
+        try {
+            if ($type === 'portfolio') {
+                return $this->db->query('SELECT * FROM portfolio ORDER BY created_at DESC')->fetchAll();
+            }
+            if ($type === 'campaigns') {
+                return $this->db->query('SELECT * FROM campaigns ORDER BY created_at DESC')->fetchAll();
+            }
+            if ($type === 'events') {
+                return $this->db->query('SELECT * FROM events ORDER BY event_date DESC')->fetchAll();
+            }
+            if ($type === 'blogs') {
+                return $this->db->query('SELECT b.*, c.name AS category_name 
+                                       FROM blogs b 
+                                       LEFT JOIN blog_categories c ON b.category_id = c.id 
+                                       WHERE b.published_at IS NOT NULL AND b.published_at <= NOW() 
+                                       ORDER BY b.published_at DESC')->fetchAll();
+            }
+            if ($type === 'gallery') {
+                return $this->allGallery();
+            }
+        } catch (Throwable $e) {
+            // Fallback to demo data if the table query fails
+        }
+        return $this->allFromDemo($type);
+    }
+
+    public function allEvents(): array
+    {
+        if (!$this->db) return $this->allFromDemo('events');
+        return $this->db->query('SELECT * FROM events ORDER BY event_date DESC')->fetchAll();
+    }
+
+    public function findEvent(int $id): ?array
+    {
+        if (!$this->db) return null;
+        $stmt = $this->db->prepare('SELECT * FROM events WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public function createEvent(array $data): int
+    {
+        if (!$this->db) return 0;
+        $stmt = $this->db->prepare('INSERT INTO events (title, slug, excerpt, content, event_date, location, image, status) VALUES (:title, :slug, :excerpt, :content, :event_date, :location, :image, :status)');
+        $stmt->execute([
+            ':title' => $data['title'],
+            ':slug' => $data['slug'],
+            ':excerpt' => $data['excerpt'],
+            ':content' => $data['content'],
+            ':event_date' => $data['event_date'],
+            ':location' => $data['location'],
+            ':image' => $data['image'],
+            ':status' => $data['status']
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function updateEvent(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE events SET title = :title, slug = :slug, excerpt = :excerpt, content = :content, event_date = :event_date, location = :location, image = :image, status = :status WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':slug' => $data['slug'],
+            ':excerpt' => $data['excerpt'],
+            ':content' => $data['content'],
+            ':event_date' => $data['event_date'],
+            ':location' => $data['location'],
+            ':image' => $data['image'],
+            ':status' => $data['status'],
+            ':id' => $id
+        ]);
+    }
+
+    public function deleteEvent(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM events WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function eventSlugExists(string $slug, ?int $excludeId = null): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM events WHERE slug = :slug' . ($excludeId ? ' AND id != :id' : ''));
+        $params = [':slug' => $slug];
+        if ($excludeId) $params[':id'] = $excludeId;
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
+    public function normalizeEventSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
+        $slug = preg_replace('/-+/', '-', $slug);
+        if ($slug === '') $slug = 'event';
+        $original = $slug;
+        $counter = 1;
+        while ($this->eventSlugExists($slug, $excludeId)) { $slug = $original . '-' . $counter; $counter++; }
+        return $slug;
+    }
+
+    public function allCampaigns(int $limit = 100, int $offset = 0): array
+    {
+        if (!$this->db) return $this->allFromDemo('causes');
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM campaigns ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            return $this->allFromDemo('causes');
+        }
+    }
+
+    public function findCampaign(int $id): ?array
+    {
+        if (!$this->db) return null;
+        try {
+        $stmt = $this->db->prepare('SELECT * FROM campaigns WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        $result = $stmt->fetch();
+        return $result ?: null;
+        } catch (Throwable $e) { return null; }
+    }
+
+    public function createCampaign(array $data): int
+    {
+        if (!$this->db) return 0;
+        $stmt = $this->db->prepare('INSERT INTO campaigns (title,en_title, slug, excerpt, content, goal_amount, raised_amount, image, status) VALUES (:title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status)');
+        $stmt->execute([
+            ':title' => $data['title'],
+             ':en_title' => $data['en_title'],
+            ':slug' => $data['slug'],
+            ':excerpt' => $data['excerpt'],
+            ':content' => $data['content'],
+            ':goal_amount' => $data['goal_amount'],
+            ':raised_amount' => $data['raised_amount'],
+            ':image' => $data['image'],
+            ':status' => $data['status']
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function updateCampaign(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE campaigns SET title = :title, en_title = :en_title,slug = :slug, excerpt = :excerpt, content = :content, goal_amount = :goal_amount, raised_amount = :raised_amount, image = :image, status = :status WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':en_title' => $data['en_title'],
+            ':slug' => $data['slug'],
+            ':excerpt' => $data['excerpt'],
+            ':content' => $data['content'],
+            ':goal_amount' => $data['goal_amount'],
+            ':raised_amount' => $data['raised_amount'],
+            ':image' => $data['image'],
+            ':status' => $data['status'],
+            ':id' => $id
+        ]);
+    }
+
+    public function deleteCampaign(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM campaigns WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function allGallery(int $limit = 100): array
+    {
+        if (!$this->db) return [];
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM gallery ORDER BY created_at DESC LIMIT :limit');
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function findGallery(int $id): ?array
+    {
+        if (!$this->db) return null;
+        try {
+        $stmt = $this->db->prepare('SELECT * FROM gallery WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch() ?: null;
+        } catch (Throwable $e) { return null; }
+    }
+
+    public function createGallery(array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('INSERT INTO gallery (title, image) VALUES (:title, :image)');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':image' => $data['image']
+        ]);
+    }
+
+    public function deleteGallery(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM gallery WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function allNewspaperCuttings(int $limit = 100): array
+    {
+        if (!$this->db) return [];
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM newspaper_cuttings ORDER BY created_at DESC LIMIT :limit');
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function findNewspaperCutting(int $id): ?array
+    {
+        if (!$this->db) return null;
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM newspaper_cuttings WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch() ?: null;
+        } catch (Throwable $e) { return null; }
+    }
+
+    public function createNewspaperCutting(array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('INSERT INTO newspaper_cuttings (title, image) VALUES (:title, :image)');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':image' => $data['image']
+        ]);
+    }
+
+    public function deleteNewspaperCutting(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM newspaper_cuttings WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function allPages(): array
+    {
+        if (!$this->db) return [];
+        try {
+        return $this->db->query('SELECT * FROM pages ORDER BY created_at DESC')->fetchAll();
+        } catch (Throwable $e) { return []; }
+    }
+
+    public function findPage(int $id): ?array
+    {
+        if (!$this->db) return null;
+        try {
+        $stmt = $this->db->prepare('SELECT * FROM pages WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch() ?: null;
+        } catch (Throwable $e) { return null; }
+    }
+
+    public function findPageBySlug(string $slug): ?array
+    {
+        if (!$this->db) return null;
+        try {
+        $stmt = $this->db->prepare('SELECT * FROM pages WHERE slug = :slug');
+        $stmt->execute([':slug' => $slug]);
+        return $stmt->fetch() ?: null;
+        } catch (Throwable $e) { return null; }
+    }
+
+    public function createPage(array $data): int
+    {
+        if (!$this->db) return 0;
+        $stmt = $this->db->prepare('INSERT INTO pages (title, slug, content, meta_title, meta_description, language_code) VALUES (:title, :slug, :content, :meta_title, :meta_description, :language_code)');
+        $stmt->execute([
+            ':title' => $data['title'],
+            ':slug' => $data['slug'],
+            ':content' => $data['content'],
+            ':meta_title' => $data['meta_title'],
+            ':meta_description' => $data['meta_description'],
+            ':language_code' => $data['language_code'] ?? 'en'
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function updatePage(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE pages SET title = :title, slug = :slug, content = :content, meta_title = :meta_title, meta_description = :meta_description, language_code = :language_code WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':slug' => $data['slug'],
+            ':content' => $data['content'],
+            ':meta_title' => $data['meta_title'],
+            ':meta_description' => $data['meta_description'],
+            ':language_code' => $data['language_code'],
+            ':id' => $id
+        ]);
+    }
+
+    public function deletePage(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM pages WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function pageSlugExists(string $slug, ?int $excludeId = null): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('SELECT COUNT(*) FROM pages WHERE slug = :slug' . ($excludeId ? ' AND id != :id' : ''));
+        $params = [':slug' => $slug];
+        if ($excludeId) $params[':id'] = $excludeId;
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
+    public function normalizePageSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
+        $slug = preg_replace('/-+/', '-', $slug);
+        if ($slug === '') $slug = 'page';
+        $original = $slug;
+        $counter = 1;
+        while ($this->pageSlugExists($slug, $excludeId)) { $slug = $original . '-' . $counter; $counter++; }
+        return $slug;
+    }
+
+    public function campaignSlugExists(string $slug, ?int $excludeId = null): bool
+    {
+        if (!$this->db) return false;
+        try {
+            $sql = 'SELECT COUNT(*) FROM campaigns WHERE slug = :slug';
+            $params = [':slug' => $slug];
+            if ($excludeId !== null) {
+                $sql .= ' AND id != :exclude_id';
+                $params[':exclude_id'] = $excludeId;
+            }
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return (int) $stmt->fetchColumn() > 0;
+        } catch (Throwable $e) { return false; }
+    }
+
+    public function normalizeCampaignSlug(string $title, ?int $excludeId = null): string
+    {
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title), '-'));
+        $slug = preg_replace('/-+/', '-', $slug);
+        if ($slug === '') $slug = 'campaign';
+        $original = $slug;
+        $counter = 1;
+        while ($this->campaignSlugExists($slug, $excludeId)) {
+            $slug = $original . '-' . $counter;
+            $counter++;
+        }
+        return $slug;
+    }
+
+    public function findBySlug(string $type, string $slug): ?array
+    {
+        if ($this->db) {
+            $table = preg_replace('/[^a-z0-9_]/', '', $type);
+            try {
+                $stmt = $this->db->prepare("SELECT * FROM $table WHERE slug = :slug");
+                $stmt->execute([':slug' => $slug]);
+                $res = $stmt->fetch();
+                if ($res) return $res;
+            } catch (Throwable $e) {
+                // Fail silently to demo data
+            }
+        }
+
+        foreach ($this->allFromDemo($type) as $item) {
+            if (($item['slug'] ?? null) === $slug) {
+                return $item;
+            }
+        }
+        return null;
+    }
+
+    public function getStates(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query("SELECT * FROM tab_state ORDER BY state_name ASC")->fetchAll();
+        } catch (Throwable $e) { return []; }
+    }
+
+    public function getCitiesByState(int $stateId): array
+    {
+        if (!$this->db) return [];
+        try {
+            $stmt = $this->db->prepare("SELECT * FROM tab_city WHERE state_id = :state_id ORDER BY city_name ASC");
+            $stmt->execute([':state_id' => $stateId]);
+            return $stmt->fetchAll();
+        } catch (Throwable $e) { return []; }
+    }
+
+    public function allDonations(): array
+    {
+        if (!$this->db) return [];
+        try {
+            return $this->db->query('SELECT * FROM donations ORDER BY created_at DESC')->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function updateDonationStatus(int $id, string $status): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE donations SET status = :status WHERE id = :id');
+        return $stmt->execute([':status' => $status, ':id' => $id]);
+    }
+
+    public function updateDonationSettings(array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE donation_settings SET 
+            org_name = :org_name,
+            account_name = :account_name,
+            bank_name = :bank_name,
+            account_number = :account_number,
+            ifsc = :ifsc,
+            upi_id = :upi_id,
+            qr_code = :qr_code,
+            phone = :phone,
+            email = :email,
+            thank_you_msg = :thank_you_msg
+            WHERE id = 1');
+        return $stmt->execute($data);
+    }
+
+    public function getDonationSettings(): ?array
+    {
+        if (!$this->db) return null;
+        try {
+            $stmt = $this->db->query('SELECT * FROM donation_settings WHERE id = 1');
+            return $stmt->fetch() ?: null;
+        } catch (Throwable $e) {
+            return null;
+        }
+    }
+
+    public function getTimeline(): array
+    {
+        if (!$this->db) return [];
+        try {
+            $stmt = $this->db->query('SELECT * FROM timeline ORDER BY sort_order ASC, year DESC');
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function findTimeline(int $id): ?array
+    {
+        if (!$this->db) return null;
+        $stmt = $this->db->prepare('SELECT * FROM timeline WHERE id = :id');
+        $stmt->execute([':id' => $id]);
+        $result = $stmt->fetch();
+        return $result ?: null;
+    }
+
+    public function createTimeline(array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('INSERT INTO timeline (year, title, description, sort_order) VALUES (:year, :title, :description, :sort_order)');
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':sort_order' => (int)$data['sort_order']
+        ]);
+    }
+
+    public function updateTimeline(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE timeline SET year = :year, title = :title, description = :description, sort_order = :sort_order WHERE id = :id');
+        return $stmt->execute([
+            ':year' => $data['year'],
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':sort_order' => (int)$data['sort_order'],
+            ':id' => $id
+        ]);
+    }
+
+    public function deleteTimeline(int $id): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM timeline WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function metrics(): array
+    {
+        $timelineCount = 0;
+        $galleryCount = 0;
+        $pagesCount = 0;
+        $newspaperCount = 0;
+        $donationCount = 0;
+        if ($this->db) {
+            try {
+            $timelineCount = (int)$this->db->query('SELECT COUNT(*) FROM timeline')->fetchColumn();
+            $galleryCount = (int)$this->db->query('SELECT COUNT(*) FROM gallery')->fetchColumn();
+            $donationCount = (int)$this->db->query('SELECT COUNT(*) FROM donations')->fetchColumn();
+            $newspaperCount = (int)$this->db->query('SELECT COUNT(*) FROM newspaper_cuttings')->fetchColumn();
+            $pagesCount = (int)$this->db->query('SELECT COUNT(*) FROM pages')->fetchColumn();
+            } catch (Throwable $e) {}
+        }
+
+        return [
+            'blogs' => count($this->allFromDemo('blogs')),
+            'timeline' => $timelineCount,
+            'volunteers' => 128,
+            'contacts' => 42,
+            'campaigns' => count($this->all('campaigns')),
+            'events' => count($this->allFromDemo('events')),
+            'gallery' => $galleryCount,
+            'pages' => $pagesCount,
+            'newspaper' => $newspaperCount,
+            'donations' => $donationCount,
+            'visitors' => 8421,
+        ];
+    }
+
+    public function saveVolunteer(array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare("INSERT INTO volunteers (volunteer_id, full_name, father_name, email, gender, dob, phone, state, district, pincode, occupation, photo, skills, interests, availability, message, status) 
+            VALUES (:vid, :fname, :father, :email, :gender, :dob, :phone, :state, :dist, :pin, :occ, :photo, :skills, :interests, :avail, :msg, :status)");
+        
+        return $stmt->execute([
+            ':vid' => 'VOL-' . strtoupper(substr(uniqid(), -6)),
+            ':fname' => $data['full_name'],
+            ':father' => $data['father_name'] ?? null,
+            ':email' => $data['email'],
+            ':gender' => $data['gender'] ?? 'Male',
+            ':dob' => $data['dob'] ?? null,
+            ':phone' => $data['phone'],
+            ':state' => $data['state'],
+            ':dist' => $data['district'],
+            ':pin' => $data['pincode'] ?? null,
+            ':occ' => $data['occupation'] ?? null,
+            ':photo' => $data['photo'] ?? null,
+            ':skills' => $data['skills'] ?? null,
+            ':interests' => $data['interests'] ?? null,
+            ':avail' => $data['availability'] ?? null,
+            ':msg' => $data['message'] ?? null,
+            ':status' => $data['status'] ?? 'Pending'
+        ]);
+    }
+
+    public function findVolunteer(int $id): ?array
+    {
+        if (!$this->db) return null;
+        $stmt = $this->db->prepare("SELECT * FROM volunteers WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        return $stmt->fetch() ?: null;
+    }
+
+    public function updateVolunteer(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare("UPDATE volunteers SET 
+            full_name = :fname, father_name = :father, email = :email, gender = :gender, 
+            dob = :dob, phone = :phone, state = :state, district = :dist, pincode = :pin, 
+            occupation = :occ, photo = :photo, status = :status WHERE id = :id");
+        
+        $data['id'] = $id;
+        return $stmt->execute($data);
+    }
+
+    public function updateVolunteerStatus(int $id, string $status): bool
+    {
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare("UPDATE volunteers SET status = :status WHERE id = :id");
+        return $stmt->execute([':status' => $status, ':id' => $id]);
+    }
+
+    public function deleteVolunteer(int $id): bool
+    {
+        if (!$this->db) return false;
+        $v = $this->findVolunteer($id);
+        if ($v && $v['photo'] && file_exists(__DIR__ . '/../' . $v['photo'])) {
+            @unlink(__DIR__ . '/../' . $v['photo']);
+        }
+        $stmt = $this->db->prepare("DELETE FROM volunteers WHERE id = :id");
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function filterVolunteers(array $filters): array
+    {
+        if (!$this->db) return [];
+        try {
+            $sql = "SELECT * FROM volunteers WHERE 1=1";
+            $params = [];
+
+            if (!empty($filters['name'])) {
+                $sql .= " AND (full_name LIKE :name OR volunteer_id LIKE :name)";
+                $params[':name'] = '%' . $filters['name'] . '%';
+            }
+            if (!empty($filters['email'])) {
+                $sql .= " AND email LIKE :email";
+                $params[':email'] = '%' . $filters['email'] . '%';
+            }
+            if (!empty($filters['phone'])) {
+                $sql .= " AND phone LIKE :phone";
+                $params[':phone'] = '%' . $filters['phone'] . '%';
+            }
+
+            $sql .= " ORDER BY created_at DESC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute($params);
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function saveContact(array $data): bool
+    {
+        $_SESSION['_demo_contacts'][] = $data;
+        return true;
+    }
+
+    public function saveSubscriber(array $data): bool
+    {
+        $_SESSION['_demo_subscribers'][] = $data;
+        return true;
+    }
+}

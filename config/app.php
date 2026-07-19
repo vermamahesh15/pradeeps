@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'name' => 'Pradeep Sarang Foundation',
+    'base_url' => 'https://pradeepsarang.in', // Set your actual domain here
+    'default_lang' => 'en',
+    'supported_langs' => ['en', 'hi'],
+    'admin_path' => 'admin',
+    'timezone' => 'Asia/Kolkata',
+    'uploads_dir' => __DIR__ . '/../uploads',
+];
