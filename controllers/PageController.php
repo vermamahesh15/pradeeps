@@ -30,6 +30,10 @@ class PageController
             $title = 'Page Not Found';
         }
 
+        if (!isset($data['settings'])) {
+            $data['settings'] = $this->content->getSettings();
+        }
+
         extract($data);
         require __DIR__ . '/../views/layouts/main.php';
     }

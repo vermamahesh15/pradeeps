@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$settings = (require __DIR__ . '/../../includes/data.php')['settings'];
+$settings = (new ContentModel())->getSettings();
 $flashSuccess = flash('success');
 $route = current_path();
 ?>
@@ -83,7 +83,7 @@ $route = current_path();
         <nav class="navbar navbar-expand-lg py-3">
             <div class="container">
                 <a class="navbar-brand py-0" href="<?= e(base_url('/')) ?>">
-                    <img src="<?= e(asset('images/logo.png')) ?>" alt="<?= e(app_config('name')) ?>"> 
+                    <img src="<?= e(!empty($settings['logo']) ? base_url($settings['logo']) : asset('images/logo.png')) ?>" alt="<?= e(app_config('name')) ?>"> 
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                     <span class="navbar-toggler-icon"></span>

@@ -507,6 +507,114 @@ if (is_post()) {
         redirect('/admin/index.php?module=donation_settings');
     }
 
+    if ($loggedIn && ($_POST['action'] ?? '') === 'update_settings') {
+        if (!is_role('super_admin')) {
+            http_response_code(403);
+            exit('Unauthorized access.');
+        }
+
+        $data = [
+            'site_tagline' => trim($_POST['site_tagline'] ?? ''),
+            'phone' => trim($_POST['phone'] ?? ''),
+            'email' => trim($_POST['email'] ?? ''),
+            'address' => trim($_POST['address'] ?? ''),
+            'facebook' => trim($_POST['facebook'] ?? ''),
+            'instagram' => trim($_POST['instagram'] ?? ''),
+            'linkedin' => trim($_POST['linkedin'] ?? ''),
+            'youtube' => trim($_POST['youtube'] ?? ''),
+            'footer_text' => trim($_POST['footer_text'] ?? ''),
+        ];
+
+        $logoPath = $_POST['existing_logo'] ?? '';
+        if (isset($_FILES['logo']) && $_FILES['logo']['error'] === UPLOAD_ERR_OK) {
+            $errorUpload = '';
+            $uploaded = upload_file($_FILES['logo'], $errorUpload, 'logo');
+            if ($uploaded) {
+                $logoPath = $uploaded;
+            } else {
+                flash('admin_error', 'Logo upload failed: ' . $errorUpload);
+            }
+        }
+        $data['logo'] = $logoPath;
+
+        try {
+            $content->updateSettings($data);
+            flash('admin_success', 'Website settings updated successfully.');
+        } catch (Throwable $e) {
+            flash('admin_error', 'Update failed: ' . $e->getMessage());
+        }
+        redirect('/admin/index.php?module=settings');
+    }
+
+    if ($loggedIn && ($_POST['action'] ?? '') === 'generate_sitemap') {
+        if (!is_role('super_admin')) {
+            http_response_code(403);
+            exit('Unauthorized access.');
+        }
+
+        try {
+            $urls = [
+                '',
+                '/about',
+                '/campaigns',
+                '/events',
+                '/portfolio',
+                '/contact',
+                '/volunteer',
+                '/donation',
+                '/blog'
+            ];
+
+            // Fetch published blogs
+            $blogs = $blogModel->allPublished(200);
+            foreach ($blogs as $b) {
+                $urls[] = '/blog/' . $b['slug'];
+            }
+
+            // Fetch campaigns
+            $campaigns = $content->all('campaigns');
+            foreach ($campaigns as $c) {
+                $urls[] = '/campaigns/' . $c['slug'];
+            }
+
+            // Fetch events
+            $events = $content->all('events');
+            foreach ($events as $e) {
+                $urls[] = '/events/' . $e['slug'];
+            }
+
+            // Fetch custom pages
+            $pages = $content->allPages();
+            foreach ($pages as $p) {
+                $urls[] = '/' . $p['slug'];
+            }
+
+            // Build dynamic XML
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+            $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
+            foreach ($urls as $url) {
+                $absolute = base_url($url);
+                $xml .= '  <url>' . PHP_EOL;
+                $xml .= '    <loc>' . htmlspecialchars($absolute, ENT_XML1) . '</loc>' . PHP_EOL;
+                $xml .= '    <changefreq>weekly</changefreq>' . PHP_EOL;
+                $xml .= '    <priority>' . ($url === '' ? '1.0' : '0.8') . '</priority>' . PHP_EOL;
+                $xml .= '  </url>' . PHP_EOL;
+            }
+            $xml .= '</urlset>' . PHP_EOL;
+
+            // Write to the root directory
+            $sitemapFile = __DIR__ . '/../sitemap.xml';
+            if (file_put_contents($sitemapFile, $xml) !== false) {
+                flash('admin_success', 'sitemap.xml generated successfully at ' . date('Y-m-d H:i:s'));
+            } else {
+                flash('admin_error', 'Failed to write sitemap.xml to root folder. Please check file permissions.');
+            }
+        } catch (Throwable $e) {
+            flash('admin_error', 'Sitemap generation failed: ' . $e->getMessage());
+        }
+        redirect('/admin/index.php?module=settings');
+    }
+
     if ($loggedIn && ($_POST['action'] ?? '') === 'create_newspaper') {
         if (!empty($_FILES['images']['name'][0])) {
             $successCount = 0;
@@ -2060,6 +2168,103 @@ $metrics = $content->metrics();
                             </tbody>
                         </table>
                     </div>
+                </div>
+
+            <?php elseif ($module === 'settings'): ?>
+                <?php
+                if (!is_role('super_admin')) {
+                    redirect('/admin/index.php?module=dashboard');
+                }
+                $settings = $content->getSettings();
+                $success = flash('admin_success');
+                ?>
+                <div class="admin-card mb-4">
+                    <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+                    <?php if ($error): ?><div class="alert alert-danger"><?= e($error) ?></div><?php endif; ?>
+                    <h2 class="mb-4">Website Settings</h2>
+                    <form method="post" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="action" value="update_settings">
+                        <input type="hidden" name="existing_logo" value="<?= e($settings['logo'] ?? '') ?>">
+                        
+                        <div class="row g-4">
+                            <!-- Logo and Tagline -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Website Logo</label>
+                                <input type="file" name="logo" class="form-control mb-2" accept="image/*">
+                                <?php if (!empty($settings['logo'])): ?>
+                                    <div class="mt-2">
+                                        <small class="text-muted d-block mb-1">Current Logo:</small>
+                                        <img src="<?= e(base_url($settings['logo'])) ?>" alt="Logo" style="max-height: 50px; background: #f3f5f8; padding: 5px; border-radius: 8px;">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Site Tagline</label>
+                                <textarea name="site_tagline" class="form-control" rows="3"><?= e($settings['site_tagline'] ?? '') ?></textarea>
+                            </div>
+
+                            <hr>
+
+                            <!-- Contact Details -->
+                            <h4 class="mb-0 text-primary">Contact Details</h4>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Phone Number</label>
+                                <input type="text" name="phone" class="form-control" value="<?= e($settings['phone'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Email Address</label>
+                                <input type="email" name="email" class="form-control" value="<?= e($settings['email'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Address</label>
+                                <textarea name="address" class="form-control" rows="1"><?= e($settings['address'] ?? '') ?></textarea>
+                            </div>
+
+                            <hr>
+
+                            <!-- Social Media Links -->
+                            <h4 class="mb-0 text-primary">Social Media Links</h4>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold"><i class="fab fa-facebook text-primary me-1"></i> Facebook</label>
+                                <input type="text" name="facebook" class="form-control" value="<?= e($settings['facebook'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold"><i class="fab fa-instagram text-danger me-1"></i> Instagram</label>
+                                <input type="text" name="instagram" class="form-control" value="<?= e($settings['instagram'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold"><i class="fab fa-linkedin text-info me-1"></i> LinkedIn</label>
+                                <input type="text" name="linkedin" class="form-control" value="<?= e($settings['linkedin'] ?? '') ?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold"><i class="fab fa-youtube text-danger me-1"></i> YouTube</label>
+                                <input type="text" name="youtube" class="form-control" value="<?= e($settings['youtube'] ?? '') ?>">
+                            </div>
+
+                            <hr>
+
+                            <!-- Footer Text -->
+                            <div class="col-12 mt-2">
+                                <label class="form-label fw-bold">Footer Text</label>
+                                <textarea name="footer_text" class="form-control" rows="2"><?= e($settings['footer_text'] ?? '') ?></textarea>
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary px-4 py-2">Save Settings</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="admin-card">
+                    <h3 class="text-danger mb-3">Sitemap Generator</h3>
+                    <p>Re-generate the XML sitemap of the website containing all static pages, custom dynamic pages, published blogs, campaigns, and events.</p>
+                    <form method="post">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="action" value="generate_sitemap">
+                        <button type="submit" class="btn btn-outline-danger">Generate sitemap.xml</button>
+                    </form>
                 </div>
 
             <?php else: ?>

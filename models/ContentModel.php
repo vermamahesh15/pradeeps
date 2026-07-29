@@ -671,4 +671,40 @@ class ContentModel extends BaseModel
         $_SESSION['_demo_subscribers'][] = $data;
         return true;
     }
+
+    public function getSettings(): array
+    {
+        $defaultSettings = (require __DIR__ . '/../includes/data.php')['settings'];
+        if (!$this->db) {
+            return $defaultSettings;
+        }
+        try {
+            $stmt = $this->db->query('SELECT setting_key, setting_value FROM settings');
+            $dbSettings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR) ?: [];
+            return array_merge($defaultSettings, $dbSettings);
+        } catch (Throwable $e) {
+            return $defaultSettings;
+        }
+    }
+
+    public function updateSettings(array $data): bool
+    {
+        if (!$this->db) return false;
+        try {
+            $this->db->beginTransaction();
+            $stmt = $this->db->prepare('INSERT INTO settings (setting_key, setting_value) 
+                VALUES (:key, :value) 
+                ON DUPLICATE KEY UPDATE setting_value = :value');
+            foreach ($data as $key => $value) {
+                $stmt->execute([':key' => (string)$key, ':value' => $value !== null ? (string)$value : null]);
+            }
+            $this->db->commit();
+            return true;
+        } catch (Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            return false;
+        }
+    }
 }

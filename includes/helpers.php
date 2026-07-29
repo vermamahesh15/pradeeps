@@ -179,7 +179,10 @@ function request_payload(): array
 
 function setting(string $key, $default = null)
 {
-    $settings = $_SESSION['_demo_settings'] ?? [];
+    static $settings = null;
+    if ($settings === null) {
+        $settings = (new ContentModel())->getSettings();
+    }
     return $settings[$key] ?? $default;
 }
 
