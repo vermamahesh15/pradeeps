@@ -10,7 +10,7 @@ return [
     //'username' => 'u765559826_K4VMi',
     //'password' => 'U#8sS&D+H0?',
     'charset' => 'utf8mb4',
-    'database' => 'pradeep',
+    'database' => 'pradeep_sarang',
     'username' => 'root',
     'password' => 'MyStrongPassword123!',
 ];

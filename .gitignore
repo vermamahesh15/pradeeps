@@ -1,0 +1,47 @@
+# Environment & Configuration
+.env
+.env.local
+.env.*.local
+config/database.local.php
+config/*.local.php
+
+# Logs & Debugging
+*.log
+error_log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Cache & Temporary Files
+/tmp/
+/temp/
+/cache/
+*.tmp
+*.bak
+*.swp
+*~
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor Configurations
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Archives & Dumps (Keep schema migrations/seeds tracked)
+*.zip
+*.tar.gz
+*.rar
