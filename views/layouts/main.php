@@ -83,7 +83,7 @@ $route = current_path();
                     <?php endif; ?>
                 </div>
                 <div class="lang-switch-capsule">
-                    <a href="?lang=en" class="<?= current_lang() === 'en' ? 'active' : '' ?>">EN</a>
+                    <!-- <a href="?lang=en" class="<?= current_lang() === 'en' ? 'active' : '' ?>">EN</a> -->
                     <a href="?lang=hi" class="<?= current_lang() === 'hi' ? 'active' : '' ?>">HI</a>
                 </div>
             </div>

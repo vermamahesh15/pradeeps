@@ -39,8 +39,8 @@ $currPath = current_path();
                     <span class="material-symbols-outlined text-[20px] text-fresh-sprout" style="font-variation-settings: 'FILL' 1;">eco</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-serif text-2xl sm:text-[26px] tracking-tight leading-none font-bold text-deep-forest" style="font-family: 'Playfair Display', 'Cinzel', serif;">
-                        <span class="font-normal text-secondary/90 italic">pradeep</span> <span class="font-bold text-deep-forest">sarang</span>
+                    <span class="font-serif text-2xl sm:text-[26px] tracking-tight leading-none font-bold text-deep-forest">
+                        <span class="font-normal text-secondary/90 italic">प्रदीप</span> <span class="font-bold text-deep-forest">सारंग</span>
                     </span>
                     <span class="font-label-sm text-[10.5px] text-text-muted tracking-widest uppercase font-semibold mt-1">
                         <?= e(ps_text('पर्यावरणविद् • लोकसेवक • साहित्यकार', 'Environmentalist • Social Worker')) ?>
@@ -113,10 +113,10 @@ $currPath = current_path();
                        class="px-2.5 py-1 rounded-full <?= $currentLang === 'hi' ? 'bg-primary-container text-on-primary font-bold' : 'text-on-surface-variant hover:text-on-surface' ?> font-label-sm text-label-sm transition-colors">
                         HI
                     </a>
-                    <a href="<?= e(base_url('/') . '?' . http_build_query(array_merge($_GET, ['lang' => 'en']))) ?>" 
+                    <!-- <a href="<?= e(base_url('/') . '?' . http_build_query(array_merge($_GET, ['lang' => 'en']))) ?>" 
                        class="px-2.5 py-1 rounded-full <?= $currentLang === 'en' ? 'bg-primary-container text-on-primary font-bold' : 'text-on-surface-variant hover:text-on-surface' ?> font-label-sm text-label-sm transition-colors">
                         EN
-                    </a>
+                    </a> -->
                 </div>
 
                 <a class="hidden md:inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm" href="<?= e(base_url('/volunteer')) ?>">
