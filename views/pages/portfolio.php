@@ -206,7 +206,7 @@ if (count($featuredPhotos) < 3) {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <?php foreach (array_slice($featuredPhotos, 0, 3) as $fPhoto): ?>
           <div class="group relative rounded-2xl overflow-hidden shadow-md border border-border-warm bg-surface-container aspect-[4/3] flex flex-col justify-end">
-            <img src="<?= e($fPhoto['image']) ?>" alt="<?= e($fPhoto['title']) ?>" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <img src="<?= e(base_url($fPhoto['image'])) ?>" alt="<?= e($fPhoto['title']) ?>" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent"></div>
             
             <div class="relative z-10 p-5 flex flex-col justify-between h-full">
@@ -228,7 +228,7 @@ if (count($featuredPhotos) < 3) {
                     <span class="material-symbols-outlined text-[15px] text-tertiary-fixed">location_on</span>
                     <?= e($fPhoto['location']) ?>
                   </span>
-                  <a href="<?= e($fPhoto['image']) ?>" data-ps-lightbox data-caption="<?= e($fPhoto['title']) ?>" class="inline-flex items-center gap-1 text-primary-fixed hover:text-pure-white font-label-sm text-label-sm font-bold transition-colors">
+                  <a href="<?= e(base_url($fPhoto['image'])) ?>" data-ps-lightbox data-caption="<?= e($fPhoto['title']) ?>" class="inline-flex items-center gap-1 text-primary-fixed hover:text-pure-white font-label-sm text-label-sm font-bold transition-colors">
                     <span class="material-symbols-outlined text-[16px]">zoom_in</span>
                     <span><?= e(ps_text('बड़ा करें', 'Enlarge')) ?></span>
                   </a>
@@ -261,10 +261,10 @@ if (count($featuredPhotos) < 3) {
         <?php foreach ($allPhotos as $photo): ?>
           <div class="gallery-card group bg-pure-white rounded-2xl shadow-sm border border-border-warm overflow-hidden hover:shadow-md transition-all flex flex-col justify-between" data-category="<?= e($photo['category']) ?>">
             <div class="relative overflow-hidden aspect-[4/3] bg-surface-container">
-              <img src="<?= e($photo['image']) ?>" alt="<?= e($photo['title']) ?>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <img src="<?= e(base_url($photo['image'])) ?>" alt="<?= e($photo['title']) ?>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
               
               <!-- Hover Overlay Button -->
-              <a href="<?= e($photo['image']) ?>" data-ps-lightbox data-caption="<?= e($photo['title']) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-2">
+              <a href="<?= e(base_url($photo['image'])) ?>" data-ps-lightbox data-caption="<?= e($photo['title']) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-2">
                 <span class="w-10 h-10 rounded-full bg-pure-white/20 backdrop-blur-md flex items-center justify-center border border-pure-white/40">
                   <span class="material-symbols-outlined text-[22px]">zoom_in</span>
                 </span>

@@ -71,31 +71,52 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <!-- Quick Vita Table -->
           <div class="space-y-3.5 font-body-sm text-body-sm">
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">badge</span>
+                <span><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
+              </span>
               <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('श्री प्रदीप सारंग (Pradeep Sarang)', 'Shri Pradeep Sarang')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('पिता:', 'Father:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+                <span><?= e(ps_text('पिता:', 'Father:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्री गोविंद प्रसाद', 'Shri Govind Prasad')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('माता:', 'Mother:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">family_restroom</span>
+                <span><?= e(ps_text('माता:', 'Mother:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्रीमती कृष्णावती (कृष्णादेवी)', 'Smt. Krishnavati')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('जन्म:', 'Date of Birth:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">cake</span>
+                <span><?= e(ps_text('जन्म:', 'Date of Birth:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('20 अक्टूबर 1969 (दीपावली की पावन भोर)', '20 October 1969')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+                <span><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम – कमरावाँ, पोस्ट – नानमऊ, जनपद – बाराबंकी, उत्तर प्रदेश (225121)', 'Kamrawan, Barabanki, U.P.')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('शैक्षणिक योग्यता:', 'Education:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
+                <span><?= e(ps_text('शैक्षणिक योग्यता:', 'Education:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('बी.ए., बी.एड., पी.जी. डिप्लोमा (अवधी भाषा व साहित्य), आयुर्वेद रत्न (1997)', 'B.A., B.Ed., PG Dip (Awadhi), Ayurveda Ratna')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2">
-              <span class="text-text-muted font-medium w-36"><?= e(ps_text('प्रमुख दायित्व:', 'Roles:')) ?></span>
+              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-secondary">work</span>
+                <span><?= e(ps_text('प्रमुख दायित्व:', 'Roles:')) ?></span>
+              </span>
               <span class="text-on-surface text-right flex-1"><?= e(ps_text('सह-संपादक \'सन्दौली टाइम्स\', संस्थापक \'ग्रीन गैंग\', जनक \'ग्रीन मॉर्निंग\' अभियान', 'Co-Editor Sandauli Times, Founder Green Gang')) ?></span>
             </div>
           </div>

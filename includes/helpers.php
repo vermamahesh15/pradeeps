@@ -51,11 +51,15 @@ function lang(string $key, ?string $lang = null): string
 
 function base_url(string $path = ''): string
 {
+    if (preg_match('#^https?://#i', $path)) {
+        return $path;
+    }
+
     $configured = app_config('base_url');
     $httpHost = $_SERVER['HTTP_HOST'] ?? '';
-    $isLocal = (strpos($httpHost, 'localhost') !== false || strpos($httpHost, '127.0.0.1') !== false);
 
-    if ($isLocal || $configured === null || $configured === '') {
+    if ($httpHost !== '') {
+        $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') ? 'https' : 'http';
         $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
         $root = rtrim(dirname($script), '/');
         if (substr($root, -6) === '/admin') {
@@ -64,30 +68,24 @@ function base_url(string $path = ''): string
         if ($root === '/' || $root === '.') {
             $root = '';
         }
-        if ($httpHost) {
-            $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
-            $root = $scheme . '://' . $httpHost . $root;
-        }
+        $baseUrl = $scheme . '://' . $httpHost . $root;
     } else {
-        $root = rtrim((string) $configured, '/');
+        $baseUrl = rtrim((string) ($configured ?: ''), '/');
     }
 
     $path = ltrim($path, '/');
-    return $root . ($path !== '' ? '/' . $path : '');
+    return $baseUrl . ($path !== '' ? '/' . $path : '');
 }
 
 function current_path(): string
 {
     $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-    $configured = app_config('base_url');
-    if ($configured === null || $configured === '') {
-        $base = rtrim(base_url(), '/');
-    } else {
-        $base = rtrim((string) $configured, '/');
-    }
+    $baseUrl = base_url();
+    $basePath = parse_url($baseUrl, PHP_URL_PATH) ?: '';
+    $basePath = rtrim($basePath, '/');
 
-    if ($base !== '' && strpos($uri, $base) === 0) {
-        $uri = substr($uri, strlen($base)) ?: '/';
+    if ($basePath !== '' && strpos($uri, $basePath) === 0) {
+        $uri = substr($uri, strlen($basePath)) ?: '/';
     }
 
     return trim($uri, '/') === '' ? '/' : rtrim($uri, '/');

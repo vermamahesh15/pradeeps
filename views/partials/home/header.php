@@ -8,22 +8,22 @@ $currPath = current_path();
 ?>
 <header class="fixed top-0 left-0 w-full z-[9999] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
     <!-- Top Utility Bar -->
-    <div class="w-full bg-deep-forest text-on-primary py-1.5 px-4 sm:px-8">
+    <div class="w-full bg-[#172033] text-[#FFFFFF] py-1.5 px-4 sm:px-8">
         <div class="max-w-container-max mx-auto flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center gap-6 font-label-sm text-label-sm text-surface-container-high">
-                <a class="flex items-center gap-1.5 hover:text-on-primary transition-colors" href="tel:<?= e($phoneClean) ?>">
-                    <span class="material-symbols-outlined text-[15px]">call</span>
+            <div class="flex items-center gap-6 font-label-sm text-label-sm text-[#E2E8F0]">
+                <a class="flex items-center gap-1.5 hover:text-white transition-colors" href="tel:<?= e($phoneClean) ?>">
+                    <span class="material-symbols-outlined text-[15px] text-[#B28A42]">call</span>
                     <span><?= e($phone) ?></span>
                 </a>
                 <span class="hidden sm:inline opacity-30">|</span>
-                <a class="hidden sm:flex items-center gap-1.5 hover:text-on-primary transition-colors" href="mailto:<?= e($email) ?>">
-                    <span class="material-symbols-outlined text-[15px]">mail</span>
+                <a class="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors" href="mailto:<?= e($email) ?>">
+                    <span class="material-symbols-outlined text-[15px] text-[#B28A42]">mail</span>
                     <span><?= e($email) ?></span>
                 </a>
             </div>
             <div class="flex items-center gap-3">
-                <div class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary px-2.5 py-0.5 rounded-full font-label-sm text-label-sm">
-                    <span class="material-symbols-outlined text-[14px] text-primary-fixed">eco</span>
+                <div class="inline-flex items-center gap-1.5 bg-[#15803D] text-white px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-semibold shadow-xs">
+                    <span class="material-symbols-outlined text-[14px] text-[#86EFAC]">eco</span>
                     <span><?= e(ps_text('ग्रीन मॉर्निंग!', 'Green Morning!')) ?></span>
                 </div>
             </div>
@@ -31,18 +31,18 @@ $currPath = current_path();
     </div>
 
     <!-- Main Navigation Bar -->
-    <div class="h-20 bg-cream-canvas backdrop-blur-md px-4 sm:px-8 flex items-center border-b border-border-warm/80">
+    <div class="h-20 bg-[#FFFEFB] backdrop-blur-md px-4 sm:px-8 flex items-center border-b border-[#E5E7EB]">
         <div class="max-w-container-max mx-auto w-full flex items-center justify-between gap-4">
             <!-- Brand Identity: Stylish Typography Mark -->
             <a href="<?= e(base_url('/')) ?>" class="flex items-center gap-2.5 group shrink-0 py-1">
-                <div class="w-9 h-9 rounded-xl bg-deep-forest text-on-primary flex items-center justify-center shadow-xs border border-primary-fixed/20 group-hover:bg-primary transition-colors">
-                    <span class="material-symbols-outlined text-[20px] text-fresh-sprout" style="font-variation-settings: 'FILL' 1;">eco</span>
+                <div class="w-9 h-9 rounded-xl bg-[#14532D] text-white flex items-center justify-center shadow-xs border border-[#15803D]/40 group-hover:bg-[#0F3D21] transition-colors">
+                    <span class="material-symbols-outlined text-[20px] text-[#86EFAC]" style="font-variation-settings: 'FILL' 1;">eco</span>
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-serif text-2xl sm:text-[26px] tracking-tight leading-none font-bold text-deep-forest">
-                        <span class="font-normal text-secondary/90 italic">प्रदीप</span> <span class="font-bold text-deep-forest">सारंग</span>
+                    <span class="font-serif text-2xl sm:text-[26px] tracking-tight leading-none font-bold">
+                        <span class="font-normal text-[#14532D] italic">प्रदीप</span> <span class="font-bold text-[#172033]">सारंग</span>
                     </span>
-                    <span class="font-label-sm text-[10.5px] text-text-muted tracking-widest uppercase font-semibold mt-1">
+                    <span class="font-label-sm text-[10.5px] text-[#667085] tracking-widest uppercase font-semibold mt-1">
                         <?= e(ps_text('पर्यावरणविद् • लोकसेवक • साहित्यकार', 'Environmentalist • Social Worker')) ?>
                     </span>
                 </div>
@@ -64,17 +64,17 @@ $currPath = current_path();
                 ?>
                     <div class="relative group">
                         <button type="button" 
-                                class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] flex items-center gap-1 cursor-pointer <?= $isParentActive ? 'bg-primary-container text-on-primary font-bold shadow-xs' : 'text-on-surface-variant hover:text-deep-forest hover:bg-soft-meadow' ?>">
+                                class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] flex items-center gap-1 cursor-pointer <?= $isParentActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-[#344054] hover:text-[#14532D] hover:bg-[#F3F5F1]' ?>">
                             <span><?= e($dropdownLabel) ?></span>
-                            <span class="material-symbols-outlined text-[16px] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
+                            <span class="material-symbols-outlined text-[16px] text-[#667085] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
                         </button>
                         <div class="absolute left-0 top-full pt-2 hidden group-hover:block w-64 z-[10000] animate-fadeIn">
-                            <div class="bg-pure-white rounded-xl border border-border-warm shadow-2xl p-2 flex flex-col gap-1 nav-dropdown-panel" style="background-color: #ffffff !important; opacity: 1 !important; z-index: 10000 !important; position: relative;">
+                            <div class="bg-white rounded-xl border border-[#E5E7EB] shadow-2xl p-2 flex flex-col gap-1 nav-dropdown-panel" style="background-color: #ffffff !important; opacity: 1 !important; z-index: 10000 !important; position: relative;">
                                 <?php foreach ($children as [$subUrl, $subLabel]): 
                                     $isSubActive = is_nav_item_active($subUrl, $currPath);
                                 ?>
                                     <a href="<?= e(base_url($subUrl)) ?>" 
-                                       class="px-3.5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-colors flex items-center justify-between <?= $isSubActive ? 'bg-primary-container text-on-primary font-bold shadow-xs' : 'text-deep-forest hover:text-primary hover:bg-soft-meadow' ?>">
+                                       class="px-3.5 py-2.5 rounded-lg text-[13.5px] font-semibold transition-colors flex items-center justify-between <?= $isSubActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-[#172033] hover:text-[#14532D] hover:bg-[#F3F5F1]' ?>">
                                         <span><?= e($subLabel) ?></span>
                                         <span class="material-symbols-outlined text-[16px] opacity-60">chevron_right</span>
                                     </a>
@@ -89,11 +89,11 @@ $currPath = current_path();
                         $isBlog = ($url === '/blog');
                 ?>
                         <a href="<?= e(base_url($url)) ?>" 
-                           class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] <?= $isActive ? 'bg-primary-container text-on-primary font-bold shadow-xs' : 'text-on-surface-variant hover:text-deep-forest hover:bg-soft-meadow' ?>"
+                           class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] <?= $isActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-[#344054] hover:text-[#14532D] hover:bg-[#F3F5F1]' ?>"
                            <?= $isActive ? 'aria-current="page"' : '' ?>>
                             <?php if ($isBlog): ?>
                                 <span class="inline-flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[15px] <?= $isActive ? 'text-on-primary' : 'text-primary' ?>">menu_book</span>
+                                    <span class="material-symbols-outlined text-[15px] <?= $isActive ? 'text-white' : 'text-[#C05632]' ?>">menu_book</span>
                                     <span><?= e($label) ?></span>
                                 </span>
                             <?php else: ?>
@@ -108,26 +108,23 @@ $currPath = current_path();
 
             <!-- Actions: Language Switcher, CTA, Admin, Mobile Toggle -->
             <div class="flex items-center gap-2.5 sm:gap-3.5">
-                <div class="flex items-center bg-surface-container rounded-full p-0.5">
+                <div class="flex items-center bg-[#FFFFFF] border border-[#E5E7EB] rounded-full p-0.5 shadow-xs">
                     <a href="<?= e(base_url('/') . '?' . http_build_query(array_merge($_GET, ['lang' => 'hi']))) ?>" 
-                       class="px-2.5 py-1 rounded-full <?= $currentLang === 'hi' ? 'bg-primary-container text-on-primary font-bold' : 'text-on-surface-variant hover:text-on-surface' ?> font-label-sm text-label-sm transition-colors">
+                       class="px-2.5 py-1 rounded-full <?= $currentLang === 'hi' ? 'bg-[#14532D] text-white font-bold' : 'text-[#172033] hover:text-[#C05632]' ?> font-label-sm text-label-sm transition-colors">
                         HI
                     </a>
-                    <!-- <a href="<?= e(base_url('/') . '?' . http_build_query(array_merge($_GET, ['lang' => 'en']))) ?>" 
-                       class="px-2.5 py-1 rounded-full <?= $currentLang === 'en' ? 'bg-primary-container text-on-primary font-bold' : 'text-on-surface-variant hover:text-on-surface' ?> font-label-sm text-label-sm transition-colors">
-                        EN
-                    </a> -->
                 </div>
 
-                <a class="hidden md:inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm" href="<?= e(base_url('/volunteer')) ?>">
-                    <?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?>
+                <a class="hidden md:inline-flex items-center justify-center gap-1.5 bg-[#C05632] text-white hover:bg-[#A9472B] px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold" href="<?= e(base_url('/volunteer')) ?>">
+                    <span class="material-symbols-outlined text-[17px]">handshake</span>
+                    <span><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
                 </a>
 
-                <a href="<?= e(base_url('/admin')) ?>" title="<?= e(ps_text('प्रशासनिक पोर्टल', 'Admin Portal')) ?>" class="w-8 h-8 rounded-full bg-primary hover:bg-deep-forest transition-colors flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-on-primary text-[18px]">person</span>
+                <a href="<?= e(base_url('/admin')) ?>" title="<?= e(ps_text('प्रशासनिक पोर्टल', 'Admin Portal')) ?>" class="w-8 h-8 rounded-full bg-[#172033] hover:bg-[#14532D] transition-colors flex items-center justify-center shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-white text-[18px]">person</span>
                 </a>
 
-                <button id="ps-mobile-toggle" class="xl:hidden p-1.5 text-deep-forest hover:bg-surface-container rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
+                <button id="ps-mobile-toggle" class="xl:hidden p-1.5 text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>

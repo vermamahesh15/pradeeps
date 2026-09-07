@@ -3,14 +3,28 @@ declare(strict_types=1);
 
 // Helper to resolve images cleanly
 function ps_resolve_img(?string $dbPath, string $fallback): string {
+    $root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
     if (!empty($dbPath)) {
         if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
         $clean = ltrim($dbPath, '/');
-        if (file_exists(__DIR__ . '/../../' . $clean)) {
+        if (file_exists($root . '/' . $clean)) {
             return base_url($clean);
         }
+        $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+        if (file_exists($root . '/' . $webp)) {
+            return base_url($webp);
+        }
     }
-    return base_url($fallback);
+    if (preg_match('#^https?://#i', $fallback)) return $fallback;
+    $cleanFallback = ltrim($fallback, '/');
+    if (file_exists($root . '/' . $cleanFallback)) {
+        return base_url($cleanFallback);
+    }
+    $webpFallback = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanFallback);
+    if (file_exists($root . '/' . $webpFallback)) {
+        return base_url($webpFallback);
+    }
+    return base_url($cleanFallback);
 }
 
 $heroImg = ps_resolve_img($sliders[0]['image'] ?? '', 'assets/images/slider_final_1.jpg');
@@ -40,57 +54,57 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 <div class="flex flex-col w-full">
 
 <!-- 1. HERO SECTION -->
-<section class="relative overflow-hidden px-4 sm:px-8 py-10 lg:py-16">
+<section class="relative overflow-hidden px-4 sm:px-8 py-10 lg:py-16 bg-gradient-to-b from-[#FAF8F3] to-[#F1F7F2]">
   <div class="max-w-container-max mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
       <!-- Hero Text & Mission -->
       <div class="lg:col-span-7 flex flex-col space-y-6">
-        <div class="inline-flex items-center gap-2 self-start bg-soft-meadow px-3.5 py-1.5 rounded-full border border-primary/15">
-          <span class="w-2.5 h-2.5 rounded-full bg-fresh-sprout animate-pulse"></span>
-          <span class="font-label-sm text-label-sm text-deep-forest uppercase tracking-wider font-semibold">
+        <div class="inline-flex items-center gap-2 self-start bg-[#FAF8F3] px-3.5 py-1.5 rounded-full border border-[#C05632]/30 shadow-xs">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#C05632] animate-pulse"></span>
+          <span class="font-label-sm text-label-sm text-[#14532D] uppercase tracking-wider font-semibold">
             <?= e(ps_text('समाजसेवी • पर्यावरण प्रेमी • साहित्यकार • जन-जागरूकता प्रेरक', 'Social Worker • Environmentalist • Writer • Public Awareness Catalyst')) ?>
           </span>
         </div>
 
-        <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-deep-forest font-bold tracking-tight">
+        <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-[#14532D] font-bold tracking-tight">
           <?= e(ps_text('समाज, संस्कृति और प्रकृति के लिए समर्पित एक जीवन', 'A Life Dedicated to Society, Culture and Nature')) ?>
         </h1>
 
-        <p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+        <p class="font-body-lg text-body-lg text-[#52606D] leading-relaxed">
           <?= e(ps_text('बाराबंकी के कमरावां गांव से शुरू होकर चार दशकों तक फैली निस्वार्थ जनसेवा — पर्यावरण संरक्षण, रक्तदान, गौरैया व पक्षी संवर्धन, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Selfless community service spanning four decades from Kamrawan, Barabanki — environmental protection, blood donation, sparrow and bird conservation, Awadhi language promotion and continuous youth empowerment.')) ?>
         </p>
 
         <!-- Green Greeting Pill -->
-        <div class="bg-surface-container-low rounded-xl p-4 flex items-center gap-3.5 border border-primary/10">
-          <div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+        <div class="bg-white rounded-xl p-4 flex items-center gap-3.5 border border-[#E5E7EB] shadow-xs">
+          <div class="w-10 h-10 rounded-lg bg-[#15803D] text-white flex items-center justify-center shrink-0 shadow-sm">
             <span class="material-symbols-outlined text-2xl">spa</span>
           </div>
           <div class="flex flex-col">
-            <span class="font-title-md text-title-md text-deep-forest font-bold"><?= e(ps_text('ग्रीन मॉर्निंग की अनूठी पहल', 'Unique Initiative: Green Morning')) ?></span>
-            <span class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text("दैनिक अभिवादन में 'गुड मॉर्निंग' के स्थान पर 'ग्रीन मॉर्निंग' बोलकर प्रकृति प्रेम का संचार", "Inspiring love for nature by greeting with 'Green Morning' instead of 'Good Morning'")) ?></span>
+            <span class="font-title-md text-title-md text-[#14532D] font-bold"><?= e(ps_text('ग्रीन मॉर्निंग की अनूठी पहल', 'Unique Initiative: Green Morning')) ?></span>
+            <span class="font-body-sm text-body-sm text-[#667085]"><?= e(ps_text("दैनिक अभिवादन में 'गुड मॉर्निंग' के स्थान पर 'ग्रीन मॉर्निंग' बोलकर प्रकृति प्रेम का संचार", "Inspiring love for nature by greeting with 'Green Morning' instead of 'Good Morning'")) ?></span>
           </div>
         </div>
 
         <!-- Hero Actions -->
         <div class="flex flex-wrap items-center gap-4 pt-2">
-          <a class="inline-flex items-center gap-2.5 bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md px-6 py-3.5 rounded-lg shadow-md transition-all font-semibold" href="#story">
+          <a class="inline-flex items-center gap-2.5 bg-[#14532D] hover:bg-[#0F3D21] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg shadow-md transition-all font-semibold" href="#story">
             <span><?= e(ps_text('मेरी यात्रा जानें', 'Explore My Journey')) ?></span>
             <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
           </a>
-          <a class="inline-flex items-center gap-2 bg-soft-meadow hover:bg-surface-container-high text-deep-forest font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all border border-deep-forest/10 font-semibold" href="#campaigns">
+          <a class="inline-flex items-center gap-2 bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold" href="#campaigns">
             <span><?= e(ps_text('प्रमुख अभियान देखें', 'View Key Campaigns')) ?></span>
             <span class="material-symbols-outlined text-[18px]">explore</span>
           </a>
         </div>
 
         <!-- Social Proof Credentials -->
-        <div class="flex flex-wrap items-center gap-6 pt-3 text-text-muted font-body-sm text-body-sm">
+        <div class="flex flex-wrap items-center gap-6 pt-3 text-[#667085] font-body-sm text-body-sm">
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+            <span class="material-symbols-outlined text-[#B28A42] text-[18px]">verified</span>
             <span><?= e(ps_text('स्वामी विवेकानंद सम्मान (1989)', 'Swami Vivekananda Award (1989)')) ?></span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary text-[18px]">military_tech</span>
+            <span class="material-symbols-outlined text-[#B28A42] text-[18px]">military_tech</span>
             <span><?= e(ps_text('गणतंत्र दिवस परेड प्रतिभागी (1987-88)', 'Republic Day Parade Participant (1987-88)')) ?></span>
           </div>
         </div>
@@ -128,49 +142,49 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 <!-- 2. IMPACT METRICS STRIP (जीवंत प्रभाव सांख्यिकी) -->
 <section class="w-full px-4 sm:px-8 py-8" aria-label="<?= e(ps_text('जीवंत प्रभाव सांख्यिकी', 'Impact Statistics')) ?>">
   <div class="max-w-container-max mx-auto">
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm flex flex-col border border-border-warm hover:shadow-md transition-shadow">
+    <div class="bg-[#18392B] rounded-2xl p-6 sm:p-8 shadow-md border border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="flex flex-col">
         <div class="flex items-center justify-between mb-3">
-          <span class="font-display-hero text-headline-lg lg:text-display-hero text-primary-container font-bold leading-none">35+</span>
-          <div class="w-10 h-10 rounded-lg bg-soft-meadow flex items-center justify-center text-primary">
+          <span class="font-display-hero text-headline-lg lg:text-display-hero text-[#F4C96B] font-bold leading-none">35+</span>
+          <div class="w-10 h-10 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#E67E57]">
             <span class="material-symbols-outlined">schedule</span>
           </div>
         </div>
-        <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('वर्ष निरंतर जनसेवा', 'Years of Continuous Service')) ?></span>
-        <span class="font-body-sm text-body-sm text-text-muted mt-1"><?= e(ps_text('1987 से 2026 तक निस्वार्थ ग्रामीण व सामाजिक योगदान', 'Selfless rural and community contribution from 1987 to 2026')) ?></span>
+        <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('वर्ष निरंतर जनसेवा', 'Years of Continuous Service')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('1987 से 2026 तक निस्वार्थ ग्रामीण व सामाजिक योगदान', 'Selfless rural and community contribution from 1987 to 2026')) ?></span>
       </div>
 
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm flex flex-col border border-border-warm hover:shadow-md transition-shadow">
+      <div class="flex flex-col">
         <div class="flex items-center justify-between mb-3">
-          <span class="font-display-hero text-headline-lg lg:text-display-hero text-secondary font-bold leading-none">15+</span>
-          <div class="w-10 h-10 rounded-lg bg-secondary-fixed/50 flex items-center justify-center text-secondary">
+          <span class="font-display-hero text-headline-lg lg:text-display-hero text-[#F4C96B] font-bold leading-none">15+</span>
+          <div class="w-10 h-10 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#6FD08C]">
             <span class="material-symbols-outlined">campaign</span>
           </div>
         </div>
-        <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('सक्रिय जन-अभियान', 'Active Movements')) ?></span>
-        <span class="font-body-sm text-body-sm text-text-muted mt-1"><?= e(ps_text('ग्रीन गैंग, परिंदा संरक्षण, रक्तदान, अवधी संवर्धन', 'Green Gang, Bird Protection, Blood Donation, Awadhi')) ?></span>
+        <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('सक्रिय जन-अभियान', 'Active Movements')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('ग्रीन गैंग, परिंदा संरक्षण, रक्तदान, अवधी संवर्धन', 'Green Gang, Bird Protection, Blood Donation, Awadhi')) ?></span>
       </div>
 
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm flex flex-col border border-border-warm hover:shadow-md transition-shadow">
+      <div class="flex flex-col">
         <div class="flex items-center justify-between mb-3">
-          <span class="font-display-hero text-headline-lg lg:text-display-hero text-tertiary-container font-bold leading-none">50+</span>
-          <div class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-tertiary">
+          <span class="font-display-hero text-headline-lg lg:text-display-hero text-[#F4C96B] font-bold leading-none">50+</span>
+          <div class="w-10 h-10 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#F0B45C]">
             <span class="material-symbols-outlined">emoji_events</span>
           </div>
         </div>
-        <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('सम्मान एवं पुरस्कार', 'Honors & Awards')) ?></span>
-        <span class="font-body-sm text-body-sm text-text-muted mt-1"><?= e(ps_text('स्वामी विवेकानंद सम्मान (1989), राष्ट्रीय परेड सम्मान', 'Swami Vivekananda Award (1989), National Parade')) ?></span>
+        <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('सम्मान एवं पुरस्कार', 'Honors & Awards')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('स्वामी विवेकानंद सम्मान (1989), राष्ट्रीय परेड सम्मान', 'Swami Vivekananda Award (1989), National Parade')) ?></span>
       </div>
 
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm flex flex-col border border-border-warm hover:shadow-md transition-shadow">
+      <div class="flex flex-col">
         <div class="flex items-center justify-between mb-3">
-          <span class="font-display-hero text-headline-lg lg:text-display-hero text-deep-forest font-bold leading-none">18k+</span>
-          <div class="w-10 h-10 rounded-lg bg-soft-meadow flex items-center justify-center text-deep-forest">
+          <span class="font-display-hero text-headline-lg lg:text-display-hero text-[#F4C96B] font-bold leading-none">18k+</span>
+          <div class="w-10 h-10 rounded-lg bg-white/10 border border-white/15 flex items-center justify-center text-[#76B7D8]">
             <span class="material-symbols-outlined">groups</span>
           </div>
         </div>
-        <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('नागरिक सहभागिता', 'Citizen Engagements')) ?></span>
-        <span class="font-body-sm text-body-sm text-text-muted mt-1"><?= e(ps_text('बाराबंकी, सतरिख, लखनऊ व ग्रामीण क्षेत्रों में प्रत्यक्ष जुड़ाव', 'Active direct outreach in Barabanki, Satrikh & Lucknow')) ?></span>
+        <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('नागरिक सहभागिता', 'Citizen Engagements')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('बाराबंकी, सतरिख, लखनऊ व ग्रामीण क्षेत्रों में प्रत्यक्ष जुड़ाव', 'Active direct outreach in Barabanki, Satrikh & Lucknow')) ?></span>
       </div>
     </div>
   </div>
@@ -224,13 +238,16 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </p>
 
         <!-- Signature Poetic Quote -->
-        <div class="bg-pure-white rounded-xl p-6 shadow-sm border-l-4 border-secondary">
-          <p class="font-quote-editorial text-quote-editorial text-deep-forest italic leading-relaxed">
+        <div class="bg-white rounded-xl p-6 shadow-sm border-l-4 border-[#C05632] border-t border-r border-b border-[#E5E7EB]">
+          <div class="flex items-center gap-1.5 text-[#C05632] mb-2 font-bold text-[22px]">
+            <span>“</span>
+          </div>
+          <p class="font-quote-editorial text-quote-editorial text-[#172033] italic leading-relaxed">
             <?= ps_text('"हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>जुगनुओं का संग है, इंसानियत का मीत हूँ।"', '"I have not learned to lose; I am a song of victory.<br/>Accompanied by fireflies, I am a friend to humanity."') ?>
           </p>
-          <div class="mt-3 flex items-center justify-between">
-            <span class="font-label-md text-label-md font-bold text-secondary uppercase tracking-widest">— <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
-            <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('कवि एवं सामाजिक विचारक', 'Poet & Social Thinker')) ?></span>
+          <div class="mt-3 flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
+            <span class="font-label-md text-label-md font-bold text-[#14532D] uppercase tracking-widest">— <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+            <span class="font-label-sm text-label-sm text-[#667085]"><?= e(ps_text('कवि एवं सामाजिक विचारक', 'Poet & Social Thinker')) ?></span>
           </div>
         </div>
 
@@ -446,7 +463,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
     <!-- The 4 Green Greetings Interactive Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
       <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-primary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-primary-fixed flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">wb_twilight</span>
         </div>
         <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-मॉर्निंग', 'Green-Morning')) ?></span>
@@ -457,7 +474,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-tertiary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-primary-container text-tertiary-fixed flex items-center justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-tertiary-fixed flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">light_mode</span>
         </div>
         <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-आफ्टरनून', 'Green-Afternoon')) ?></span>
@@ -468,7 +485,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-secondary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-primary-container text-secondary-fixed flex items-center justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-secondary-fixed flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">wb_sunny</span>
         </div>
         <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-इवनिंग', 'Green-Evening')) ?></span>
@@ -479,7 +496,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-on-primary-container flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-4">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-on-primary-container flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">dark_mode</span>
         </div>
         <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-नाइट', 'Green-Night')) ?></span>

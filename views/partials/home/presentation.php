@@ -8,28 +8,54 @@ function ps_excerpt(array $item, int $length = 180): string {
     return mb_strlen($text) > $length ? mb_substr($text, 0, $length) . '…' : $text;
 }
 function ps_image_path(string $path): ?string {
-    if ($path === '' || preg_match('#^https?://#i', $path)) return null;
-    $root = realpath(__DIR__ . '/../../..');
-    $pathWebp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $path);
-    $fileWebp = realpath($root . '/' . ltrim($pathWebp, '/'));
-    if ($fileWebp && str_starts_with($fileWebp, $root . DIRECTORY_SEPARATOR) && is_file($fileWebp)) {
-        return ltrim($pathWebp, '/');
+    $path = trim($path);
+    if ($path === '') return null;
+    if (preg_match('#^https?://#i', $path)) return $path;
+
+    $cleanPath = ltrim($path, '/');
+    $root = realpath(__DIR__ . '/../../..') ?: dirname(__DIR__, 3);
+
+    if (is_file($root . '/' . $cleanPath)) {
+        return $cleanPath;
     }
-    $file = realpath($root . '/' . ltrim($path, '/'));
-    return $file && str_starts_with($file, $root . DIRECTORY_SEPARATOR) && is_file($file) && @getimagesize($file)
-        ? ltrim($path, '/') : null;
+
+    $pathWebp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
+    if (is_file($root . '/' . $pathWebp)) {
+        return $pathWebp;
+    }
+
+    return $cleanPath;
 }
 function ps_image(string $path, string $alt, string $class = '', bool $hero = false): void {
-    $path = ps_image_path($path);
-    if (!$path) return;
+    $path = trim($path);
+    if ($path === '') return;
+
+    if (preg_match('#^https?://#i', $path)) {
+        ?><img class="<?= e($class) ?>" src="<?= e($path) ?>" alt="<?= e($alt) ?>" loading="<?= $hero ? 'eager' : 'lazy' ?>" decoding="async" <?= $hero ? 'fetchpriority="high"' : '' ?>><?php
+        return;
+    }
+
     static $manifest;
-    $manifest ??= json_decode(file_get_contents(__DIR__ . '/../../../assets/images/home/manifest.json'), true);
-    $entry = $manifest[$path] ?? null;
-    $variants = $entry['variants'] ?? [];
-    $source = $variants ? $variants[count($variants) - 1]['path'] : $path;
-    $size = $entry ? [$entry['width'], $entry['height']] : getimagesize(__DIR__ . '/../../../' . $path);
-    $srcset = implode(', ', array_map(fn($v) => base_url($v['path']) . ' ' . $v['width'] . 'w', $variants));
-    ?><img class="<?= e($class) ?>" src="<?= e(base_url($source)) ?>" <?php if ($srcset): ?>srcset="<?= e($srcset) ?>" sizes="<?= $hero ? '(min-width: 1024px) 58vw, 100vw' : '(min-width: 1200px) 40vw, (min-width: 768px) 50vw, 100vw' ?>"<?php endif; ?> width="<?= (int)$size[0] ?>" height="<?= (int)$size[1] ?>" alt="<?= e($alt) ?>" loading="<?= $hero ? 'eager' : 'lazy' ?>" decoding="async" <?= $hero ? 'fetchpriority="high"' : '' ?>><?php
+    $manifest ??= @json_decode(@file_get_contents(__DIR__ . '/../../../assets/images/home/manifest.json'), true) ?: [];
+
+    $resolvedPath = ps_image_path($path) ?: ltrim($path, '/');
+    $entry = $manifest[$path] ?? $manifest[ltrim($path, '/')] ?? $manifest[$resolvedPath] ?? null;
+
+    if ($entry) {
+        $variants = $entry['variants'] ?? [];
+        $source = $variants ? $variants[count($variants) - 1]['path'] : $resolvedPath;
+        $size = [$entry['width'] ?? 800, $entry['height'] ?? 600];
+        $srcset = implode(', ', array_map(fn($v) => base_url($v['path']) . ' ' . $v['width'] . 'w', $variants));
+    } else {
+        $source = $resolvedPath;
+        $root = realpath(__DIR__ . '/../../..') ?: dirname(__DIR__, 3);
+        $fullLocalPath = $root . '/' . ltrim($source, '/');
+        $rawSize = @getimagesize($fullLocalPath);
+        $size = is_array($rawSize) ? [$rawSize[0], $rawSize[1]] : [800, 600];
+        $srcset = '';
+    }
+
+    ?><img class="<?= e($class) ?>" src="<?= e(base_url($source)) ?>" <?php if ($srcset): ?>srcset="<?= e($srcset) ?>" sizes="<?= $hero ? '(min-width: 1024px) 58vw, 100vw' : '(min-width: 768px) 50vw, 100vw' ?>"<?php endif; ?> width="<?= (int)$size[0] ?>" height="<?= (int)$size[1] ?>" alt="<?= e($alt) ?>" loading="<?= $hero ? 'eager' : 'lazy' ?>" decoding="async" <?= $hero ? 'fetchpriority="high"' : '' ?>><?php
 }
 function ps_heading(string $id, string $eyebrow, string $title, string $description = '', string $url = '', string $link = ''): void {
     ?><div class="ps-section-heading"><div><span class="ps-eyebrow"><?= e($eyebrow) ?></span><h2 id="<?= e($id) ?>"><?= e($title) ?></h2><?php if ($description): ?><p><?= e($description) ?></p><?php endif; ?></div><?php if ($url): ?><a class="ps-link" href="<?= e($url) ?>"><?= e($link) ?> <span aria-hidden="true">↗</span></a><?php endif; ?></div><?php
@@ -49,7 +75,7 @@ function ps_page_hero(string $eyebrow, string $heading, string $description = ''
         <div class="max-w-4xl">
           <?php if ($eyebrow): ?>
           <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-            <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <span class="material-symbols-outlined text-[15px] text-[#D97706]" style="font-variation-settings: 'FILL' 1;">eco</span>
             <span><?= e($eyebrow) ?></span>
           </div>
           <?php endif; ?>

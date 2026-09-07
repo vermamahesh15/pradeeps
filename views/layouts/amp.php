@@ -21,14 +21,15 @@ $siteName = app_config('name', 'Pradeep Sarang');
     <!-- AMP Custom CSS -->
     <style amp-custom>
         :root {
-            --primary: #00652c;
-            --primary-dark: #003e1a;
-            --secondary: #b45309;
-            --bg-canvas: #fbf9f4;
-            --bg-card: #ffffff;
-            --text-main: #1c281e;
-            --text-muted: #5c6c5f;
-            --border-warm: #e3d7c3;
+            --primary: #14532D;
+            --primary-dark: #18392B;
+            --secondary: #15803D;
+            --accent: #C05632;
+            --bg-canvas: #FAF8F3;
+            --bg-card: #FFFFFF;
+            --text-main: #172033;
+            --text-muted: #667085;
+            --border-warm: #E5E7EB;
         }
 
         body {
