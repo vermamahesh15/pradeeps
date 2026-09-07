@@ -39,7 +39,14 @@ class Blog extends BaseModel
         $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $items = $stmt->fetchAll();
+        foreach ($items as &$item) {
+            $authorName = !empty($item['author']) ? $item['author'] : (!empty($item['author_name']) ? $item['author_name'] : 'प्रदीप सारंग');
+            $item['author'] = $authorName;
+            $item['author_name'] = $authorName;
+        }
+        unset($item);
+        return $items;
     }
 
     public function all(int $limit = 100, int $offset = 0, ?int $authorId = null, ?string $status = null): array
@@ -76,7 +83,14 @@ class Blog extends BaseModel
         }
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $items = $stmt->fetchAll();
+        foreach ($items as &$item) {
+            $authorName = !empty($item['author']) ? $item['author'] : (!empty($item['author_name']) ? $item['author_name'] : 'प्रदीप सारंग');
+            $item['author'] = $authorName;
+            $item['author_name'] = $authorName;
+        }
+        unset($item);
+        return $items;
     }
 
     public function count(?int $authorId = null, ?string $status = null): int
@@ -149,6 +163,11 @@ class Blog extends BaseModel
         $stmt = $this->db->prepare($sql);
         $stmt->execute([':slug' => $slug]);
         $result = $stmt->fetch();
+        if ($result) {
+            $authorName = !empty($result['author']) ? $result['author'] : (!empty($result['author_name']) ? $result['author_name'] : 'प्रदीप सारंग');
+            $result['author'] = $authorName;
+            $result['author_name'] = $authorName;
+        }
 
         return $result === false ? null : $result;
     }
@@ -159,6 +178,11 @@ class Blog extends BaseModel
         $stmt = $this->db->prepare('SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE b.id = :id');
         $stmt->execute([':id' => $id]);
         $result = $stmt->fetch();
+        if ($result) {
+            $authorName = !empty($result['author']) ? $result['author'] : (!empty($result['author_name']) ? $result['author_name'] : 'प्रदीप सारंग');
+            $result['author'] = $authorName;
+            $result['author_name'] = $authorName;
+        }
 
         return $result === false ? null : $result;
     }
@@ -166,6 +190,7 @@ class Blog extends BaseModel
     public function create(array $data): int
     {
         if (!$this->db) return 0;
+        $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
         $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
             VALUES (:category_id, :author_id, :title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
         $stmt->execute([
@@ -176,7 +201,7 @@ class Blog extends BaseModel
             ':excerpt' => $data['excerpt'] ?? null,
             ':content' => $data['content'] ?? null,
             ':banner_image' => $data['banner_image'] ?? null,
-            ':author' => $data['author'] ?? null,
+            ':author' => $authorName,
             ':created_by' => $data['created_by'] ?? null,
             ':updated_by' => $data['updated_by'] ?? null,
             ':status' => $data['status'] ?? 'draft',
@@ -195,6 +220,7 @@ class Blog extends BaseModel
     public function update(int $id, array $data): bool
     {
         if (!$this->db) return false;
+        $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
         $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at WHERE id = :id');
         return $stmt->execute([
             ':category_id' => $data['category_id'],
@@ -204,7 +230,7 @@ class Blog extends BaseModel
             ':excerpt' => $data['excerpt'] ?? null,
             ':content' => $data['content'] ?? null,
             ':banner_image' => $data['banner_image'] ?? null,
-            ':author' => $data['author'] ?? null,
+            ':author' => $authorName,
             ':updated_by' => $data['updated_by'] ?? null,
             ':status' => $data['status'] ?? 'draft',
             ':featured_image' => $data['featured_image'] ?? null,
@@ -263,5 +289,58 @@ class Blog extends BaseModel
         }
 
         return $slug;
+    }
+
+    public function autoGenerateSeoMeta(array $blogData, ?BlogCategory $categoryModel = null): array
+    {
+        $rawTitle = trim(strip_tags($blogData['title'] ?? ''));
+        $rawExcerpt = trim(strip_tags($blogData['excerpt'] ?? ''));
+        $rawContent = trim(strip_tags($blogData['content'] ?? ''));
+
+        // 1. Auto SEO Title
+        if (empty($blogData['seo_title'])) {
+            $blogData['seo_title'] = $rawTitle . ' | ' . app_config('name');
+        }
+
+        // 2. Auto Meta Description
+        if (empty($blogData['meta_description'])) {
+            $sourceText = !empty($rawExcerpt) ? $rawExcerpt : $rawContent;
+            $cleanDesc = trim(preg_replace('/\s+/', ' ', html_entity_decode($sourceText, ENT_QUOTES, 'UTF-8')));
+            $blogData['meta_description'] = mb_strlen($cleanDesc) > 160 ? mb_substr($cleanDesc, 0, 157) . '...' : $cleanDesc;
+        }
+
+        // 3. Auto Meta Keywords
+        if (empty($blogData['meta_keywords'])) {
+            $catName = '';
+            if (!empty($blogData['category_id']) && $categoryModel !== null) {
+                $catObj = $categoryModel->find((int)$blogData['category_id']);
+                if ($catObj && !empty($catObj['name'])) {
+                    $catName = $catObj['name'];
+                }
+            }
+            
+            $keywords = [];
+            if ($rawTitle) $keywords[] = $rawTitle;
+            if ($catName) $keywords[] = $catName;
+            if (!empty($blogData['author'])) $keywords[] = $blogData['author'];
+            $keywords[] = 'प्रदीप सारंग';
+            $keywords[] = 'अवधी साहित्य';
+            $keywords[] = 'Pradeep Sarang';
+            $keywords[] = 'आलेख व विचार';
+
+            $blogData['meta_keywords'] = implode(', ', array_unique(array_filter($keywords)));
+        }
+
+        // 4. Auto Canonical URL
+        if (empty($blogData['canonical_url']) && !empty($blogData['slug'])) {
+            $blogData['canonical_url'] = base_url('/blog/' . $blogData['slug']);
+        }
+
+        // 5. Auto Open Graph Image
+        if (empty($blogData['og_image'])) {
+            $blogData['og_image'] = $blogData['banner_image'] ?? ($blogData['featured_image'] ?? 'assets/images/home/headerbackground.png');
+        }
+
+        return $blogData;
     }
 }

@@ -1,183 +1,811 @@
 <?php
 declare(strict_types=1);
+
+$timeline = $timeline ?? [];
+$phone = trim($settings['phone'] ?? '+91 9919007190');
+$phoneClean = preg_replace('/[^+0-9]/', '', $phone);
+$email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 ?>
 
-<section class="page-banner">
-    <div class="container">
-        <div class="page-banner-content">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?= e(base_url('/')) ?>">होम</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">परिचय</li>
-                </ol>
-            </nav>
-            <div class="d-block mb-2">
-                <span class="banner-kicker"><i class="fa-solid fa-award me-1"></i> जीवन वृत्त एवं समाज सेवा</span>
-            </div>
-            <h1>प्रदीप सारंग – एक प्रेरणादायक व्यक्तित्व</h1>
-            <p>समर्पित सामाजिक कार्यकर्ता, साहित्यकार, पर्यावरण संरक्षक एवं जनसेवक</p>
+<div class="flex flex-col w-full">
+  <!-- Top Breadcrumb & Page Banner Header -->
+  <section class="relative w-full bg-soft-meadow overflow-hidden py-space-2xl md:py-space-3xl border-b border-border-warm">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 font-label-md text-label-md text-text-muted mb-space-sm">
+        <a class="hover:text-primary transition-colors flex items-center gap-1" data-path="home" href="<?= e(base_url('/')) ?>">
+          <span class="material-symbols-outlined text-[16px]">home</span>
+          <span><?= e(ps_text('गृह (Home)', 'Home')) ?></span>
+        </a>
+        <span class="opacity-40">/</span>
+        <span class="text-deep-forest font-semibold"><?= e(ps_text('परिचय एवं जीवन-दर्शन (About Pradeep Sarang)', 'About Pradeep Sarang')) ?></span>
+      </nav>
+      
+      <!-- Badge & Main Editorial Title -->
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
+          <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+          <span><?= e(ps_text('चार दशकों की अविरल जनसेवा एवं लोक-चेतना (1987 — 2026)', 'Four Decades of Community Dedication (1987 — 2026)')) ?></span>
         </div>
+        <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
+          <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और अवधी की मिठास', 'Rooted in Service, Nature & Awadhi Heritage')) ?>
+        </h1>
+        <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
+          <?= e(ps_text('श्री प्रदीप सारंग — एक बहुआयामी सामाजिक कार्यकर्ता, ग्रीन गैंग के प्रणेता और संवेदनशील साहित्यकार का सम्पूर्ण जीवन परिचय।', 'Shri Pradeep Sarang — Social worker, founder of Green Gang, and Awadhi litterateur.')) ?>
+        </p>
+      </div>
     </div>
-</section>
+  </section>
 
-<section class="section-pad">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-5">
-                <div class="leader-portrait-card">
-                    <img class="w-100 rounded-4 shadow-lg border-4 border-white" src="<?= asset('images/pradeepsarang.png') ?>" alt="प्रदीप सारंग">
-                    <div class="leader-badge-floating">
-                        <i class="fa-solid fa-award text-warning fa-2x"></i>
-                        <div>
-                            <h6 class="mb-0 fw-bold">प्रतिष्ठित जनसेवक</h6>
-                            <small class="text-muted">अनेक राज्य व राष्ट्रीय सम्मान</small>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quick Profile Info Table -->
-                <div class="card border-0 shadow-sm rounded-4 p-4 mt-5 bg-light">
-                    <h5 class="fw-bold mb-3 text-primary"><i class="fa-solid fa-id-card me-2 text-accent"></i> व्यक्तिगत विवरण</h5>
-                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2 small">
-                        <li><strong>पूरा नाम:</strong> प्रदीप सारंग</li>
-                        <li><strong>पिता:</strong> श्री गोविंद प्रसाद</li>
-                        <li><strong>माता:</strong> श्रीमती कृष्णावती (कृष्णादेवी)</li>
-                        <li><strong>जन्मतिथि:</strong> 20 अक्टूबर 1969 (दीपावली की पावन भोर)</li>
-                        <li><strong>शिक्षा:</strong> बी.ए., बी.एड., पीजी डिप्लोमा (अवधी), आयुर्वेद रत्न</li>
-                        <li><strong>मूल निवास:</strong> ग्राम – कमरावाँ, पोस्ट – नानमऊ, जिला – बाराबंकी, उत्तर प्रदेश – 225121</li>
-                    </ul>
-                </div>
+  <!-- Hero Biography & Narrative Persona -->
+  <section class="w-full py-space-2xl md:py-space-3xl border-b border-border-warm">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+        <!-- Left: Official Emblem & Persona Card -->
+        <div class="lg:col-span-5 bg-pure-white rounded-2xl shadow-sm border border-border-warm p-6 sm:p-8 flex flex-col">
+          <!-- Monogram Logo Badge inspired by official seal -->
+          <div class="flex items-center justify-between pb-6 mb-6 border-b border-border-warm">
+            <div class="flex items-center gap-3">
+              <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-deep-forest shadow-inner border border-border-warm">
+                <span class="font-headline-lg text-headline-md tracking-tighter font-serif text-deep-forest font-bold">PS</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-lg text-title-lg text-deep-forest leading-snug font-bold"><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></span>
+                <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('लोक सेवा की वैचारिक नींव', 'Social Worker & Author')) ?></span>
+              </div>
             </div>
+            <span class="material-symbols-outlined text-primary-container text-[28px]">eco</span>
+          </div>
 
-            <div class="col-lg-7">
-                <span class="section-kicker">विस्तृत परिचय</span>
-                <h2 class="section-title">समाज के समग्र उत्थान के लिए समर्पित जीवन</h2>
-                
-                <p class="lead text-primary fw-semibold">
-                    प्रदीप सारंग एक बहुआयामी व्यक्तित्व के धनी, समर्पित सामाजिक कार्यकर्ता, संवेदनशील साहित्यकार और जन-जागरूकता अभियानों के सक्रिय प्रेरक हैं।
-                </p>
-                <p>
-                    ग्रामीण परिवेश से निकलकर उन्होंने अपने अनुभवों और संघर्षों को समाज के उत्थान का माध्यम बनाया। उनकी सोच हमेशा समाज के कमजोर, जरूरतमंद और वंचित वर्गों के उत्थान, शिक्षा के प्रसार और सांस्कृतिक संरक्षण पर केंद्रित रही है।
-                </p>
-                <p>
-                    उन्होंने युवाओं को संगठित कर रचनात्मक सामाजिक गतिविधियों, सांस्कृतिक आयोजनों तथा जनहित अभियानों में अग्रणी भूमिका निभाई है। ग्रामीण विकास, मतदाता जागरूकता, रक्तदान, पर्यावरण संरक्षण तथा भाषा-संस्कृति के संवर्धन जैसे कार्यों में उनकी विशेष रुचि रही है।
-                </p>
-
-                <div class="row g-3 my-4">
-                    <div class="col-md-6">
-                        <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
-                            <h5 class="fw-bold text-accent"><i class="fa-solid fa-eye me-2"></i> दृष्टिकोण (Vision)</h5>
-                            <p class="small text-muted mb-0">
-                                एक ऐसे समाज का निर्माण जहाँ हर व्यक्ति शिक्षित, जागरूक और आत्मनिर्भर हो, जहाँ पर्यावरण सुरक्षित हो और सांस्कृतिक मूल्यों का सम्मान बना रहे।
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="p-3 bg-white rounded-3 border shadow-sm h-100">
-                            <h5 class="fw-bold text-accent"><i class="fa-solid fa-bullseye me-2"></i> ध्येय (Mission)</h5>
-                            <p class="small text-muted mb-0">
-                                जनसेवा, स्वास्थ्य सहायता, पर्यावरण संरक्षण और अवधी एवं हिंदी साहित्य के प्रचार-प्रसार के माध्यम से समाज में सकारात्मक बदलाव लाना।
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="d-flex flex-wrap gap-3">
-                    <a href="<?= e(base_url('/campaigns')) ?>" class="btn btn-brand">
-                        <i class="fa-solid fa-hand-holding-heart me-1"></i> सामाजिक अभियान देखें
-                    </a>
-                    <a href="<?= e(base_url('/blog')) ?>" class="btn btn-outline-brand">
-                        <i class="fa-solid fa-book-open me-1"></i> साहित्य संकलन पढ़ें
-                    </a>
-                </div>
+          <!-- Featured Portrait Image -->
+          <div class="relative rounded-xl overflow-hidden mb-6 border border-border-warm shadow-xs">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="<?= e(ps_text('श्री प्रदीप सारंग - पौधारोपण अभियान', 'Shri Pradeep Sarang Field Drive')) ?>" class="w-full h-52 object-cover">
+            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent p-3 text-pure-white">
+              <span class="font-label-sm text-label-sm font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[14px] text-fresh-sprout">location_on</span>
+                <?= e(ps_text('बाराबंकी अंचल • ग्रीन मॉर्निंग पौधारोपण', 'Barabanki Drive • Green Morning')) ?>
+              </span>
             </div>
+          </div>
+
+          <!-- Quick Vita Table -->
+          <div class="space-y-3.5 font-body-sm text-body-sm">
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
+              <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('श्री प्रदीप सारंग (Pradeep Sarang)', 'Shri Pradeep Sarang')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('पिता:', 'Father:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्री गोविंद प्रसाद', 'Shri Govind Prasad')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('माता:', 'Mother:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्रीमती कृष्णावती (कृष्णादेवी)', 'Smt. Krishnavati')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('जन्म:', 'Date of Birth:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('20 अक्टूबर 1969 (दीपावली की पावन भोर)', '20 October 1969')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम – कमरावाँ, पोस्ट – नानमऊ, जनपद – बाराबंकी, उत्तर प्रदेश (225121)', 'Kamrawan, Barabanki, U.P.')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('शैक्षणिक योग्यता:', 'Education:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('बी.ए., बी.एड., पी.जी. डिप्लोमा (अवधी भाषा व साहित्य), आयुर्वेद रत्न (1997)', 'B.A., B.Ed., PG Dip (Awadhi), Ayurveda Ratna')) ?></span>
+            </div>
+            <div class="flex justify-between items-start py-2">
+              <span class="text-text-muted font-medium w-36"><?= e(ps_text('प्रमुख दायित्व:', 'Roles:')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('सह-संपादक \'सन्दौली टाइम्स\', संस्थापक \'ग्रीन गैंग\', जनक \'ग्रीन मॉर्निंग\' अभियान', 'Co-Editor Sandauli Times, Founder Green Gang')) ?></span>
+            </div>
+          </div>
+
+          <!-- Mini Callout in Persona Card -->
+          <div class="mt-6 bg-soft-meadow rounded-xl p-4 flex items-center gap-3 border border-border-warm">
+            <span class="material-symbols-outlined text-primary-container text-[24px]">workspace_premium</span>
+            <div class="flex flex-col">
+              <span class="font-label-sm text-label-sm font-semibold text-deep-forest"><?= e(ps_text('माननीय राज्यपाल द्वारा सम्मानित', 'Governor State Awardee')) ?></span>
+              <span class="font-body-sm text-label-sm text-text-muted"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार (1991)', 'Swami Vivekananda Youth Award (1991)')) ?></span>
+            </div>
+          </div>
         </div>
+
+        <!-- Right: Narrative & Calligraphic Motto -->
+        <div class="lg:col-span-7 flex flex-col justify-between">
+          <!-- Founder's Calligraphic Motto Quote -->
+          <div class="bg-soft-meadow rounded-2xl p-6 sm:p-8 relative shadow-sm border border-border-warm mb-8">
+            <span class="material-symbols-outlined text-secondary text-[40px] opacity-20 absolute top-4 right-5 select-none">format_quote</span>
+            <span class="font-label-md text-label-md text-secondary tracking-wider block mb-3 font-bold"><?= e(ps_text('संस्थापक संदेश एवं जीवन-मंत्र', 'Life Motto')) ?></span>
+            <blockquote class="font-quote-editorial text-title-lg md:text-quote-editorial text-deep-forest italic leading-relaxed">
+              "<?= e(ps_text('मरुस्थल में सुमन खिलाने चले हैं, चल सको तो चलो। तेज धूप तो होगी ही तप सको तो चलो। राह में काँटे तो होंगे ही, देश दुनिया को बेहतर बनाना है, अपने छुद्र सुख भूल सको तो चलो, झेल सको तो चलो।', 'To bloom flowers in the desert, walk if you can... Leave personal comfort behind if you can.')) ?>"
+            </blockquote>
+            <div class="mt-4 pt-3 flex items-center justify-between border-t border-border-warm">
+              <span class="font-headline-sm text-headline-sm text-deep-forest font-bold">— <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+              <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('बाराबंकी (उ.प्र.)', 'Barabanki, UP')) ?></span>
+            </div>
+          </div>
+
+          <!-- 2-Photo Archival Memories Spotlight -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+            <div class="relative rounded-xl overflow-hidden border border-border-warm shadow-xs group">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdMQwsnVo2dk4ut7g6q_cAP6eTxbCJ79UEWEL6LMYJP9Bzoa711KY0DUcQDKRXxuQ_6LQhxi0vQ2STd8MG_7M8PMwLDKDbl4rkN0NWnrSqVTvaAamPZA23ot4DWOtvh7QMTvSKjQWd4KHteII-UyAePIVzkOU6Kjt18WGSoV63V45Zxnm-uJxCWTIYBFdLiZQTIIpMJ2BicU3nJOrp9TW5wTXMOaNdUj57zI1cu2Z0PJgk4oP02r7" alt="Bird Conservation Drive" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 to-transparent p-3 text-pure-white">
+                <span class="font-label-sm text-label-sm font-semibold block"><?= e(ps_text('परिंदा जल-सकोरा वितरण अभियान', 'Bird Water Bowl Distribution Drive')) ?></span>
+              </div>
+            </div>
+            <div class="relative rounded-xl overflow-hidden border border-border-warm shadow-xs group">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="National Youth Award 1991" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 to-transparent p-3 text-pure-white">
+                <span class="font-label-sm text-label-sm font-semibold block"><?= e(ps_text('1991 राजभवन स्वामी विवेकानंद सम्मान', '1991 Raj Bhavan Youth Award Ceremony')) ?></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Narrative Prose -->
+          <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            <p>
+              <?= ps_text('बाराबंकी की उर्वर माटी और ग्रामीण परिवेश में जन्मे <strong class="text-deep-forest font-semibold">प्रदीप सारंग</strong> ने अपने जीवन के चार दशक वंचितों के अधिकार, पर्यावरण संरक्षण, अवधी साहित्य और जन-जागरण को समर्पित कर दिए। 1987 में राष्ट्रीय सेवा योजना (NSS) और स्वामी विवेकानंद के विचारों से प्रेरित होकर शुरू हुई यह यात्रा आज एक सशक्त वटवृक्ष बन चुकी है।', 'Born in Barabanki, <strong class="text-deep-forest font-semibold">Shri Pradeep Sarang</strong> has dedicated four decades to social service, environmental protection, and Awadhi literature since his NSS days in 1987.') ?>
+            </p>
+            <p>
+              <?= e(ps_text('ग्रामीण परिवेश के अभावों और संघर्षों को उन्होंने कभी अवरोध नहीं माना, अपितु उसे लोक-उत्थान का प्रेरक माध्यम बनाया। उनका मानना है कि वास्तविक समाज सेवा महलों की गोष्ठियों में नहीं, बल्कि खेतों की मेड़ों, परिंदों के सकोरों और ग्रामवासियों की चौपालों में प्रत्यक्ष पसीने के रूप में प्रकट होती है।', 'He transformed rural struggles into motivation. True social work happens not in luxury halls, but on farm edges and village chaupals.')) ?>
+            </p>
+          </div>
+
+          <!-- Quick Metrics Ribbon -->
+          <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
+              <span class="font-headline-lg text-headline-md text-primary-container leading-tight font-bold">35+</span>
+              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('वर्ष अनवरत सेवा', 'Years Service')) ?></span>
+            </div>
+            <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
+              <span class="font-headline-lg text-headline-md text-deep-forest leading-tight font-bold">50k+</span>
+              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('पौधरोपण अभियान', 'Trees Planted')) ?></span>
+            </div>
+            <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
+              <span class="font-headline-lg text-headline-md text-secondary leading-tight font-bold">100+</span>
+              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('सम्मान व प्रशस्ति पत्र', 'State Honors')) ?></span>
+            </div>
+            <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
+              <span class="font-headline-lg text-headline-md text-tertiary leading-tight font-bold">151</span>
+              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('हुण्डलियों के रचयिता', 'Awadhi Verses')) ?></span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Core Areas of Service -->
-<section class="section-pad section-tint border-top">
-    <div class="container">
-        <div class="text-center max-w-700 mx-auto mb-5">
-            <span class="section-kicker">सेवा क्षेत्र</span>
-            <h2 class="section-title">प्रमुख सामाजिक कार्य एवं योगदान</h2>
-            <p class="text-muted">समाज के विभिन्न पक्षों में निरंतर सकारात्मक बदलाव के लिए संचालित प्रमुख आयाम</p>
+  <!-- दृष्टि और जीवन-दर्शन (VISION, MISSION & PRINCIPLES) -->
+  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-3xl border-b border-border-warm">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-space-xl">
+        <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase"><?= e(ps_text('दार्शनिक आधारशिला', 'Philosophical Pillars')) ?></span>
+        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest mt-1 font-bold">
+          <?= e(ps_text('दृष्टि, कार्यशैली और वैचारिक प्रेरणा', 'Vision, Methodology & Lineage')) ?>
+        </h2>
+        <p class="font-body-sm text-body-sm text-text-muted mt-2">
+          <?= e(ps_text('किसी भी लोक-आंदोलन की सार्थकता उसके मूल चिंतन और निस्वार्थ कर्मठता पर टिकी होती है।', 'The true worth of a movement lies in its selfless commitment.')) ?>
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1: Vision -->
+        <div class="bg-pure-white rounded-2xl p-7 shadow-sm border border-border-warm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-primary-fixed/40 text-primary-container flex items-center justify-center mb-5 border border-border-warm">
+              <span class="material-symbols-outlined text-[26px]">visibility</span>
+            </div>
+            <h3 class="font-title-lg text-title-lg text-deep-forest mb-3 font-bold">
+              <?= e(ps_text('दूरगामी दृष्टिकोण (Vision)', 'Far-reaching Vision')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              "<?= e(ps_text('एक ऐसे समतामूलक, जागरूक और स्वावलंबी ग्रामीण समाज का निर्माण जहाँ पर्यावरण सुरक्षित हो, पक्षियों और मूक जीवों का संरक्षण हो और सांस्कृतिक धरोहर की अस्मिता जीवंत रहे।', 'Building an aware, self-reliant rural society where nature and bird life are protected, and Awadhi culture thrives.')) ?>"
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-border-warm flex items-center gap-2 text-primary font-label-sm text-label-sm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">nature</span>
+            <span><?= e(ps_text('पर्यावरण एवं लोक-सशक्तिकरण', 'Ecology & Community')) ?></span>
+          </div>
         </div>
 
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-check-to-slot"></i></div>
-                    <h4 class="h5 fw-bold mb-2">मतदाता जागरूकता अभियान</h4>
-                    <p class="small text-muted mb-0">लोकतंत्र के सशक्तिकरण के लिए जन-जन तक मतदान के महत्व और संवैधानिक अधिकारों की जागरूकता का प्रसार।</p>
-                </div>
+        <!-- Card 2: Methodology -->
+        <div class="bg-pure-white rounded-2xl p-7 shadow-sm border border-border-warm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center mb-5 border border-border-warm">
+              <span class="material-symbols-outlined text-[26px]">handshake</span>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-droplet"></i></div>
-                    <h4 class="h5 fw-bold mb-2">रक्तदान एवं स्वास्थ्य सेवा</h4>
-                    <p class="small text-muted mb-0">नियमित रक्तदान शिविरों का आयोजन, आपातकालीन रक्त सहायता और ग्रामीण स्वास्थ्य परामर्श शिविर।</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-tree"></i></div>
-                    <h4 class="h5 fw-bold mb-2">पर्यावरण एवं जल संरक्षण</h4>
-                    <p class="small text-muted mb-0">हजारों वृक्षों का रोपण, पौध वितरण, जल संरक्षण अभियान और स्वच्छता जागरूकता गतिविधियां।</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-feather-pointed"></i></div>
-                    <h4 class="h5 fw-bold mb-2">अवधी भाषा एवं साहित्य</h4>
-                    <p class="small text-muted mb-0">अवधी गद्य, कहानियों, निबंधों और कविताओं का सृजन तथा लोक भाषा व संस्कृति का संरक्षण।</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-graduation-cap"></i></div>
-                    <h4 class="h5 fw-bold mb-2">शिक्षा एवं युवा मार्गदर्शन</h4>
-                    <p class="small text-muted mb-0">ग्रामीण बच्चों के लिए निःशुल्क शिक्षण सामग्री, पुस्तकालय प्रोत्साहन और युवाओं का कैरियर मार्गदर्शन।</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm rounded-4 p-4 text-center">
-                    <div class="stat-icon mx-auto"><i class="fa-solid fa-handshake"></i></div>
-                    <h4 class="h5 fw-bold mb-2">सांस्कृतिक व सामाजिक चेतना</h4>
-                    <p class="small text-muted mb-0">राष्ट्रीय पर्वों, सांस्कृतिक उत्सवों और सामाजिक सम्मेलनों के माध्यम से सामाजिक सद्भाव को बढ़ावा।</p>
-                </div>
-            </div>
+            <h3 class="font-title-lg text-title-lg text-deep-forest mb-3 font-bold">
+              <?= e(ps_text('कार्यशैली व निष्ठा (Methodology)', 'Methodology & Ethics')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              "<?= e(ps_text('पारदर्शी जन-सहभागिता, \'ग्रीन मॉर्निंग\' के जरिए प्रकृति प्रेम का दैनिक संस्कार, और सत्ता या आडंबर से कोसों दूर रहकर ज़मीनी स्तर पर मिट्टी से जुड़कर प्रत्यक्ष सेवा।', 'Transparent community participation, daily Green Morning etiquette, and direct field service.')) ?>"
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-border-warm flex items-center gap-2 text-secondary font-label-sm text-label-sm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">groups</span>
+            <span><?= e(ps_text('सहभागी व प्रत्यक्ष ग्रामीण सेवा', 'Direct Grassroots Service')) ?></span>
+          </div>
         </div>
+
+        <!-- Card 3: Inspiration -->
+        <div class="bg-pure-white rounded-2xl p-7 shadow-sm border border-border-warm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-xl bg-tertiary-fixed/60 text-tertiary flex items-center justify-center mb-5 border border-border-warm">
+              <span class="material-symbols-outlined text-[26px]">menu_book</span>
+            </div>
+            <h3 class="font-title-lg text-title-lg text-deep-forest mb-3 font-bold">
+              <?= e(ps_text('प्रेरणा स्रोत व गुरु परंपरा', 'Inspiration & Mentorship')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+              "<?= e(ps_text('गुरुवर डॉ. भगवान वत्स जी का पावन मार्गदर्शन, राष्ट्रीय सेवा योजना (NSS) के नैतिक संस्कार और संत कबीर व गोस्वामी तुलसीदास की लोक-परंपरा से निःसृत आत्मबल।', 'Mentorship of Dr. Bhagwan Vats Ji, NSS ethics, and spiritual traditions of Saint Kabir and Tulsidas.')) ?>"
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-border-warm flex items-center gap-2 text-tertiary font-label-sm text-label-sm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">auto_stories</span>
+            <span><?= e(ps_text('अवध चेतना व संत विचार', 'Awadh Heritage & Values')) ?></span>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- Timeline of Honors & Achievements -->
-<?php if (!empty($timeline)): ?>
-    <section class="section-pad">
-        <div class="container">
-            <div class="text-center max-w-700 mx-auto mb-5">
-                <span class="section-kicker">उपलब्धियां</span>
-                <h2 class="section-title">सम्मान एवं उपलब्धियों की यात्रा</h2>
-                <p class="text-muted">समाज सेवा और जनहित में उत्कृष्ट योगदान के लिए प्राप्त प्रमुख सम्मान एवं प्रशस्ति पत्र</p>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="timeline-v2">
-                        <?php foreach ($timeline as $index => $item): ?>
-                            <div class="timeline-block mb-4 p-4 bg-white rounded-4 border shadow-sm position-relative">
-                                <div class="d-flex align-items-center gap-2 mb-2">
-                                    <span class="badge-brand">
-                                        <i class="fa-solid fa-calendar-check me-1"></i> <?= e($item['year'] ?? '') ?>
-                                    </span>
-                                    <h5 class="mb-0 fw-bold text-dark"><?= e($item['title'] ?? '') ?></h5>
-                                </div>
-                                <p class="small text-muted mb-0"><?= e($item['description'] ?? '') ?></p>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-            </div>
+  <!-- प्रमुख सामाजिक सरोकार व कार्यक्षेत्र (AREAS OF SOCIAL CONTRIBUTION) -->
+  <section class="w-full py-space-2xl md:py-space-3xl border-b border-border-warm">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-4">
+        <div>
+          <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase"><?= e(ps_text('सक्रिय कार्यक्षेत्र', 'Active Domains')) ?></span>
+          <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
+            <?= e(ps_text('प्रमुख सामाजिक सरोकार एवं लोक पहल', 'Key Areas of Commitment')) ?>
+          </h2>
         </div>
-    </section>
-<?php endif; ?>
+        <p class="font-body-sm text-body-sm text-text-muted max-w-md">
+          <?= e(ps_text('प्रदीप सारंग जी ने किसी एक परिधि में बंधने के बजाय जन-सरोकारों के विविध आयामों को छूकर स्थायी परिवर्तन का मार्ग प्रशस्त किया है।', 'Addressing multifaceted community challenges from environment to literacy.')) ?>
+        </p>
+      </div>
+
+      <!-- 6 Categorized Structured Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- 1. पर्यावरण व ग्रीन गैंग -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-primary-container flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">forest</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('पर्यावरण संरक्षण व \'ग्रीन गैंग\'', 'Environment & Green Gang')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('5 जून 2019 को \'ग्रीन गैंग\' की स्थापना। जनपद भर में 50,000 से अधिक पौधों का रोपण व संरक्षण। प्रत्येक प्रातः \'ग्रीन मॉर्निंग\' के अभिवादन से प्रकृति प्रेम का अभिनव संस्कार।', 'Planted 50,000+ trees with Green Gang, instilling daily Green Morning greetings across Barabanki.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-deep-forest border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px] text-primary-container">energy_savings_leaf</span>
+            <span><?= e(ps_text('\'ग्रीन मॉर्निंग\' अभिवादन के प्रणेता', 'Founder of Green Morning')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2. परिंदा व वन्य जीव -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-secondary flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">cruelty_free</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('परिंदा व वन्य जीव संरक्षण', 'Bird & Wildlife Protection')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('ग्रीष्म ऋतु में पक्षियों के जीवन की रक्षा हेतु 10,000+ मिट्टी के सकोरे व दाना-पानी वितरण अभियान। 2016 में माननीय वन मंत्री, उ.प्र. शासन द्वारा \'वन्य जीव संरक्षण विशिष्ट प्रशस्ति पत्र\' से अलंकृत।', '10,000+ water pots for birds. Honored with State Wildlife Citation by UP Forest Minister.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-secondary border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">water_drop</span>
+            <span><?= e(ps_text('सकोरा वितरण एवं प्यास मुक्ति अभियान', 'Bird Water Bowl Campaign')) ?></span>
+          </div>
+        </div>
+
+        <!-- 3. अवधी साहित्य व संस्कृति -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-tertiary flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">history_edu</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('अवधी भाषा, साहित्य व संस्कृति', 'Awadhi Literature & Culture')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('अवधी संस्मरण संकलन \'झरिहख\' एवं 151 छन्दबद्ध कुंडलियों का ग्रन्थ \'सारंग-हुण्डलियाँ\'। \'काव्य-मंजरी\' का कुशल संपादन। अवधी लोकगीत, कहावत एवं समृद्ध अवधी विरासत के संरक्षण के लिए सतत सृजन।', 'Author of Awadhi memoirs Jharihakh and 151 Sarang Kundaliyan poetic verses.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-tertiary border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">ink_pen</span>
+            <span><?= e(ps_text('जनकवि बंशीधर शुक्ल व तुलसी सम्मान से सम्मानित', 'Banshidhar Shukla & Tulsi Awardee')) ?></span>
+          </div>
+        </div>
+
+        <!-- 4. लोकतंत्र व मतदाता जागरूकता -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">how_to_vote</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('लोकतंत्र व मतदाता चेतना', 'Voter Awareness & Democracy')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('2019 लोकसभा निर्वाचन व त्रिस्तरीय पंचायत चुनावों में शत-प्रतिशत मतदान हेतु सघन जन-अभियान। जिला निर्वाचन अधिकारी एवं मुख्य निर्वाचन अधिकारी, उत्तर प्रदेश द्वारा विशेष नागरिक सम्मान।', 'Voter awareness drives during elections, honored by UP Chief Electoral Officer.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-deep-forest border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px] text-primary-container">how_to_reg</span>
+            <span><?= e(ps_text('निर्वाचन आयोग व प्रशासन द्वारा सम्मानित', 'Election Commission Honoree')) ?></span>
+          </div>
+        </div>
+
+        <!-- 5. रक्तदान व लोक स्वास्थ्य -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-secondary flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">vital_signs</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('रक्तदान व लोक स्वास्थ्य सेवा', 'Blood Donation & Public Health')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('सैकड़ों रक्तदान शिविरों का संचालन व युवाओं को नियमित रक्तदान की प्रेरणा। रेडक्रॉस सोसाइटी सम्मान। 2020 की वैश्विक महामारी में अग्रिम मोर्चे पर रहकर \'कोरोना योद्धा\' के रूप में जीवनरक्षक सेवाएं।', 'Organized blood donation camps. Recognized as Corona Warrior & Red Cross Awardee.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-secondary border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">medical_services</span>
+            <span><?= e(ps_text('कोरोना योद्धा व रेडक्रॉस अलंकरण', 'Corona Warrior & Red Cross Honor')) ?></span>
+          </div>
+        </div>
+
+        <!-- 6. युवा नेतृत्व व खेल संस्कृति -->
+        <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+          <div>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-primary-container flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">sports_volleyball</span>
+            </div>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('युवा नेतृत्व व खेल-संस्कृति', 'Youth Leadership & Sports')) ?></h3>
+            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
+              <?= e(ps_text('1987 से युवक मंगल दल की अगुवाई। ग्रामीण क्षेत्रों में वॉलीबॉल, एथलेटिक्स एवं कबड्डी प्रतियोगिताओं का आयोजन। युवा कल्याण विभाग द्वारा \'अनुशासित युवक\' के रूप में चार दशकों का प्रेरक मार्गदर्शन।', 'Leading Yuvak Mangal Dal since 1987, organizing rural sports and youth leadership.')) ?>
+            </p>
+          </div>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-primary-container border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">military_tech</span>
+            <span><?= e(ps_text('नेहरू युवा केन्द्र व NYK जिला युवा पुरस्कार', 'Nehru Yuva Kendra District Award')) ?></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- चार दशकों का ऐतिहासिक पड़ाव व सम्मान अभिलेखागार (TIMELINE OF HONORS 1987 — 2026) -->
+  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-4xl border-b border-border-warm" id="milestones-section">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-space-xl">
+        <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase"><?= e(ps_text('प्रामाणिक अभिलेखागार (Authentic Archive)', 'Authentic Honors Archive')) ?></span>
+        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
+          <?= e(ps_text('चार दशकों की सेवा-यात्रा एवं प्रमुख सम्मान (1987 — 2026)', 'Four Decades of Service & Honors (1987 — 2026)')) ?>
+        </h2>
+        <p class="font-body-md text-body-md text-text-muted mt-2">
+          <?= e(ps_text('महामहिम राज्यपाल से लेकर ग्राम चौपाल तक प्राप्त सम्मान व प्रशस्ति पत्रों की ऐतिहासिक शृंखला।', 'Honors from the UP Governor to village chaupals.')) ?>
+        </p>
+
+        <!-- Interactive Category Filters -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mt-6" id="timeline-filters">
+          <button type="button" data-filter="all" class="timeline-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-primary-container text-on-primary transition-all shadow-sm font-semibold cursor-pointer">
+            <?= e(ps_text('सभी सम्मान (All)', 'All Honors')) ?>
+          </button>
+          <button type="button" data-filter="national" class="timeline-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-pure-white text-on-surface-variant hover:bg-surface-container transition-all border border-border-warm cursor-pointer font-medium">
+            <?= e(ps_text('राष्ट्रीय व राज्य स्तरीय (National/State)', 'National & State')) ?>
+          </button>
+          <button type="button" data-filter="literary" class="timeline-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-pure-white text-on-surface-variant hover:bg-surface-container transition-all border border-border-warm cursor-pointer font-medium">
+            <?= e(ps_text('साहित्य व अवधी (Literary)', 'Literature & Awadhi')) ?>
+          </button>
+          <button type="button" data-filter="social" class="timeline-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-pure-white text-on-surface-variant hover:bg-surface-container transition-all border border-border-warm cursor-pointer font-medium">
+            <?= e(ps_text('पर्यावरण व जनसेवा (Social)', 'Environment & Social')) ?>
+          </button>
+        </div>
+      </div>
+
+      <!-- Timeline Cards Container -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="timeline-grid">
+        <!-- 1987 (Social/Sports) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">1987</span>
+              <span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('युवक मंगल दल', 'Youth Club')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('अनुशासित युवक एवं खेलकूद पुरस्कार', 'Disciplined Youth & Sports Award')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('प्रादेशिक विकास दल द्वारा आयोजित क्षेत्रीय खेलकूद में वॉलीबॉल में द्वितीय व 800 मी. दौड़ में तृतीय। युवा कल्याण विभाग द्वारा \'अनुशासित युवक\' अलंकरण।', 'Regional volleyball 2nd & 800m run 3rd place. Awarded Disciplined Youth by Youth Welfare Dept.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-deep-forest flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+            <span><?= e(ps_text('खण्ड विकास अधिकारी द्वारा पुरस्कृत', 'Awarded by BDO')) ?></span>
+          </div>
+        </div>
+
+        <!-- 1988 (National) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-primary-container font-bold">1988</span>
+              <span class="bg-primary-fixed/40 text-primary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('राष्ट्रीय गौरव', 'National Honor')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('गणतंत्र दिवस राष्ट्रीय परेड (NSS)', 'Republic Day National Parade Camp')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('ऐतिहासिक क्षण: नई दिल्ली में इंडिया गेट पर 26 जनवरी गणतंत्र दिवस राष्ट्रीय परेड में NSS दल के प्रतिनिधि के रूप में प्रतिभागिता एवं \'पॉवन माटी\' कार्यक्रम में सम्मान।', 'Represented UP NSS contingent at Republic Day National Parade Camp at Rajpath, New Delhi.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-primary-container flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">flag</span>
+            <span><?= e(ps_text('गणतंत्र दिवस राष्ट्रीय प्रमाण पत्र', 'Republic Day National Certificate')) ?></span>
+          </div>
+        </div>
+
+        <!-- 1989 (Social/Culture) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-tertiary font-bold">1989</span>
+              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold border border-border-warm"><?= e(ps_text('रंगमंच व सेवा', 'Theatre & Health')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('रंगमंच अभिनय एवं नेत्र चिकित्सा सेवा', 'Theatre Acting & Eye Care Service')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('पारंपरिक नाटक एवं एकांकी रंगमंच अभिनय प्रशिक्षण प्रमाण पत्र तथा नेत्र चिकित्सा शिविर में अनवरत स्वयंसेवी सेवा कार्यों हेतु प्रशस्ति पत्र।', 'Folk drama training & voluntary service citation for free eye care camps.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-text-muted flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">theater_comedy</span>
+            <span><?= e(ps_text('रंगमंच व स्वास्थ्य सेवा शिविर', 'Theatre & Health Camp')) ?></span>
+          </div>
+        </div>
+
+        <!-- 1991 (National/State) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-primary-container font-bold">1991</span>
+              <span class="bg-primary-fixed/40 text-primary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('राजभवन अलंकरण', 'Raj Bhavan State Award')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार', 'Swami Vivekananda Youth Award')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('युवाओं के सर्वांगीण विकास एवं सामाजिक सेवा में अप्रतिम योगदान हेतु तत्कालीन महामहिम राज्यपाल, उत्तर प्रदेश के कर-कमलों द्वारा राज्य का सर्वोच्च युवा सम्मान प्रदान किया गया।', 'Conferred UP\'s highest youth state award by the Governor of Uttar Pradesh at Raj Bhavan.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-primary-container flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">stars</span>
+            <span><?= e(ps_text('महामहिम राज्यपाल द्वारा प्रदत्त', 'Conferred by UP Governor')) ?></span>
+          </div>
+        </div>
+
+        <!-- 1992 (National) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">1992</span>
+              <span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('NYK सम्मान', 'NYK Award')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('जिला युवा पुरस्कार (NYK)', 'District Youth Award (NYK)')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('नेहरू युवा केन्द्र, युवा कार्यक्रम एवं खेल मंत्रालय भारत सरकार द्वारा जनपद स्तर पर युवा जागरण, खेल एवं समाजसेवा में सर्वश्रेष्ठ कार्य के लिए प्रतिष्ठित पुरस्कार।', 'Awarded District Youth Award by Nehru Yuva Kendra, Ministry of Youth Affairs, Govt of India.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-secondary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">military_tech</span>
+            <span><?= e(ps_text('नेहरू युवा केन्द्र संगठन', 'Nehru Yuva Kendra Sangathan')) ?></span>
+          </div>
+        </div>
+
+        <!-- 1997 (Literary/Health) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="literary">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-tertiary font-bold">1997</span>
+              <span class="bg-tertiary-fixed/60 text-tertiary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('पारंपरिक ज्ञान', 'Ayurveda')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('आयुर्वेद रत्न उपाधि', 'Ayurveda Ratna Degree')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('पारंपरिक भारतीय चिकित्सा पद्धति, वानस्पतिक ज्ञान एवं लोक-स्वास्थ्य के गहन अध्ययन हेतु \'आयुर्वेद रत्न\' की प्रतिष्ठित उपाधि से विभूषित।', 'Conferred Ayurveda Ratna for studies in native herbs and traditional Indian medicine.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-tertiary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">psychiatry</span>
+            <span><?= e(ps_text('आयुर्वेदिक चिकित्सा परिषद', 'Ayurvedic Medical Council')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2010 (Social) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-deep-forest font-bold">2010</span>
+              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold border border-border-warm"><?= e(ps_text('रक्तदान', 'Blood Donation')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('रक्तदान एवं नागरिक अभिनंदन', 'Blood Donation & Civic Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('नियमित रक्तदान, आपातकालीन रक्त व्यवस्था एवं विश्वकर्मा जयंती के अवसर पर जनपद के प्रबुद्ध नागरिकों द्वारा नागरिक अभिनंदन पत्र।', 'Honored for organizing voluntary blood donation drives across Barabanki hospitals.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-text-muted flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">volunteer_activism</span>
+            <span><?= e(ps_text('जिलाधिकारी द्वारा प्रमाण पत्र', 'District Magistrate Citation')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2015 (Social/National) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">2015</span>
+              <span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('रेडक्रॉस', 'Red Cross')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('भारतीय रेडक्रॉस सोसाइटी सम्मान', 'Red Cross Society Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('रेडक्रॉस सोसाइटी तथा जिला प्रशासन एवं पुलिस उपाधीक्षक द्वारा सामाजिक सेवा शिविरों के सफल संचालन हेतु विशेष सम्मान पत्र।', 'Awarded Special Service Citation by Indian Red Cross Society and District Administration.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-secondary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">medical_services</span>
+            <span><?= e(ps_text('रेडक्रॉस सोसाइटी एवं जिला प्रशासन', 'Indian Red Cross Society')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2016 (Social/National) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-primary-container font-bold">2016</span>
+              <span class="bg-primary-fixed/40 text-primary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('शासन स्तर', 'State Forest Dept')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('वन्य जीव व परिंदा संरक्षण सम्मान', 'State Wildlife Protection Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('उत्तर प्रदेश शासन के तत्कालीन माननीय वन मंत्री द्वारा पर्यावरण, पक्षी संरक्षण और जीव दया अभियानों के लिए राज्य स्तरीय प्रशस्ति पत्र।', 'Conferred State Level Wildlife Citation by UP Forest Minister for bird conservation.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-primary-container flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">nature</span>
+            <span><?= e(ps_text('माननीय वन मंत्री, उ.प्र. द्वारा प्रदत्त', 'Conferred by UP Forest Minister')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2018 (Literary/Social) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="literary">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-tertiary font-bold">2018</span>
+              <span class="bg-tertiary-fixed/60 text-tertiary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('अवध ज्योति', 'Awadh Jyoti')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('सेवा रत्न एवं अवध ज्योति रजत जयंती', 'Seva Ratna & Awadh Jyoti Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('महिला एवं बाल कल्याण हेतु \'सेवा रत्न सम्मान\' तथा अवधी साहित्य में अनवरत योगदान हेतु अवध ज्योति पत्रिका के रजत जयंती समारोह में सम्मान।', 'Seva Ratna & Awadh Jyoti Silver Jubilee Honor for contributions to Awadhi prose.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-tertiary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">menu_book</span>
+            <span><?= e(ps_text('अवधी साहित्य व समाज कल्याण', 'Awadhi Literary Society')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2019 (National/Social) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-primary-container font-bold">2019</span>
+              <span class="bg-primary-fixed/40 text-primary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('निर्वाचन आयोग', 'Election Commission')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('लोकसभा मतदाता जागरूकता सम्मान', 'Chief Electoral Officer Award')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('मुख्य निर्वाचन अधिकारी एवं जिला निर्वाचन अधिकारी (बाराबंकी) द्वारा लोकसभा सामान्य निर्वाचन में मतदाता जागरूकता के उत्कृष्ट प्रचार हेतु।', 'Awarded Voter Awareness Citation by UP Chief Electoral Officer.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-primary-container flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">how_to_vote</span>
+            <span><?= e(ps_text('मुख्य निर्वाचन अधिकारी, उ.प्र.', 'UP Chief Electoral Officer')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2020 (Social) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">2020</span>
+              <span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('महामारी सेवा', 'COVID-19')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('कोरोना योद्धा विशिष्ट सम्मान', 'Corona Warrior Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('कोविड-19 संकट के दौरान ग्रामीण अंचलों में असहायों को भोजन, दवा, मास्क वितरण एवं राहत पहुंचाने हेतु अनेक प्रतिष्ठित संस्थाओं द्वारा अलंकृत।', 'Honored as Corona Warrior for frontline food, mask, and emergency medical relief drives.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-secondary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">shield</span>
+            <span><?= e(ps_text('कोरोना योद्धा अलंकरण', 'Corona Warrior Citation')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2022 (Literary) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="literary">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-tertiary font-bold">2022</span>
+              <span class="bg-tertiary-fixed/60 text-tertiary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('साहित्य त्रिवेणी', 'Awadhi Awards')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('प्रकृति साहित्य रत्न व तुलसी सम्मान', 'Prakriti Sahitya & Tulsi Award')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('\'प्रकृति साहित्य रत्न\', सुप्रसिद्ध \'जनकवि बंशीधर शुक्ल पुरस्कार\' एवं अवधी भाषा की दीर्घकालिक सेवा हेतु प्रतिष्ठित \'गोस्वामी तुलसीदास सम्मान\'।', 'Honored with Banshidhar Shukla Award and Goswami Tulsidas Award for Awadhi literature.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-tertiary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">auto_stories</span>
+            <span><?= e(ps_text('अवधी भाषा एवं साहित्य परिषद', 'Awadhi Sahitya Parishad')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2023 (National/Literary) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="national">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-primary-container font-bold">2023</span>
+              <span class="bg-primary-fixed/40 text-primary-container font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('राष्ट्रीय सम्मान', 'National Award')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('राष्ट्रीय आदिवासी गौरव एवं इकबाल अवार्ड', 'National Tribal Pride & Iqbal Award')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('वंचित व वनवासी समुदायों के सांस्कृतिक संरक्षण हेतु \'राष्ट्रीय आदिवासी गौरव सम्मान\' एवं भाषा उत्सव में प्रतिष्ठित \'अल्लामा इकबाल अवार्ड\'।', 'Conferred National Tribal Pride Award for native folk culture preservation.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-primary-container flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">workspace_premium</span>
+            <span><?= e(ps_text('राष्ट्रीय सांस्कृतिक मंच', 'National Cultural Platform')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2024 (Literary/State) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="literary">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-deep-forest font-bold">2024</span>
+              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold border border-border-warm"><?= e(ps_text('हिंदी संस्थान मंच', 'Hindi Sansthan')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('अटल प्रतिभा एवं सृजन सम्मान', 'Atal Pratibha & Srijan Honor')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('उत्तर प्रदेश हिंदी संस्थान सहयोगी मंच द्वारा \'अटल प्रतिभा सम्मान\' तथा अवधी साहित्य में विशिष्ट योगदान हेतु \'अवध ज्योति सृजन सम्मान\'।', 'Conferred Atal Pratibha Honor by UP Hindi Sansthan partner forum.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-deep-forest flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px] text-primary-container">edit_note</span>
+            <span><?= e(ps_text('उत्तर प्रदेश हिंदी संस्थान मंच', 'UP Hindi Sansthan Forum')) ?></span>
+          </div>
+        </div>
+
+        <!-- 2025 (Literary/Social) -->
+        <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="font-headline-sm text-headline-sm text-secondary font-bold">2025</span>
+              <span class="bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold"><?= e(ps_text('गंगा साहित्य', 'Ganga Sahitya')) ?></span>
+            </div>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('समाज गौरव एवं गंगा साहित्य रत्न', 'Samaj Gaurav & Ganga Sahitya Ratna')) ?></h4>
+            <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+              <?= e(ps_text('लोक-कल्याणकारी पत्रकारिता, पर्यावरण संरक्षण एवं अवधी साहित्य की सेवा हेतु राष्ट्रीय स्तर के सामाजिक मंच द्वारा \'गंगा साहित्य रत्न\'।', 'Awarded Ganga Sahitya Ratna & Samaj Gaurav for grassroots journalism and eco-drives.')) ?>
+            </p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-secondary flex items-center gap-1.5 font-semibold">
+            <span class="material-symbols-outlined text-[15px]">military_tech</span>
+            <span><?= e(ps_text('गंगा साहित्य मंच एवं NGO संघ', 'Ganga Sahitya & NGO Federation')) ?></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- वाणी व वैचारिक चिंतन (MEMORABLE QUOTE BANNER) -->
+  <section class="w-full bg-deep-forest text-on-primary py-space-2xl md:py-space-3xl relative overflow-hidden">
+    <!-- Subtle Ambient Leaf Ornament via SVG -->
+    <div class="absolute right-0 top-0 bottom-0 opacity-10 flex items-center pointer-events-none pr-12">
+      <svg class="w-96 h-96 text-on-primary fill-current" viewBox="0 0 24 24">
+        <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/>
+      </svg>
+    </div>
+    <div class="max-w-4xl mx-auto px-4 sm:px-8 text-center relative z-10">
+      <span class="material-symbols-outlined text-[36px] text-tertiary-fixed mb-4 inline-block">nature_people</span>
+      <blockquote class="font-quote-editorial text-title-lg md:text-quote-editorial text-tertiary-fixed italic leading-relaxed max-w-3xl mx-auto">
+        "<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.')) ?>"
+      </blockquote>
+      <div class="mt-6 flex flex-col items-center">
+        <span class="font-headline-sm text-headline-sm text-pure-white font-serif font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+        <span class="font-label-sm text-label-sm text-primary-fixed mt-1"><?= e(ps_text('पर्यावरणविद • जनक \'ग्रीन गैंग\' • बाराबंकी (उ.प्र.)', 'Environmentalist • Founder Green Gang • Barabanki (U.P.)')) ?></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- संवाद एवं जनसेवा कार्यालय संपर्क (GET IN TOUCH / OFFICE REACH) -->
+  <section class="w-full py-space-2xl md:py-space-3xl">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <div class="bg-pure-white rounded-3xl shadow-sm border border-border-warm p-8 sm:p-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <span class="font-label-sm text-label-sm text-secondary tracking-wider font-bold uppercase"><?= e(ps_text('सीधा संवाद एवं सहयोग', 'Direct Outreach')) ?></span>
+            <h3 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1.5 mb-4">
+              <?= e(ps_text('श्री प्रदीप सारंग जी से संवाद, पर्यावरण अभियान अथवा साहित्यिक विमर्श हेतु संपर्क करें', 'Connect for Environmental Drives or Awadhi Literature Dialogues')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
+              <?= e(ps_text('चाहे आपके क्षेत्र में ग्रीन गैंग की शाखा शुरू करनी हो, पौधारोपण हेतु मिट्टी के सकोरे व पौधे चाहिए हों, अथवा अवधी साहित्य शोध — सारंग जी का द्वार जनसेवा के लिए सदैव खुला है।', 'Whether starting a Green Gang wing, requesting bird water pots, or conducting Awadhi research — feel free to reach out.')) ?>
+            </p>
+            <div class="space-y-3 font-body-sm text-body-sm text-on-surface">
+              <div class="flex items-start gap-3">
+                <span class="material-symbols-outlined text-primary-container text-[20px] mt-0.5">home_pin</span>
+                <span><strong><?= e(ps_text('स्थायी कार्यालय पता:', 'Permanent Office Address:')) ?></strong> <?= e(ps_text('ग्राम – कमरावाँ, पोस्ट – नानमऊ, जनपद – बाराबंकी, उत्तर प्रदेश – 225121', 'Kamrawan, Post Nanmau, Barabanki, UP - 225121')) ?></span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary-container text-[20px]">call</span>
+                <span><strong><?= e(ps_text('सीधा संपर्क / WhatsApp:', 'Phone / WhatsApp:')) ?></strong> <a href="tel:<?= e($phoneClean) ?>" class="hover:text-primary-container underline font-bold"><?= e($phone) ?></a></span>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary-container text-[20px]">mail</span>
+                <span><strong><?= e(ps_text('आधिकारिक ई-मेल:', 'Official Email:')) ?></strong> <a href="mailto:<?= e($email) ?>" class="hover:text-primary-container underline font-semibold"><?= e($email) ?></a></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex flex-col gap-4 bg-soft-meadow rounded-2xl p-6 sm:p-8 border border-border-warm">
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold"><?= e(ps_text('आप कैसे सहभागिता कर सकते हैं?', 'How You Can Contribute')) ?></h4>
+            <ul class="space-y-2.5 font-body-sm text-body-sm text-on-surface-variant">
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container text-[18px]">check_circle</span>
+                <span><?= e(ps_text('\'ग्रीन गैंग\' में वॉलंटियर के रूप में जुड़ें', 'Join Green Gang as a volunteer')) ?></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container text-[18px]">check_circle</span>
+                <span><?= e(ps_text('ग्रामीण चौपाल व पर्यावरण व्याख्यान आयोजित करें', 'Host rural Green Chaupals & sessions')) ?></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary-container text-[18px]">check_circle</span>
+                <span><?= e(ps_text('अवधी संस्मरण व लोक-साहित्य साझा करें', 'Share Awadhi folklore & memoirs')) ?></span>
+              </li>
+            </ul>
+            <div class="pt-4 flex flex-col sm:flex-row gap-3">
+              <a href="tel:<?= e($phoneClean) ?>" class="inline-flex items-center justify-center gap-2 bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md px-5 py-3 rounded-xl transition-colors shadow-sm text-center font-bold">
+                <span class="material-symbols-outlined text-[18px]">phone_in_talk</span>
+                <span><?= e(ps_text('सीधा संवाद करें', 'Call Directly')) ?></span>
+              </a>
+              <a href="<?= e(base_url('/contact')) ?>" data-path="contact" class="inline-flex items-center justify-center gap-2 bg-pure-white hover:bg-surface-container text-deep-forest font-label-md text-label-md px-5 py-3 rounded-xl transition-colors shadow-sm text-center border border-border-warm font-semibold">
+                <span class="material-symbols-outlined text-[18px]">volunteer_activism</span>
+                <span><?= e(ps_text('अभियान से जुड़ें', 'Join Movement')) ?></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Interactive Filter JavaScript for Timeline -->
+<script>
+  (function() {
+    const filterButtons = document.querySelectorAll('.timeline-filter-btn');
+    const timelineCards = document.querySelectorAll('.timeline-item');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filterValue = btn.getAttribute('data-filter');
+
+        // Reset styles
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary-container', 'text-on-primary');
+          b.classList.add('bg-pure-white', 'text-on-surface-variant');
+        });
+
+        // Active style
+        btn.classList.remove('bg-pure-white', 'text-on-surface-variant');
+        btn.classList.add('bg-primary-container', 'text-on-primary');
+
+        // Filter cards
+        timelineCards.forEach(card => {
+          const cardCategory = card.getAttribute('data-category');
+          if (filterValue === 'all' || cardCategory === filterValue) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  })();
+</script>

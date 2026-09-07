@@ -8,7 +8,7 @@ return [
     'causes' => 'अभियान',
     'events' => 'इवेंट्स',
     'portfolio' => 'पोर्टफोलियो',
-    'blog' => 'ब्लॉग',
+    'blog' => 'साहित्य व आलेख',
     'contact' => 'संपर्क',
     'volunteer' => 'स्वयंसेवक',
     'read_more' => 'और पढ़ें',

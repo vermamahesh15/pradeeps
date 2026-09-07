@@ -43,4 +43,9 @@ class BaseModel
     {
         return $this->demo['settings'][$key] ?? $default;
     }
+
+    public function getConnection(): ?PDO
+    {
+        return $this->db;
+    }
 }

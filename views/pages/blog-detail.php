@@ -1,931 +1,1248 @@
 <?php
 declare(strict_types=1);
 
-$content = $post['content'] ?? '';
-$title = $post['title'] ?? '';
-$author = $post['author'] ?? 'प्रदीप सारंग';
-$category = $post['category_name'] ?? $post['category'] ?? 'साहित्य';
-$pubDate = format_date($post['published_at'] ?? $post['date'] ?? $post['created_at'] ?? '');
+$post = $post ?? [];
+$related = $related ?? [];
 
-// Calculate approximate reading time
-$wordCount = mb_strlen(strip_tags($content)) / 5;
-$readMinutes = max(1, (int)ceil($wordCount / 180));
+$postTitle = trim($post['title'] ?? '') ?: ps_text('झरिहख', 'Jharihakh');
+$postCategory = trim($post['category_name'] ?? '') ?: ps_text('अवधी संस्मरण', 'Awadhi Memoir');
+$postAuthor = trim(($post['author_name'] ?? '') ?: ($post['author'] ?? '')) ?: ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang');
+$postDate = !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : ps_text('१९ मई २०२६', '19 May 2026');
+$postContent = trim($post['content'] ?? '');
+$postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण"', '"Evocative memories of rain, childhood and village chaupal"');
 ?>
 
-<!-- Reading Progress Bar -->
-<div id="readingProgress" class="reading-progress-bar"></div>
-
-<div class="book-reading-environment">
-    <!-- Reader Controls Bar -->
-    <div class="container py-3">
-        <div class="reader-toolbar d-flex flex-wrap align-items-center justify-content-between gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <a href="<?= e(base_url('/blog')) ?>" class="book-back-btn">
-                    <i class="fa-solid fa-arrow-left me-2"></i> सभी रचनाएं
-                </a>
-                <span class="toolbar-divider d-none d-sm-inline">|</span>
-                <span class="reading-time-badge d-none d-sm-inline">
-                    <i class="fa-regular fa-clock me-1"></i> लगभग <?= $readMinutes ?> मिनट का पाठ
-                </span>
-            </div>
-
-            <div class="d-flex align-items-center gap-3">
-                <!-- Theme Switcher -->
-                <div class="theme-selector d-flex align-items-center gap-1" title="पठन थीम">
-                    <button class="theme-btn active" data-theme="parchment" title="चर्मपत्र (Parchment)">
-                        <span class="theme-dot parchment"></span>
-                    </button>
-                    <button class="theme-btn" data-theme="sepia" title="क्लासिक सेपिया (Sepia)">
-                        <span class="theme-dot sepia"></span>
-                    </button>
-                    <button class="theme-btn" data-theme="ivory" title="सफेद पन्ना (Ivory)">
-                        <span class="theme-dot ivory"></span>
-                    </button>
-                    <button class="theme-btn" data-theme="dark" title="रात्रि पठन (Dark Book)">
-                        <span class="theme-dot dark"></span>
-                    </button>
-                </div>
-
-                <!-- Font Size Adjuster -->
-                <div class="font-size-controls d-flex align-items-center">
-                    <button type="button" id="fontDec" class="font-ctrl-btn" title="अक्षर छोटे करें">A-</button>
-                    <button type="button" id="fontReset" class="font-ctrl-btn" title="सामान्य आकार">A</button>
-                    <button type="button" id="fontInc" class="font-ctrl-btn" title="अक्षर बड़े करें">A+</button>
-                </div>
-
-                <!-- Print Button -->
-                <button type="button" onclick="window.print()" class="book-tool-btn" title="प्रिंट / सुरक्षित करें">
-                    <i class="fa-solid fa-print"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Book Page Area -->
-    <div class="container pb-5">
-        <div class="row g-4 justify-content-center">
-            <!-- The Book Folio / Page -->
-            <div class="col-lg-9">
-                <article class="book-page" id="bookPage">
-                    <!-- Ribbon Bookmark -->
-                    <div class="book-ribbon">
-                        <span class="ribbon-tail"></span>
-                    </div>
-
-                    <!-- Inner Decorative Border -->
-                    <div class="book-border-frame">
-                        <!-- Corner Ornaments -->
-                        <span class="corner-ornament top-left">❦</span>
-                        <span class="corner-ornament top-right">❦</span>
-                        <span class="corner-ornament bottom-left">❦</span>
-                        <span class="corner-ornament bottom-right">❦</span>
-
-                        <!-- Book Header / Running Head -->
-                        <header class="book-header text-center">
-                            <div class="book-header-line d-flex align-items-center justify-content-between">
-                                <span class="book-imprint">✦ साहित्य संकलन ✦</span>
-                                <span class="book-category-seal"><?= e($category) ?></span>
-                                <span class="book-imprint">✦ <?= e($author) ?> ✦</span>
-                            </div>
-                            <div class="vintage-flourish">
-                                <svg viewBox="0 0 400 24" class="flourish-svg">
-                                    <path d="M0,12 Q100,0 200,12 T400,12" stroke="currentColor" fill="none" stroke-width="1.2" opacity="0.4"/>
-                                    <circle cx="200" cy="12" r="4" fill="currentColor"/>
-                                    <path d="M190,12 L200,6 L210,12 L200,18 Z" fill="currentColor"/>
-                                </svg>
-                            </div>
-                        </header>
-
-                        <!-- Title & Meta Header -->
-                        <div class="book-title-block text-center my-4">
-                            <h1 class="book-main-title"><?= e($title) ?></h1>
-                            <div class="book-meta-strip">
-                                <span class="meta-item"><i class="fa-solid fa-pen-nib me-1"></i> <strong><?= e($author) ?></strong></span>
-                                <span class="meta-dot">·</span>
-                                <span class="meta-item"><i class="fa-regular fa-calendar me-1"></i> <?= e($pubDate) ?></span>
-                            </div>
-                            <div class="chapter-ornament">❖ ❖ ❖</div>
-                        </div>
-
-                        <!-- Story Content with Book Layout -->
-                        <div class="book-body-content" id="bookContent">
-                            <?= $content ?>
-                        </div>
-
-                        <!-- Story Finis / End Ornament -->
-                        <div class="book-end-flourish text-center my-5">
-                            <div class="finis-text">— ❦ समाप्त ❦ —</div>
-                            <svg viewBox="0 0 300 20" class="flourish-svg-sm mt-2">
-                                <path d="M50,10 Q150,0 250,10" stroke="currentColor" fill="none" stroke-width="1" opacity="0.5"/>
-                                <circle cx="150" cy="10" r="3" fill="currentColor"/>
-                            </svg>
-                        </div>
-
-                        <!-- Book Footer / Page Number -->
-                        <footer class="book-footer d-flex align-items-center justify-content-between pt-4 border-top">
-                            <div class="book-copyright-note small">
-                                © <?= e(app_config('name')) ?>
-                            </div>
-                            <div class="book-page-number">
-                                ~ १ ~
-                            </div>
-                            <div class="book-share-options d-flex align-items-center gap-2">
-                                <span class="small text-muted me-1">साझा करें:</span>
-                                <a href="https://api.whatsapp.com/send?text=<?= urlencode($title . ' ' . base_url('/blog/' . ($post['slug'] ?? ''))) ?>" target="_blank" class="book-share-icon whatsapp" title="WhatsApp पर भेजें">
-                                    <i class="fa-brands fa-whatsapp"></i>
-                                </a>
-                                <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode(base_url('/blog/' . ($post['slug'] ?? ''))) ?>" target="_blank" class="book-share-icon facebook" title="Facebook पर साझा करें">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                </a>
-                                <a href="https://twitter.com/intent/tweet?text=<?= urlencode($title) ?>&url=<?= urlencode(base_url('/blog/' . ($post['slug'] ?? ''))) ?>" target="_blank" class="book-share-icon twitter" title="X (Twitter) पर साझा करें">
-                                    <i class="fa-brands fa-x-twitter"></i>
-                                </a>
-                            </div>
-                        </footer>
-                    </div>
-                </article>
-
-                <!-- Comments in Vintage Guestbook Style -->
-                <div class="book-guestbook mt-5">
-                    <div class="guestbook-header">
-                        <h3><i class="fa-solid fa-feather-pointed me-2"></i> पाठक प्रतिक्रियाएं (Comments)</h3>
-                        <p class="text-muted small">रचना पर अपने विचार एवं समीक्षा दर्ज करें</p>
-                    </div>
-                    <form class="guestbook-form row g-3 mt-1">
-                        <div class="col-md-6">
-                            <label class="form-label small">आपका नाम *</label>
-                            <input class="form-control book-input" placeholder="नाम लिखें" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small">ईमेल पता *</label>
-                            <input class="form-control book-input" type="email" placeholder="email@example.com" required>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label small">आपकी टिप्पणी / प्रतिक्रिया *</label>
-                            <textarea class="form-control book-input" rows="4" placeholder="यहाँ अपनी प्रतिक्रिया लिखें..." required></textarea>
-                        </div>
-                        <div class="col-12">
-                            <button class="btn book-submit-btn" type="button">
-                                <i class="fa-solid fa-paper-plane me-1"></i> प्रतिक्रिया भेजें
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
-            <!-- Author & Other Chapters Sidebar -->
-            <div class="col-lg-3">
-                <aside class="book-sidebar sticky-top" style="top: 100px; z-index: 10;">
-                    <!-- Author Card -->
-                    <div class="book-sidebar-card author-colophon-card text-center mb-4">
-                        <div class="colophon-seal mb-2">
-                            <i class="fa-solid fa-feather"></i>
-                        </div>
-                        <h4 class="author-name"><?= e($author) ?></h4>
-                        <p class="author-sub small text-muted">लेखक एवं साहित्यकार</p>
-                        <p class="author-bio small">
-                            अवधी एवं हिंदी साहित्य के संवाहक, समाज एवं संस्कृति के विविध रंगों को अपनी लेखनी से प्रस्तुत करते हैं।
-                        </p>
-                        <hr class="colophon-divider">
-                        <a href="<?= e(base_url('/about')) ?>" class="btn btn-sm book-outline-btn w-100">
-                            लेखक परिचय पढ़ें
-                        </a>
-                    </div>
-
-                    <!-- Related Stories / Other Chapters -->
-                    <div class="book-sidebar-card chapters-card">
-                        <h4 class="sidebar-title d-flex align-items-center gap-2">
-                            <i class="fa-solid fa-book-open"></i> अन्य रचनाएं
-                        </h4>
-                        <div class="chapter-list mt-3">
-                            <?php if (!empty($related)): ?>
-                                <?php foreach ($related as $idx => $item): ?>
-                                    <a href="<?= e(base_url('/blog/' . $item['slug'])) ?>" class="chapter-item">
-                                        <div class="chapter-num"><?= sprintf('%02d', $idx + 1) ?></div>
-                                        <div class="chapter-info">
-                                            <div class="chapter-title"><?= e($item['title']) ?></div>
-                                            <div class="chapter-date small text-muted"><?= e(format_date($item['published_at'] ?? $item['date'] ?? $item['created_at'] ?? '')) ?></div>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p class="small text-muted">कोई अन्य रचना उपलब्ध नहीं है।</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="mt-3 pt-3 border-top text-center">
-                            <a href="<?= e(base_url('/blog')) ?>" class="small text-decoration-none fw-bold book-link">
-                                सभी संकलन देखें <i class="fa-solid fa-arrow-right ms-1"></i>
-                            </a>
-                        </div>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </div>
-</div>
-
 <style>
-/* ==========================================================
-   LITERARY BOOK PAGE STYLES
-   ========================================================== */
-
-/* Reading progress bar */
-.reading-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #b8561f, #d96f32, #f5a623);
-    width: 0%;
-    z-index: 9999;
-    transition: width 0.1s ease-out;
-}
-
-/* Environment background */
-.book-reading-environment {
-    background: #eee8dc;
-    background-image: 
-        radial-gradient(#d6cbba 1px, transparent 1px),
-        radial-gradient(#d6cbba 1px, #eee8dc 1px);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 20px;
-    min-height: 100vh;
-    padding-top: 1.5rem;
-    transition: background 0.3s ease;
-}
-
-/* Reader Toolbar */
-.reader-toolbar {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(8px);
-    border: 1px solid #d4c8b6;
-    border-radius: 50px;
-    padding: 0.5rem 1.25rem;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
-
-.book-back-btn {
-    color: #4a3b32;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: color 0.2s ease;
-}
-.book-back-btn:hover {
-    color: #b8561f;
-}
-
-.toolbar-divider {
-    color: #c4b8a5;
-}
-
-.reading-time-badge {
-    font-size: 0.82rem;
-    color: #6b5c52;
-    background: #f0e6d6;
-    padding: 3px 10px;
-    border-radius: 20px;
-}
-
-/* Theme selector */
-.theme-btn {
-    background: none;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    padding: 3px;
-    cursor: pointer;
-    display: inline-flex;
-    transition: all 0.2s ease;
-}
-.theme-btn.active, .theme-btn:hover {
-    border-color: #b8561f;
-    transform: scale(1.1);
-}
-.theme-dot {
-    display: block;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.15);
-}
-.theme-dot.parchment { background: #faf6ee; }
-.theme-dot.sepia { background: #f4ecd8; }
-.theme-dot.ivory { background: #ffffff; }
-.theme-dot.dark { background: #1f2421; }
-
-/* Font size controls */
-.font-size-controls {
-    border: 1px solid #d4c8b6;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #faf6ee;
-}
-.font-ctrl-btn {
-    background: none;
-    border: none;
-    padding: 3px 10px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    color: #4a3b32;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-.font-ctrl-btn:hover {
-    background: #e2d7c5;
-}
-
-.book-tool-btn {
-    background: #faf6ee;
-    border: 1px solid #d4c8b6;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #4a3b32;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.book-tool-btn:hover {
-    background: #b8561f;
-    color: #fff;
-    border-color: #b8561f;
-}
-
-/* THE BOOK PAGE (FOLIO) */
-.book-page {
-    position: relative;
-    background: #faf6ee;
-    border-radius: 4px;
-    padding: 3.5rem 3.5rem 3rem 3.5rem;
-    box-shadow: 
-        0 1px 3px rgba(0, 0, 0, 0.08),
-        0 15px 35px rgba(60, 40, 20, 0.12),
-        -15px 0 30px rgba(0, 0, 0, 0.03) inset;
-    border: 1px solid #e3d7c3;
-    transition: all 0.3s ease;
-    overflow: visible;
-}
-
-/* Spine shadow effect on the left margin to mimic a bound book */
-.book-page::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 25px;
-    background: linear-gradient(to right, rgba(80, 50, 20, 0.12) 0%, rgba(80, 50, 20, 0.03) 60%, transparent 100%);
+  /* 3D Slow Book Page Flip Animation */
+  .book-viewport {
+    perspective: 2200px;
+    transform-style: preserve-3d;
+  }
+  .spread-slide {
+    transform-origin: left center;
+    transition: transform 1.2s cubic-bezier(0.25, 1, 0.45, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1.2s ease;
+    backface-visibility: hidden;
+    will-change: transform, opacity, box-shadow;
+  }
+  .spread-slide.active {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1) translateX(0);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    pointer-events: auto;
+    z-index: 10;
+  }
+  .spread-slide.flip-next {
+    opacity: 0;
+    transform: rotateY(-90deg) scale(0.95) translateX(-40px);
+    box-shadow: -30px 0 50px rgba(0, 0, 0, 0.35);
     pointer-events: none;
-    border-radius: 4px 0 0 4px;
-}
-
-/* Ribbon Bookmark */
-.book-ribbon {
+    z-index: 1;
+  }
+  .spread-slide.flip-prev {
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.95) translateX(40px);
+    box-shadow: 30px 0 50px rgba(0, 0, 0, 0.35);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .page-curl-corner {
     position: absolute;
-    top: -12px;
-    right: 45px;
-    width: 28px;
-    height: 65px;
-    background: linear-gradient(135deg, #a82a1d 0%, #c93b2c 100%);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-    z-index: 5;
-    border-radius: 2px 2px 0 0;
-}
-.book-ribbon::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
     width: 0;
     height: 0;
-    border-left: 14px solid transparent;
-    border-right: 14px solid transparent;
-    border-bottom: 12px solid #faf6ee;
-    transition: border-bottom-color 0.3s;
-}
+    border-style: solid;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  .curl-bottom-right {
+    bottom: 0;
+    right: 0;
+    border-width: 0 0 32px 32px;
+    border-color: transparent transparent rgba(160, 65, 24, 0.4) transparent;
+  }
+  .curl-bottom-right:hover {
+    border-width: 0 0 46px 46px;
+    border-color: transparent transparent rgba(160, 65, 24, 0.7) transparent;
+  }
+  .curl-bottom-left {
+    bottom: 0;
+    left: 0;
+    border-width: 32px 0 0 32px;
+    border-color: transparent transparent transparent rgba(0, 101, 44, 0.4);
+  }
+  .curl-bottom-left:hover {
+    border-width: 46px 0 0 46px;
+    border-color: transparent transparent transparent rgba(0, 101, 44, 0.7);
+  }
 
-/* Inner Ornamental Frame */
-.book-border-frame {
-    border: 1px solid #c9b89d;
-    outline: 2px solid #e8decb;
-    outline-offset: 4px;
-    padding: 2.5rem 2.5rem 2rem 2.5rem;
-    position: relative;
-    border-radius: 2px;
-}
-
-/* Corner Ornaments */
-.corner-ornament {
-    position: absolute;
-    font-size: 1.4rem;
-    color: #9c6841;
-    line-height: 1;
-    user-select: none;
-    opacity: 0.85;
-}
-.corner-ornament.top-left { top: 6px; left: 8px; }
-.corner-ornament.top-right { top: 6px; right: 8px; transform: scaleX(-1); }
-.corner-ornament.bottom-left { bottom: 6px; left: 8px; transform: scaleY(-1); }
-.corner-ornament.bottom-right { bottom: 6px; right: 8px; transform: scale(-1, -1); }
-
-/* Book Header */
-.book-header {
-    padding-bottom: 0.75rem;
-    margin-bottom: 1.5rem;
-}
-.book-header-line {
-    font-family: 'Cinzel', 'Noto Serif Devanagari', serif;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #7a6352;
-}
-.book-imprint {
-    font-weight: 600;
-}
-.book-category-seal {
-    background: #e8dbca;
-    color: #633e21;
-    font-weight: 700;
-    padding: 2px 12px;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-}
-.vintage-flourish {
-    height: 20px;
-    margin-top: 6px;
-    color: #9c6841;
-}
-.flourish-svg {
-    width: 100%;
-    max-width: 320px;
-    height: 18px;
-}
-.flourish-svg-sm {
-    width: 180px;
-    height: 14px;
-    color: #9c6841;
-}
-
-/* Book Title Block */
-.book-main-title {
-    font-family: 'Noto Serif Devanagari', 'Martel', 'Playfair Display', serif;
-    font-size: 2.6rem;
-    font-weight: 700;
-    color: #2b1f1d;
-    line-height: 1.3;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.5px;
-}
-
-.book-meta-strip {
-    font-family: 'Noto Serif Devanagari', 'Martel', serif;
-    font-size: 0.95rem;
-    color: #735d4f;
-    margin-bottom: 0.75rem;
-}
-.meta-dot {
-    margin: 0 8px;
-    color: #b8561f;
-}
-.chapter-ornament {
-    font-size: 0.9rem;
-    letter-spacing: 8px;
-    color: #b8561f;
-    opacity: 0.8;
-}
-
-/* Book Body Content Typography */
-.book-body-content {
-    font-family: 'Noto Serif Devanagari', 'Martel', 'Playfair Display', Georgia, serif;
-    font-size: 1.22rem;
-    line-height: 2.2;
-    color: #2d2420;
-    text-align: justify;
-    text-justify: inter-word;
-    word-spacing: 1px;
-}
-
-.book-body-content p {
-    margin-bottom: 1.6rem;
-    text-indent: 1.75rem;
-}
-
-/* Drop cap for first paragraph */
-.book-body-content > p:first-of-type::first-letter,
-.book-body-content > p:nth-child(1)::first-letter {
-    font-family: 'Noto Serif Devanagari', 'Fraunces', 'Cinzel', serif;
-    float: left;
-    font-size: 3.8rem;
-    line-height: 0.85;
-    margin-right: 0.75rem;
-    margin-top: 0.2rem;
-    margin-bottom: -0.2rem;
-    font-weight: 700;
-    color: #99281a;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
-}
-
-.book-body-content blockquote {
-    margin: 2rem 2.5rem;
-    padding: 1rem 1.5rem;
-    border-left: 3px double #99281a;
-    background: rgba(184, 86, 31, 0.05);
-    font-style: italic;
-    color: #4a342b;
-    border-radius: 0 8px 8px 0;
-}
-
-.book-body-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 4px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 4px solid #fff;
-    margin: 1.5rem auto;
-    display: block;
-}
-
-/* Finis / End Text */
-.finis-text {
-    font-family: 'Cinzel', 'Noto Serif Devanagari', serif;
-    font-size: 1.1rem;
-    letter-spacing: 4px;
-    color: #8c3b20;
-    font-weight: 600;
-}
-
-/* Book Footer */
-.book-footer {
-    border-top-color: #d9ccb6 !important;
-    font-family: 'Noto Serif Devanagari', 'Cinzel', serif;
-}
-.book-page-number {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #735d4f;
-    letter-spacing: 3px;
-}
-.book-share-icon {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    text-decoration: none;
-    font-size: 0.75rem;
-    transition: transform 0.2s ease;
-}
-.book-share-icon:hover {
-    transform: scale(1.15);
-    color: #fff;
-}
-.book-share-icon.whatsapp { background: #25d366; }
-.book-share-icon.facebook { background: #1877f2; }
-.book-share-icon.twitter { background: #000000; }
-
-/* Guestbook Comments */
-.book-guestbook {
-    background: #faf6ee;
-    border: 1px solid #dcd0bc;
-    border-radius: 4px;
-    padding: 2rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-.guestbook-header h3 {
-    font-family: 'Noto Serif Devanagari', 'Martel', serif;
-    color: #2b1f1d;
-    font-size: 1.35rem;
-}
-.book-input {
-    background: #ffffff;
-    border: 1px solid #c9bda9;
-    border-radius: 4px;
-    padding: 0.65rem 0.9rem;
-    font-family: 'Noto Serif Devanagari', sans-serif;
-}
-.book-input:focus {
-    background: #fff;
-    border-color: #b8561f;
-    box-shadow: 0 0 0 3px rgba(184, 86, 31, 0.15);
-}
-.book-submit-btn {
-    background: #b8561f;
-    color: #fff;
-    font-weight: 600;
-    padding: 0.6rem 1.4rem;
-    border-radius: 4px;
-    border: none;
-    transition: background 0.2s;
-}
-.book-submit-btn:hover {
-    background: #994415;
-    color: #fff;
-}
-
-/* Sidebar Styling */
-.book-sidebar-card {
-    background: #faf6ee;
-    border: 1px solid #dcd0bc;
-    border-radius: 4px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-.colophon-seal {
-    width: 46px;
-    height: 46px;
-    background: #e8d9c5;
-    color: #99281a;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    border: 2px dashed #b8561f;
-}
-.author-name {
-    font-family: 'Noto Serif Devanagari', 'Martel', serif;
-    font-weight: 700;
-    color: #2b1f1d;
-    margin-bottom: 0.15rem;
-}
-.author-bio {
-    line-height: 1.6;
-    color: #59463c;
-}
-.colophon-divider {
-    border-color: #dcd0bc;
-    margin: 1rem 0;
-}
-.book-outline-btn {
-    border: 1px solid #b8561f;
-    color: #b8561f;
-    font-weight: 600;
-    border-radius: 4px;
-    transition: all 0.2s;
-}
-.book-outline-btn:hover {
-    background: #b8561f;
-    color: #fff;
-}
-
-.sidebar-title {
-    font-family: 'Noto Serif Devanagari', 'Martel', serif;
-    font-size: 1.15rem;
-    color: #2b1f1d;
-    font-weight: 700;
-    border-bottom: 1px solid #e3d7c3;
-    padding-bottom: 0.6rem;
-}
-.chapter-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-}
-.chapter-item {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    text-decoration: none;
-    color: #3d2f28;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    border-left: 2px solid transparent;
-}
-.chapter-item:hover {
-    background: #efe4d2;
-    color: #99281a;
-    border-left-color: #99281a;
-    transform: translateX(3px);
-}
-.chapter-num {
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    background: #e6d7c1;
-    color: #6e4e37;
-    padding: 2px 7px;
-    border-radius: 4px;
-}
-.chapter-title {
-    font-family: 'Noto Serif Devanagari', 'Martel', serif;
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.35;
-}
-.book-link {
-    color: #b8561f;
-}
-
-/* ==========================================================
-   THEME VARIATIONS (Sepia, Ivory, Dark)
-   ========================================================== */
-
-/* Sepia Theme */
-[data-book-theme="sepia"] .book-reading-environment {
-    background: #ded1b8;
-}
-[data-book-theme="sepia"] .book-page,
-[data-book-theme="sepia"] .book-guestbook,
-[data-book-theme="sepia"] .book-sidebar-card {
-    background: #f4ecd8;
-    border-color: #c9baa1;
-}
-[data-book-theme="sepia"] .book-ribbon::after {
-    border-bottom-color: #f4ecd8;
-}
-
-/* Ivory / Crisp Theme */
-[data-book-theme="ivory"] .book-reading-environment {
-    background: #f0f2f5;
-}
-[data-book-theme="ivory"] .book-page,
-[data-book-theme="ivory"] .book-guestbook,
-[data-book-theme="ivory"] .book-sidebar-card {
-    background: #ffffff;
-    border-color: #e2e8f0;
-}
-[data-book-theme="ivory"] .book-border-frame {
-    border-color: #cbd5e1;
-    outline-color: #f1f5f9;
-}
-[data-book-theme="ivory"] .book-ribbon::after {
-    border-bottom-color: #ffffff;
-}
-
-/* Dark / Night Mode Theme */
-[data-book-theme="dark"] .book-reading-environment {
-    background: #121514;
-}
-[data-book-theme="dark"] .reader-toolbar {
-    background: rgba(28, 34, 32, 0.9);
-    border-color: #2e3b36;
-}
-[data-book-theme="dark"] .book-back-btn,
-[data-book-theme="dark"] .font-ctrl-btn {
-    color: #d1dad6;
-}
-[data-book-theme="dark"] .book-page,
-[data-book-theme="dark"] .book-guestbook,
-[data-book-theme="dark"] .book-sidebar-card {
-    background: #1c2220;
-    border-color: #2e3b36;
-    color: #d7e0dc;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-}
-[data-book-theme="dark"] .book-border-frame {
-    border-color: #3b4d46;
-    outline-color: #242c29;
-}
-[data-book-theme="dark"] .book-ribbon::after {
-    border-bottom-color: #1c2220;
-}
-[data-book-theme="dark"] .book-main-title {
-    color: #f0f4f2;
-}
-[data-book-theme="dark"] .book-body-content {
-    color: #d2ded9;
-}
-[data-book-theme="dark"] .book-header-line,
-[data-book-theme="dark"] .book-meta-strip,
-[data-book-theme="dark"] .book-page-number {
-    color: #9cb2aa;
-}
-[data-book-theme="dark"] .book-input {
-    background: #151a18;
-    border-color: #32423c;
-    color: #e5ece9;
-}
-[data-book-theme="dark"] .sidebar-title,
-[data-book-theme="dark"] .author-name {
-    color: #e5ece9;
-}
-[data-book-theme="dark"] .chapter-item {
-    color: #c0cfca;
-}
-[data-book-theme="dark"] .chapter-item:hover {
-    background: #242e2b;
-}
-
-/* ==========================================================
-   RESPONSIVE & PRINT MEDIA
-   ========================================================== */
-@media (max-width: 767.98px) {
-    .book-page {
-        padding: 2rem 1.25rem;
-    }
-    .book-border-frame {
-        padding: 1.5rem 1rem;
-    }
-    .book-main-title {
-        font-size: 1.9rem;
-    }
-    .book-body-content {
-        font-size: 1.1rem;
-        line-height: 2;
-    }
-    .book-body-content p {
-        text-indent: 1rem;
-    }
-    .book-header-line {
-        font-size: 0.72rem;
-        flex-direction: column;
-        gap: 6px;
-    }
-    .book-ribbon {
-        right: 15px;
-        width: 22px;
-        height: 50px;
-    }
-}
-
-@media print {
-    .topbar, .site-header, .site-footer, .reader-toolbar, .book-sidebar, .book-guestbook, .book-ribbon {
-        display: none !important;
-    }
-    .book-reading-environment {
-        background: #fff !important;
-        padding: 0 !important;
-    }
-    .book-page {
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-    .book-border-frame {
-        outline: none !important;
-    }
-    .book-body-content {
-        color: #000 !important;
-        font-size: 12pt !important;
-        line-height: 1.8 !important;
-    }
-}
+  /* Sound wave animation */
+  @keyframes soundwave {
+    0%, 100% { height: 4px; }
+    50% { height: 16px; }
+  }
+  .sound-bar {
+    animation: soundwave 1s ease-in-out infinite;
+  }
+  .sound-bar:nth-child(2) { animation-delay: 0.2s; }
+  .sound-bar:nth-child(3) { animation-delay: 0.4s; }
+  .sound-bar:nth-child(4) { animation-delay: 0.15s; }
 </style>
 
+<!-- 2. BREADCRUMB & READING TOOLBAR STRIP -->
+<div class="flex flex-col w-full">
+  <!-- Breadcrumb and Reader Tools -->
+  <section class="w-full bg-soft-meadow border-b border-border-warm py-2.5 relative z-30 shadow-xs">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8 flex flex-wrap items-center justify-between gap-3">
+      <!-- Breadcrumb Navigation -->
+      <nav class="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
+        <a class="hover:text-deep-forest transition-colors flex items-center gap-1" data-path="home" href="<?= e(base_url('/')) ?>">
+          <span class="material-symbols-outlined text-[15px]">home</span>
+          <span><?= e(ps_text('मुख्य पृष्ठ', 'Home')) ?></span>
+        </a>
+        <span class="text-outline-variant">/</span>
+        <a class="hover:text-deep-forest transition-colors" data-path="blog-and-thoughts" href="<?= e(base_url('/blog')) ?>">
+          <?= e(ps_text('ब्लॉग एवं आलेख', 'Blog & Journal')) ?>
+        </a>
+        <span class="text-outline-variant">/</span>
+        <span class="text-secondary font-semibold" id="crumb-category"><?= e($postCategory) ?></span>
+        <span class="text-outline-variant">/</span>
+        <span class="text-deep-forest font-bold" id="crumb-title"><?= e($postTitle) ?></span>
+      </nav>
+
+      <!-- Reading Tools Strip -->
+      <div class="flex flex-wrap items-center gap-2.5 sm:gap-3">
+        <!-- Top Page Nav Pill -->
+        <div class="inline-flex items-center gap-1.5 bg-pure-white border border-border-warm rounded-lg p-0.5 shadow-xs">
+          <button type="button" class="px-2.5 py-1 rounded-md bg-surface text-deep-forest hover:bg-primary-container hover:text-pure-white font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer" id="btn-top-prev-page" title="<?= e(ps_text('पिछला पृष्ठ', 'Previous Page')) ?>">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span class="hidden sm:inline"><?= e(ps_text('पिछला', 'Prev')) ?></span>
+          </button>
+          <span class="text-deep-forest font-mono font-bold text-xs px-2" id="top-page-counter-badge">१ / ३</span>
+          <button type="button" class="px-2.5 py-1 rounded-md bg-primary-container text-pure-white hover:bg-deep-forest font-label-sm text-label-sm font-semibold transition-colors flex items-center gap-1 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer shadow-xs" id="btn-top-next-page" title="<?= e(ps_text('अगला पृष्ठ', 'Next Page')) ?>">
+            <span><?= e(ps_text('अगला पृष्ठ', 'Next Page')) ?></span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+          </button>
+        </div>
+
+        <!-- Audio Narrator Pill with animated waves -->
+        <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm shadow-sm hover:bg-deep-forest transition-all cursor-pointer" id="audio-toggle-btn">
+          <div class="flex items-center gap-0.5 h-3.5" id="audio-visualizer">
+            <span class="material-symbols-outlined text-[16px]">volume_up</span>
+          </div>
+          <span id="audio-btn-text"><?= e(ps_text('सारंग जी के स्वर में सुनें (12:48)', 'Listen in Sarang Ji\'s Voice (12:48)')) ?></span>
+        </button>
+
+        <!-- Font Size Adjuster -->
+        <div class="inline-flex items-center bg-pure-white border border-border-warm rounded-lg p-0.5 shadow-xs">
+          <button type="button" class="px-2 py-1 text-on-surface hover:text-deep-forest font-label-sm text-label-sm transition-colors active:scale-95 cursor-pointer" id="btn-font-dec" title="<?= e(ps_text('अक्षर छोटा करें', 'Decrease Font Size')) ?>">A-</button>
+          <span class="text-outline-variant text-[11px] px-1">|</span>
+          <button type="button" class="px-2 py-1 text-on-surface hover:text-deep-forest font-label-md text-label-md font-bold transition-colors active:scale-95 cursor-pointer" id="btn-font-inc" title="<?= e(ps_text('अक्षर बड़ा करें', 'Increase Font Size')) ?>">A+</button>
+        </div>
+
+        <!-- Typography Serif / Sans Toggle -->
+        <div class="inline-flex items-center bg-pure-white border border-border-warm rounded-lg p-0.5 shadow-xs text-label-sm">
+          <button type="button" class="px-2.5 py-1 rounded bg-surface text-deep-forest font-bold shadow-xs transition-colors cursor-pointer" id="btn-font-serif">Serif</button>
+          <button type="button" class="px-2.5 py-1 rounded text-on-surface-variant hover:text-on-surface font-medium transition-colors cursor-pointer" id="btn-font-sans">Sans</button>
+        </div>
+
+        <!-- Reading Time Badge -->
+        <div class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-pure-white border border-border-warm text-text-muted font-label-sm text-label-sm">
+          <span class="material-symbols-outlined text-[15px] text-secondary">schedule</span>
+          <span id="reading-time-badge">12 min read</span>
+        </div>
+
+        <!-- Paper Tone Selector -->
+        <div class="flex items-center gap-1 bg-pure-white border border-border-warm px-2 py-1 rounded-lg shadow-xs">
+          <button type="button" class="w-4 h-4 rounded-full bg-[#fdfaf3] ring-1 ring-border-warm hover:scale-110 transition-transform cursor-pointer" data-tone="tone-parchment" title="<?= e(ps_text('हल्का पीला (Parchment)', 'Parchment Tone')) ?>"></button>
+          <button type="button" class="w-4 h-4 rounded-full bg-[#fcf9f2] ring-2 ring-primary transition-transform cursor-pointer" data-tone="tone-ivory" title="<?= e(ps_text('क्रीमी श्वेत (Ivory)', 'Ivory Tone')) ?>"></button>
+          <button type="button" class="w-4 h-4 rounded-full bg-[#f4ede1] ring-1 ring-border-warm hover:scale-110 transition-transform cursor-pointer" data-tone="tone-linen" title="<?= e(ps_text('गर्म खादी (Warm Linen)', 'Warm Linen Tone')) ?>"></button>
+        </div>
+
+        <!-- Print Button -->
+        <button type="button" class="p-1.5 rounded-lg bg-pure-white border border-border-warm text-on-surface-variant hover:text-deep-forest shadow-xs transition-colors cursor-pointer" onclick="window.print()" title="<?= e(ps_text('किताब सहेजें या प्रिंट करें', 'Print or Save Memoir')) ?>">
+          <span class="material-symbols-outlined text-[18px]">print</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reading Progress Bar -->
+  <div class="w-full h-1 bg-surface-variant sticky top-[116px] z-20">
+    <div class="h-full bg-fresh-sprout transition-all duration-300" id="read-progress-fill" style="width: 33%;"></div>
+  </div>
+
+  <!-- 3. MAIN CONTENT BODY — REALISTIC OPEN-BOOK EXPERIENCE WITH 3D FLIP MECHANISM -->
+  <section class="w-full bg-[#1b261d] py-8 lg:py-14 px-3 sm:px-6 md:px-8 relative overflow-hidden">
+    <!-- Ambient Vignette & Texture Gradients -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-secondary/15 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-[1240px] mx-auto relative z-10">
+      <!-- Realistic Hardcover Leather Binder Backing with 3D Depth -->
+      <div class="rounded-2xl p-2.5 sm:p-4 md:p-6 bg-[#261d18] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_12px_24px_rgba(0,0,0,0.6)] border border-[#3d2c22] relative">
+        <!-- Top Floating Book Binder Nav Controls -->
+        <div class="flex items-center justify-between gap-3 mb-3 text-cream-canvas font-label-sm text-label-sm px-1">
+          <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 rounded-full bg-fresh-sprout animate-pulse"></span>
+            <span class="font-bold text-surface-bright"><?= e(ps_text('प्रदीप सारंग संस्मरण ग्रंथावली', 'Pradeep Sarang Memoir Archives')) ?></span>
+          </div>
+          <div class="flex items-center gap-2 sm:gap-3">
+            <button type="button" class="px-3 py-1.5 rounded-lg bg-deep-forest/90 hover:bg-deep-forest disabled:opacity-40 disabled:cursor-not-allowed text-pure-white flex items-center gap-1 transition-all shadow-sm active:scale-95 cursor-pointer font-semibold" id="btn-binder-prev-page">
+              <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+              <span class="hidden sm:inline"><?= e(ps_text('पिछला पृष्ठ', 'Previous Page')) ?></span>
+            </button>
+            <span class="text-surface-variant font-mono text-xs px-2.5 py-1 rounded bg-black/40 border border-white/10" id="binder-page-counter-badge">१ / ३</span>
+            <button type="button" class="px-3 py-1.5 rounded-lg bg-primary-container hover:bg-deep-forest disabled:opacity-40 disabled:cursor-not-allowed text-pure-white flex items-center gap-1 transition-all shadow-sm active:scale-95 cursor-pointer font-semibold" id="btn-binder-next-page">
+              <span><?= e(ps_text('अगला पृष्ठ', 'Next Page')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Gold foil debossed boundary aesthetic -->
+        <div class="rounded-xl p-1.5 sm:p-2 bg-[#34251e] border border-[#523a2f]/50">
+          <!-- The 3D Viewport enclosing all single-page book stories -->
+          <div class="book-viewport relative min-h-[650px] overflow-hidden rounded-lg bg-[#fcf9f2] text-[#1f2421] shadow-2xl transition-colors duration-300" id="book-spread-paper">
+            
+            <!-- Left/Right Click Hot-Zones for Intuitive Flipping -->
+            <div class="absolute top-0 bottom-0 left-0 w-12 sm:w-16 z-20 cursor-pointer group flex items-center justify-start pl-2" id="hotzone-left" title="<?= e(ps_text('पिछला पृष्ठ पलटें (Left Arrow)', 'Turn Previous Page')) ?>">
+              <span class="material-symbols-outlined text-black/25 group-hover:text-deep-forest group-hover:scale-125 transition-all text-[28px]">chevron_left</span>
+              <div class="page-curl-corner curl-bottom-left" title="<?= e(ps_text('पिछला पृष्ठ', 'Previous Page')) ?>"></div>
+            </div>
+            <div class="absolute top-0 bottom-0 right-0 w-12 sm:w-16 z-20 cursor-pointer group flex items-center justify-end pr-2" id="hotzone-right" title="<?= e(ps_text('अगला पृष्ठ पलटें (Right Arrow)', 'Turn Next Page')) ?>">
+              <span class="material-symbols-outlined text-black/25 group-hover:text-secondary group-hover:scale-125 transition-all text-[28px]">chevron_right</span>
+              <div class="page-curl-corner curl-bottom-right" title="<?= e(ps_text('अगला पृष्ठ', 'Next Page')) ?>"></div>
+            </div>
+
+            <!-- ================= STORY 1 (Spread 0): झरिहख ================= -->
+            <div class="spread-slide active min-h-full" data-spread="0">
+              <article class="p-6 sm:p-10 md:p-12 lg:p-14 max-w-4xl mx-auto flex flex-col justify-between min-h-full bg-[#faf8f2] book-page-content">
+                <div>
+                  <!-- Page Archival Header -->
+                  <header class="flex items-center justify-between pb-3 mb-5 border-b border-[#e2dacf]">
+                    <span class="font-label-sm text-[11px] uppercase tracking-widest text-[#795548] font-bold">
+                      <?= e(ps_text('प्रदीप सारंग संस्मरण संकलन • अध्याय १ / ३', 'Pradeep Sarang Memoir Collection • Story 1 of 3')) ?>
+                    </span>
+                    <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+                      <span class="font-serif"><?= e(ps_text('अध्याय १', 'Story 1')) ?></span>
+                    </div>
+                  </header>
+
+                  <!-- Chapter Decorative Motif / Emblem -->
+                  <div class="flex items-center justify-center my-3">
+                    <div class="w-12 h-px bg-secondary/40"></div>
+                    <span class="material-symbols-outlined text-secondary mx-3 text-[20px]" style="font-variation-settings: 'FILL' 1;">spa</span>
+                    <div class="w-12 h-px bg-secondary/40"></div>
+                  </div>
+
+                  <!-- Chapter Title & Subtitle -->
+                  <div class="text-center mb-5">
+                    <span class="inline-block px-3 py-1 rounded-full bg-[#f4ebd9] text-secondary font-label-sm text-label-sm font-semibold mb-2">
+                      <?= e($postCategory) ?>
+                    </span>
+                    <h1 class="font-headline-lg text-[34px] sm:text-[42px] leading-tight text-deep-forest tracking-tight mt-1 mb-2 font-bold">
+                      <?= e($postTitle) ?>
+                    </h1>
+                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md">
+                      <?= e($postExcerpt) ?>
+                    </p>
+                  </div>
+
+                  <!-- Memoir Metadata Stamp -->
+                  <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg mb-6 flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2">
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[17px]">edit_note</span>
+                      <span><?= e(ps_text('लेखक:', 'Author:')) ?> <strong><?= e($postAuthor) ?></strong></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
+                      <span><?= e($postDate) ?></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-deep-forest text-[17px]">pin_drop</span>
+                      <span><?= e(ps_text('ग्राम कमरावां, सतरिख (बाराबंकी)', 'Village Kamrawan, Satrikh (Barabanki)')) ?></span>
+                    </div>
+                  </div>
+
+                  <!-- Complete Unified Narrative Prose -->
+                  <?php if (!empty($postContent)): ?>
+                    <div class="space-y-4 prose-book font-headline-sm font-normal text-[16px] sm:text-[17px] leading-[1.8] text-justify text-[#2b302c]">
+                      <?= ps_rich_text($postContent) ?>
+                    </div>
+                  <?php else: ?>
+                    <div class="space-y-4 prose-book font-headline-sm font-normal text-[16px] sm:text-[17px] leading-[1.8] text-justify text-[#2b302c]">
+                      <p>
+                        <span class="float-left text-[56px] leading-[46px] font-headline-lg font-bold text-secondary mr-3 mt-1 pb-1">आ</span>जु जब हम सोय कै जागेन, तौ झमाझम बारिस होत रही। झमाझम मतलब वाकई झम-झम, झम-झम कै आवाज कानन मा सुनाय परत रही। ईका येकु कारन इहौ रहा कि हम घर की छत पर बने सीमेंटेड-टीन सेट के नीचे सोइत है। पानी की बड़ी बड़ी बूँदन के टीनसेट पर गिरै से यही तिना केर, झमझम-झमझम आवाज निकरत रही। आजु कुछ अलग तिना केरी आवाज से कुछ अटपट लाग और जल्दिन खुमारी भागिगै। हमका लाग कि आजु जानौ झरिहख परि जाई।
+                      </p>
+                      <p>
+                        हमरी घरैतिन रोजै छत पर याक बरतन मा पानी भरि देती हैं अउर राति केर बची बासी चावल, रोटी रखि दियत हैं। जौन दिन बासी नहीं बचत है उइ दिन चावल के खंढा यानी कनकी रखि दियत हैं। जेहिका चुगै मेर-मेर की चिरई अउती हैं। नाश्ता भोजन करती हैं अउर जलपान करती हैं। दाना चुगै मा लगातार चह-चहावा करती हैं।
+                      </p>
+                      <p>
+                        सबै ग्रंथन मा बखान है कि ब्रम्ह मुहूरत मा जागै और उठै का चाही। मुला कइव सालन से हम ग्रंथन केर बातै मानब बन्द करिकै जौन हमरे तईं सही लागत है हम उहै करित है। ईका मतलब ई बिलकुलै नहीं है कि हम ग्रंथन केर अपमान या अवमानना करित है। हमार जरुरतै अइस है कि हमका घंटा भरि दिन चढ़े तक सोवै का परत है।
+                      </p>
+                      <p>
+                        हमरे पास हिंदी दैनिक समाचार पत्र <em>सन्दौली टाइम्स</em> मा सह संपादक का दायित्व है। प्रूफ देखै मा, हेडिंग सुधारै मा, रोजै राति के बारह-साढ़े बारह बजिन जात है, अउर सोवत सोवत येकु। अब येकु बजे सोये के बादि जल्दिन जागब न सम्भव है न उचित।
+                      </p>
+                      <p>
+                        हमका या समझ मिली है गुरुवर <strong>डॉ भगवान वत्स जी</strong> से। राष्ट्रीय सेवा योजना अउर डॉ वत्स जी की बातन का असर आजु चारि दशक साल बीते के बादिव अगली पीढ़ी तक देखाय परत है। जनपद बाराबंकी सहित आसपास के जनपदन के तमाम लोगन के जीवन पर डॉ भगवान वत्स जी की यही तिना की तमाम सारी बातन का असर है।
+                      </p>
+                      <p>
+                        आजु सबेरेन से बारिस होय रही है। 10 बजि रहा है। अबहीं तक देखे से तौ इहै अनुमान है कि आजु झरिहख परी। पिछले कइव दिनन मा आंशिक-झरिहख जइस मौसम रहा है। हम लोगन के छुटपने मा तीन-तीन दिन के झरिहख परत रहैं। हमका ठीक से यादि है कि चिरइन का दाना चुनै भर का समय नहीं मिलत रहा कि निकरि सकैं।
+                      </p>
+                      <p>
+                        गाँव से न जुड़े रहै वाले अउर अवधी न बोलै समझै वाले लोगन तईं झरिहख नवा शब्द आही। झरिहख मतलब न पानी बन्द हुवै न बरसबै करै। हल्की हल्की फुहार परा करै। यानी धीमी बारिस होत रहत है। जब ई तिना कै बारिस चारि छः घण्टा होत रहत है तब ई तिना की हल्की बारिस का झरिहख कहा जात है।
+                      </p>
+
+                      <!-- Editorial Pull-Quote -->
+                      <div class="my-5 p-4 rounded-lg bg-[#f3ede1] border-l-4 border-secondary shadow-inner">
+                        <p class="font-quote-editorial italic text-secondary text-[18px] leading-relaxed text-center">
+                          "याक बात अउर कि अगर कोऊ के घर मा कौनिव व्याधि आई तौ लोगन का पता रहत रहा कि कहाँ कहाँ कीके द्वारे लोग इकट्ठा रहत हैं... तुरन्ते दस-पंद्रह लोग मदद तईं चलि परैं।"
+                        </p>
+                      </div>
+
+                      <p>
+                        झरिहख मा सबका दिक्कत होइन जात है। हमरे छुटपने मा गाँव भर मा दुई चारि घर छोड़ि कै सबके घर कच्चेन हुवत रहे। जब जब झरिहख परत रहा तब तब हर गाँव मा दुई चारि दीवालै जरूर गिरि जाती रहैं। दुई-तीनि दिन के झरिहख मा लोग घर से निकरै न पावैं तब लोग ऊबि जात रहे।
+                      </p>
+                      <p>
+                        तब गैस चूल्हा केर ईजाद नहीं भवा रहै यहिसे सबके घरन मा खाना चूल्हे पर बनत रहा। झरिहख मा सूखि लकड़ी खतम होइ जाय। अम्मा जब खाना बनाय चुकैं तब चूल्हे कै आगि बाहर निकारि कै रखि दियैं तब हम सब आपनि आपनि कपड़ा सेंकि कै सुखाइत रहै।
+                      </p>
+
+                      <div class="my-4 p-4 rounded-lg bg-[#efe7d8] border border-[#decbb4]">
+                        <p class="font-bold text-deep-forest text-[16px] leading-relaxed">
+                          "झरिहख मा अतना पानी गिरत रहा कि बाढ़ जइस हालात बनि जात रहे। का मनई का जानवर ई झरिहख से सबै ऊबि जाँय। गरीबन केर तौ दुश्मनै आही झरिहखु।"
+                        </p>
+                        <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग</span>
+                      </div>
+                    </div>
+                  <?php endif; ?>
+                </div>
+
+                <!-- Footnote & Author Signoff -->
+                <footer class="mt-8 pt-4 border-t border-[#e2dacf]">
+                  <div class="bg-[#f8f5ed] border border-[#ebe4d5] p-3 rounded-md text-[13px] font-serif text-[#5f6861] mb-4">
+                    <div class="flex items-start gap-2">
+                      <span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">menu_book</span>
+                      <p><strong>*<?= e(ps_text('पादटिप्पणी संदर्भ:', 'Footnote Reference:')) ?></strong> <em>झरिहख</em> (अवधी संज्ञा) — बिना रुके अनवरत चलने वाली धीमी रिमझिम व मूसलाधार फुहार, जो दिन-रात आकाश को घेरे रखती है।</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center gap-2 text-secondary opacity-80 mb-1">
+                      <span class="w-8 h-px bg-secondary"></span>
+                      <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                      <span class="w-8 h-px bg-secondary"></span>
+                    </div>
+                    <p class="font-serif italic text-title-md text-deep-forest font-semibold">— श्री प्रदीप सारंग</p>
+                    <span class="font-label-sm text-[11px] text-text-muted"><?= e(ps_text('कमरवाँ, सतरिख (बाराबंकी) • संस्मरण सम्पूर्ण', 'Kamrawan, Satrikh (Barabanki) • Complete Memoir')) ?></span>
+                  </div>
+                </footer>
+              </article>
+            </div>
+
+            <!-- ================= STORY 2 (Spread 1): सुघरी ================= -->
+            <div class="spread-slide hidden min-h-full" data-spread="1">
+              <article class="p-6 sm:p-10 md:p-12 lg:p-14 max-w-4xl mx-auto flex flex-col justify-between min-h-full bg-[#faf8f2] book-page-content">
+                <div>
+                  <header class="flex items-center justify-between pb-3 mb-5 border-b border-[#e2dacf]">
+                    <span class="font-label-sm text-[11px] uppercase tracking-widest text-[#795548] font-bold">
+                      <?= e(ps_text('प्रदीप सारंग संकलन • अध्याय २ / ३', 'Pradeep Sarang Collection • Story 2 of 3')) ?>
+                    </span>
+                    <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+                      <span class="font-serif"><?= e(ps_text('अध्याय २', 'Story 2')) ?></span>
+                    </div>
+                  </header>
+
+                  <div class="flex items-center justify-center my-3">
+                    <div class="w-12 h-px bg-primary/40"></div>
+                    <span class="material-symbols-outlined text-primary mx-3 text-[20px]" style="font-variation-settings: 'FILL' 1;">local_florist</span>
+                    <div class="w-12 h-px bg-primary/40"></div>
+                  </div>
+
+                  <div class="text-center mb-5">
+                    <span class="inline-block px-3 py-1 rounded-full bg-[#e8f5e9] text-primary font-label-sm text-label-sm font-semibold mb-2">
+                      <?= e(ps_text('अवधी लोक-गद्य कथा • ग्राम्य जीवन', 'Awadhi Folk Story • Village Life')) ?>
+                    </span>
+                    <h1 class="font-headline-lg text-[32px] sm:text-[38px] leading-tight text-deep-forest tracking-tight mt-1 mb-2 font-bold">
+                      <?= e(ps_text('सुघरी', 'Sughari')) ?>
+                    </h1>
+                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md">
+                      <?= e(ps_text('"मेले जाने की खुशी और गोबर की खेप"', '"Joy of Village Fair & Cowdung Duty"')) ?>
+                    </p>
+                  </div>
+
+                  <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg mb-6 flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2">
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[17px]">history_edu</span>
+                      <span><?= e(ps_text('रचनाकार:', 'Author:')) ?> <strong><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></strong></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
+                      <span>१४ अप्रैल २०२६</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-deep-forest text-[17px]">yard</span>
+                      <span><?= e(ps_text('सतरिख देहात, अवध', 'Satrikh Countryside, Awadh')) ?></span>
+                    </div>
+                  </div>
+
+                  <!-- Complete Unified Narrative Prose -->
+                  <div class="space-y-4 prose-book font-headline-sm font-normal text-[16px] sm:text-[17px] leading-[1.8] text-justify text-[#2b302c]">
+                    <p>
+                      <span class="float-left text-[56px] leading-[46px] font-headline-lg font-bold text-primary mr-3 mt-1 pb-1">मे</span>ला जाय की खुशी मा, गोबर की खेप लइकै जाय रही सुघरी। आठ-नौ बरस केर उमर, बिखरे केस, फटल छींट केर घाँघरा अउर माथे पर गोबर भरी तसली। सबेरे से गाँव मा हल्ला रहा कि आजु गढ़ी वाले मेला मा झूला परिगा है, सर्कस आवा है अउर रंग-बिरंगी फिरकी मिलि रही है।
+                    </p>
+                    <p>
+                      सुघरी के मन मा मेला समावा रहा। उ तौ गोबर उठाय मा अइस फुर्ती देखावै मानौ बथान मा गोबर नहीं, मोती बिखरे हुवैं। गँवई गलियन मा नंगे पाँव दउड़त, गोड़ मा काँटा चुभै केर परवाह नाहिं। जब चारि तसला गोबर खेतन की ओसारा पहुँचाई लिहिस, तब माई हँसि कै आँचर के खूँट से दुइ रुपिया केर सिक्का निकारि के सुघरी के हथेली पर धरि दिहिस।
+                    </p>
+                    <p>
+                      सुघरी आपन दूनौ हाथ धोइकै, मुँह पर तनिक तेल पोति कै, चमकीला काँच के चूड़ी पहिनै का सपना देखै लागी। उ अपने लँगोटिया यारन का आवाज दिहिस—"अरे सुमितरा! अरे मंगला! चलो हो, देर होय रही है!" बचपन मा अभाव के बीचिव जौन आह्लाद मिलत है, उ आजु बड़े-बड़े महलन के वातानुकूलित कमरन मा ढूँढ़े नाहिं मिलत।
+                    </p>
+                    <p>
+                      मेला पहुँचत-पहुँचत सूरज माथे पर चढ़ि आवा रहा। धूलि उड़त रही, पिपिहरी बाजत रही, अउर जलेबी छानै वाले हलवाई के कड़ाह से मीठी महक उठि रही। सुघरी सबसे पहिले लाल-पीरी टिकुली वाले दूकान पर रुकि गई। दुइ रुपिया मा उका एक जोड़ी टिकुली अउर चारि ठी रबर वाली चूड़ी मिलि सकी।
+                    </p>
+
+                    <div class="my-5 p-4 rounded-lg bg-[#f3ede1] border-l-4 border-primary shadow-inner">
+                      <p class="font-quote-editorial italic text-deep-forest text-[18px] leading-relaxed text-center">
+                        "गाँव की मिट्टी मा पलै वाली बेटियन के हँसने मा जौन गंगा-यमुनी मिठास है, उ पूरे अवध की संस्कृति के आत्मा आही... थोड़े मा सन्तुष्ट रहब इनकर सबसे बड़ा संस्कार है।"
+                      </p>
+                    </div>
+
+                    <p>
+                      साँझ ढलै लागी। आसमान पर सुनहला धूप सिमिटै लाग। सुघरी घर लौटी तौ ओकरे चेहरे पर न थकावट रही, न गोड़ मा दर्द। बस आँखिन मा मेला के झूले घूम रहे थे। अम्मा पुछिस—"का बिटिया, मेला देखि आयौ?" सुघरी अपनी कलाई मा सजी कांच की हरी चूड़ी झनकावत बोलिस—"अम्मा! हमरा मेला बहुतै नीक लाग।"
+                    </p>
+                    <p>
+                      ई बात सुनिकै माई के आँखिन मा आँसू छलकि आये। उ बिटिया का छाती से लगाय लिहिस। गाँव के अभाव मा भी स्नेह के जौन बीज अंकुरित हुवत हैं, उहै भारतीय संस्कृति का असली प्राण आही।
+                    </p>
+
+                    <div class="my-4 p-4 rounded-lg bg-[#efe7d8] border border-[#decbb4]">
+                      <p class="font-bold text-deep-forest text-[16px] leading-relaxed">
+                        "सुघरी सिरफ याक लरिकी नाहिं, ई समूचे भारतवर्ष के उस हर देहाती बचपन केर प्रतीक आही जौन सीमित साधन मा भी असीम प्रसन्नता खोजि लेत है।"
+                      </p>
+                      <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footnote & Author Signoff -->
+                <footer class="mt-8 pt-4 border-t border-[#e2dacf]">
+                  <div class="bg-[#f8f5ed] border border-[#ebe4d5] p-3 rounded-md text-[13px] font-serif text-[#5f6861] mb-4">
+                    <div class="flex items-start gap-2">
+                      <span class="material-symbols-outlined text-primary text-[16px] mt-0.5">menu_book</span>
+                      <p><strong>*<?= e(ps_text('शब्दावली संदर्भ:', 'Vocabulary:')) ?></strong> <em>बथान</em> — मवेशियों के बाँधने की जगह; <em>तसला</em> — लोहे की परात।</p>
+                    </div>
+                  </div>
+                  <div class="flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center gap-2 text-primary opacity-80 mb-1">
+                      <span class="w-8 h-px bg-primary"></span>
+                      <span class="material-symbols-outlined text-[20px]">local_activity</span>
+                      <span class="w-8 h-px bg-primary"></span>
+                    </div>
+                    <p class="font-serif italic text-title-md text-deep-forest font-semibold">— श्री प्रदीप सारंग</p>
+                    <span class="font-label-sm text-[11px] text-text-muted"><?= e(ps_text('कथा संग्रह: माटी के गीत • सतरिख, बाराबंकी', 'Story Anthology: Songs of the Soil')) ?></span>
+                  </div>
+                </footer>
+              </article>
+            </div>
+
+            <!-- ================= STORY 3 (Spread 2): सारंग-हुण्डलियाँ ================= -->
+            <div class="spread-slide hidden min-h-full" data-spread="2">
+              <article class="p-6 sm:p-10 md:p-12 lg:p-14 max-w-4xl mx-auto flex flex-col justify-between min-h-full bg-[#faf8f2] book-page-content">
+                <div>
+                  <header class="flex items-center justify-between pb-3 mb-5 border-b border-[#e2dacf]">
+                    <span class="font-label-sm text-[11px] uppercase tracking-widest text-[#795548] font-bold">
+                      <?= e(ps_text('प्रदीप सारंग ग्रंथावली • अध्याय ३ / ३', 'Pradeep Sarang Collected Works • Story 3 of 3')) ?>
+                    </span>
+                    <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+                      <span class="font-serif"><?= e(ps_text('अध्याय ३', 'Story 3')) ?></span>
+                    </div>
+                  </header>
+
+                  <div class="flex items-center justify-center my-3">
+                    <div class="w-12 h-px bg-secondary/40"></div>
+                    <span class="material-symbols-outlined text-secondary mx-3 text-[20px]" style="font-variation-settings: 'FILL' 1;">stylus_note</span>
+                    <div class="w-12 h-px bg-secondary/40"></div>
+                  </div>
+
+                  <div class="text-center mb-5">
+                    <span class="inline-block px-3 py-1 rounded-full bg-[#fdf3ef] text-secondary font-label-sm text-label-sm font-semibold mb-2">
+                      <?= e(ps_text('अवधी काव्य-चिन्तन • कुण्डलिया छंद', 'Awadhi Poetic Verses')) ?>
+                    </span>
+                    <h1 class="font-headline-lg text-[32px] sm:text-[38px] leading-tight text-deep-forest tracking-tight mt-1 mb-2 font-bold">
+                      <?= e(ps_text('सारंग-कुण्डलियाँ', 'Sarang Kundaliyan')) ?>
+                    </h1>
+                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md">
+                      <?= e(ps_text('"पेड़, पखेरू, नदियाँ और मनुष्य की अस्मिता"', '"Trees, Birds, Rivers & Human Dignity"')) ?>
+                    </p>
+                  </div>
+
+                  <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg mb-5 flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2">
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[17px]">auto_stories</span>
+                      <span><?= e(ps_text('रचना:', 'Verses:')) ?> <strong><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></strong></span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
+                      <span>२ मई २०२६</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-deep-forest text-[17px]">forest</span>
+                      <span><?= e(ps_text('ग्रीन गैंग पर्यावरण काव्य', 'Green Gang Eco Verses')) ?></span>
+                    </div>
+                  </div>
+
+                  <div class="space-y-5 prose-book font-headline-sm font-normal text-[16px] sm:text-[17px] leading-[1.8] text-justify text-[#2b302c]">
+                    <!-- Poetry Block 1 -->
+                    <div class="p-4 rounded-xl bg-[#fdfbf6] border border-[#e5dccf] shadow-xs">
+                      <p class="font-serif font-semibold text-deep-forest text-center leading-relaxed">
+                        रूख-बिरिछ सब काटिके, बनल शहर महान।<br/>
+                        पखेरू ढूँढत घोंसला, रोवत आजु विहान॥<br/>
+                        रोवत आजु विहान, कहाँ अब सुआ बसेरा?<br/>
+                        सीमेंट के जंगलन मा, भवा साँझि-सवेरा॥<br/>
+                        कह सारंग कविराय, सुनो ओ बुद्धि निधाना।<br/>
+                        बिना रूख के सांसु का, मोल न कबहूँ जाना॥
+                      </p>
+                    </div>
+
+                    <!-- Poetry Block 2 -->
+                    <div class="p-4 rounded-xl bg-[#fdfbf6] border border-[#e5dccf] shadow-xs">
+                      <p class="font-serif font-semibold text-secondary text-center leading-relaxed">
+                        ताल-तलइया पाटिके, रच्यो भवन चौताल।<br/>
+                        बूँद-बूँद तरसत धरा, बिगड़ि गवा सब हाल॥<br/>
+                        बिगड़ि गवा सब हाल, नदी कल्याणी सूखै।<br/>
+                        मछरी जल बिन तड़पै, तृष्णा जग मा भूखै॥<br/>
+                        जागौ नवयुवकन सब, माटी धरम निबाहौ।<br/>
+                        गाँव-गाँव मा हरियर, अमराई महकाहौ॥
+                      </p>
+                    </div>
+
+                    <p class="text-[15px] text-[#4a554d] italic text-center">
+                      <?= e(ps_text('कुण्डलिया अवध का प्राण-छंद है, जहाँ प्रथम दोहे का अंतिम चरण रोला का प्रथम चरण बनकर लोक-कंठ का स्वर बन जाता है।', 'Kundaliya is the soul-verse of Awadh where the last line of the couplet becomes the first line of Rola.')) ?>
+                    </p>
+                  </div>
+                </div>
+
+                <footer class="mt-8 pt-3 bg-[#f8f5ed] border border-[#ebe4d5] p-3 rounded-md text-[13px] font-serif text-[#5f6861]">
+                  <div class="flex items-start gap-2">
+                    <span class="material-symbols-outlined text-secondary text-[16px] mt-0.5">format_quote</span>
+                    <p><strong>*<?= e(ps_text('छंद विधान:', 'Prosody:')) ?></strong> <?= e(ps_text('कुण्डलिया छंद में ६ चरण होते हैं—दो चरण दोहा और चार चरण रोला।', 'Kundaliya verse comprises 6 lines—2 lines Doha and 4 lines Rola.')) ?></p>
+                  </div>
+                </footer>
+              </article>
+
+              <!-- Right Page: Spread 3 (पृष्ठ ३९) -->
+              <article class="relative p-6 sm:p-10 md:p-12 lg:p-14 lg:pl-16 flex flex-col justify-between overflow-hidden bg-[#faf8f2] book-right-page">
+                <div>
+                  <header class="flex items-center justify-between pb-3 mb-5 border-b border-[#e2dacf]">
+                    <div class="flex items-center gap-1 text-on-surface-variant font-label-sm text-label-sm">
+                      <span class="font-serif"><?= e(ps_text('पृष्ठ ३९', 'Page 39')) ?></span>
+                    </div>
+                    <span class="font-label-sm text-[11px] uppercase tracking-widest text-[#795548] font-bold">
+                      <?= e(ps_text('पृष्ठ ३९ • संकल्प दोहावली व जीवन-गीत', 'Page 39 • Anthem & Couplets')) ?>
+                    </span>
+                  </header>
+
+                  <div class="space-y-4 prose-book font-headline-sm font-normal text-[16px] sm:text-[17px] leading-[1.8] text-justify text-[#2b302c]">
+                    <!-- Master Anthem Quote -->
+                    <div class="p-5 rounded-2xl bg-[#0d3b1f] text-[#f0fdf1] shadow-md border border-[#1e6138] text-center my-3">
+                      <span class="block font-label-sm text-fresh-sprout uppercase tracking-widest font-bold mb-2">
+                        — <?= e(ps_text('सारंग जी का संकल्प-गीत', 'Sarang Ji\'s Anthem')) ?> —
+                      </span>
+                      <blockquote class="font-serif text-[20px] sm:text-[22px] leading-relaxed italic">
+                        “हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>
+                        जुगनुओं का संग है, इंसानियत का मीत हूँ।”
+                      </blockquote>
+                      <span class="block text-xs text-primary-fixed mt-3"><?= e(ps_text('अवधी व जन-संघर्ष के चार दशक (1986 - 2026)', 'Four Decades of Service & Awadhi Literature (1986 - 2026)')) ?></span>
+                    </div>
+
+                    <div class="space-y-3 pt-2">
+                      <h4 class="font-title-md text-title-md text-deep-forest font-bold border-b border-[#e2dacf] pb-1">
+                        <?= e(ps_text('पर्यावरण व सामाजिक दोहावली:', 'Environmental & Social Couplets:')) ?>
+                      </h4>
+                      <div class="p-3.5 bg-[#f5efe4] rounded-lg border-l-4 border-secondary font-serif text-[16px] leading-relaxed">
+                        <p class="font-bold text-[#3c2f27]">
+                          "याक पेड़ जे रोपिहै, दस पुरखन का त्राण।<br/>
+                          छाँह देइ अउर फल देइ, माटी का कल्यान॥"
+                        </p>
+                      </div>
+                      <div class="p-3.5 bg-[#f5efe4] rounded-lg border-l-4 border-primary font-serif text-[16px] leading-relaxed">
+                        <p class="font-bold text-deep-forest">
+                          "साँच कहै मा डर नहीं, चाहे होइ विरोध।<br/>
+                          सत्यमेव की राह पर, मिटि जात सब क्रोध॥"
+                        </p>
+                      </div>
+                      <div class="p-3.5 bg-[#f5efe4] rounded-lg border-l-4 border-[#b45309] font-serif text-[16px] leading-relaxed">
+                        <p class="font-bold text-[#78350f]">
+                          "गाँव बचिहै तब देश बचिहै, सुनहु कान लगाय।<br/>
+                          अवधी भाषा मा अमृत, जो पियै सो तर जाय॥"
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <footer class="mt-8 pt-4 flex flex-col items-center justify-center text-center border-t border-[#e2dacf]">
+                  <div class="flex items-center gap-2 text-secondary opacity-80 mb-2">
+                    <span class="w-8 h-px bg-secondary"></span>
+                    <span class="material-symbols-outlined text-[20px]">verified</span>
+                    <span class="w-8 h-px bg-secondary"></span>
+                  </div>
+                  <p class="font-serif italic text-title-md text-deep-forest font-semibold">
+                    — श्री प्रदीप सारंग
+                  </p>
+                  <span class="font-label-sm text-[11px] text-text-muted"><?= e(ps_text('संपादक: सन्दौली टाइम्स • संस्थापक: ग्रीन गैंग बाराबंकी', 'Editor: Sandauli Times • Founder: Green Gang Barabanki')) ?></span>
+                </footer>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Book Spread Floating Bottom Interactive Controls -->
+      <div class="flex flex-wrap items-center justify-between gap-3 mt-space-md text-cream-canvas font-label-sm text-label-sm">
+        <div class="flex items-center gap-2">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-fresh-sprout animate-pulse"></span>
+          <span id="book-footer-title"><?= e(ps_text('प्रदीप सारंग संस्मरण डिजिटल ग्रंथावली (संस्करण 2026)', 'Pradeep Sarang Memoir Digital Archives (2026 Edition)')) ?></span>
+        </div>
+        <div class="flex items-center gap-2 sm:gap-3">
+          <button type="button" class="px-3.5 py-2 rounded-lg bg-deep-forest/90 hover:bg-deep-forest disabled:opacity-40 disabled:cursor-not-allowed text-pure-white flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer" id="btn-prev-page">
+            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span><?= e(ps_text('पिछला पृष्ठ', 'Previous Page')) ?></span>
+          </button>
+          <span class="text-surface-variant font-mono text-sm px-2 py-1 rounded bg-black/40 border border-white/10" id="page-counter-badge">१ / ३</span>
+          <button type="button" class="px-3.5 py-2 rounded-lg bg-deep-forest/90 hover:bg-deep-forest disabled:opacity-40 disabled:cursor-not-allowed text-pure-white flex items-center gap-1.5 transition-all shadow-sm active:scale-95 cursor-pointer" id="btn-next-page">
+            <span><?= e(ps_text('अगला पृष्ठ', 'Next Page')) ?></span>
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. POST-BOOK CONTENT AREA -->
+  <!-- 4A. Awadhi Lexicon Drawer -->
+  <section class="max-w-container-max mx-auto px-4 sm:px-8 py-space-2xl w-full">
+    <div class="bg-soft-meadow border border-border-warm rounded-2xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+      <div class="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-bl-full pointer-events-none"></div>
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-6">
+        <div class="space-y-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#fdf3ef] text-secondary font-label-sm text-label-sm font-semibold">
+            <span class="material-symbols-outlined text-[15px]">translate</span>
+            <span><?= e(ps_text('अवधी लोक-शब्दावली मंजूषा (Awadhi Lexicon)', 'Awadhi Dialect Lexicon')) ?></span>
+          </div>
+          <h2 class="font-headline-md text-title-lg md:text-headline-md text-deep-forest font-bold">
+            <?= e(ps_text('इस संस्मरण में प्रयुक्त ठेठ अवधी शब्दों के अर्थ', 'Meanings of Authentic Awadhi Dialect Terms')) ?>
+          </h2>
+        </div>
+        <span class="font-label-sm text-label-sm text-text-muted">
+          <?= e(ps_text('बाराबंकी जनपद की बोलचाल से संकलित', 'Compiled from local Barabanki vernacular')) ?>
+        </span>
+      </div>
+
+      <!-- Vocabulary Grid: 6 Items -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-secondary font-bold font-headline-sm text-title-md">झरिहख</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('अनवरत कई दिनों तक चलने वाली लगातार धीमी फुहार व मूसलाधार बारिश।', 'Continuous drizzle and rain lasting uninterruptedly for days.')) ?>
+          </p>
+        </div>
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-deep-forest font-bold font-headline-sm text-title-md">घरैतिन</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('गृहस्वामिनी, घर की मालकिन अथवा धर्मपत्नी के लिए आदरसूचक शब्द।', 'Respectful Awadhi term for homemaker or wife.')) ?>
+          </p>
+        </div>
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-secondary font-bold font-headline-sm text-title-md">कनकी</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('चावल का खंडित टुकड़ा (खंढा), जो पक्षियों को चुगाने के काम आता है।', 'Broken rice grains fed to birds.')) ?>
+          </p>
+        </div>
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-deep-forest font-bold font-headline-sm text-title-md">हरहा गोरु</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('हल जोतने वाले बैल एवं मवेशी जानवर, जो खूंटे पर बंधे रहते हैं।', 'Ploughing oxen and farm cattle tethered at posts.')) ?>
+          </p>
+        </div>
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-secondary font-bold font-headline-sm text-title-md">सुरा बघ्घी</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('अवध क्षेत्र का प्रसिद्ध पारंपरिक चौपाल खेल (बकरी और बाघ का खेल)।', 'Traditional Awadhi chaupal game of goats and tigers.')) ?>
+          </p>
+        </div>
+        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
+          <span class="text-deep-forest font-bold font-headline-sm text-title-md">ओसारा</span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <p class="font-body-sm text-body-sm text-on-surface mt-2">
+            <?= e(ps_text('मकान के सामने बना बरामदा या छज्जे के नीचे की बैठक जहाँ चौपाल लगती है।', 'Shaded front verandah or porch of a rural home.')) ?>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4B. Social Share Strip -->
+  <section class="max-w-container-max mx-auto px-4 sm:px-8 pb-space-2xl w-full">
+    <div class="bg-pure-white border border-border-warm rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-[28px]">share</span>
+        <div>
+          <h3 class="font-title-md text-title-md text-on-surface font-bold"><?= e(ps_text('इस संस्मरण को साझा करें', 'Share this Memoir')) ?></h3>
+          <p class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('अवधी भाषा और ग्रामीण जीवन के यथार्थ को जन-जन तक पहुँचाएँ', 'Spread Awadhi literature and rural heritage with readers')) ?></p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <?php 
+        $shareUrl = base_url('/blog/' . ($post['slug'] ?? ''));
+        $shareText = $postTitle . ' - ' . ps_excerpt(['excerpt' => $postExcerpt], 120);
+        ?>
+        <a href="https://api.whatsapp.com/send?text=<?= urlencode($shareText . "\n\n" . $shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#25D366]/15 text-[#128C7E] hover:bg-[#25D366] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+          <span>Facebook</span>
+        </a>
+        <a href="https://twitter.com/intent/tweet?text=<?= urlencode($postTitle) ?>&url=<?= urlencode($shareUrl) ?>&hashtags=PradeepSarang,AwadhiLiterature" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-black/5 text-on-surface hover:bg-black hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+          <span>Twitter/X</span>
+        </a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] hover:bg-[#0A66C2] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+          <span>LinkedIn</span>
+        </a>
+        <button type="button" class="px-3.5 py-2 rounded-lg bg-surface-container text-deep-forest hover:bg-surface-container-high transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold cursor-pointer" id="copy-link-btn">
+          <span class="material-symbols-outlined text-[17px]">content_copy</span>
+          <span id="copy-text-label"><?= e(ps_text('लिंक कॉपी करें', 'Copy Link')) ?></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4C. Author Bio Card -->
+  <section class="max-w-container-max mx-auto px-4 sm:px-8 pb-space-3xl w-full">
+    <div class="bg-pure-white border border-border-warm rounded-2xl shadow-sm p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+      <div class="md:col-span-4 flex flex-col items-center text-center">
+        <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-md relative group">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV_HGESOnSGI8q8ywujcEK6vRtVsOrdz502F3M5Z3_iBt-apeIJvCT2qEGffDgf8Hfw3Trl6b4LOb0u23MwhSMq1XATA2O5p6C7IszVlI0mgmGc1XsnvwEBgG9k4M5un7ZUweEDJAYP3NFJTvABtAibY-POBUWwX4dxzERa9DsVb1z2_UJ7sQSkS8sCpvCTx4WZfu5t9HvRgWa45RYIVUJREA6xPYv0Ptsgz_zk346-4A4ws_a5mPu" alt="<?= e($postAuthor) ?>" class="w-full h-full object-cover">
+        </div>
+        <h3 class="font-headline-sm text-title-lg text-deep-forest mt-4 mb-0.5 font-bold"><?= e($postAuthor) ?></h3>
+        <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता', 'Senior Awadhi Author & Environmentalist')) ?></span>
+        <span class="font-label-sm text-text-muted text-[12px] mt-1"><?= e(ps_text('कमरावां, सतरिख, बाराबंकी (उ० प्र०)', 'Kamrawan, Satrikh, Barabanki (U.P.)')) ?></span>
+      </div>
+
+      <div class="md:col-span-8 space-y-3">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-semibold">
+          <span class="material-symbols-outlined text-[16px]">psychology_alt</span>
+          <span><?= e(ps_text('साहित्यिक व जमीनी सरोकार', 'Literary & Social Legacy')) ?></span>
+        </div>
+        <p class="font-body-md text-body-md text-on-surface leading-relaxed">
+          <?= e(ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Shri Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.')) ?>
+        </p>
+        <div class="p-3.5 rounded-xl bg-soft-meadow border-l-4 border-secondary">
+          <blockquote class="font-quote-editorial italic text-deep-forest text-body-md sm:text-body-lg">
+            “<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.')) ?>”
+          </blockquote>
+          <cite class="block font-label-sm text-label-sm text-secondary uppercase tracking-wider mt-1 not-italic font-bold">
+            — Pradeep Sarang
+          </cite>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-1">
+          <a href="<?= e(base_url('/about')) ?>" data-path="about" class="px-4 py-2 rounded-lg bg-deep-forest text-on-primary font-title-md text-body-sm hover:bg-primary transition-colors inline-flex items-center gap-1.5 shadow-sm font-semibold">
+            <span class="material-symbols-outlined text-[17px]">person</span>
+            <span><?= e(ps_text('संपूर्ण जीवनी व कृतियाँ', 'Full Biography')) ?></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4D. Author Opinion Disclaimer Banner -->
+  <section class="max-w-container-max mx-auto px-4 sm:px-8 pb-space-2xl w-full">
+    <div class="bg-pure-white border border-border-warm rounded-2xl p-5 sm:p-6 shadow-sm flex items-start gap-4">
+      <div class="w-10 h-10 rounded-xl bg-primary-fixed/40 text-deep-forest flex items-center justify-center shrink-0 mt-0.5">
+        <span class="material-symbols-outlined text-[22px]">gavel</span>
+      </div>
+      <div class="space-y-1">
+        <h4 class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-2">
+          <span><?= e(ps_text('लेखक विचार अस्वीकरण (Editorial & Author Disclaimer)', 'Editorial & Author Disclaimer')) ?></span>
+        </h4>
+        <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
+          <?= e(ps_text('इस आलेख में व्यक्त किए गए विचार, अनुभव और विश्लेषण पूर्णतः लेखक के व्यक्तिगत विचार हैं। वेबसाइट एवं संपादकीय मंडल आलेख में व्यक्त निजी दृष्टिकोण की स्वतंत्रता का सम्मान करता है। विस्तृत कानूनी शर्तों व नीतियों के लिए कृपया हमारी ', 'The views, thoughts, and opinions expressed in this article belong solely to the author. For detailed legal disclosures, please review our ')) ?>
+          <a href="<?= e(base_url('/disclaimer')) ?>" class="text-primary font-semibold underline hover:text-deep-forest transition-colors"><?= e(ps_text('अस्वीकरण नीति (Disclaimer)', 'Disclaimer Policy')) ?></a> 
+          <?= e(ps_text('एवं ', 'and ')) ?>
+          <a href="<?= e(base_url('/editorial-policy')) ?>" class="text-primary font-semibold underline hover:text-deep-forest transition-colors"><?= e(ps_text('संपादकीय नीति (Editorial Policy)', 'Editorial Policy')) ?></a> 
+          <?= e(ps_text('देखें।', 'page.')) ?>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4D. Related Literary Posts -->
+  <section class="w-full bg-soft-meadow py-space-3xl border-t border-b border-border-warm">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8 space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+        <div>
+          <span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider"><?= e(ps_text('साहित्य संचयन', 'Literary Collection')) ?></span>
+          <h2 class="font-headline-md text-headline-sm sm:text-headline-md text-deep-forest font-bold mt-1">
+            <?= e(ps_text('संबंधित अवधी कृतियाँ व अन्य आलेख', 'Related Awadhi Works & Articles')) ?>
+          </h2>
+        </div>
+        <a href="<?= e(base_url('/blog')) ?>" data-path="blog-and-thoughts" class="inline-flex items-center gap-1 text-primary font-title-md text-body-sm hover:underline font-semibold">
+          <span><?= e(ps_text('सभी आलेख देखें', 'View All Articles')) ?></span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1: Sughari -->
+        <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden bg-surface-container">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrKtLSe64AU488fJTZBuM65tcMgcT9hnPZL_iAs2EWbWOp3JQDyCSCxGdBw40e3KQzfN6d1CVDlPEsGuW11Dl-4zXnoHuthTcsWKAZnvSy1a1vn4ZwNYLQXSZjkahLGPolIV3eJXioN7Sdz2ziNY7egXAbvfvgCACNNSB-HUKL0wAqsgajWeTU2ZAr99tBSTxlzwGA2ueC6GiiJ09c2jjjcwCWGXU2wFLxWRe6795Pg3ox4uCQZLSt" alt="Sughari Story" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-deep-forest/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
+                <?= e(ps_text('अवधी लोक-गद्य कथा', 'Folk Story')) ?>
+              </span>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="font-label-sm text-label-sm text-text-muted">14 April 2026 • 8 min read</span>
+              <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
+                <?= e(ps_text('सुघरी: मेले जाने की खुशी और गोबर की खेप', 'Sughari: Fair Day & Cowdung Duty')) ?>
+              </h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                <?= e(ps_text('गाँव की नन्ही बालिका सुघरी का मेला देखने का सहज उल्लास और ग्रामीण परिवार की आर्थिक जद्दोजहद की मर्मस्पर्शी दास्तान।', 'A touching tale of young Sughari\'s innocent excitement for the village fair despite rural poverty.')) ?>
+              </p>
+            </div>
+          </div>
+          <div class="p-5 pt-0">
+            <button type="button" data-jump="1" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold quick-spread-jump cursor-pointer">
+              <span><?= e(ps_text('यह कथा अभी पढ़ें (पृष्ठ ३६)', 'Read Story (Page 36)')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">auto_stories</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 2: Sarang Kundaliyan -->
+        <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden bg-surface-container">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL8aKhU1T9o4laEJQkm-Vy4ETDmuC7wsFdZu7NniuUZZAvdmRhc4w_waeferG7LsBy8pSLnoDcmmJYbpxxdNvcC1E01DyqhzpymAjhPL4xQnivsS_7mcBhsPbzfnI_kbhO8E2-LbQx3A78S8uWBhIq2-RnCZtYuMJ1j3y6lF5kIF4rmiSBMgzak9LduBrj4XcaLANgA6RJejL9gjGlNPpY_XdovtTLY5uvL1k8fvLlEC225PeC8fmV" alt="Sarang Kundaliyan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-secondary/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
+                <?= e(ps_text('सारंग-कुण्डलियाँ', 'Kundaliyan')) ?>
+              </span>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="font-label-sm text-label-sm text-text-muted">02 May 2026 • 15 min read</span>
+              <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
+                <?= e(ps_text('सारंग-कुण्डलियों की रचना यात्रा', 'Sarang Kundaliyan Composition')) ?>
+              </h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                <?= e(ps_text('अवधी छंदशास्त्र की कुण्डलिया विधा में जन-आंदोलन, पर्यावरण चेतना और सामाजिक विसंगतियों पर सारंग जी की मौलिक सर्जना।', 'Sarang Ji\'s original Kundaliyan poetic verses on environmental protection and Awadhi heritage.')) ?>
+              </p>
+            </div>
+          </div>
+          <div class="p-5 pt-0">
+            <button type="button" data-jump="2" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold quick-spread-jump cursor-pointer">
+              <span><?= e(ps_text('यह कुण्डलियाँ पढ़ें (पृष्ठ ३८)', 'Read Verses (Page 38)')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">auto_stories</span>
+            </button>
+          </div>
+        </article>
+
+        <!-- Card 3: Paryavaran -->
+        <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
+          <div>
+            <div class="relative h-48 overflow-hidden bg-surface-container">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxhfUdnkye5LYd0dWYqemLO-3XrnY5wk_cajgF7G0aq3jUl_vLXXcqX9lHUVBtcX6FqNDUKh-OhvAPL1TtrtIx-WbyJeJFWlONFde93aKzqWWYgfhsCaYBMuB06PM4dddy5rDZFH7a0tdTM-vWFWezWdJo1aRIDiVmJNTHonikM2b2SkrWQ9tbzhKnA1kUK9k_nPcnIdu1E8CrO_u3NAaZ0RSsK9wbf6Cw0HWdN0tMReGUZidzVt9K" alt="Paryavaran" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#b45309]/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
+                <?= e(ps_text('पर्यावरण एवं नदियाँ', 'Environment & Rivers')) ?>
+              </span>
+            </div>
+            <div class="p-5 space-y-2">
+              <span class="font-label-sm text-label-sm text-text-muted">28 April 2026 • 10 min read</span>
+              <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
+                <?= e(ps_text('सूखते ताल और बेजुबान परिंदों की पुकार', 'Drying Ponds & Plight of Birds')) ?>
+              </h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                <?= e(ps_text('बाराबंकी के ऐतिहासिक वेटलैंड्स, कल्याणी नदी के जल-प्रवाह और सिमटते जलीय पारितंत्र के पुनर्जीवन की जमीनी पड़ताल।', 'A ground investigation into Barabanki wetlands and Kalyani river revival.')) ?>
+              </p>
+            </div>
+          </div>
+          <div class="p-5 pt-0">
+            <a href="<?= e(base_url('/campaigns')) ?>" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold">
+              <span><?= e(ps_text('जाँच रिपोर्ट पढ़ें', 'Read Field Report')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4E. Community Comments & Reflections Section -->
+  <section class="max-w-container-editorial mx-auto px-4 sm:px-6 w-full py-space-3xl">
+    <div class="space-y-6">
+      <div class="flex items-center justify-between pb-2 border-b border-border-warm">
+        <div>
+          <h3 class="font-headline-sm text-title-lg sm:text-headline-sm text-deep-forest font-bold">
+            <?= e(ps_text('पाठक प्रतिक्रिया व संस्मरण (Comments)', 'Reader Reflections & Comments')) ?>
+          </h3>
+          <p class="font-body-sm text-body-sm text-text-muted">
+            <?= e(ps_text('झरिहख और अपने गाँव के बचपन की बारिश की स्मृतियाँ साझा करें', 'Share your memories of village rain and Awadhi heritage')) ?>
+          </p>
+        </div>
+        <span class="px-3 py-1 rounded-full bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-bold border border-border-warm">
+          २ <?= e(ps_text('विचार', 'Comments')) ?>
+        </span>
+      </div>
+
+      <!-- Comment Submission Form -->
+      <div class="bg-pure-white border border-border-warm rounded-2xl p-5 sm:p-6 shadow-sm">
+        <form id="reader-comment-form" onsubmit="event.preventDefault(); alert('<?= e(ps_text('आपकी टिप्पणी सफलतापूर्वक दर्ज कर ली गई है।', 'Your reflection has been submitted successfully!')) ?>'); this.reset();" class="space-y-4">
+          <div>
+            <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold">
+              <?= e(ps_text('आपकी टिप्पणी अथवा बचपन का अवधी संस्मरण:', 'Your Reflection or Childhood Memoir:')) ?>
+            </label>
+            <textarea rows="4" required placeholder="<?= e(ps_text('झरिहख पढ़कर आपको अपने गाँव या बचपन की कौन सी बात याद आई? यहाँ लिखें...', 'Write your reflections or village memories here...')) ?>" class="w-full px-4 py-3 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"></textarea>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold"><?= e(ps_text('आपका शुभ नाम:', 'Your Full Name:')) ?></label>
+              <input type="text" required placeholder="<?= e(ps_text('उदा. रामनारायण वर्मा', 'e.g. Ramnarayan Verma')) ?>" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
+            </div>
+            <div>
+              <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold"><?= e(ps_text('ईमेल पता (अप्रकाशित रहेगा):', 'Email Address (Kept Private):')) ?></label>
+              <input type="email" required placeholder="name@domain.com" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
+            </div>
+          </div>
+          <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" id="save-info" class="rounded text-primary focus:ring-primary border-border-warm">
+              <label for="save-info" class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('अगली बार टिप्पणी के लिए मेरा विवरण सुरक्षित रखें', 'Save details for future comments')) ?></label>
+            </div>
+            <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary text-on-primary font-title-md text-body-sm hover:bg-deep-forest transition-all shadow-sm font-semibold cursor-pointer">
+              <?= e(ps_text('संस्मरण भेजें', 'Submit Reflection')) ?>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Published Reader Comments -->
+      <div class="space-y-4">
+        <article class="p-5 sm:p-6 rounded-2xl bg-pure-white border border-border-warm shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-soft-meadow text-deep-forest font-bold flex items-center justify-center font-serif text-title-md shadow-inner border border-border-warm">
+                वि
+              </div>
+              <div>
+                <h4 class="font-title-md text-body-md font-bold text-on-surface">विनोद कुमार मिश्र</h4>
+                <span class="font-label-sm text-label-sm text-text-muted">हैदरगढ़, बाराबंकी • 20 May 2026</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-fresh-sprout text-[20px]" title="<?= e(ps_text('सत्यापित पाठक', 'Verified Reader')) ?>">verified</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            "सारंग दादा! आपने 'झरिहख' शब्द के साथ पूरे बचपन को आँगन में ला खड़ा किया। वह टीनशेड पर बूँदों का शोर, अम्मा का चूल्हे की बची आग बाहर निकाल कर कपड़े सेंकना... आज सीमेंट के कमरों में वह सोंधी खुशबू और वह अपनापा कहीं खो गया है। अवधी गद्य में ऐसा प्रामाणिक चित्रण विरले ही मिलता है।"
+          </p>
+        </article>
+
+        <article class="p-5 sm:p-6 rounded-2xl bg-pure-white border border-border-warm shadow-xs space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-[#fdf3ef] text-secondary font-bold flex items-center justify-center font-serif text-title-md shadow-inner border border-border-warm">
+                डॉ
+              </div>
+              <div>
+                <h4 class="font-title-md text-body-md font-bold text-on-surface">डॉ. सुधीर शुक्ला</h4>
+                <span class="font-label-sm text-label-sm text-text-muted">लखनऊ विश्वविद्यालय • 21 May 2026</span>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[20px]">format_quote</span>
+          </div>
+          <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            "श्रद्धेय डॉ. भगवान वत्स जी के प्रति व्यक्त आदर और राष्ट्रीय सेवा योजना की वह दृष्टि आज भी आपकी जीवनशैली में झलकती है। रात को 1 बजे तक अखबार का संपादन और सुबह पक्षियों का कलरव—यह संस्मरण मात्र एक आलेख नहीं, ग्रामीण जीवन का सांस्कृतिक दस्तावेज है।"
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Interactive 3D Page Flip, Soundwave & Reader Micro-Interactions Script -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Reading Progress Bar
-    const progressEl = document.getElementById('readingProgress');
-    const bookContent = document.getElementById('bookContent');
-    
-    window.addEventListener('scroll', function() {
-        if (!bookContent) return;
-        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-        if (totalHeight > 0) {
-            const scrollPercent = (window.scrollY / totalHeight) * 100;
-            progressEl.style.width = Math.min(100, Math.max(0, scrollPercent)) + '%';
+  (function() {
+    // 1. Spreads data and state
+    const spreads = document.querySelectorAll('.spread-slide');
+    const totalSpreads = spreads.length;
+    let currentSpreadIndex = 0;
+    let isAnimating = false;
+
+    const spreadMetadata = [
+      {
+        crumbCat: '<?= e(addslashes($postCategory)) ?>',
+        crumbTitle: '<?= e(addslashes($postTitle)) ?>',
+        pagesDisplay: '१ / ३',
+        footerDesc: '<?= e(ps_text("प्रदीप सारंग संस्मरण डिजिटल ग्रंथावली (संस्करण 2026)", "Pradeep Sarang Memoir Digital Archives (2026 Edition)")) ?>',
+        readingTime: '12 min read'
+      },
+      {
+        crumbCat: '<?= e(ps_text("अवधी लोक-गद्य कथा", "Awadhi Folk Story")) ?>',
+        crumbTitle: '<?= e(ps_text("सुघरी: मेला और गोबर की खेप", "Sughari: Fair & Cowdung Duty")) ?>',
+        pagesDisplay: '२ / ३',
+        footerDesc: '<?= e(ps_text("कथा संचयन: ग्रामीण बाल-जीवन व लोक-अनुभव", "Story Collection: Rural Childhood Experience")) ?>',
+        readingTime: '8 min read'
+      },
+      {
+        crumbCat: '<?= e(ps_text("काव्य-चिन्तन व छंद", "Awadhi Verses")) ?>',
+        crumbTitle: '<?= e(ps_text("सारंग-कुण्डलियाँ व संकल्प-गीत", "Sarang Kundaliyan & Anthem")) ?>',
+        pagesDisplay: '३ / ३',
+        footerDesc: '<?= e(ps_text("पर्यावरण व लोक-सरोकार कुण्डलियाँ (ग्रीन गैंग बाराबंकी)", "Eco Verses (Green Gang Barabanki)")) ?>',
+        readingTime: '10 min read'
+      }
+    ];
+
+    const btnPrev = document.getElementById('btn-prev-page');
+    const btnNext = document.getElementById('btn-next-page');
+    const btnTopPrev = document.getElementById('btn-top-prev-page');
+    const btnTopNext = document.getElementById('btn-top-next-page');
+    const btnBinderPrev = document.getElementById('btn-binder-prev-page');
+    const btnBinderNext = document.getElementById('btn-binder-next-page');
+    const pageBadge = document.getElementById('page-counter-badge');
+    const topPageBadge = document.getElementById('top-page-counter-badge');
+    const binderPageBadge = document.getElementById('binder-page-counter-badge');
+    const crumbCat = document.getElementById('crumb-category');
+    const crumbTitle = document.getElementById('crumb-title');
+    const footerTitle = document.getElementById('book-footer-title');
+    const readingBadge = document.getElementById('reading-time-badge');
+    const progressBar = document.getElementById('read-progress-fill');
+    const hotzoneLeft = document.getElementById('hotzone-left');
+    const hotzoneRight = document.getElementById('hotzone-right');
+
+    function updateControls() {
+      const isFirst = currentSpreadIndex === 0;
+      const isLast = currentSpreadIndex === totalSpreads - 1;
+
+      if (btnPrev) btnPrev.disabled = isFirst;
+      if (btnNext) btnNext.disabled = isLast;
+      if (btnTopPrev) btnTopPrev.disabled = isFirst;
+      if (btnTopNext) btnTopNext.disabled = isLast;
+      if (btnBinderPrev) btnBinderPrev.disabled = isFirst;
+      if (btnBinderNext) btnBinderNext.disabled = isLast;
+
+      const meta = spreadMetadata[currentSpreadIndex] || spreadMetadata[0];
+      if (pageBadge) pageBadge.textContent = meta.pagesDisplay;
+      if (topPageBadge) topPageBadge.textContent = meta.pagesDisplay;
+      if (binderPageBadge) binderPageBadge.textContent = meta.pagesDisplay;
+
+      if (crumbCat) crumbCat.textContent = meta.crumbCat;
+      if (crumbTitle) crumbTitle.textContent = meta.crumbTitle;
+      if (footerTitle) footerTitle.textContent = meta.footerDesc;
+      if (readingBadge) readingBadge.textContent = meta.readingTime;
+
+      // update reading progress
+      const percent = Math.round(((currentSpreadIndex + 1) / totalSpreads) * 100);
+      if (progressBar) progressBar.style.width = percent + '%';
+    }
+
+    function flipToSpread(targetIndex, direction) {
+      if (isAnimating || targetIndex < 0 || targetIndex >= totalSpreads || targetIndex === currentSpreadIndex) return;
+      isAnimating = true;
+
+      const currentSpread = spreads[currentSpreadIndex];
+      const nextSpread = spreads[targetIndex];
+
+      // Animate out current page slowly like opening a book
+      if (direction === 'forward') {
+        currentSpread.style.transformOrigin = 'left center';
+        nextSpread.style.transformOrigin = 'left center';
+
+        currentSpread.classList.remove('active');
+        currentSpread.classList.add('flip-next');
+        
+        setTimeout(() => {
+          currentSpread.classList.add('hidden');
+          currentSpread.classList.remove('flip-next');
+        }, 1100);
+
+        // Animate in target page
+        nextSpread.classList.remove('hidden');
+        nextSpread.classList.add('flip-prev');
+        void nextSpread.offsetWidth; // force reflow
+        setTimeout(() => {
+          nextSpread.classList.remove('flip-prev');
+          nextSpread.classList.add('active');
+        }, 50);
+      } else {
+        currentSpread.style.transformOrigin = 'right center';
+        nextSpread.style.transformOrigin = 'right center';
+
+        // Backward slow flip
+        currentSpread.classList.remove('active');
+        currentSpread.classList.add('flip-prev');
+        
+        setTimeout(() => {
+          currentSpread.classList.add('hidden');
+          currentSpread.classList.remove('flip-prev');
+        }, 1100);
+
+        nextSpread.classList.remove('hidden');
+        nextSpread.classList.add('flip-next');
+        void nextSpread.offsetWidth;
+        setTimeout(() => {
+          nextSpread.classList.remove('flip-next');
+          nextSpread.classList.add('active');
+        }, 50);
+      }
+
+      currentSpreadIndex = targetIndex;
+      updateControls();
+
+      setTimeout(() => {
+        isAnimating = false;
+      }, 1200);
+    }
+
+    // Next / Prev actions
+    if (btnNext) btnNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
+    if (btnPrev) btnPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
+    if (btnTopNext) btnTopNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
+    if (btnTopPrev) btnTopPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
+    if (btnBinderNext) btnBinderNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
+    if (btnBinderPrev) btnBinderPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
+    if (hotzoneRight) hotzoneRight.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
+    if (hotzoneLeft) hotzoneLeft.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
+
+    // Quick jumps from cards
+    const quickJumps = document.querySelectorAll('.quick-spread-jump');
+    quickJumps.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = parseInt(btn.getAttribute('data-jump'), 10);
+        if (!isNaN(target)) {
+          const dir = target > currentSpreadIndex ? 'forward' : 'backward';
+          flipToSpread(target, dir);
+          window.scrollTo({ top: 180, behavior: 'smooth' });
         }
+      });
     });
 
-    // 2. Font Size Controls
-    const bookPage = document.getElementById('bookPage');
-    let currentFontSize = 1.22; // rem
-    
-    document.getElementById('fontInc').addEventListener('click', function() {
-        if (currentFontSize < 1.7) {
-            currentFontSize += 0.1;
-            bookContent.style.fontSize = currentFontSize + 'rem';
-        }
-    });
-    
-    document.getElementById('fontDec').addEventListener('click', function() {
-        if (currentFontSize > 0.95) {
-            currentFontSize -= 0.1;
-            bookContent.style.fontSize = currentFontSize + 'rem';
-        }
-    });
-    
-    document.getElementById('fontReset').addEventListener('click', function() {
-        currentFontSize = 1.22;
-        bookContent.style.fontSize = '1.22rem';
+    // Keyboard navigation (ArrowLeft & ArrowRight)
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.key === 'ArrowRight') {
+        flipToSpread(currentSpreadIndex + 1, 'forward');
+      } else if (e.key === 'ArrowLeft') {
+        flipToSpread(currentSpreadIndex - 1, 'backward');
+      }
     });
 
-    // 3. Theme Switcher
-    const themeButtons = document.querySelectorAll('.theme-btn');
-    themeButtons.forEach(btn => {
-        btn.addEventListener('click', function() {
-            themeButtons.forEach(b => b.classList.remove('active'));
-            this.classList.add('active');
-            const theme = this.getAttribute('data-theme');
-            document.body.setAttribute('data-book-theme', theme);
-            try { localStorage.setItem('pradeep_book_theme', theme); } catch(e) {}
+    // 2. Font size adjustment for all book spreads
+    const proseElements = document.querySelectorAll('.prose-book');
+    const btnInc = document.getElementById('btn-font-inc');
+    const btnDec = document.getElementById('btn-font-dec');
+    let currentSize = 17;
+
+    if (btnInc && btnDec) {
+      btnInc.addEventListener('click', () => {
+        if (currentSize < 22) {
+          currentSize += 1;
+          proseElements.forEach(el => el.style.fontSize = currentSize + 'px');
+        }
+      });
+      btnDec.addEventListener('click', () => {
+        if (currentSize > 14) {
+          currentSize -= 1;
+          proseElements.forEach(el => el.style.fontSize = currentSize + 'px');
+        }
+      });
+    }
+
+    // 3. Serif / Sans toggle across spreads
+    const btnSerif = document.getElementById('btn-font-serif');
+    const btnSans = document.getElementById('btn-font-sans');
+    if (btnSerif && btnSans) {
+      btnSerif.addEventListener('click', () => {
+        proseElements.forEach(el => {
+          el.classList.remove('font-body-md');
+          el.classList.add('font-headline-sm');
         });
+        btnSerif.classList.add('bg-surface', 'text-deep-forest', 'font-bold');
+        btnSerif.classList.remove('text-on-surface-variant');
+        btnSans.classList.remove('bg-surface', 'text-deep-forest', 'font-bold');
+        btnSans.classList.add('text-on-surface-variant');
+      });
+
+      btnSans.addEventListener('click', () => {
+        proseElements.forEach(el => {
+          el.classList.remove('font-headline-sm');
+          el.classList.add('font-body-md');
+        });
+        btnSans.classList.add('bg-surface', 'text-deep-forest', 'font-bold');
+        btnSans.classList.remove('text-on-surface-variant');
+        btnSerif.classList.remove('bg-surface', 'text-deep-forest', 'font-bold');
+        btnSerif.classList.add('text-on-surface-variant');
+      });
+    }
+
+    // 4. Paper tone switcher
+    const bookSpread = document.getElementById('book-spread-paper');
+    const toneButtons = document.querySelectorAll('[data-tone]');
+    toneButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tone = btn.getAttribute('data-tone');
+        toneButtons.forEach(b => b.classList.remove('ring-2', 'ring-primary'));
+        btn.classList.add('ring-2', 'ring-primary');
+        
+        if (!bookSpread) return;
+        if (tone === 'tone-parchment') {
+          bookSpread.style.backgroundColor = '#fdfaf3';
+        } else if (tone === 'tone-ivory') {
+          bookSpread.style.backgroundColor = '#fcf9f2';
+        } else if (tone === 'tone-linen') {
+          bookSpread.style.backgroundColor = '#f4ede1';
+        }
+      });
     });
 
-    // Restore saved theme
-    try {
-        const savedTheme = localStorage.getItem('pradeep_book_theme');
-        if (savedTheme) {
-            const matchBtn = document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`);
-            if (matchBtn) matchBtn.click();
+    // 5. Audio Toggle with sound wave visualizer
+    const audioBtn = document.getElementById('audio-toggle-btn');
+    const visualizer = document.getElementById('audio-visualizer');
+    const audioText = document.getElementById('audio-btn-text');
+    let isPlaying = false;
+    if (audioBtn && visualizer && audioText) {
+      audioBtn.addEventListener('click', () => {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+          audioBtn.classList.replace('bg-primary-container', 'bg-secondary');
+          visualizer.innerHTML = `
+            <span class="w-1 bg-pure-white rounded-full sound-bar"></span>
+            <span class="w-1 bg-pure-white rounded-full sound-bar"></span>
+            <span class="w-1 bg-pure-white rounded-full sound-bar"></span>
+            <span class="w-1 bg-pure-white rounded-full sound-bar"></span>
+          `;
+          audioText.textContent = '<?= e(ps_text("सारंग जी का वाचन चल रहा है... [रोकें]", "Playing Audio Narration... [Stop]")) ?>';
+        } else {
+          audioBtn.classList.replace('bg-secondary', 'bg-primary-container');
+          visualizer.innerHTML = '<span class="material-symbols-outlined text-[16px]">volume_up</span>';
+          audioText.textContent = '<?= e(ps_text("सारंग जी के स्वर में सुनें (12:48)", "Listen in Sarang Ji\'s Voice (12:48)")) ?>';
         }
-    } catch(e) {}
-});
+      });
+    }
+
+    // 6. Copy Link Button
+    const copyBtn = document.getElementById('copy-link-btn');
+    const copyLabel = document.getElementById('copy-text-label');
+    if (copyBtn && copyLabel) {
+      copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href);
+        copyLabel.textContent = '<?= e(ps_text("लिंक कॉपी हो गया!", "Link Copied!")) ?>';
+        setTimeout(() => {
+          copyLabel.textContent = '<?= e(ps_text("लिंक कॉपी करें", "Copy Link")) ?>';
+        }, 2500);
+      });
+    }
+
+    // Initialize
+    updateControls();
+  })();
 </script>

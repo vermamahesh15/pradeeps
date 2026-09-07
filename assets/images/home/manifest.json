@@ -1,0 +1,464 @@
+{
+  "assets/images/slider_final_1.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/fd2b859c7707-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "assets/images/slider_final_2.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/f3f6bb8881d2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "assets/images/slider_final_3.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/1797ccf81809-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/1797ccf81809-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/1797ccf81809-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "assets/images/pradeepsarang.jpeg": {
+    "width": 1024,
+    "height": 1280,
+    "variants": [
+      {
+        "path": "assets/images/home/69c41ddcfa2b-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/69c41ddcfa2b-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb57703bd_674489575_26486795980983398_8037711403954449657_n.jpg": {
+    "width": 1012,
+    "height": 1025,
+    "variants": [
+      {
+        "path": "assets/images/home/608991e379a5-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/608991e379a5-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb5769ec4_634831113_25846243011705368_3828941456166600751_n.jpg": {
+    "width": 825,
+    "height": 1217,
+    "variants": [
+      {
+        "path": "assets/images/home/f191ed9d636e-480.webp",
+        "width": 480
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576da83_642769315_25956675840662084_10802377396645739_n.jpg": {
+    "width": 1080,
+    "height": 619,
+    "variants": [
+      {
+        "path": "assets/images/home/4d8bc8cc70bf-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/4d8bc8cc70bf-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576e495_652033966_26104868835842783_6089930884815090682_n.jpg": {
+    "width": 1080,
+    "height": 659,
+    "variants": [
+      {
+        "path": "assets/images/home/8ec86a54ef6e-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/8ec86a54ef6e-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576e022_649190291_26047597464903254_9163711197671179365_n.jpg": {
+    "width": 1080,
+    "height": 547,
+    "variants": [
+      {
+        "path": "assets/images/home/29c73b9784c2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/29c73b9784c2-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576fbb5_674132287_26422051387457858_3409087629023043762_n.jpg": {
+    "width": 1080,
+    "height": 683,
+    "variants": [
+      {
+        "path": "assets/images/home/525e02eb1ff2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/525e02eb1ff2-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576f1ce_657260059_26262671463395852_7035894797276566857_n.jpg": {
+    "width": 1080,
+    "height": 1272,
+    "variants": [
+      {
+        "path": "assets/images/home/5dc40cf162d3-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/5dc40cf162d3-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576ffc0_678532804_26483511071311889_8934515877594633716_n.jpg": {
+    "width": 1080,
+    "height": 857,
+    "variants": [
+      {
+        "path": "assets/images/home/ff9313013bb2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/ff9313013bb2-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb5770ea8_679415916_26486798837649779_41422773223746499_n.jpg": {
+    "width": 772,
+    "height": 690,
+    "variants": [
+      {
+        "path": "assets/images/home/48691c6499a3-480.webp",
+        "width": 480
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb577135b_679391795_26510559168607079_7220410891525364797_n.jpg": {
+    "width": 1080,
+    "height": 662,
+    "variants": [
+      {
+        "path": "assets/images/home/d7a37187eb39-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/d7a37187eb39-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576f795_670275204_26380771744919156_1569846932566999669_n.jpg": {
+    "width": 686,
+    "height": 709,
+    "variants": [
+      {
+        "path": "assets/images/home/85b5677bc5fd-480.webp",
+        "width": 480
+      }
+    ]
+  },
+  "uploads/newspaper/69edcfeb796bc_slider_final_1.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/fd2b859c7707-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576ed6e_659622156_26215140464815619_8808792171682889525_n.jpg": {
+    "width": 1080,
+    "height": 608,
+    "variants": [
+      {
+        "path": "assets/images/home/72ee81e32b9f-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/72ee81e32b9f-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb5770949_678520115_26486797864316543_2607136433220667995_n.jpg": {
+    "width": 760,
+    "height": 753,
+    "variants": [
+      {
+        "path": "assets/images/home/c39d68003aaa-480.webp",
+        "width": 480
+      }
+    ]
+  },
+  "uploads/newspaper/69eddb576e955_656246142_26168811656115167_9206028670738429331_n.jpg": {
+    "width": 1896,
+    "height": 872,
+    "variants": [
+      {
+        "path": "assets/images/home/07be21783275-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/07be21783275-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/07be21783275-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edce12c7957_slider_final_2.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/f3f6bb8881d2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edd6098e8c2_slider_final_1.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/fd2b859c7707-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/fd2b859c7707-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edd6098de58_slider_final_3.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/1797ccf81809-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/1797ccf81809-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/1797ccf81809-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edcd9a34a21_slider_final_2.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/f3f6bb8881d2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edd6098e3e2_slider_final_2.jpg": {
+    "width": 1600,
+    "height": 900,
+    "variants": [
+      {
+        "path": "assets/images/home/f3f6bb8881d2-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/f3f6bb8881d2-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69ee19ac9dac4_sardar_patel_optimized.jpg": {
+    "width": 1122,
+    "height": 1402,
+    "variants": [
+      {
+        "path": "assets/images/home/e8628ac3989a-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/e8628ac3989a-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/69edd6098f33e_slider2.jpeg": {
+    "width": 1280,
+    "height": 853,
+    "variants": [
+      {
+        "path": "assets/images/home/14ef599e06ed-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/14ef599e06ed-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/69edd6098ee23_slider3.jpeg": {
+    "width": 2048,
+    "height": 1365,
+    "variants": [
+      {
+        "path": "assets/images/home/68028a1ada40-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/68028a1ada40-960.webp",
+        "width": 960
+      },
+      {
+        "path": "assets/images/home/68028a1ada40-1440.webp",
+        "width": 1440
+      }
+    ]
+  },
+  "uploads/69edd6098f732_slider1.jpeg": {
+    "width": 1280,
+    "height": 720,
+    "variants": [
+      {
+        "path": "assets/images/home/a8b84c294663-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/a8b84c294663-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/69eddd34de768_pradeepsarang.png": {
+    "width": 1122,
+    "height": 1402,
+    "variants": [
+      {
+        "path": "assets/images/home/cacfc426e6c8-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/cacfc426e6c8-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/69eddd5d31818_pradeepsarang.png": {
+    "width": 1122,
+    "height": 1402,
+    "variants": [
+      {
+        "path": "assets/images/home/cacfc426e6c8-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/cacfc426e6c8-960.webp",
+        "width": 960
+      }
+    ]
+  },
+  "uploads/69eddd0d11f6e_pradeepsarang.png": {
+    "width": 1122,
+    "height": 1402,
+    "variants": [
+      {
+        "path": "assets/images/home/cacfc426e6c8-480.webp",
+        "width": 480
+      },
+      {
+        "path": "assets/images/home/cacfc426e6c8-960.webp",
+        "width": 960
+      }
+    ]
+  }
+}

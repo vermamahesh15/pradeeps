@@ -13,7 +13,7 @@ if (!$v) exit('Volunteer not found');
 ?>
 <div class="id-card-wrap">
     <div class="id-card-header">
-        <h5 class="mb-0">Pradeep Sarang Foundation</h5>
+        <h5 class="mb-0">Pradeep Sarang</h5>
         <small>VOLUNTEER PASS</small>
     </div>
     <img src="<?= $v['photo'] ? base_url($v['photo']) : 'https://ui-avatars.com/api/?name='.urlencode($v['full_name']) ?>" class="id-photo">

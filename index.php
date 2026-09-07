@@ -85,6 +85,32 @@ if (preg_match('#^/categories/(\d+)$#', $path, $matches)) {
     json_response(['status' => 'error', 'message' => 'Method not allowed.'], 405);
 }
 
+// AMP Route Handling
+if ($path === '/amp' || $path === '/amp/') {
+    $controller->renderAmp('amp-home', [
+        'title' => 'Home',
+        'canonicalUrl' => base_url('/'),
+        'blogs' => (new Blog())->allPublished(6),
+        'campaigns' => $contentModel->all('campaigns'),
+    ]);
+    return;
+}
+
+if (preg_match('#^/blog/([^/]+)/amp$#', $path, $matches) || preg_match('#^/amp/blog/([^/]+)$#', $path, $matches)) {
+    $controller->ampBlogDetail($matches[1]);
+    return;
+}
+
+if (preg_match('#^/amp/(.+)$#', $path, $matches) || preg_match('#^(.+)/amp$#', $path, $matches)) {
+    $rawSlug = '/' . ltrim($matches[1], '/');
+    $canonical = base_url($rawSlug);
+    $controller->renderAmp('amp-page', [
+        'title' => ucwords(trim($rawSlug, '/')),
+        'canonicalUrl' => $canonical,
+    ]);
+    return;
+}
+
 if (preg_match('#^/blog/([^/]+)$#', $path, $matches)) {
     $controller->blogDetail($matches[1]);
     return;

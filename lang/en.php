@@ -8,7 +8,7 @@ return [
     'causes' => 'Campaigns',
     'events' => 'Events',
     'portfolio' => 'Portfolio',
-    'blog' => 'Blog',
+    'blog' => 'Literary Journal & Writings',
     'contact' => 'Contact',
     'volunteer' => 'Volunteer',
     'read_more' => 'Read More',

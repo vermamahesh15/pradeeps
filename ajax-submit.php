@@ -16,13 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // File Upload
     $screenshot_path = "";
     if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] === 0) {
-        $target_dir = "uploads/donations/";
-        if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
-        
-        $ext = pathinfo($_FILES['screenshot']['name'], PATHINFO_EXTENSION);
-        $file_name = uniqid() . "." . $ext;
-        if (move_uploaded_file($_FILES['screenshot']['tmp_name'], $target_dir . $file_name)) {
-            $screenshot_path = $target_dir . $file_name;
+        require_once __DIR__ . '/includes/helpers.php';
+        $err = '';
+        $uploaded = upload_file($_FILES['screenshot'], $err, 'donations');
+        if ($uploaded) {
+            $screenshot_path = $uploaded;
         }
     }
 

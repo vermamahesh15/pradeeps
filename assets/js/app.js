@@ -1,5 +1,5 @@
 /**
- * PRADEEP SARANG FOUNDATION - INTERACTIVE APPLICATION ENGINE
+ * PRADEEP SARANG - INTERACTIVE APPLICATION ENGINE
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const rotateX = -(y / rect.height) * 14;
             const rotateY = (x / rect.width) * 14;
             this.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
+        }, { passive: true });
 
         tiltCard.addEventListener('mouseleave', function () {
             this.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';

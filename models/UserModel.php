@@ -193,4 +193,204 @@ class UserModel extends BaseModel
         $stmt->execute([':user_id' => $userId]);
         return (int) $stmt->fetchColumn();
     }
+
+    public function getPublicAuthors(?string $role = null, int $limit = 6, int $offset = 0, string $search = ''): array
+    {
+        $authors = [];
+        if ($this->db) {
+            try {
+                $sql = "SELECT id, name, email, role, status, biography, profile_photo, facebook_link, twitter_link, linkedin_link, created_at FROM users WHERE status = 'active'";
+                $params = [];
+                if ($role !== null && $role !== '' && $role !== 'all') {
+                    $sql .= " AND role = :role";
+                    $params[':role'] = $role;
+                }
+                if ($search !== '') {
+                    $sql .= " AND (name LIKE :search OR biography LIKE :search)";
+                    $params[':search'] = '%' . $search . '%';
+                }
+                $sql .= " ORDER BY id ASC LIMIT :limit OFFSET :offset";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+                foreach ($params as $k => $v) {
+                    $stmt->bindValue($k, $v);
+                }
+                $stmt->execute();
+                $authors = $stmt->fetchAll();
+            } catch (Throwable $e) {}
+        }
+
+        if (empty($authors)) {
+            $demo = $this->allFromDemo('authors');
+            if (empty($demo)) {
+                $demo = $this->allFromDemo('team');
+            }
+            if ($role !== null && $role !== '' && $role !== 'all') {
+                $demo = array_values(array_filter($demo, fn($item) => ($item['role'] ?? '') === $role));
+            }
+            if ($search !== '') {
+                $demo = array_values(array_filter($demo, fn($item) => mb_stripos($item['name'] ?? '', $search) !== false || mb_stripos($item['biography'] ?? $item['role_title'] ?? '', $search) !== false));
+            }
+            $authors = array_slice($demo, $offset, $limit);
+        }
+
+        return $authors;
+    }
+
+    public function getTotalPublicAuthorsCount(?string $role = null, string $search = ''): int
+    {
+        if ($this->db) {
+            try {
+                $sql = "SELECT COUNT(*) FROM users WHERE status = 'active'";
+                $params = [];
+                if ($role !== null && $role !== '' && $role !== 'all') {
+                    $sql .= " AND role = :role";
+                    $params[':role'] = $role;
+                }
+                if ($search !== '') {
+                    $sql .= " AND (name LIKE :search OR biography LIKE :search)";
+                    $params[':search'] = '%' . $search . '%';
+                }
+                $stmt = $this->db->prepare($sql);
+                foreach ($params as $k => $v) {
+                    $stmt->bindValue($k, $v);
+                }
+                $stmt->execute();
+                $count = (int)$stmt->fetchColumn();
+                if ($count > 0) return $count;
+            } catch (Throwable $e) {}
+        }
+        $demo = $this->allFromDemo('authors');
+        if ($role !== null && $role !== '' && $role !== 'all') {
+            $demo = array_values(array_filter($demo, fn($item) => ($item['role'] ?? '') === $role));
+        }
+        if ($search !== '') {
+            $demo = array_values(array_filter($demo, fn($item) => mb_stripos($item['name'] ?? '', $search) !== false || mb_stripos($item['biography'] ?? '', $search) !== false));
+        }
+        return count($demo);
+    }
+
+    public function getAdminUsersFiltered(string $roleFilter = '', string $statusFilter = '', string $search = '', int $limit = 10, int $offset = 0): array
+    {
+        if ($this->db) {
+            try {
+                $sql = "SELECT * FROM users WHERE 1=1";
+                $params = [];
+                if ($roleFilter !== '' && $roleFilter !== 'all') {
+                    $sql .= " AND role = :role";
+                    $params[':role'] = $roleFilter;
+                }
+                if ($statusFilter !== '' && $statusFilter !== 'all') {
+                    $sql .= " AND status = :status";
+                    $params[':status'] = $statusFilter;
+                }
+                if ($search !== '') {
+                    $sql .= " AND (name LIKE :search OR email LIKE :search OR biography LIKE :search)";
+                    $params[':search'] = '%' . $search . '%';
+                }
+                $sql .= " ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
+                $stmt = $this->db->prepare($sql);
+                foreach ($params as $k => $v) {
+                    $stmt->bindValue($k, $v);
+                }
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+                $stmt->execute();
+                $dbUsers = $stmt->fetchAll();
+                if (!empty($dbUsers)) return $dbUsers;
+            } catch (Throwable $e) {}
+        }
+
+        // Demo data fallback for admin listing
+        $demo = [
+            ['id' => 1, 'name' => 'Super Admin', 'email' => 'admin@example.com', 'role' => 'super_admin', 'status' => 'active', 'biography' => 'Chief Content Director and Platform Administrator', 'last_login' => '2026-09-06 09:00:00', 'profile_photo' => null],
+            ['id' => 2, 'name' => 'Admin User', 'email' => 'admin2@example.com', 'role' => 'admin', 'status' => 'active', 'biography' => 'Content Manager & Event Coordinator', 'last_login' => null, 'profile_photo' => null],
+            ['id' => 3, 'name' => 'Author User', 'email' => 'author@example.com', 'role' => 'author', 'status' => 'active', 'biography' => 'Awadhi Literature & Environment Columnist', 'last_login' => null, 'profile_photo' => null],
+            ['id' => 4, 'name' => 'Pradeep Sarang', 'email' => 'pradeep@sarang.org', 'role' => 'author', 'status' => 'active', 'biography' => 'Social Reformer, Environmentalist, Awadhi Writer', 'last_login' => '2026-09-05 18:30:00', 'profile_photo' => null],
+            ['id' => 5, 'name' => 'Dr. Ramsevak Tripathi', 'email' => 'ramsevak@awadh.org', 'role' => 'author', 'status' => 'active', 'biography' => 'Retired Professor of Hindi & Awadhi Literature', 'last_login' => null, 'profile_photo' => null],
+            ['id' => 6, 'name' => 'Smt. Sunita Verma', 'email' => 'sunita@greengang.org', 'role' => 'author', 'status' => 'active', 'biography' => 'Environment Campaign Leader & Social Worker', 'last_login' => null, 'profile_photo' => null],
+            ['id' => 7, 'name' => 'Acharya Devashish', 'email' => 'devashish@culture.in', 'role' => 'author', 'status' => 'active', 'biography' => 'Spiritual Scholar & Awadhi Culture Researcher', 'last_login' => null, 'profile_photo' => null],
+        ];
+
+        if ($roleFilter !== '' && $roleFilter !== 'all') {
+            $demo = array_values(array_filter($demo, fn($u) => $u['role'] === $roleFilter));
+        }
+        if ($statusFilter !== '' && $statusFilter !== 'all') {
+            $demo = array_values(array_filter($demo, fn($u) => $u['status'] === $statusFilter));
+        }
+        if ($search !== '') {
+            $demo = array_values(array_filter($demo, fn($u) => mb_stripos($u['name'] . ' ' . $u['email'] . ' ' . $u['biography'], $search) !== false));
+        }
+        return array_slice($demo, $offset, $limit);
+    }
+
+    public function getAdminUsersFilteredCount(string $roleFilter = '', string $statusFilter = '', string $search = ''): int
+    {
+        if ($this->db) {
+            try {
+                $sql = "SELECT COUNT(*) FROM users WHERE 1=1";
+                $params = [];
+                if ($roleFilter !== '' && $roleFilter !== 'all') {
+                    $sql .= " AND role = :role";
+                    $params[':role'] = $roleFilter;
+                }
+                if ($statusFilter !== '' && $statusFilter !== 'all') {
+                    $sql .= " AND status = :status";
+                    $params[':status'] = $statusFilter;
+                }
+                if ($search !== '') {
+                    $sql .= " AND (name LIKE :search OR email LIKE :search OR biography LIKE :search)";
+                    $params[':search'] = '%' . $search . '%';
+                }
+                $stmt = $this->db->prepare($sql);
+                foreach ($params as $k => $v) {
+                    $stmt->bindValue($k, $v);
+                }
+                $stmt->execute();
+                $count = (int)$stmt->fetchColumn();
+                if ($count > 0) return $count;
+            } catch (Throwable $e) {}
+        }
+
+        $list = $this->getAdminUsersFiltered($roleFilter, $statusFilter, $search, 1000, 0);
+        return count($list);
+    }
+
+    public function getRolePermissions(): array
+    {
+        $defaults = [
+            'super_admin' => ['dashboard', 'authors', 'timeline', 'blogs', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'role_access', 'settings', 'audit_logs'],
+            'admin'       => ['dashboard', 'authors', 'timeline', 'blogs', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers'],
+            'author'      => ['dashboard', 'blogs', 'profile', 'change_password'],
+        ];
+
+        require_once __DIR__ . '/ContentModel.php';
+        $content = new ContentModel();
+        $saved = $content->getSettings()['role_module_permissions'] ?? null;
+        if ($saved) {
+            $decoded = json_decode($saved, true);
+            if (is_array($decoded)) {
+                return array_merge($defaults, $decoded);
+            }
+        }
+        return $defaults;
+    }
+
+    public function updateRolePermissions(array $permissions): bool
+    {
+        require_once __DIR__ . '/ContentModel.php';
+        $content = new ContentModel();
+        return $content->updateSettings([
+            'role_module_permissions' => json_encode($permissions, JSON_UNESCAPED_UNICODE)
+        ]);
+    }
+
+    public function isModuleAllowed(string $role, string $module): bool
+    {
+        if ($role === 'super_admin') return true;
+        $perms = $this->getRolePermissions();
+        $allowed = $perms[$role] ?? [];
+        return in_array($module, $allowed, true);
+    }
 }

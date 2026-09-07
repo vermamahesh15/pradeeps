@@ -1,6 +1,10 @@
 <?php
 declare(strict_types=1);
 
+// Shared Phase 2/3 public shell. Admin pages use their own layout and are unaffected.
+require __DIR__ . '/home.php';
+return;
+
 $settings = (new ContentModel())->getSettings();
 $flashSuccess = flash('success');
 $flashError = flash('error');
@@ -228,7 +232,7 @@ $route = current_path();
     <!-- Floating Interactive Speed-Dial Action Hub -->
     <div class="floating-action-hub">
         <div id="speedDialMenu" class="speed-dial-menu">
-            <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $settings['phone'] ?? '919876543210') ?>&text=<?= urlencode('नमस्ते, मैं प्रदीप सारंग फाउंडेशन से संपर्क करना चाहता हूँ।') ?>" target="_blank" class="speed-dial-btn whatsapp" title="WhatsApp पर संवाद करें">
+            <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $settings['phone'] ?? '919876543210') ?>&text=<?= urlencode('नमस्ते, मैं प्रदीप सारंग से संपर्क करना चाहता हूँ।') ?>" target="_blank" class="speed-dial-btn whatsapp" title="WhatsApp पर संवाद करें">
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
             <a href="tel:<?= e($settings['phone'] ?? '') ?>" class="speed-dial-btn call" title="सीधे कॉल करें">

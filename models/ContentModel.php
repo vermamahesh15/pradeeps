@@ -24,6 +24,32 @@ class ContentModel extends BaseModel
         ];
     }
 
+    public function ensureCampaignColumns(): void
+    {
+        if (!$this->db) return;
+        static $checked = false;
+        if ($checked) return;
+        $checked = true;
+
+        try {
+            $cols = $this->db->query("SHOW COLUMNS FROM campaigns")->fetchAll(PDO::FETCH_COLUMN);
+            if (!in_array('en_title', $cols, true)) {
+                $this->db->exec("ALTER TABLE campaigns ADD COLUMN en_title VARCHAR(190) NULL");
+            }
+            if (!in_array('is_primary', $cols, true)) {
+                $this->db->exec("ALTER TABLE campaigns ADD COLUMN is_primary TINYINT(1) DEFAULT 0");
+            }
+            if (!in_array('sort_order', $cols, true)) {
+                $this->db->exec("ALTER TABLE campaigns ADD COLUMN sort_order INT DEFAULT 0");
+            }
+            if (!in_array('category', $cols, true)) {
+                $this->db->exec("ALTER TABLE campaigns ADD COLUMN category VARCHAR(100) DEFAULT 'unity'");
+            }
+        } catch (Throwable $e) {
+            // Ignore schema alter errors if user privileges limited
+        }
+    }
+
     public function all(string $type): array
     {
         if (!$this->db) {
@@ -35,7 +61,8 @@ class ContentModel extends BaseModel
                 return $this->db->query('SELECT * FROM portfolio ORDER BY created_at DESC')->fetchAll();
             }
             if ($type === 'campaigns') {
-                return $this->db->query('SELECT * FROM campaigns ORDER BY created_at DESC')->fetchAll();
+                $this->ensureCampaignColumns();
+                return $this->db->query('SELECT * FROM campaigns ORDER BY is_primary DESC, sort_order ASC, created_at DESC')->fetchAll();
             }
             if ($type === 'events') {
                 return $this->db->query('SELECT * FROM events ORDER BY event_date DESC')->fetchAll();
@@ -136,7 +163,8 @@ class ContentModel extends BaseModel
     {
         if (!$this->db) return $this->allFromDemo('causes');
         try {
-            $stmt = $this->db->prepare('SELECT * FROM campaigns ORDER BY created_at DESC LIMIT :limit OFFSET :offset');
+            $this->ensureCampaignColumns();
+            $stmt = $this->db->prepare('SELECT * FROM campaigns ORDER BY is_primary DESC, sort_order ASC, created_at DESC LIMIT :limit OFFSET :offset');
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
             $stmt->execute();
@@ -150,38 +178,39 @@ class ContentModel extends BaseModel
     {
         if (!$this->db) return null;
         try {
-        $stmt = $this->db->prepare('SELECT * FROM campaigns WHERE id = :id');
-        $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch();
-        return $result ?: null;
+            $this->ensureCampaignColumns();
+            $stmt = $this->db->prepare('SELECT * FROM campaigns WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            $result = $stmt->fetch();
+            return $result ?: null;
         } catch (Throwable $e) { return null; }
+    }
+
+    public function setPrimaryCampaign(int $id): bool
+    {
+        if (!$this->db) return false;
+        $this->ensureCampaignColumns();
+        try {
+            $this->db->exec('UPDATE campaigns SET is_primary = 0');
+            $stmt = $this->db->prepare('UPDATE campaigns SET is_primary = 1 WHERE id = :id');
+            return $stmt->execute([':id' => $id]);
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 
     public function createCampaign(array $data): int
     {
         if (!$this->db) return 0;
-        $stmt = $this->db->prepare('INSERT INTO campaigns (title,en_title, slug, excerpt, content, goal_amount, raised_amount, image, status) VALUES (:title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status)');
+        $this->ensureCampaignColumns();
+        $isPrimary = !empty($data['is_primary']) ? 1 : 0;
+        if ($isPrimary) {
+            $this->db->exec('UPDATE campaigns SET is_primary = 0');
+        }
+        $stmt = $this->db->prepare('INSERT INTO campaigns (title, en_title, slug, excerpt, content, goal_amount, raised_amount, image, status, is_primary, sort_order, category) VALUES (:title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status, :is_primary, :sort_order, :category)');
         $stmt->execute([
             ':title' => $data['title'],
-             ':en_title' => $data['en_title'],
-            ':slug' => $data['slug'],
-            ':excerpt' => $data['excerpt'],
-            ':content' => $data['content'],
-            ':goal_amount' => $data['goal_amount'],
-            ':raised_amount' => $data['raised_amount'],
-            ':image' => $data['image'],
-            ':status' => $data['status']
-        ]);
-        return (int) $this->db->lastInsertId();
-    }
-
-    public function updateCampaign(int $id, array $data): bool
-    {
-        if (!$this->db) return false;
-        $stmt = $this->db->prepare('UPDATE campaigns SET title = :title, en_title = :en_title,slug = :slug, excerpt = :excerpt, content = :content, goal_amount = :goal_amount, raised_amount = :raised_amount, image = :image, status = :status WHERE id = :id');
-        return $stmt->execute([
-            ':title' => $data['title'],
-            ':en_title' => $data['en_title'],
+            ':en_title' => $data['en_title'] ?? '',
             ':slug' => $data['slug'],
             ':excerpt' => $data['excerpt'],
             ':content' => $data['content'],
@@ -189,6 +218,35 @@ class ContentModel extends BaseModel
             ':raised_amount' => $data['raised_amount'],
             ':image' => $data['image'],
             ':status' => $data['status'],
+            ':is_primary' => $isPrimary,
+            ':sort_order' => (int)($data['sort_order'] ?? 0),
+            ':category' => $data['category'] ?? 'unity'
+        ]);
+        return (int) $this->db->lastInsertId();
+    }
+
+    public function updateCampaign(int $id, array $data): bool
+    {
+        if (!$this->db) return false;
+        $this->ensureCampaignColumns();
+        $isPrimary = !empty($data['is_primary']) ? 1 : 0;
+        if ($isPrimary) {
+            $this->db->exec('UPDATE campaigns SET is_primary = 0');
+        }
+        $stmt = $this->db->prepare('UPDATE campaigns SET title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, goal_amount = :goal_amount, raised_amount = :raised_amount, image = :image, status = :status, is_primary = :is_primary, sort_order = :sort_order, category = :category WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':en_title' => $data['en_title'] ?? '',
+            ':slug' => $data['slug'],
+            ':excerpt' => $data['excerpt'],
+            ':content' => $data['content'],
+            ':goal_amount' => $data['goal_amount'],
+            ':raised_amount' => $data['raised_amount'],
+            ':image' => $data['image'],
+            ':status' => $data['status'],
+            ':is_primary' => $isPrimary,
+            ':sort_order' => (int)($data['sort_order'] ?? 0),
+            ':category' => $data['category'] ?? 'unity',
             ':id' => $id
         ]);
     }
@@ -482,20 +540,87 @@ class ContentModel extends BaseModel
         }
     }
 
-    public function getTimeline(): array
+    public function ensureTimelineColumns(): void
     {
-        if (!$this->db) return [];
+        if (!$this->db) return;
+        static $checked = false;
+        if ($checked) return;
+        $checked = true;
+
         try {
-            $stmt = $this->db->query('SELECT * FROM timeline ORDER BY sort_order ASC, year DESC');
-            return $stmt->fetchAll();
+            $cols = $this->db->query("SHOW COLUMNS FROM timeline")->fetchAll(PDO::FETCH_COLUMN);
+            if (!in_array('entry_type', $cols, true)) {
+                $this->db->exec("ALTER TABLE timeline ADD COLUMN entry_type VARCHAR(50) DEFAULT 'yatra'");
+            }
+            if (!in_array('category', $cols, true)) {
+                $this->db->exec("ALTER TABLE timeline ADD COLUMN category VARCHAR(100) DEFAULT 'social'");
+            }
+            if (!in_array('image', $cols, true)) {
+                $this->db->exec("ALTER TABLE timeline ADD COLUMN image VARCHAR(255) NULL");
+            }
         } catch (Throwable $e) {
-            return [];
+            // Ignore schema alter errors if user privileges limited
         }
+    }
+
+    public function seedTimelineIfEmpty(): void
+    {
+        if (!$this->db) return;
+        static $seeded = false;
+        if ($seeded) return;
+        $seeded = true;
+
+        try {
+            $count = (int)$this->db->query('SELECT COUNT(*) FROM timeline')->fetchColumn();
+            if ($count < 5) {
+                $this->db->exec('DELETE FROM timeline');
+                $seedEntries = $this->allFromDemo('timeline');
+                $stmt = $this->db->prepare('INSERT INTO timeline (id, entry_type, category, year, title, description, sort_order) VALUES (:id, :entry_type, :category, :year, :title, :description, :sort_order)');
+                foreach ($seedEntries as $entry) {
+                    $stmt->execute([
+                        ':id' => $entry['id'],
+                        ':entry_type' => $entry['entry_type'],
+                        ':category' => $entry['category'],
+                        ':year' => $entry['year'],
+                        ':title' => $entry['title'],
+                        ':description' => $entry['description'],
+                        ':sort_order' => $entry['sort_order'],
+                    ]);
+                }
+            }
+        } catch (Throwable $e) {}
+    }
+
+    public function getTimeline(?string $entryType = null): array
+    {
+        $this->ensureTimelineColumns();
+        $this->seedTimelineIfEmpty();
+        $list = [];
+        if ($this->db) {
+            try {
+                if ($entryType !== null && $entryType !== '' && $entryType !== 'all') {
+                    $stmt = $this->db->prepare('SELECT * FROM timeline WHERE entry_type = :entry_type ORDER BY sort_order ASC, year DESC');
+                    $stmt->execute([':entry_type' => $entryType]);
+                    $list = $stmt->fetchAll();
+                } else {
+                    $stmt = $this->db->query('SELECT * FROM timeline ORDER BY sort_order ASC, year DESC');
+                    $list = $stmt->fetchAll();
+                }
+            } catch (Throwable $e) {}
+        }
+        if (empty($list)) {
+            $list = $this->allFromDemo('timeline');
+            if ($entryType !== null && $entryType !== '' && $entryType !== 'all') {
+                $list = array_values(array_filter($list, fn($item) => ($item['entry_type'] ?? 'yatra') === $entryType));
+            }
+        }
+        return $list;
     }
 
     public function findTimeline(int $id): ?array
     {
         if (!$this->db) return null;
+        $this->ensureTimelineColumns();
         $stmt = $this->db->prepare('SELECT * FROM timeline WHERE id = :id');
         $stmt->execute([':id' => $id]);
         $result = $stmt->fetch();
@@ -505,24 +630,32 @@ class ContentModel extends BaseModel
     public function createTimeline(array $data): bool
     {
         if (!$this->db) return false;
-        $stmt = $this->db->prepare('INSERT INTO timeline (year, title, description, sort_order) VALUES (:year, :title, :description, :sort_order)');
+        $this->ensureTimelineColumns();
+        $stmt = $this->db->prepare('INSERT INTO timeline (entry_type, category, year, title, description, image, sort_order) VALUES (:entry_type, :category, :year, :title, :description, :image, :sort_order)');
         return $stmt->execute([
+            ':entry_type' => $data['entry_type'] ?? 'yatra',
+            ':category' => $data['category'] ?? 'social',
             ':year' => $data['year'],
             ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':sort_order' => (int)$data['sort_order']
+            ':description' => $data['description'] ?? '',
+            ':image' => $data['image'] ?? '',
+            ':sort_order' => (int)($data['sort_order'] ?? 0)
         ]);
     }
 
     public function updateTimeline(int $id, array $data): bool
     {
         if (!$this->db) return false;
-        $stmt = $this->db->prepare('UPDATE timeline SET year = :year, title = :title, description = :description, sort_order = :sort_order WHERE id = :id');
+        $this->ensureTimelineColumns();
+        $stmt = $this->db->prepare('UPDATE timeline SET entry_type = :entry_type, category = :category, year = :year, title = :title, description = :description, image = :image, sort_order = :sort_order WHERE id = :id');
         return $stmt->execute([
+            ':entry_type' => $data['entry_type'] ?? 'yatra',
+            ':category' => $data['category'] ?? 'social',
             ':year' => $data['year'],
             ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':sort_order' => (int)$data['sort_order'],
+            ':description' => $data['description'] ?? '',
+            ':image' => $data['image'] ?? '',
+            ':sort_order' => (int)($data['sort_order'] ?? 0),
             ':id' => $id
         ]);
     }
@@ -672,13 +805,32 @@ class ContentModel extends BaseModel
         return true;
     }
 
+    public function ensureSettingsTable(): void
+    {
+        if (!$this->db) return;
+        static $checked = false;
+        if ($checked) return;
+        $checked = true;
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS settings (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                setting_key VARCHAR(190) NOT NULL UNIQUE,
+                setting_value LONGTEXT NULL
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        } catch (Throwable $e) {}
+    }
+
     public function getSettings(): array
     {
         $defaultSettings = (require __DIR__ . '/../includes/data.php')['settings'];
+        if (isset($_SESSION['_demo_settings'])) {
+            $defaultSettings = array_merge($defaultSettings, $_SESSION['_demo_settings']);
+        }
         if (!$this->db) {
             return $defaultSettings;
         }
         try {
+            $this->ensureSettingsTable();
             $stmt = $this->db->query('SELECT setting_key, setting_value FROM settings');
             $dbSettings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR) ?: [];
             return array_merge($defaultSettings, $dbSettings);
@@ -689,22 +841,41 @@ class ContentModel extends BaseModel
 
     public function updateSettings(array $data): bool
     {
-        if (!$this->db) return false;
+        $this->ensureSettingsTable();
+        if (!$this->db) {
+            $_SESSION['_demo_settings'] = array_merge($_SESSION['_demo_settings'] ?? [], $data);
+            return true;
+        }
         try {
             $this->db->beginTransaction();
             $stmt = $this->db->prepare('INSERT INTO settings (setting_key, setting_value) 
-                VALUES (:key, :value) 
-                ON DUPLICATE KEY UPDATE setting_value = :value');
+                VALUES (:key, :val) 
+                ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)');
             foreach ($data as $key => $value) {
-                $stmt->execute([':key' => (string)$key, ':value' => $value !== null ? (string)$value : null]);
+                $valStr = ($value !== null) ? (string)$value : '';
+                $stmt->execute([':key' => (string)$key, ':val' => $valStr]);
             }
             $this->db->commit();
+
+            $_SESSION['_demo_settings'] = array_merge($_SESSION['_demo_settings'] ?? [], $data);
             return true;
         } catch (Throwable $e) {
             if ($this->db->inTransaction()) {
                 $this->db->rollBack();
             }
-            return false;
+            foreach ($data as $key => $value) {
+                $valStr = ($value !== null) ? (string)$value : '';
+                try {
+                    $upStmt = $this->db->prepare('UPDATE settings SET setting_value = :val WHERE setting_key = :key');
+                    $upStmt->execute([':key' => (string)$key, ':val' => $valStr]);
+                    if ($upStmt->rowCount() === 0) {
+                        $inStmt = $this->db->prepare('INSERT INTO settings (setting_key, setting_value) VALUES (:key, :val)');
+                        $inStmt->execute([':key' => (string)$key, ':val' => $valStr]);
+                    }
+                } catch (Throwable $e2) {}
+            }
+            $_SESSION['_demo_settings'] = array_merge($_SESSION['_demo_settings'] ?? [], $data);
+            return true;
         }
     }
 }

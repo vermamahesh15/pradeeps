@@ -145,12 +145,117 @@ function redirect(string $path): never
 
 function asset(string $path): string
 {
-    return base_url('assets/' . ltrim($path, '/'));
+    $cleanPath = ltrim($path, '/');
+    $webpVersion = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
+    $localWebpPath = __DIR__ . '/../assets/' . $webpVersion;
+    if ($webpVersion !== $cleanPath && file_exists($localWebpPath)) {
+        return base_url('assets/' . $webpVersion);
+    }
+    return base_url('assets/' . $cleanPath);
+}
+
+function is_nav_item_active(string $url, string $currPath): bool
+{
+    $url = '/' . ltrim($url, '/');
+    $currPath = '/' . ltrim(preg_replace('#^/pradeep#i', '', $currPath), '/');
+
+    // 1. Home
+    if ($url === '/') {
+        return $currPath === '/' || $currPath === '' || $currPath === '/home';
+    }
+
+    // 2. Green Gang (takes priority over generic campaigns)
+    if ($url === '/green-gang') {
+        return $currPath === '/green-gang'
+            || $currPath === '/greengang'
+            || str_contains($currPath, 'green-gang')
+            || str_contains($currPath, 'greengang')
+            || str_contains($currPath, 'hariyali');
+    }
+
+    // 3. Campaigns (excluding Green Gang)
+    if ($url === '/campaigns') {
+        if ($currPath === '/green-gang' || $currPath === '/greengang' || str_contains($currPath, 'green-gang') || str_contains($currPath, 'greengang') || str_contains($currPath, 'hariyali')) {
+            return false;
+        }
+        return $currPath === '/campaigns' 
+            || $currPath === '/causes' 
+            || str_starts_with($currPath, '/campaigns/') 
+            || str_starts_with($currPath, '/causes/');
+    }
+
+    // 4. About
+    if ($url === '/about') {
+        return $currPath === '/about' || $currPath === '/about-us' || $currPath === '/parichay';
+    }
+
+    // 5. Impact
+    if ($url === '/impact') {
+        return $currPath === '/impact' || $currPath === '/janprabhav' || $currPath === '/community-impact' || $currPath === '/proof';
+    }
+
+    // 6. Journey
+    if ($url === '/journey') {
+        return $currPath === '/journey' || $currPath === '/timeline' || $currPath === '/seva-yatra';
+    }
+
+    // 7. Awards
+    if ($url === '/awards') {
+        return $currPath === '/awards' || $currPath === '/samman' || $currPath === '/recognition';
+    }
+
+    // 8. Portfolio (Photo Gallery)
+    if ($url === '/portfolio') {
+        return $currPath === '/portfolio' || $currPath === '/gallery' || $currPath === '/chhayachitra' || str_starts_with($currPath, '/portfolio/');
+    }
+
+    // 9. Media (Press & Clippings)
+    if ($url === '/media') {
+        return $currPath === '/media' || $currPath === '/press' || $currPath === '/news' || str_starts_with($currPath, '/media/');
+    }
+
+    // 10. Salahkaar / Counsellor
+    if ($url === '/salahkaar') {
+        return $currPath === '/salahkaar' || $currPath === '/counsellor' || $currPath === '/counsellor-guidance' || $currPath === '/advisor';
+    }
+
+    // 11. Events
+    if ($url === '/events') {
+        return $currPath === '/events' || $currPath === '/karyakram' || str_starts_with($currPath, '/events/');
+    }
+
+    // 12. Blog / Literature & Writings
+    if ($url === '/blog') {
+        return $currPath === '/blog' 
+            || $currPath === '/blogs' 
+            || $currPath === '/blog-and-thoughts' 
+            || str_starts_with($currPath, '/blog/') 
+            || str_starts_with($currPath, '/blogs/') 
+            || str_starts_with($currPath, '/categories/');
+    }
+
+    // 13. Contact
+    if ($url === '/contact') {
+        return $currPath === '/contact' || $currPath === '/sampark' || $currPath === '/contact-us';
+    }
+
+    // 14. Volunteer
+    if ($url === '/volunteer') {
+        return $currPath === '/volunteer' || $currPath === '/join' || $currPath === '/shramdaan';
+    }
+
+    // 15. Donation
+    if ($url === '/donation') {
+        return $currPath === '/donation' || $currPath === '/donate';
+    }
+
+    // Default fallback check
+    return $currPath === $url || (!str_starts_with($url, '/#') && str_starts_with($currPath, $url . '/'));
 }
 
 function is_active(string $path): string
 {
-    return current_path() === $path ? 'active' : '';
+    return is_nav_item_active($path, current_path()) ? 'active' : '';
 }
 
 function format_date(string $date): string
@@ -187,7 +292,77 @@ function setting(string $key, $default = null)
 }
 
 /**
- * Centralized file upload handler
+ * Converts an image file (JPG, JPEG, PNG, GIF, BMP) to WebP format.
+ * Returns absolute path to the WebP image.
+ */
+function convert_image_to_webp(string $filePath, int $quality = 82): string
+{
+    if (!file_exists($filePath) || !function_exists('imagewebp')) {
+        return $filePath;
+    }
+
+    $info = @getimagesize($filePath);
+    if (!$info) {
+        return $filePath;
+    }
+
+    $mime = $info['mime'] ?? '';
+    $imageResource = null;
+
+    switch ($mime) {
+        case 'image/jpeg':
+        case 'image/jpg':
+        case 'image/pjpeg':
+            $imageResource = @imagecreatefromjpeg($filePath);
+            break;
+        case 'image/png':
+            $imageResource = @imagecreatefrompng($filePath);
+            if ($imageResource) {
+                imagealphablending($imageResource, false);
+                imagesavealpha($imageResource, true);
+            }
+            break;
+        case 'image/gif':
+            $imageResource = @imagecreatefromgif($filePath);
+            if ($imageResource) {
+                imagealphablending($imageResource, false);
+                imagesavealpha($imageResource, true);
+            }
+            break;
+        case 'image/bmp':
+        case 'image/x-ms-bmp':
+            if (function_exists('imagecreatefrombmp')) {
+                $imageResource = @imagecreatefrombmp($filePath);
+            }
+            break;
+        case 'image/webp':
+            return $filePath;
+        default:
+            return $filePath;
+    }
+
+    if (!$imageResource) {
+        return $filePath;
+    }
+
+    $pathInfo = pathinfo($filePath);
+    $webpPath = $pathInfo['dirname'] . DIRECTORY_SEPARATOR . $pathInfo['filename'] . '.webp';
+
+    $success = @imagewebp($imageResource, $webpPath, $quality);
+    imagedestroy($imageResource);
+
+    if ($success && file_exists($webpPath)) {
+        if (realpath($filePath) !== realpath($webpPath) && file_exists($filePath)) {
+            @unlink($filePath);
+        }
+        return $webpPath;
+    }
+
+    return $filePath;
+}
+
+/**
+ * Centralized file upload handler with automatic WebP conversion
  */
 function upload_file(array $file, string &$error = '', string $subfolder = ''): ?string
 {
@@ -196,15 +371,15 @@ function upload_file(array $file, string &$error = '', string $subfolder = ''): 
         return null;
     }
 
-    // File size validation (5MB max)
-    $maxSize = 5 * 1024 * 1024;
+    // File size validation (10MB max)
+    $maxSize = 10 * 1024 * 1024;
     if ($file['size'] > $maxSize) {
-        $error = 'File is too large. Maximum size is 5MB.';
+        $error = 'File is too large. Maximum size is 10MB.';
         return null;
     }
 
     // File extension validation
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'svg'];
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'svg', 'bmp'];
     $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     if (!in_array($extension, $allowedExtensions, true)) {
         $error = 'Invalid file type. Allowed types: ' . implode(', ', $allowedExtensions);
@@ -228,10 +403,18 @@ function upload_file(array $file, string &$error = '', string $subfolder = ''): 
     }
 
     // Clean unique filename
-    $fileName = uniqid() . '_' . preg_replace('/[^a-zA-Z0-9._-]/', '', basename($file['name']));
+    $rawBaseName = pathinfo($file['name'], PATHINFO_FILENAME);
+    $cleanBaseName = preg_replace('/[^a-zA-Z0-9_-]/', '', $rawBaseName) ?: 'img';
+    $fileName = uniqid() . '_' . $cleanBaseName . '.' . $extension;
     $targetFile = $absoluteDir . DIRECTORY_SEPARATOR . $fileName;
 
     if (move_uploaded_file($file['tmp_name'], $targetFile)) {
+        // Automatically convert images to WebP for optimal compression & performance
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'], true)) {
+            $finalPath = convert_image_to_webp($targetFile, 82);
+            $finalFileName = basename($finalPath);
+            return $relativeDir . '/' . $finalFileName;
+        }
         return $relativeDir . '/' . $fileName;
     }
 
@@ -279,5 +462,39 @@ function add_notification(int $userId, string $title, string $message): void
     require_once __DIR__ . '/../models/UserModel.php';
     $userModel = new UserModel();
     $userModel->addNotification($userId, $title, $message);
+}
+
+function ps_amp_content(string $html): string
+{
+    if (trim($html) === '') return '';
+
+    $html = preg_replace_callback('/<img([^>]+)>/i', function ($matches) {
+        $attrs = $matches[1];
+        $src = '';
+        $alt = '';
+        $width = '800';
+        $height = '500';
+
+        if (preg_match('/src=["\']([^"\']+)["\']/i', $attrs, $m)) $src = $m[1];
+        if (preg_match('/alt=["\']([^"\']+)["\']/i', $attrs, $m)) $alt = $m[1];
+        if (preg_match('/width=["\']([^"\']+)["\']/i', $attrs, $m)) $width = $m[1];
+        if (preg_match('/height=["\']([^"\']+)["\']/i', $attrs, $m)) $height = $m[1];
+
+        if (empty($src)) return '';
+
+        return sprintf(
+            '<amp-img src="%s" width="%s" height="%s" layout="responsive" alt="%s"></amp-img>',
+            e($src),
+            e($width),
+            e($height),
+            e($alt)
+        );
+    }, $html);
+
+    $html = preg_replace('/style=["\']([^"\']*)["\']/i', '', $html);
+    $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
+    $html = preg_replace('/<iframe\b[^>]*>(.*?)<\/iframe>/is', '', $html);
+
+    return $html;
 }
 ?>

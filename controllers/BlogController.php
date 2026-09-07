@@ -238,24 +238,8 @@ class BlogController
             return $existingPath;
         }
 
-        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-        $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        if (!in_array($extension, $allowed, true)) {
-            return $existingPath;
-        }
-
-        $filename = time() . '-' . preg_replace('/[^a-zA-Z0-9._-]/', '', $file['name']);
-        $filename = basename($filename);
-        $target = app_config('uploads_dir') . '/' . $filename;
-
-        if (!is_dir(app_config('uploads_dir'))) {
-            mkdir(app_config('uploads_dir'), 0755, true);
-        }
-
-        if (move_uploaded_file($file['tmp_name'], $target)) {
-            return 'uploads/' . $filename;
-        }
-
-        return $existingPath;
+        $err = '';
+        $uploaded = upload_file($file, $err, 'blogs');
+        return $uploaded ?: $existingPath;
     }
 }
