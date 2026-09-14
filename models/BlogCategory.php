@@ -14,7 +14,8 @@ class BlogCategory extends BaseModel
             ['id' => 3, 'name' => 'अवधी कहानी', 'slug' => 'story'],
             ['id' => 4, 'name' => 'संस्मरण/वर्णन', 'slug' => 'memories'],
             ['id' => 5, 'name' => 'समाचार एवं विचार', 'slug' => 'news-views'],
-            ['id' => 6, 'name' => 'सामान्य', 'slug' => 'general']
+            ['id' => 6, 'name' => 'आलेख', 'slug' => 'alekh'],
+            ['id' => 7, 'name' => 'सामान्य', 'slug' => 'general']
         ];
     }
 
@@ -26,6 +27,12 @@ class BlogCategory extends BaseModel
                 $stmt = $this->db->query('SELECT * FROM blog_categories ORDER BY id ASC');
                 $result = $stmt->fetchAll();
                 if (!empty($result)) {
+                    // Ensure every record has an id key
+                    foreach ($result as &$r) {
+                        if (empty($r['id'])) {
+                            $r['id'] = $r['slug'] ?? $r['name'];
+                        }
+                    }
                     return $result;
                 }
                 // Auto seed default categories into table
@@ -47,19 +54,23 @@ class BlogCategory extends BaseModel
 
     public function find($id): ?array
     {
-        if (empty($id)) return null;
+        if (empty($id) && $id !== 0 && $id !== '0') return null;
         if ($this->db) {
             try {
-                $sql = is_numeric($id) ? 'SELECT * FROM blog_categories WHERE id = :id' : 'SELECT * FROM blog_categories WHERE slug = :id';
+                $sql = is_numeric($id) ? 'SELECT * FROM blog_categories WHERE id = :id OR slug = :id_str' : 'SELECT * FROM blog_categories WHERE slug = :id OR name = :id';
                 $stmt = $this->db->prepare($sql);
-                $stmt->execute([':id' => $id]);
+                if (is_numeric($id)) {
+                    $stmt->execute([':id' => $id, ':id_str' => (string)$id]);
+                } else {
+                    $stmt->execute([':id' => $id]);
+                }
                 $result = $stmt->fetch();
                 if ($result) return $result;
             } catch (Throwable $e) {}
         }
 
         foreach ($this->getDefaultCategories() as $cat) {
-            if ((string)$cat['id'] === (string)$id || $cat['slug'] === (string)$id) {
+            if ((string)$cat['id'] === (string)$id || $cat['slug'] === (string)$id || $cat['name'] === (string)$id) {
                 return $cat;
             }
         }

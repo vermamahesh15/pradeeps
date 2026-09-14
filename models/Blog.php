@@ -177,7 +177,7 @@ class Blog extends BaseModel
         if (empty($id)) return null;
         if ($this->db) {
             try {
-                $sql = 'SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE ';
+                $sql = 'SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON (b.category_id = c.id OR b.category_id = c.slug) LEFT JOIN users u ON b.author_id = u.id WHERE ';
                 if (is_numeric($id)) {
                     $sql .= 'b.id = :id';
                 } else {

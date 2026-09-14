@@ -176,9 +176,24 @@ if (is_post()) {
             }
         }
 
+        $rawCat = trim((string)($_POST['category_id'] ?? ''));
+        $catId = 0;
+        if ($rawCat !== '') {
+            if (is_numeric($rawCat) && (int)$rawCat > 0) {
+                $catId = (int)$rawCat;
+            } else {
+                $foundCat = $categoryModel->find($rawCat);
+                if ($foundCat && !empty($foundCat['id']) && is_numeric($foundCat['id']) && (int)$foundCat['id'] > 0) {
+                    $catId = (int)$foundCat['id'];
+                } else {
+                    $catId = $rawCat;
+                }
+            }
+        }
+
         $blogData = [
             'title' => trim($_POST['title'] ?? ''),
-            'category_id' => (int) ($_POST['category_id'] ?? 0),
+            'category_id' => $catId,
             'excerpt' => trim($_POST['excerpt'] ?? ''),
             'en_title' => trim($_POST['en_title'] ?? ''),
             'content' => $_POST['content'] ?? '',
@@ -192,7 +207,7 @@ if (is_post()) {
         $errors = [];
         if (empty($blogData['title'])) $errors[] = 'Title (Hindi) is required.';
         if (empty($blogData['content'])) $errors[] = 'Full Content is required.';
-        if ($blogData['category_id'] <= 0) $errors[] = 'Category is required. Please select a valid category from the dropdown.';
+        if (empty($blogData['category_id']) && $blogData['category_id'] !== 0 && $blogData['category_id'] !== '0') $errors[] = 'Category is required. Please select a valid category from the dropdown.';
         if (empty($blogData['en_title'])) $errors[] = 'English title is required.';
         if ($isEdit && empty($id) && $id !== 0 && $id !== '0') $errors[] = 'Invalid blog ID.';
 
@@ -1804,8 +1819,16 @@ $metrics = $content->metrics();
                                                 <label class="form-label">Category *</label>
                                                 <select name="category_id" class="form-select" required onchange="autoGenerateSEOMetaFields()">
                                                     <option value="">Select Category</option>
-                                                    <?php foreach ($categories as $cat): ?>
-                                                        <option value="<?= $cat['id'] ?>" <?= ($editBlog && ($editBlog['category_id'] ?? 0) == $cat['id']) ? 'selected' : '' ?>><?= e($cat['name']) ?></option>
+                                                    <?php foreach ($categories as $cat): 
+                                                        $catVal = !empty($cat['id']) ? $cat['id'] : ($cat['slug'] ?? $cat['name']);
+                                                        $isSelected = ($editBlog && (
+                                                            (string)($editBlog['category_id'] ?? '') === (string)$catVal ||
+                                                            (string)($editBlog['category_id'] ?? '') === (string)($cat['id'] ?? '') ||
+                                                            (string)($editBlog['category_id'] ?? '') === (string)($cat['slug'] ?? '') ||
+                                                            (string)($editBlog['category_name'] ?? '') === (string)($cat['name'] ?? '')
+                                                        ));
+                                                    ?>
+                                                        <option value="<?= e((string)$catVal) ?>" <?= $isSelected ? 'selected' : '' ?>><?= e($cat['name']) ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
