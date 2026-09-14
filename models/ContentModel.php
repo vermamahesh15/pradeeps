@@ -820,24 +820,31 @@ class ContentModel extends BaseModel
         } catch (Throwable $e) {}
     }
 
+    public function ensureVisitorHistoricalTotalTable(): void
+    {
+        if (!$this->db) return;
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS visitor_historical_total (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                total_count BIGINT NOT NULL DEFAULT 8421,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+
+            $count = (int)$this->db->query("SELECT COUNT(*) FROM visitor_historical_total")->fetchColumn();
+            if ($count === 0) {
+                $this->db->exec("INSERT INTO visitor_historical_total (id, total_count) VALUES (1, 8421)");
+            }
+        } catch (Throwable $e) {}
+    }
+
     public function getVisitorHistoricalTotal(): int
     {
-        $this->ensureSettingsTable();
+        $this->ensureVisitorHistoricalTotalTable();
         if (!$this->db) return 8421;
 
         try {
-            $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'visitor_historical_total'");
-            $stmt->execute();
-            $val = $stmt->fetchColumn();
-
-            if ($val === false) {
-                $initialCount = 8421;
-                $initStmt = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('visitor_historical_total', :val)");
-                $initStmt->execute([':val' => (string)$initialCount]);
-                return $initialCount;
-            }
-
-            return (int)$val;
+            $val = $this->db->query("SELECT total_count FROM visitor_historical_total WHERE id = 1")->fetchColumn();
+            return ($val !== false) ? (int)$val : 8421;
         } catch (Throwable $e) {
             return 8421;
         }
@@ -907,13 +914,14 @@ class ContentModel extends BaseModel
         }
 
         try {
+            $this->ensureVisitorHistoricalTotalTable();
             $liveCount = (int)$this->db->query("SELECT COUNT(*) FROM visitors")->fetchColumn();
             $currentHistorical = $this->getVisitorHistoricalTotal();
             $newHistorical = $currentHistorical + $liveCount;
 
-            // 1. Upsert Historical Total in Settings
-            $upStmt = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('visitor_historical_total', :val) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
-            $upStmt->execute([':val' => (string)$newHistorical]);
+            // 1. Update standalone Table 2: visitor_historical_total
+            $upStmt = $this->db->prepare("UPDATE visitor_historical_total SET total_count = :val WHERE id = 1");
+            $upStmt->execute([':val' => $newHistorical]);
 
             // 2. Truncate Table 1 (visitors table)
             $this->db->exec("TRUNCATE TABLE visitors");
@@ -923,7 +931,7 @@ class ContentModel extends BaseModel
                 'archived_count' => $liveCount,
                 'previous_historical' => $currentHistorical,
                 'new_historical_total' => $newHistorical,
-                'message' => "Successfully archived $liveCount visitor logs. New baseline historical total is " . number_format($newHistorical) . "."
+                'message' => "Successfully archived " . number_format($liveCount) . " visitor logs from Table 1 ('visitors'). New baseline in Table 2 ('visitor_historical_total') is " . number_format($newHistorical) . "."
             ];
         } catch (Throwable $e) {
             return ['status' => false, 'message' => 'Archiving failed: ' . $e->getMessage()];
