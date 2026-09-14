@@ -256,25 +256,16 @@ if (empty($sughariImg)) {
                   </div>
 
                   <!-- 2-COLUMN TOP HEADER LAYOUT (Image Left, Text Right) -->
+                  <?php if (!empty($postImage)): ?>
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center mb-8 pb-6 border-b border-[#e2dacf]">
                     <!-- Left Column: Featured Cover Image or Symbol Image -->
                     <div class="md:col-span-5 flex justify-center items-center">
                       <div class="w-full overflow-hidden rounded-2xl shadow-md border border-[#e2dacf] bg-white p-1.5 group">
-                        <?php if (!empty($postImage)): ?>
-                          <img src="<?= e($postImage) ?>" alt="<?= e($postTitle) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-                          <div class="w-full min-h-[220px] rounded-xl bg-gradient-to-br from-emerald-900 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center" style="display:none;">
-                            <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Symbol" class="w-16 h-16 object-contain mb-2 filter drop-shadow">
-                            <span class="font-serif font-bold text-base text-amber-300"><?= e($postTitle) ?></span>
-                          </div>
-                        <?php else: ?>
-                          <!-- Symbol Image Emblem Placeholder -->
-                          <div class="w-full min-h-[220px] rounded-xl bg-gradient-to-br from-emerald-900 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center shadow-inner relative overflow-hidden">
-                            <div class="absolute inset-0 bg-white/5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] opacity-30"></div>
-                            <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Literary Emblem Symbol" class="w-20 h-20 object-contain relative z-10 mb-2 filter drop-shadow-md">
-                            <span class="font-serif font-bold text-sm tracking-wider text-amber-300 relative z-10 uppercase"><?= e($postCategory) ?></span>
-                            <span class="font-serif text-xs text-emerald-200 mt-1 relative z-10"><?= e($postTitle) ?></span>
-                          </div>
-                        <?php endif; ?>
+                        <img src="<?= e($postImage) ?>" alt="<?= e($postTitle) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <div class="w-full min-h-[220px] rounded-xl bg-gradient-to-br from-emerald-900 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center" style="display:none;">
+                          <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Symbol" class="w-16 h-16 object-contain mb-2 filter drop-shadow">
+                          <span class="font-serif font-bold text-base text-amber-300"><?= e($postTitle) ?></span>
+                        </div>
                       </div>
                     </div>
 
