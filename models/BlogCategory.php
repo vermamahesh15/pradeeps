@@ -6,31 +6,70 @@ require_once __DIR__ . '/BaseModel.php';
 
 class BlogCategory extends BaseModel
 {
-    public function all(): array
+    public function getDefaultCategories(): array
     {
-        if (!$this->db) return [];
-        $stmt = $this->db->query('SELECT * FROM blog_categories ORDER BY name ASC');
-        return $stmt->fetchAll();
+        return [
+            ['id' => 1, 'name' => 'साक्षात्कार', 'slug' => 'interview'],
+            ['id' => 2, 'name' => 'गीत', 'slug' => 'geet'],
+            ['id' => 3, 'name' => 'अवधी कहानी', 'slug' => 'story'],
+            ['id' => 4, 'name' => 'संस्मरण/वर्णन', 'slug' => 'memories'],
+            ['id' => 5, 'name' => 'समाचार एवं विचार', 'slug' => 'news-views'],
+            ['id' => 6, 'name' => 'सामान्य', 'slug' => 'general']
+        ];
     }
 
-    public function find(int $id): ?array
+    public function all(): array
     {
-        if (!$this->db) return null;
-        $stmt = $this->db->prepare('SELECT * FROM blog_categories WHERE id = :id');
-        $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch();
+        $defaults = $this->getDefaultCategories();
+        if ($this->db) {
+            try {
+                $stmt = $this->db->query('SELECT * FROM blog_categories ORDER BY id ASC');
+                $result = $stmt->fetchAll();
+                if (!empty($result)) {
+                    return $result;
+                }
+                // Auto seed default categories into table
+                foreach ($defaults as $cat) {
+                    try {
+                        $ins = $this->db->prepare('INSERT IGNORE INTO blog_categories (id, name, slug) VALUES (:id, :name, :slug)');
+                        $ins->execute([':id' => $cat['id'], ':name' => $cat['name'], ':slug' => $cat['slug']]);
+                    } catch (Throwable $e) {}
+                }
+                $stmt = $this->db->query('SELECT * FROM blog_categories ORDER BY id ASC');
+                $result = $stmt->fetchAll();
+                if (!empty($result)) {
+                    return $result;
+                }
+            } catch (Throwable $e) {}
+        }
+        return $defaults;
+    }
 
-        return $result === false ? null : $result;
+    public function find($id): ?array
+    {
+        if (empty($id)) return null;
+        if ($this->db) {
+            try {
+                $sql = is_numeric($id) ? 'SELECT * FROM blog_categories WHERE id = :id' : 'SELECT * FROM blog_categories WHERE slug = :id';
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([':id' => $id]);
+                $result = $stmt->fetch();
+                if ($result) return $result;
+            } catch (Throwable $e) {}
+        }
+
+        foreach ($this->getDefaultCategories() as $cat) {
+            if ((string)$cat['id'] === (string)$id || $cat['slug'] === (string)$id) {
+                return $cat;
+            }
+        }
+
+        return null;
     }
 
     public function findBySlug(string $slug): ?array
     {
-        if (!$this->db) return null;
-        $stmt = $this->db->prepare('SELECT * FROM blog_categories WHERE slug = :slug');
-        $stmt->execute([':slug' => $slug]);
-        $result = $stmt->fetch();
-
-        return $result === false ? null : $result;
+        return $this->find($slug);
     }
 
     public function create(array $data): int

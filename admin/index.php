@@ -156,13 +156,17 @@ if (is_post()) {
     // Blog CRUD (Role and Ownership Aware)
     if ($loggedIn && (($_POST['action'] ?? '') === 'create_blog' || ($_POST['action'] ?? '') === 'update_blog')) {
         $isEdit = $_POST['action'] === 'update_blog';
-        $id = (int)($_POST['id'] ?? 0);
+        $rawId = $_POST['id'] ?? 0;
+        $id = is_numeric($rawId) ? (int)$rawId : trim((string)$rawId);
         
         $existing = null;
         if ($isEdit) {
             $existing = $blogModel->find($id);
+            if (!$existing && !empty($id)) {
+                $existing = $blogModel->find((string)$id);
+            }
             if (!$existing) {
-                flash('admin_error', 'Blog not found.');
+                flash('admin_error', 'Blog post not found.');
                 redirect('/admin/index.php?module=blogs');
             }
             // Authors can only edit their own blogs
@@ -186,11 +190,11 @@ if (is_post()) {
         ];
 
         $errors = [];
-        if (empty($blogData['title'])) $errors[] = 'Title is required.';
-        if (empty($blogData['content'])) $errors[] = 'Content is required.';
-        if ($blogData['category_id'] <= 0) $errors[] = 'Category is required.';
+        if (empty($blogData['title'])) $errors[] = 'Title (Hindi) is required.';
+        if (empty($blogData['content'])) $errors[] = 'Full Content is required.';
+        if ($blogData['category_id'] <= 0) $errors[] = 'Category is required. Please select a valid category from the dropdown.';
         if (empty($blogData['en_title'])) $errors[] = 'English title is required.';
-        if ($isEdit && $id <= 0) $errors[] = 'Invalid blog ID.';
+        if ($isEdit && empty($id) && $id !== 0 && $id !== '0') $errors[] = 'Invalid blog ID.';
 
         if (empty($errors)) {
             $blogData['title'] = ps_decode_entities($blogData['title']);
@@ -307,11 +311,15 @@ if (is_post()) {
                     }
                 }
             } catch (Throwable $e) {
+                $_SESSION['blog_form_draft'] = $_POST;
                 flash('admin_error', 'Database error: ' . $e->getMessage());
+                redirect('/admin/index.php?module=blogs&action=' . ($isEdit ? 'edit&edit_id=' . urlencode((string)$id) : 'create'));
             }
-            redirect('/admin/index.php?module=blogs' . ($isEdit ? '&edit_id=' . $id : ''));
+            redirect('/admin/index.php?module=blogs' . ($isEdit ? '&edit_id=' . urlencode((string)$id) : ''));
         } else {
+            $_SESSION['blog_form_draft'] = $_POST;
             flash('admin_error', implode(' ', $errors));
+            redirect('/admin/index.php?module=blogs&action=' . ($isEdit ? 'edit&edit_id=' . urlencode((string)$id) : 'create'));
         }
     }
 
@@ -1729,6 +1737,18 @@ $metrics = $content->metrics();
 
                 $editBlog = !empty($editId) ? $blogModel->find($editId) : null;
                 
+                // Restore form draft if validation failed or redirect occurred with error
+                if (isset($_SESSION['blog_form_draft'])) {
+                    $draft = $_SESSION['blog_form_draft'];
+                    unset($_SESSION['blog_form_draft']);
+                    $isCreateOrEdit = true;
+                    if ($editBlog) {
+                        $editBlog = array_merge($editBlog, $draft);
+                    } else {
+                        $editBlog = $draft;
+                    }
+                }
+
                 // Enforce author edit restrictions for non-admin users
                 if ($editBlog && !is_role('admin', 'super_admin') && is_role('author') && !empty($editBlog['author_id']) && (int)$editBlog['author_id'] !== (int)$_SESSION['user_id']) {
                     $editBlog = null;
@@ -1760,10 +1780,10 @@ $metrics = $content->metrics();
 
                         <form method="post" enctype="multipart/form-data" id="createBlogForm">
                             <?= csrf_field() ?>
-                            <input type="hidden" name="action" value="<?= $editBlog ? 'update_blog' : 'create_blog' ?>">
+                            <input type="hidden" name="action" value="<?= ($editBlog && (!empty($editBlog['id']) || !empty($editBlog['slug']))) ? 'update_blog' : 'create_blog' ?>">
                             <?php if ($editBlog): ?>
-                                <input type="hidden" name="id" value="<?= $editBlog['id'] ?>">
-                                <input type="hidden" name="existing_banner" value="<?= e($editBlog['banner_image']) ?>">
+                                <input type="hidden" name="id" value="<?= e($editBlog['id'] ?? ($editBlog['slug'] ?? '')) ?>">
+                                <input type="hidden" name="existing_banner" value="<?= e($editBlog['banner_image'] ?? '') ?>">
                             <?php endif; ?>
 
                             <div class="row g-4">
@@ -1785,7 +1805,7 @@ $metrics = $content->metrics();
                                                 <select name="category_id" class="form-select" required onchange="autoGenerateSEOMetaFields()">
                                                     <option value="">Select Category</option>
                                                     <?php foreach ($categories as $cat): ?>
-                                                        <option value="<?= $cat['id'] ?>" <?= ($editBlog && $editBlog['category_id'] == $cat['id']) ? 'selected' : '' ?>><?= e($cat['name']) ?></option>
+                                                        <option value="<?= $cat['id'] ?>" <?= ($editBlog && ($editBlog['category_id'] ?? 0) == $cat['id']) ? 'selected' : '' ?>><?= e($cat['name']) ?></option>
                                                     <?php endforeach; ?>
                                                 </select>
                                             </div>
