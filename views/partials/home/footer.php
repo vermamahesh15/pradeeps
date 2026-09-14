@@ -9,11 +9,21 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
     <div class="max-w-container-max mx-auto px-4 sm:px-8 pt-space-4xl pb-space-2xl">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
             <!-- Bio & Contact -->
+            <?php 
+              $siteLogo = setting('logo', 'assets/images/logo.webp');
+              $hasLogo = !empty($siteLogo) && (file_exists('/var/www/html/pradeep/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
+            ?>
             <div class="lg:col-span-4 flex flex-col">
                 <div class="flex items-center gap-3 mb-4">
-                    <div class="w-9 h-9 rounded-full bg-[#14532D] flex items-center justify-center border border-[#B28A42]/40">
-                        <span class="material-symbols-outlined text-[#F0B45C] text-[20px]">nature_people</span>
-                    </div>
+                    <?php if ($hasLogo): ?>
+                        <div class="bg-white/95 p-2 rounded-xl border border-white/20 shadow-sm">
+                            <img src="<?= e(base_url($siteLogo)) ?>" alt="Pradeep Sarang Logo" class="h-10 w-auto object-contain">
+                        </div>
+                    <?php else: ?>
+                        <div class="w-9 h-9 rounded-full bg-[#14532D] flex items-center justify-center border border-[#B28A42]/40">
+                            <span class="material-symbols-outlined text-[#F0B45C] text-[20px]">nature_people</span>
+                        </div>
+                    <?php endif; ?>
                     <div class="flex flex-col">
                         <span class="font-headline-sm text-headline-sm text-[#F9FAFB] font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
                         <span class="font-label-sm text-label-sm text-[#F0B45C]"><?= e(ps_text('लोकसेवक • पर्यावरणविद् • साहित्यकार', 'Social Worker • Environmentalist • Writer')) ?></span>
@@ -32,6 +42,12 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-[#F0B45C]">call</span>
                         <a class="hover:text-[#F0B45C] transition-colors" href="tel:<?= e($phoneClean) ?>"><?= e($phone) ?></a>
+                    </div>
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-[18px] h-[18px] fill-[#25D366]" viewBox="0 0 24 24"><path d="M12.031 0C5.394 0 0 5.392 0 12.029c0 2.122.553 4.195 1.604 6.015L.03 24l6.096-1.599c1.761.96 3.75 1.464 5.905 1.464 6.637 0 12.031-5.393 12.031-12.031C24.062 5.392 18.668 0 12.031 0zm6.654 17.002c-.276.776-1.365 1.424-2.235 1.611-.595.127-1.372.228-3.987-.856-3.346-1.386-5.502-4.786-5.669-5.008-.166-.222-1.36-1.808-1.36-3.448 0-1.64 0.858-2.449 1.162-2.781.304-.333.664-.416.885-.416.221 0 .443.002.637.011.206.01.482-.078.753.573.277.665.941 2.296 1.024 2.463.083.167.139.36.028.582-.11.222-.166.36-.332.554-.166.194-.349.433-.498.582-.166.166-.339.347-.146.679.194.332.862 1.414 1.848 2.292 1.267 1.129 2.336 1.479 2.668 1.645.332.166.526.139.72-.083.194-.222.831-.97 1.052-1.302.221-.332.443-.277.747-.166.304.111 1.936.914 2.268 1.08.332.166.554.249.637.388.083.139.083.804-.193 1.58z"/></svg>
+                        <a class="hover:text-[#25D366] transition-colors text-[#25D366] font-semibold" href="https://api.whatsapp.com/send?phone=<?= urlencode(preg_replace('/[^0-9]/', '', $phoneClean)) ?>&amp;text=<?= urlencode(ps_text('नमस्ते श्री सारंग जी, मैं आपसे संपर्क करना चाहता हूँ।', 'Hello Shri Sarang ji, I would like to connect with you.')) ?>" target="_blank" rel="noopener noreferrer">
+                            <span>WhatsApp: <?= e($phone) ?></span>
+                        </a>
                     </div>
                     <div class="flex items-center gap-2.5">
                         <span class="material-symbols-outlined text-[18px] text-[#F0B45C]">mail</span>
@@ -202,7 +218,6 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <a class="hover:text-[#F0B45C] text-[#94A3B8] transition-colors flex items-center gap-1" href="<?= e(base_url('/admin')) ?>">
                     <span class="material-symbols-outlined text-[13px]">lock</span>
                     <span><?= e(ps_text('प्रशासनिक लॉगिन', 'Admin Portal')) ?></span>
-                </a>
             </div>
         </div>
     </div>

@@ -155,7 +155,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
               </div>
             </div>
             <div class="relative rounded-xl overflow-hidden border border-border-warm shadow-xs group">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="National Youth Award 1991" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
+              <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="National Youth Award 1991" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
               <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 to-transparent p-3 text-pure-white">
                 <span class="font-label-sm text-label-sm font-semibold block"><?= e(ps_text('1991 राजभवन स्वामी विवेकानंद सम्मान', '1991 Raj Bhavan Youth Award Ceremony')) ?></span>
               </div>

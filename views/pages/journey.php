@@ -224,7 +224,7 @@ $allMilestones = !empty($dbJourney) ? array_merge($dbJourney, $defaultJourney) :
       <!-- 2-Photo Milestone Archive Showcase -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="Raj Bhavan Award 1991" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="Raj Bhavan Award 1991" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
             <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('1991 राजभवन युवा पुरस्कार', '1991 Raj Bhavan Youth Award')) ?></span>
             <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('महामहिम राज्यपाल द्वारा स्वामी विवेकानंद युवा सम्मान', 'Governor State Award Presentation Ceremony')) ?></p>

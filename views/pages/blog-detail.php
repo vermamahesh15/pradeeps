@@ -4,12 +4,38 @@ declare(strict_types=1);
 $post = $post ?? [];
 $related = $related ?? [];
 
-$postTitle = trim($post['title'] ?? '') ?: ps_text('झरिहख', 'Jharihakh');
-$postCategory = trim($post['category_name'] ?? '') ?: ps_text('अवधी संस्मरण', 'Awadhi Memoir');
-$postAuthor = trim(($post['author_name'] ?? '') ?: ($post['author'] ?? '')) ?: ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang');
+$postTitle = html_entity_decode(trim($post['title'] ?? '') ?: ps_text('झरिहख', 'Jharihakh'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$postCategory = html_entity_decode(trim($post['category_name'] ?? '') ?: ps_text('अवधी संस्मरण', 'Awadhi Memoir'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$postAuthor = html_entity_decode(trim(($post['author_name'] ?? '') ?: ($post['author'] ?? '')) ?: ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postDate = !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : ps_text('१९ मई २०२६', '19 May 2026');
 $postContent = trim($post['content'] ?? '');
-$postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण"', '"Evocative memories of rain, childhood and village chaupal"');
+$postExcerpt = html_entity_decode(trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण"', '"Evocative memories of rain, childhood and village chaupal"'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+
+$postImage = !empty($post['featured_image']) ? $post['featured_image'] : (!empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['image']) ? $post['image'] : (!empty($post['image_url']) ? $post['image_url'] : '')));
+
+if ($postImage && !preg_match('#^https?://#i', $postImage)) {
+    $postImage = base_url($postImage);
+}
+
+// Dedicated Image resolution for Sughari (matching listing page image uploads/blogs/6aa7bcfb1d48c_mela.webp)
+$sughariImg = '';
+if (!empty($post['title']) && str_contains(mb_strtolower($post['title']), 'सुघरी')) {
+    $sughariImg = $postImage;
+}
+if (empty($sughariImg)) {
+    foreach ($related as $relItem) {
+        if (!empty($relItem['title']) && str_contains(mb_strtolower($relItem['title']), 'सुघरी')) {
+            $relImg = !empty($relItem['featured_image']) ? $relItem['featured_image'] : ($relItem['banner_image'] ?? '');
+            if ($relImg) {
+                $sughariImg = preg_match('#^https?://#i', $relImg) ? $relImg : base_url($relImg);
+                break;
+            }
+        }
+    }
+}
+if (empty($sughariImg)) {
+    $sughariImg = base_url('uploads/blogs/6aa7bcfb1d48c_mela.webp');
+}
 ?>
 
 <style>
@@ -123,13 +149,7 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
           </button>
         </div>
 
-        <!-- Audio Narrator Pill with animated waves -->
-        <button type="button" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary-container text-on-primary font-label-sm text-label-sm shadow-sm hover:bg-deep-forest transition-all cursor-pointer" id="audio-toggle-btn">
-          <div class="flex items-center gap-0.5 h-3.5" id="audio-visualizer">
-            <span class="material-symbols-outlined text-[16px]">volume_up</span>
-          </div>
-          <span id="audio-btn-text"><?= e(ps_text('सारंग जी के स्वर में सुनें (12:48)', 'Listen in Sarang Ji\'s Voice (12:48)')) ?></span>
-        </button>
+
 
         <!-- Font Size Adjuster -->
         <div class="inline-flex items-center bg-pure-white border border-border-warm rounded-lg p-0.5 shadow-xs">
@@ -235,7 +255,52 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
                     <div class="w-12 h-px bg-secondary/40"></div>
                   </div>
 
-                  <!-- Chapter Title & Subtitle -->
+                  <?php if (!empty($postImage)): ?>
+                  <!-- 2-COLUMN TOP HEADER LAYOUT (Image Left, Text Right) -->
+                  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center mb-8 pb-6 border-b border-[#e2dacf]">
+                    <!-- Left Column: Featured Cover Image -->
+                    <div class="md:col-span-5 flex justify-center items-center">
+                      <div class="w-full overflow-hidden rounded-2xl shadow-md border border-[#e2dacf] bg-white p-1.5 group">
+                        <img src="<?= e($postImage) ?>" alt="<?= e($postTitle) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" />
+                      </div>
+                    </div>
+
+                    <!-- Right Column: Title, Subtitle, Category & Metadata -->
+                    <div class="md:col-span-7 flex flex-col justify-center">
+                      <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-[#f4ebd9] text-secondary font-label-sm text-label-sm font-semibold mb-2.5">
+                          <?= e($postCategory) ?>
+                        </span>
+                        <h1 class="font-headline-lg text-[28px] sm:text-[36px] lg:text-[40px] leading-tight text-deep-forest tracking-tight font-bold mb-3">
+                          <?= e($postTitle) ?>
+                        </h1>
+                        <?php if (!empty($postExcerpt)): ?>
+                        <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md leading-relaxed mb-5">
+                          <?= e($postExcerpt) ?>
+                        </p>
+                        <?php endif; ?>
+                      </div>
+
+                      <!-- Memoir Metadata Stamp -->
+                      <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2 mt-1">
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-primary text-[17px]">account_circle</span>
+                          <span><?= e(ps_text('लेखक:', 'Author:')) ?> <strong><?= e($postAuthor) ?></strong></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
+                          <span><?= e($postDate) ?></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-deep-forest text-[17px]">pin_drop</span>
+                          <span><?= e(ps_text('ग्राम कमरावां, सतरिख (बाराबंकी)', 'Village Kamrawan, Satrikh (Barabanki)')) ?></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <?php else: ?>
+                  <!-- CENTERED SINGLE-COLUMN TOP HEADER LAYOUT (When No Image) -->
                   <div class="text-center mb-5">
                     <span class="inline-block px-3 py-1 rounded-full bg-[#f4ebd9] text-secondary font-label-sm text-label-sm font-semibold mb-2">
                       <?= e($postCategory) ?>
@@ -243,15 +308,17 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
                     <h1 class="font-headline-lg text-[34px] sm:text-[42px] leading-tight text-deep-forest tracking-tight mt-1 mb-2 font-bold">
                       <?= e($postTitle) ?>
                     </h1>
-                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md">
+                    <?php if (!empty($postExcerpt)): ?>
+                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md max-w-2xl mx-auto">
                       <?= e($postExcerpt) ?>
                     </p>
+                    <?php endif; ?>
                   </div>
 
                   <!-- Memoir Metadata Stamp -->
                   <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg mb-6 flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2">
                     <div class="flex items-center gap-1.5">
-                      <span class="material-symbols-outlined text-primary text-[17px]">edit_note</span>
+                      <span class="material-symbols-outlined text-primary text-[17px]">account_circle</span>
                       <span><?= e(ps_text('लेखक:', 'Author:')) ?> <strong><?= e($postAuthor) ?></strong></span>
                     </div>
                     <div class="flex items-center gap-1.5">
@@ -263,6 +330,7 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
                       <span><?= e(ps_text('ग्राम कमरावां, सतरिख (बाराबंकी)', 'Village Kamrawan, Satrikh (Barabanki)')) ?></span>
                     </div>
                   </div>
+                  <?php endif; ?>
 
                   <!-- Complete Unified Narrative Prose -->
                   <?php if (!empty($postContent)): ?>
@@ -357,30 +425,44 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
                     <div class="w-12 h-px bg-primary/40"></div>
                   </div>
 
-                  <div class="text-center mb-5">
-                    <span class="inline-block px-3 py-1 rounded-full bg-[#e8f5e9] text-primary font-label-sm text-label-sm font-semibold mb-2">
-                      <?= e(ps_text('अवधी लोक-गद्य कथा • ग्राम्य जीवन', 'Awadhi Folk Story • Village Life')) ?>
-                    </span>
-                    <h1 class="font-headline-lg text-[32px] sm:text-[38px] leading-tight text-deep-forest tracking-tight mt-1 mb-2 font-bold">
-                      <?= e(ps_text('सुघरी', 'Sughari')) ?>
-                    </h1>
-                    <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md">
-                      <?= e(ps_text('"मेले जाने की खुशी और गोबर की खेप"', '"Joy of Village Fair & Cowdung Duty"')) ?>
-                    </p>
-                  </div>
+                  <!-- STORY 2 (Spread 1): सुघरी Header Layout (Image Left, Text Right) -->
+                  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center mb-8 pb-6 border-b border-[#e2dacf]">
+                    <!-- Left Column: Featured Cover Image -->
+                    <div class="md:col-span-5 flex justify-center items-center">
+                      <div class="w-full overflow-hidden rounded-2xl shadow-md border border-[#e2dacf] bg-white p-1.5 group">
+                        <img src="<?= e($sughariImg) ?>" alt="<?= e(ps_text('सुघरी', 'Sughari')) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" />
+                      </div>
+                    </div>
 
-                  <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg mb-6 flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2">
-                    <div class="flex items-center gap-1.5">
-                      <span class="material-symbols-outlined text-primary text-[17px]">history_edu</span>
-                      <span><?= e(ps_text('रचनाकार:', 'Author:')) ?> <strong><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></strong></span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                      <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
-                      <span>१४ अप्रैल २०२६</span>
-                    </div>
-                    <div class="flex items-center gap-1.5">
-                      <span class="material-symbols-outlined text-deep-forest text-[17px]">yard</span>
-                      <span><?= e(ps_text('सतरिख देहात, अवध', 'Satrikh Countryside, Awadh')) ?></span>
+                    <!-- Right Column: Title, Subtitle, Category & Metadata -->
+                    <div class="md:col-span-7 flex flex-col justify-center">
+                      <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-[#e8f5e9] text-primary font-label-sm text-label-sm font-semibold mb-2.5">
+                          <?= e(ps_text('अवधी लोक-गद्य कथा • ग्राम्य जीवन', 'Awadhi Folk Story • Village Life')) ?>
+                        </span>
+                        <h1 class="font-headline-lg text-[28px] sm:text-[36px] lg:text-[40px] leading-tight text-deep-forest tracking-tight font-bold mb-3">
+                          <?= e(ps_text('सुघरी', 'Sughari')) ?>
+                        </h1>
+                        <p class="font-serif italic text-[#614b3d] text-body-md sm:text-title-md leading-relaxed mb-5">
+                          <?= e(ps_text('"मेले जाने की खुशी और गोबर की खेप"', '"Joy of Village Fair & Cowdung Duty"')) ?>
+                        </p>
+                      </div>
+
+                      <!-- Memoir Metadata Stamp -->
+                      <div class="p-3 bg-[#f7f3ea] border border-[#ebe0d0] rounded-lg flex flex-wrap items-center justify-between text-label-sm font-label-sm text-on-surface-variant gap-2 mt-1">
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-primary text-[17px]">account_circle</span>
+                          <span><?= e(ps_text('रचनाकार:', 'Author:')) ?> <strong><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></strong></span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-secondary text-[17px]">event</span>
+                          <span>१४ अप्रैल २०२६</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-deep-forest text-[17px]">yard</span>
+                          <span><?= e(ps_text('सतरिख देहात, अवध', 'Satrikh Countryside, Awadh')) ?></span>
+                        </div>
+                      </div>
                     </div>
                   </div>
 

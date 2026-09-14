@@ -191,12 +191,13 @@ class Blog extends BaseModel
     {
         if (!$this->db) return 0;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
-        $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
-            VALUES (:category_id, :author_id, :title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
+        $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
+            VALUES (:category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
         $stmt->execute([
             ':category_id' => $data['category_id'],
             ':author_id' => $data['author_id'] ?? null,
             ':title' => $data['title'],
+            ':en_title' => $data['en_title'] ?? null,
             ':slug' => $data['slug'],
             ':excerpt' => $data['excerpt'] ?? null,
             ':content' => $data['content'] ?? null,
@@ -221,11 +222,12 @@ class Blog extends BaseModel
     {
         if (!$this->db) return false;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
-        $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at WHERE id = :id');
+        $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at WHERE id = :id');
         return $stmt->execute([
             ':category_id' => $data['category_id'],
             ':author_id' => $data['author_id'] ?? null,
             ':title' => $data['title'],
+            ':en_title' => $data['en_title'] ?? null,
             ':slug' => $data['slug'],
             ':excerpt' => $data['excerpt'] ?? null,
             ':content' => $data['content'] ?? null,

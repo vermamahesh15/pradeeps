@@ -339,14 +339,14 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         <span class="material-symbols-outlined text-[36px]">security</span>
                     </div>
                     <div class="flex flex-col">
-                        <div class="inline-flex items-center gap-1.5 text-fresh-sprout font-label-md text-xs uppercase font-bold tracking-wider mb-1">
-                            <span class="material-symbols-outlined text-[16px]">verified_user</span>
+                        <div class="inline-flex items-center gap-1.5 text-[#F0B45C] font-label-md text-xs uppercase font-bold tracking-wider mb-1">
+                            <span class="material-symbols-outlined text-[16px] text-[#F0B45C]">verified_user</span>
                             <span><?= e(ps_text('पूर्ण व्यक्तिगत गोपनीयता की गारंटी', '100% Confidentiality Guarantee')) ?></span>
                         </div>
                         <h3 class="font-headline-md text-2xl sm:text-3xl text-pure-white mb-2 font-bold">
                             <?= e(ps_text('आपकी पहचान और चर्चा पूर्णतः सुरक्षित है', 'Your Identity & Conversations are Completely Private')) ?>
                         </h3>
-                        <p class="font-body-md text-base text-surface-variant leading-relaxed">
+                        <p class="font-body-md text-base text-white/90 leading-relaxed">
                             <?= e(ps_text(
                                 'यह श्री प्रदीप सारंग जी का निजी एवं व्यक्तिगत फोन/व्हाट्सएप नंबर है। आपकी व्यक्तिगत, पारिवारिक अथवा सामाजिक बातें किसी भी परिस्थिति में सार्वजनिक नहीं की जाती हैं। बिना किसी संकोच के अपनी बात साझा करें।',
                                 'This is Shri Pradeep Sarang’s direct phone and WhatsApp number. Your personal or family concerns are strictly private and never shared.'
@@ -356,11 +356,11 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-fresh-sprout text-deep-forest font-title-md text-base rounded-xl hover:bg-pure-white transition-all shadow-md font-bold" href="<?= e($whatsappUrl) ?>" rel="noopener noreferrer" target="_blank">
+                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-title-md text-base rounded-xl transition-all shadow-md font-bold" href="<?= e($whatsappUrl) ?>" rel="noopener noreferrer" target="_blank">
                         <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">chat</span>
                         <span><?= e($phone) ?></span>
                     </a>
-                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-pure-white/10 hover:bg-pure-white/20 text-pure-white font-title-md text-base rounded-xl transition-all border border-white/20" href="tel:<?= e($phoneClean) ?>">
+                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-gray-100 text-deep-forest font-title-md text-base rounded-xl transition-all shadow-sm font-bold" href="tel:<?= e($phoneClean) ?>">
                         <span class="material-symbols-outlined text-[20px]">call</span>
                         <span><?= e(ps_text('कॉल करें', 'Call Directly')) ?></span>
                     </a>
@@ -429,7 +429,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                 <label class="font-label-md text-xs font-bold text-deep-forest mb-1.5" for="phoneNumber">
                                     <?= e(ps_text('मोबाइल नंबर / व्हाट्सएप (Phone Number) *', 'Phone / WhatsApp Number *')) ?>
                                 </label>
-                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="phoneNumber" placeholder="+91 98765 43210" required type="tel"/>
+                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="phoneNumber" placeholder="+91 9919007190" required type="tel"/>
                             </div>
                         </div>
 

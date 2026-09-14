@@ -22,9 +22,32 @@ function db_config(): array
     return $config;
 }
 
+/**
+ * Recursively decodes HTML entity codes (e.g. &#039;, &#39;, &quot;, &amp;, &lt;, &gt;, &nbsp;, etc.) into actual character symbols.
+ */
+function ps_decode_entities(?string $value): string
+{
+    if ($value === null || $value === '') {
+        return '';
+    }
+    $str = (string) $value;
+    while (preg_match('/&(#?[a-zA-Z0-9]+);/', $str)) {
+        $prev = $str;
+        $str = html_entity_decode($prev, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        if ($str === $prev) break;
+    }
+    $str = str_replace(['&#039;', '&#39;', '&amp;#039;', '&amp;#39;'], "'", $str);
+    $str = str_replace(['&quot;', '&amp;quot;'], '"', $str);
+    return $str;
+}
+
 function e(?string $value): string
 {
-    return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+    if ($value === null || $value === '') {
+        return '';
+    }
+    $decoded = ps_decode_entities((string) $value);
+    return htmlspecialchars($decoded, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 function current_lang(): string
@@ -205,6 +228,11 @@ function is_nav_item_active(string $url, string $currPath): bool
     // 8. Portfolio (Photo Gallery)
     if ($url === '/portfolio') {
         return $currPath === '/portfolio' || $currPath === '/gallery' || $currPath === '/chhayachitra' || str_starts_with($currPath, '/portfolio/');
+    }
+
+    // 8.5 Video Gallery
+    if ($url === '/videos') {
+        return $currPath === '/videos' || $currPath === '/video-gallery' || $currPath === '/youtube-videos' || str_starts_with($currPath, '/videos/');
     }
 
     // 9. Media (Press & Clippings)
@@ -416,6 +444,7 @@ function upload_file(array $file, string &$error = '', string $subfolder = ''): 
         return $relativeDir . '/' . $fileName;
     }
 
+    $error = 'Failed to save uploaded file on server. Directory permissions error.';
     return null;
 }
 
@@ -494,5 +523,35 @@ function ps_amp_content(string $html): string
     $html = preg_replace('/<iframe\b[^>]*>(.*?)<\/iframe>/is', '', $html);
 
     return $html;
+}
+
+if (!function_exists('ps_resolve_img')) {
+    function ps_resolve_img(?string $dbPath, string $fallback = 'assets/images/slider_final_1.webp'): string {
+        $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+        if (!empty($dbPath)) {
+            if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
+            $clean = ltrim($dbPath, '/');
+            if (file_exists($root . '/' . $clean)) {
+                return base_url($clean);
+            }
+            $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+            if (file_exists($root . '/' . $webp)) {
+                return base_url($webp);
+            }
+        }
+        if (empty($fallback)) {
+            $fallback = 'assets/images/slider_final_1.webp';
+        }
+        if (preg_match('#^https?://#i', $fallback)) return $fallback;
+        $cleanFallback = ltrim($fallback, '/');
+        if (file_exists($root . '/' . $cleanFallback)) {
+            return base_url($cleanFallback);
+        }
+        $webpFallback = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanFallback);
+        if (file_exists($root . '/' . $webpFallback)) {
+            return base_url($webpFallback);
+        }
+        return base_url($cleanFallback);
+    }
 }
 ?>

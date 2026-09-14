@@ -111,7 +111,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
           <span><?= e(ps_text('विशिष्ट मुख्य कवरेज (Front Page Archive)', 'Front Page Archive Feature')) ?></span>
         </div>
         <h2 class="font-headline-md text-headline-md text-deep-forest font-bold">
-          <?= e(ps_text('जब गाँव कमरावां से उठी \'ग्रीन मॉर्निंग\' की गूंज बनी राष्ट्रीय सुर्खी', 'When the Echo of Green Morning from Kamrawan became National Headlines')) ?>
+          <?= e(ps_text('जब गाँव कमरावां से उठी ‘ग्रीन मॉर्निंग’ की गूंज बनी राष्ट्रीय सुर्खी', 'When the Echo of Green Morning from Kamrawan became National Headlines')) ?>
         </h2>
       </div>
       <div class="flex items-center gap-2 text-text-muted font-body-sm text-body-sm">
@@ -139,7 +139,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
             <span><?= e(ps_text('अखबार की मूल सुर्खी', 'Original Press Headline')) ?></span>
           </div>
           <p class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
-            <?= ps_text('\'ग्रीन मॉर्निंग\' के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '\'Green Morning\' Founder: New Voice of Environmental Consciousness from Kamrawan') ?>
+            <?= ps_text('‘ग्रीन मॉर्निंग’ के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '‘Green Morning’ Founder: New Voice of Environmental Consciousness from Kamrawan') ?>
           </p>
         </div>
         <div class="relative z-10 flex items-center gap-3 pt-4 text-deep-forest font-label-sm text-label-sm">
@@ -160,7 +160,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
             <span><?= e(ps_text('संपादकीय समीक्षा एवं सारांश', 'Editorial Overview')) ?></span>
           </div>
           <p class="font-body-lg text-body-lg text-on-surface leading-relaxed mb-4">
-            <?= e(ps_text('ग्रामीण जनजीवन में सुबह के सामान्य अभिवादन को धरती के प्रति आदर में बदलने वाले प्रदीप सारंग के \'ग्रीन मॉर्निंग\' अभियान ने उत्तर प्रदेश के सैकड़ों गाँवों को प्रेरित किया है। रिपोर्ट में रेखांकित किया गया कि कैसे व्यक्तिगत संकल्प 50,000+ पौधों की जीवंत हरियाली में रूपांतरित हुआ।', 'Shri Pradeep Sarang\'s Green Morning movement transformed ordinary morning greetings into ecological consciousness across hundreds of villages.')) ?>
+            <?= e(ps_text('ग्रामीण जनजीवन में सुबह के सामान्य अभिवादन को धरती के प्रति आदर में बदलने वाले प्रदीप सारंग के ‘ग्रीन मॉर्निंग’ अभियान ने उत्तर प्रदेश के सैकड़ों गाँवों को प्रेरित किया है। रिपोर्ट में रेखांकित किया गया कि कैसे व्यक्तिगत संकल्प 50,000+ पौधों की जीवंत हरियाली में रूपांतरित हुआ।', 'Shri Pradeep Sarang\'s Green Morning movement transformed ordinary morning greetings into ecological consciousness across hundreds of villages.')) ?>
           </p>
           <div class="bg-soft-meadow rounded-xl p-4 mb-6 border border-border-warm">
             <p class="font-quote-editorial text-body-md text-deep-forest italic">
@@ -709,7 +709,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
     'spotlight': {
       pub: '<?= e(ps_text('दैनिक जागरण (मुख्य पृष्ठ)', 'Dainik Jagran (Front Page)')) ?>',
       date: '16 <?= e(ps_text('जून 2024 • बाराबंकी', 'June 2024 • Barabanki')) ?>',
-      title: '<?= e(ps_text('\'ग्रीन मॉर्निंग\' के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '\'Green Morning\' Founder: New Voice of Environmental Consciousness')) ?>',
+      title: '<?= e(ps_text('‘ग्रीन मॉर्निंग’ के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '‘Green Morning’ Founder: New Voice of Environmental Consciousness')) ?>',
       body: '<?= e(ps_text('दैनिक जागरण के विशेष परिशिष्ट में प्रकाशित विस्तृत आलेख: गाँव कमरावां निवासी प्रदीप सारंग द्वारा शुरू की गई ‘ग्रीन मॉर्निंग’ मुहिम अब 100 से अधिक ग्राम पंचायतों में फैल चुकी है।', 'Dainik Jagran feature: Green Morning movement led by Pradeep Sarang from Kamrawan village spread to over 100 panchayats.')) ?>'
     },
     'clipping-1': {
@@ -738,15 +738,25 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
     }
   };
 
+  function decodeHtmlEntities(str) {
+    if (!str) return '';
+    const txt = document.createElement('textarea');
+    txt.innerHTML = str;
+    return txt.value;
+  }
+
   function openArchivalModal(id) {
     const modal = document.getElementById('archival-modal');
     const data = archivalData[id];
     if (!data) return;
 
-    document.getElementById('modal-pub-tag').innerText = data.pub;
-    document.getElementById('modal-date').innerText = data.date;
-    document.getElementById('modal-title').innerText = data.title;
-    document.getElementById('modal-body').innerText = data.body;
+    document.getElementById('modal-pub-tag').innerText = decodeHtmlEntities(data.pub);
+    document.getElementById('modal-date').innerText = decodeHtmlEntities(data.date);
+    document.getElementById('modal-title').innerText = decodeHtmlEntities(data.title);
+    document.getElementById('modal-body').innerText = decodeHtmlEntities(data.body);
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }

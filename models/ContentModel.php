@@ -848,7 +848,7 @@ class ContentModel extends BaseModel
     public function getVisitorHistoricalTotal(): int
     {
         $this->ensureVisitorHistoricalTotalTable();
-        if (!$this->db) return 8421;
+        if (!$this->db) return 20421;
 
         try {
             $val = $this->db->query("SELECT total_count FROM visitor_historical_total WHERE id = 1")->fetchColumn();
@@ -861,7 +861,7 @@ class ContentModel extends BaseModel
     public function trackVisitorSession(): int
     {
         if (!$this->db) {
-            return 8421;
+            return 20421;
         }
 
         try {
@@ -959,7 +959,20 @@ class ContentModel extends BaseModel
             $this->ensureSettingsTable();
             $stmt = $this->db->query('SELECT setting_key, setting_value FROM settings');
             $dbSettings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR) ?: [];
-            return array_merge($defaultSettings, $dbSettings);
+            $merged = array_merge($defaultSettings, $dbSettings);
+            
+            // Overwrite any legacy placeholder phone numbers
+            if (empty($merged['phone']) || strpos($merged['phone'], '98765') !== false) {
+                $merged['phone'] = '+91 9919007190';
+                $up = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('phone', '+91 9919007190') ON DUPLICATE KEY UPDATE setting_value = '+91 9919007190'");
+                $up->execute();
+            }
+            if (empty($merged['whatsapp']) || strpos($merged['whatsapp'], '98765') !== false) {
+                $merged['whatsapp'] = '+91 9919007190';
+                $up = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('whatsapp', '+91 9919007190') ON DUPLICATE KEY UPDATE setting_value = '+91 9919007190'");
+                $up->execute();
+            }
+            return $merged;
         } catch (Throwable $e) {
             return $defaultSettings;
         }

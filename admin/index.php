@@ -82,6 +82,45 @@ if (is_post()) {
         redirect('/admin/index.php?module=settings');
     }
 
+    // Video Management Actions (Admin & Super Admin)
+    if ($loggedIn && (($_POST['action'] ?? '') === 'save_video' || ($_POST['action'] ?? '') === 'delete_video')) {
+        verify_csrf();
+        require_once __DIR__ . '/../models/VideoModel.php';
+        $videoModel = new VideoModel();
+        
+        if ($_POST['action'] === 'save_video') {
+            $id = (int)($_POST['id'] ?? 0);
+            $videoData = [
+                'title' => trim($_POST['title'] ?? ''),
+                'youtube_url' => trim($_POST['youtube_url'] ?? ''),
+                'category' => trim($_POST['category'] ?? 'General'),
+                'description' => trim($_POST['description'] ?? ''),
+                'duration' => trim($_POST['duration'] ?? '05:00'),
+                'thumbnail' => trim($_POST['thumbnail'] ?? ''),
+                'is_featured' => !empty($_POST['is_featured']) ? 1 : 0,
+                'status' => $_POST['status'] ?? 'active',
+            ];
+            if (!empty($videoData['title']) && !empty($videoData['youtube_url'])) {
+                if ($id > 0) {
+                    $videoModel->update($id, $videoData);
+                    flash('admin_success', 'Video updated successfully.');
+                } else {
+                    $videoModel->create($videoData);
+                    flash('admin_success', 'New YouTube video added successfully.');
+                }
+            } else {
+                flash('admin_error', 'Title and YouTube URL are required.');
+            }
+        } elseif ($_POST['action'] === 'delete_video') {
+            $id = (int)($_POST['id'] ?? 0);
+            if ($id > 0) {
+                $videoModel->delete($id);
+                flash('admin_success', 'Video deleted successfully.');
+            }
+        }
+        redirect('/admin/index.php?module=videos');
+    }
+
     // Blog CRUD (Role and Ownership Aware)
     if ($loggedIn && (($_POST['action'] ?? '') === 'create_blog' || ($_POST['action'] ?? '') === 'update_blog')) {
         $isEdit = $_POST['action'] === 'update_blog';
@@ -122,10 +161,11 @@ if (is_post()) {
         if ($isEdit && $id <= 0) $errors[] = 'Invalid blog ID.';
 
         if (empty($errors)) {
-            $blogData['title'] = htmlspecialchars($blogData['title']);
-            $blogData['en_title'] = htmlspecialchars($blogData['en_title']);
-            $blogData['excerpt'] = htmlspecialchars($blogData['excerpt']);
-            $blogData['author'] = htmlspecialchars($blogData['author']);
+            $blogData['title'] = ps_decode_entities($blogData['title']);
+            $blogData['en_title'] = ps_decode_entities($blogData['en_title']);
+            $blogData['excerpt'] = ps_decode_entities($blogData['excerpt']);
+            $blogData['content'] = ps_decode_entities($blogData['content']);
+            $blogData['author'] = ps_decode_entities($blogData['author']);
             
             // Generate or manually set slug
             $slugInput = trim($_POST['slug'] ?? '');
@@ -138,7 +178,7 @@ if (is_post()) {
             // All articles written by non-admin roles require Admin (Pradeep Sarang) approval.
             $authorInput = trim($_POST['author'] ?? '');
             if (!empty($authorInput)) {
-                $blogData['author'] = htmlspecialchars($authorInput);
+                $blogData['author'] = ps_decode_entities($authorInput);
             } elseif ($isEdit && !empty($existing['author'])) {
                 $blogData['author'] = $existing['author'];
             } else {
@@ -237,7 +277,7 @@ if (is_post()) {
             } catch (Throwable $e) {
                 flash('admin_error', 'Database error: ' . $e->getMessage());
             }
-            redirect('/admin/index.php?module=blogs');
+            redirect('/admin/index.php?module=blogs' . ($isEdit ? '&edit_id=' . $id : ''));
         } else {
             flash('admin_error', implode(' ', $errors));
         }
@@ -446,25 +486,50 @@ if (is_post()) {
             'status' => $_POST['status'] ?? 'upcoming',
         ];
         $eventData['slug'] = $content->normalizeEventSlug($eventData['title'], $isEdit ? $id : null);
-        $imagePath = $_POST['existing_image'] ?? '';
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $errorUpload = '';
-            $uploaded = upload_file($_FILES['image'], $errorUpload);
-            if ($uploaded) {
-                $imagePath = $uploaded;
+        $existingImage = $_POST['existing_image'] ?? '';
+        $imagePath = $existingImage;
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] !== UPLOAD_ERR_NO_FILE) {
+            if ($_FILES['image']['error'] === UPLOAD_ERR_OK) {
+                $errorUpload = '';
+                $uploaded = upload_file($_FILES['image'], $errorUpload, 'events');
+                if ($uploaded) {
+                    $imagePath = $uploaded;
+                } else {
+                    flash('admin_error', 'Event image upload failed: ' . $errorUpload);
+                }
             } else {
-                flash('admin_error', 'Event image failed: ' . $errorUpload);
+                $errCode = $_FILES['image']['error'];
+                $errMsgs = [
+                    1 => 'Selected image file is too large (exceeds server upload_max_filesize). Please choose a smaller image (under 2MB) or compress it.',
+                    2 => 'Selected image file exceeds max form size limit.',
+                    3 => 'File was only partially uploaded. Please try again.',
+                    6 => 'Missing temporary upload folder on server.',
+                    7 => 'Failed to write file to disk.',
+                    8 => 'A PHP extension stopped the file upload.'
+                ];
+                flash('admin_error', $errMsgs[$errCode] ?? ('File upload error code ' . $errCode));
             }
+        } elseif (isset($_POST['image_url']) && trim($_POST['image_url']) !== '' && trim($_POST['image_url']) !== $existingImage) {
+            $imagePath = trim($_POST['image_url']);
         }
+
         $eventData['image'] = $imagePath;
 
         try {
-            if ($isEdit) { $content->updateEvent($id, $eventData); flash('admin_success', 'Event updated.'); }
-            else { $content->createEvent($eventData); flash('admin_success', 'Event created.'); }
+            if ($isEdit) {
+                $content->updateEvent($id, $eventData);
+                flash('admin_success', 'Event updated successfully.');
+                redirect('/admin/index.php?module=events&edit_id=' . $id);
+            } else {
+                $content->createEvent($eventData);
+                flash('admin_success', 'Event created successfully.');
+                redirect('/admin/index.php?module=events');
+            }
         } catch (Throwable $e) {
             flash('admin_error', 'Event error: ' . $e->getMessage());
+            redirect('/admin/index.php?module=events' . ($isEdit ? '&edit_id=' . $id : ''));
         }
-        redirect('/admin/index.php?module=events');
     }
 
     if ($loggedIn && ($_POST['action'] ?? '') === 'delete_event') {
@@ -1052,6 +1117,7 @@ $metrics = $content->metrics();
                     <a href="?module=donation_settings" class="<?= $module === 'donation_settings' ? 'active' : '' ?>">Donation Settings</a>
                     <a href="?module=gallery" class="<?= $module === 'gallery' ? 'active' : '' ?>">Gallery Bank</a>
                     <a href="?module=newspaper" class="<?= $module === 'newspaper' ? 'active' : '' ?>">Newspaper Cuttings</a>
+                    <a href="?module=videos" class="<?= $module === 'videos' ? 'active' : '' ?>"><i class="fa-solid fa-play-circle text-danger me-1"></i> YouTube Videos</a>
                     <a href="?module=volunteers" class="<?= $module === 'volunteers' ? 'active' : '' ?>">Volunteers</a>
                     <a href="?module=authors" class="<?= $module === 'authors' ? 'active' : '' ?>"><i class="fa-solid fa-users-gear me-1"></i> Manage Users / Roles</a>
                     <?php if (is_role('super_admin')): ?>
@@ -1767,89 +1833,217 @@ $metrics = $content->metrics();
                         </form>
                     </div>
                 <?php else: ?>
-                    <!-- LISTING VIEW FOR BLOGS -->
-                    <div class="admin-card">
-                        <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
-                        <?php if ($error): ?><div class="alert alert-danger"><?= e($error) ?></div><?php endif; ?>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <h2 class="mb-0"><i class="fa-solid fa-newspaper me-2 text-primary"></i> Blogs & Writings Management</h2>
-                                <p class="text-muted small mb-0">Manage published articles, drafts, and Admin approvals</p>
+                    <!-- REDESIGNED LISTING VIEW FOR BLOGS -->
+                    <?php
+                    $totalBlogs = count($blogs);
+                    $publishedCount = count(array_filter($blogs, fn($b) => $b['status'] === 'published'));
+                    $draftCount = count(array_filter($blogs, fn($b) => in_array($b['status'], ['draft', 'pending'])));
+                    $categoriesCount = count($categories ?? []);
+                    ?>
+                    
+                    <!-- Stats Summary Grid -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-white rounded-3 border shadow-sm d-flex align-items-center gap-3">
+                                <div class="rounded-2 p-3 bg-primary bg-opacity-10 text-primary">
+                                    <i class="fa-solid fa-book-open fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0 fw-bold"><?= $totalBlogs ?></h4>
+                                    <span class="text-muted small">Total Articles</span>
+                                </div>
                             </div>
-                            <a href="?module=blogs&action=create" class="btn btn-dark"><i class="fa-solid fa-plus me-2"></i>Create New Blog</a>
                         </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-white rounded-3 border shadow-sm d-flex align-items-center gap-3">
+                                <div class="rounded-2 p-3 bg-success bg-opacity-10 text-success">
+                                    <i class="fa-solid fa-circle-check fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0 fw-bold"><?= $publishedCount ?></h4>
+                                    <span class="text-muted small">Published</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-white rounded-3 border shadow-sm d-flex align-items-center gap-3">
+                                <div class="rounded-2 p-3 bg-warning bg-opacity-10 text-warning">
+                                    <i class="fa-solid fa-pen-nib fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0 fw-bold"><?= $draftCount ?></h4>
+                                    <span class="text-muted small">Drafts / Pending</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="p-3 bg-white rounded-3 border shadow-sm d-flex align-items-center gap-3">
+                                <div class="rounded-2 p-3 text-purple" style="color: #6f42c1; background-color: rgba(111, 66, 193, 0.1);">
+                                    <i class="fa-solid fa-tags fa-lg"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0 fw-bold"><?= $categoriesCount ?></h4>
+                                    <span class="text-muted small">Categories</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Blogs Table Card -->
+                    <div class="admin-card border-0 shadow-sm rounded-4 bg-white p-4">
+                        <?php if ($success): ?><div class="alert alert-success shadow-sm mb-3"><i class="fa-solid fa-circle-check me-2"></i><?= e($success) ?></div><?php endif; ?>
+                        <?php if ($error): ?><div class="alert alert-danger shadow-sm mb-3"><i class="fa-solid fa-triangle-exclamation me-2"></i><?= e($error) ?></div><?php endif; ?>
+                        
+                        <!-- Header & Actions -->
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+                            <div>
+                                <h3 class="mb-1 fw-bold text-dark d-flex align-items-center gap-2">
+                                    <span class="p-2 rounded-2 bg-primary text-white d-inline-flex align-items-center justify-center" style="width:36px; height:36px;"><i class="fa-solid fa-newspaper fs-6"></i></span>
+                                    Blogs & Writings Management
+                                </h3>
+                                <p class="text-muted small mb-0">Manage published articles, literature posts, drafts, and Admin approvals</p>
+                            </div>
+                            <a href="?module=blogs&action=create" class="btn btn-dark font-semibold px-4 py-2 rounded-3 shadow-sm text-nowrap"><i class="fa-solid fa-plus me-2"></i>Create New Blog</a>
+                        </div>
+
+                        <!-- Live Filter Bar -->
+                        <div class="row g-2 mb-3 p-3 bg-light rounded-3 border">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0 text-muted"><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input type="text" id="blogSearchInput" class="form-control border-start-0" placeholder="Search by title, slug, or author..." onkeyup="filterBlogsTable()">
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <select id="blogCategoryFilter" class="form-select" onchange="filterBlogsTable()">
+                                    <option value="">All Categories</option>
+                                    <?php foreach ($categories as $cat): ?>
+                                        <option value="<?= e(mb_strtolower($cat['name'])) ?>"><?= e($cat['name']) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <select id="blogStatusFilter" class="form-select" onchange="filterBlogsTable()">
+                                    <option value="">All Statuses</option>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="pending">Pending Approval</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="col-md-1 text-end">
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="resetBlogFilters()" title="Reset Filters"><i class="fa-solid fa-rotate-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle border">
-                                <thead class="table-light">
+                            <table class="table table-hover align-middle mb-0" id="blogsListTable">
+                                <thead class="table-light text-uppercase small font-monospace">
                                     <tr>
-                                        <th>Title</th>
+                                        <th style="min-width: 280px;">Article Title</th>
                                         <th>Category</th>
                                         <th>Author</th>
                                         <th>Status</th>
                                         <th>Created</th>
-                                        <th class="text-end">Actions</th>
+                                        <th class="text-end" style="min-width: 220px;">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php if (empty($blogs)): ?>
-                                        <tr><td colspan="6" class="text-center py-4 text-muted">No blogs found.</td></tr>
+                                        <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa-solid fa-folder-open fa-2x mb-2 d-block opacity-50"></i>No blogs found in database.</td></tr>
                                     <?php else: ?>
-                                        <?php foreach ($blogs as $b): ?>
-                                            <tr>
+                                        <?php foreach ($blogs as $b): 
+                                            $coverImg = ps_resolve_img($b['banner_image'] ?: $b['featured_image'], 'assets/images/slider_final_1.webp');
+                                            $catName = $b['category_name'] ?? 'Uncategorized';
+                                            $authorName = $b['author'] ?: ($b['author_name'] ?: 'प्रदीप सारंग');
+                                        ?>
+                                            <tr class="blog-table-row" 
+                                                data-title="<?= e(mb_strtolower($b['title'] . ' ' . $b['slug'])) ?>" 
+                                                data-category="<?= e(mb_strtolower($catName)) ?>" 
+                                                data-status="<?= e(mb_strtolower($b['status'])) ?>"
+                                                data-author="<?= e(mb_strtolower($authorName)) ?>">
+                                                
                                                 <td>
-                                                    <strong><?= e($b['title']) ?></strong>
-                                                    <?php if ($b['slug']): ?><br><small class="text-muted">Slug: <?= e($b['slug']) ?></small><?php endif; ?>
+                                                    <div class="d-flex align-items-center gap-3">
+                                                        <img src="<?= e($coverImg) ?>" alt="Cover" class="rounded-3 shadow-xs object-fit-cover" style="width: 52px; height: 52px; flex-shrink: 0;">
+                                                        <div class="min-w-0">
+                                                            <a href="<?= e(base_url('/blog/' . ($b['slug'] ?? ''))) ?>" target="_blank" class="fw-bold text-dark text-decoration-none hover-primary d-block text-truncate" style="max-width: 260px;" title="<?= e($b['title']) ?>">
+                                                                <?= e($b['title']) ?> <i class="fa-solid fa-arrow-up-right-from-square ms-1 text-muted" style="font-size: 11px;"></i>
+                                                            </a>
+                                                            <?php if ($b['slug']): ?>
+                                                                <span class="text-muted small font-monospace d-block text-truncate" style="max-width: 260px;">slug: <?= e($b['slug']) ?></span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
                                                 </td>
-                                                <td><span class="badge text-bg-light border"><?= e($b['category_name'] ?? 'Uncategorized') ?></span></td>
-                                                <td><span class="fw-semibold text-success"><i class="fa-solid fa-feather me-1"></i><?= e($b['author'] ?: ($b['author_name'] ?: 'प्रदीप सारंग')) ?></span></td>
+
+                                                <td>
+                                                    <span class="badge text-bg-light border shadow-xs px-2.5 py-1.5 fw-medium text-dark">
+                                                        <?= e($catName) ?>
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    <span class="fw-semibold" style="color: #059669;">
+                                                        <?= e($authorName) ?>
+                                                    </span>
+                                                </td>
+
                                                 <td>
                                                     <?php 
                                                     $badgeMap = [
-                                                        'published' => 'success',
-                                                        'draft' => 'secondary',
-                                                        'pending' => 'warning',
-                                                        'rejected' => 'danger',
-                                                        'archived' => 'info'
+                                                        'published' => ['bg' => 'bg-success-subtle text-success border-success-subtle', 'dot' => 'bg-success', 'label' => 'Published'],
+                                                        'draft' => ['bg' => 'bg-secondary-subtle text-secondary border-secondary-subtle', 'dot' => 'bg-secondary', 'label' => 'Draft'],
+                                                        'pending' => ['bg' => 'bg-warning-subtle text-warning border-warning-subtle', 'dot' => 'bg-warning', 'label' => 'Pending Approval'],
+                                                        'rejected' => ['bg' => 'bg-danger-subtle text-danger border-danger-subtle', 'dot' => 'bg-danger', 'label' => 'Rejected'],
+                                                        'archived' => ['bg' => 'bg-info-subtle text-info border-info-subtle', 'dot' => 'bg-info', 'label' => 'Archived']
                                                     ];
-                                                    $badgeClass = $badgeMap[$b['status']] ?? 'secondary';
-                                                    $statusLabel = ($b['status'] === 'pending') ? 'Pending Admin Approval' : ucfirst($b['status']);
+                                                    $st = $badgeMap[$b['status']] ?? ['bg' => 'bg-secondary-subtle text-secondary', 'dot' => 'bg-secondary', 'label' => ucfirst($b['status'])];
                                                     ?>
-                                                    <span class="badge text-bg-<?= $badgeClass ?>"><?= e($statusLabel) ?></span>
+                                                    <span class="badge border rounded-pill px-2.5 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5 <?= $st['bg'] ?>">
+                                                        <span class="rounded-circle <?= $st['dot'] ?>" style="width: 6px; height: 6px;"></span>
+                                                        <?= e($st['label']) ?>
+                                                    </span>
                                                 </td>
-                                                <td><span class="small text-muted"><?= date('d M Y', strtotime($b['created_at'])) ?></span></td>
+
+                                                <td>
+                                                    <span class="small text-muted font-monospace"><i class="fa-regular fa-calendar me-1"></i><?= date('d M Y', strtotime($b['created_at'])) ?></span>
+                                                </td>
+
                                                 <td class="text-end">
-                                                    <div class="d-flex justify-content-end gap-2 align-items-center">
-                                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="openSocialShareModal(<?= htmlspecialchars(json_encode([
+                                                    <div class="d-flex justify-content-end gap-1.5 align-items-center">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary shadow-xs px-2.5 py-1" onclick="openSocialShareModal(<?= htmlspecialchars(json_encode([
                                                             'id' => $b['id'],
                                                             'title' => $b['title'],
                                                             'excerpt' => $b['excerpt'] ?: ps_excerpt($b['content'] ?? '', 120),
                                                             'url' => base_url('/blog/' . ($b['slug'] ?? ''))
-                                                        ]), ENT_QUOTES, 'UTF-8') ?>)" title="Publish story to social media">
+                                                        ]), ENT_QUOTES, 'UTF-8') ?>)" title="Share to social media">
                                                             <i class="fa-solid fa-share-nodes me-1"></i> Share Social
                                                         </button>
 
-                                                        <a href="?module=blogs&edit_id=<?= $b['id'] ?>" class="btn btn-sm btn-outline-dark"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
-                                                        
+                                                        <a href="?module=blogs&edit_id=<?= $b['id'] ?>" class="btn btn-sm btn-outline-dark px-2.5 py-1" title="Edit Article"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
+
                                                         <?php if (is_role('admin') && $b['status'] !== 'published'): ?>
                                                             <form method="post" class="d-inline">
                                                                 <?= csrf_field() ?>
                                                                 <input type="hidden" name="action" value="update_blog_status">
                                                                 <input type="hidden" name="id" value="<?= $b['id'] ?>">
                                                                 <input type="hidden" name="status" value="published">
-                                                                <button type="submit" class="btn btn-sm btn-success" title="Approve and publish by Admin Pradeep Sarang"><i class="fa-solid fa-circle-check me-1"></i> Approve & Publish</button>
+                                                                <button type="submit" class="btn btn-sm btn-success px-2.5 py-1" title="Approve and publish by Admin"><i class="fa-solid fa-circle-check me-1"></i> Approve</button>
                                                             </form>
                                                         <?php endif; ?>
 
                                                         <?php if (is_role('admin') && $b['status'] === 'pending'): ?>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="rejectBlog(<?= $b['id'] ?>)">Reject</button>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger px-2.5 py-1" onclick="rejectBlog(<?= $b['id'] ?>)">Reject</button>
                                                         <?php endif; ?>
 
                                                         <?php if (!is_role('author') || $b['status'] !== 'published'): ?>
-                                                            <form method="post" onsubmit="return confirm('Delete this blog?')" class="d-inline">
+                                                            <form method="post" onsubmit="return confirm('Delete this blog post permanently?')" class="d-inline">
                                                                 <?= csrf_field() ?>
                                                                 <input type="hidden" name="action" value="delete_blog">
                                                                 <input type="hidden" name="id" value="<?= $b['id'] ?>">
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1" title="Delete Blog"><i class="fa-solid fa-trash"></i></button>
                                                             </form>
                                                         <?php endif; ?>
                                                     </div>
@@ -2126,35 +2320,69 @@ $metrics = $content->metrics();
                 $events = $content->allEvents();
                 $editId = (int)($_GET['edit_id'] ?? 0);
                 $editEvent = $editId > 0 ? $content->findEvent($editId) : null;
+                $success = flash('admin_success');
+                $error = flash('admin_error');
                 ?>
                 <div class="admin-card">
+                    <?php if ($success): ?><div class="alert alert-success shadow-sm mb-3"><i class="fa-solid fa-circle-check me-2"></i><?= e($success) ?></div><?php endif; ?>
+                    <?php if ($error): ?><div class="alert alert-danger shadow-sm mb-3"><i class="fa-solid fa-triangle-exclamation me-2"></i><?= e($error) ?></div><?php endif; ?>
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h2>Events Management</h2>
-                        <button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#eventForm"><?= $editEvent ? 'Editing' : 'Add New' ?></button>
+                        <button class="btn btn-dark" data-bs-toggle="collapse" data-bs-target="#eventForm"><?= $editEvent ? 'Editing Event' : '+ Add New Event' ?></button>
                     </div>
                     <div class="collapse mb-3 <?= $editEvent ? 'show' : '' ?>" id="eventForm">
-                        <div class="card card-body">
+                        <div class="card card-body shadow-sm">
                             <form method="post" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="<?= $editEvent ? 'update_event' : 'create_event' ?>">
-                                <?php if ($editEvent): ?><input type="hidden" name="id" value="<?= $editEvent['id'] ?>"><input type="hidden" name="existing_image" value="<?= e($editEvent['image']) ?>"><?php endif; ?>
+                                <?php if ($editEvent): ?>
+                                    <input type="hidden" name="id" value="<?= $editEvent['id'] ?>">
+                                    <input type="hidden" name="existing_image" value="<?= e($editEvent['image']) ?>">
+                                <?php endif; ?>
                                 <div class="row g-3">
-                                    <div class="col-md-12"><label class="form-label">Title</label><input type="text" name="title" class="form-control" value="<?= e($editEvent['title'] ?? '') ?>" required></div>
-                                    <div class="col-md-4"><label class="form-label">Date</label><input type="date" name="event_date" class="form-control" value="<?= e($editEvent['event_date'] ?? '') ?>"></div>
-                                    <div class="col-md-4"><label class="form-label">Location</label><input type="text" name="location" class="form-control" value="<?= e($editEvent['location'] ?? '') ?>"></div>
-                                    <div class="col-md-4"><label class="form-label">Status</label><select name="status" class="form-select"><option value="upcoming" <?= ($editEvent['status'] ?? '') === 'upcoming' ? 'selected' : '' ?>>Upcoming</option><option value="past" <?= ($editEvent['status'] ?? '') === 'past' ? 'selected' : '' ?>>Past</option></select></div>
-                                    <div class="col-md-12"><label class="form-label">Image</label><input type="file" name="image" class="form-control"></div>
-                                    <div class="col-md-12"><label class="form-label">Excerpt</label><textarea name="excerpt" class="form-control"><?= e($editEvent['excerpt'] ?? '') ?></textarea></div>
-                                    <div class="col-12"><button type="submit" class="btn btn-primary">Save Event</button></div>
+                                    <div class="col-md-12"><label class="form-label font-semibold">Title *</label><input type="text" name="title" class="form-control" value="<?= e($editEvent['title'] ?? '') ?>" required></div>
+                                    <div class="col-md-4"><label class="form-label font-semibold">Date</label><input type="date" name="event_date" class="form-control" value="<?= e($editEvent['event_date'] ?? '') ?>"></div>
+                                    <div class="col-md-4"><label class="form-label font-semibold">Location</label><input type="text" name="location" class="form-control" value="<?= e($editEvent['location'] ?? '') ?>"></div>
+                                    <div class="col-md-4"><label class="form-label font-semibold">Status</label><select name="status" class="form-select"><option value="upcoming" <?= ($editEvent['status'] ?? '') === 'upcoming' ? 'selected' : '' ?>>Upcoming</option><option value="past" <?= ($editEvent['status'] ?? '') === 'past' ? 'selected' : '' ?>>Past</option></select></div>
+                                    
+                                    <div class="col-md-6">
+                                        <label class="form-label font-semibold">Upload Cover Image</label>
+                                        <input type="file" name="image" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'event_img_preview', 'event_img_filename')">
+                                        <small class="text-muted">Upload an image file (JPG, PNG, WebP — Max 10MB)</small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label font-semibold">Or Image URL / Path</label>
+                                        <input type="text" name="image_url" class="form-control" placeholder="https://example.com/image.jpg or assets/images/...">
+                                        <small class="text-muted">Enter direct image link if not uploading file</small>
+                                    </div>
+
+                                    <div class="col-12" id="event_preview_container" style="<?= empty($editEvent['image']) ? 'display:none;' : '' ?>">
+                                        <label class="form-label font-semibold" id="event_preview_label"><?= !empty($editEvent['image']) ? 'Current Image Preview:' : 'Selected Image Preview (Click "Save Event" to apply):' ?></label>
+                                        <div class="d-flex align-items-center gap-3">
+                                            <img id="event_img_preview" src="<?= !empty($editEvent['image']) ? e(ps_resolve_img($editEvent['image'], 'assets/images/slider_final_1.webp')) : '' ?>" alt="Current Event Cover" class="img-thumbnail" style="max-height: 90px; object-fit: cover;">
+                                            <span id="event_img_filename" class="small text-muted font-monospace"><?= e($editEvent['image'] ?? '') ?></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12"><label class="form-label font-semibold">Excerpt / Summary</label><textarea name="excerpt" class="form-control" rows="2"><?= e($editEvent['excerpt'] ?? '') ?></textarea></div>
+                                    <div class="col-md-12"><label class="form-label font-semibold">Detailed Content</label><textarea name="content" class="form-control" rows="4"><?= e($editEvent['content'] ?? '') ?></textarea></div>
+                                    <div class="col-12"><button type="submit" class="btn btn-primary font-semibold"><i class="fa-solid fa-save me-1"></i> Save Event</button></div>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <table class="table align-middle">
-                        <thead><tr><th>Title</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+                        <thead><tr><th>Image</th><th>Title</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody>
                             <?php foreach ($events as $ev): ?>
                             <tr>
+                                <td>
+                                    <?php if (!empty($ev['image'])): ?>
+                                        <img src="<?= e(ps_resolve_img($ev['image'], 'assets/images/slider_final_1.webp')) ?>" class="rounded" style="width:48px; height:48px; object-fit:cover;">
+                                    <?php else: ?>
+                                        <span class="badge text-bg-light border text-muted">No Image</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= e($ev['title']) ?></td>
                                 <td><?= e($ev['event_date']) ?></td>
                                 <td><span class="badge text-bg-<?= $ev['status'] === 'upcoming' ? 'primary' : 'secondary' ?>"><?= ucfirst($ev['status']) ?></span></td>
@@ -2257,7 +2485,121 @@ $metrics = $content->metrics();
                         <?php endforeach; ?>
                     </div>
                 </div>
-                 <?php elseif ($module === 'volunteers'): ?>
+            <?php elseif ($module === 'videos'): ?>
+                <?php
+                require_once __DIR__ . '/../models/VideoModel.php';
+                $videoModel = new VideoModel();
+                $allVideos = $videoModel->all(100);
+                $editId = (int)($_GET['edit_id'] ?? 0);
+                $editVideo = $editId > 0 ? $videoModel->find($editId) : null;
+                $success = flash('admin_success');
+                $adminErr = flash('admin_error');
+                ?>
+                <div class="admin-card">
+                    <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+                    <?php if ($adminErr): ?><div class="alert alert-danger"><?= e($adminErr) ?></div><?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="mb-1"><i class="fa-solid fa-circle-play text-danger me-2"></i>YouTube Video Gallery Management</h2>
+                            <p class="text-muted small mb-0">Add YouTube video links to feature speeches, poetry, campaigns, and media interviews on the video gallery page.</p>
+                        </div>
+                        <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#videoForm">
+                            <i class="fa-solid fa-plus me-1"></i> <?= $editVideo ? 'Edit Video' : 'Add New Video' ?>
+                        </button>
+                    </div>
+
+                    <!-- Video Add / Edit Form -->
+                    <div class="collapse <?= ($editVideo || isset($_GET['action'])) ? 'show' : '' ?> mb-4" id="videoForm">
+                        <div class="card card-body shadow-sm border-0 bg-light">
+                            <h4 class="mb-3"><?= $editVideo ? 'Edit Video Details' : 'Add New YouTube Video' ?></h4>
+                            <form method="post">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="save_video">
+                                <input type="hidden" name="id" value="<?= $editVideo ? (int)$editVideo['id'] : 0 ?>">
+
+                                <div class="row g-3">
+                                    <div class="col-md-8">
+                                        <label class="form-label font-semibold">Video Title *</label>
+                                        <input type="text" name="title" class="form-control" placeholder="Enter video title in Hindi / English" value="<?= e($editVideo['title'] ?? '') ?>" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label font-semibold">Category *</label>
+                                        <select name="category" class="form-select">
+                                            <?php foreach (['जन-चौपाल', 'अवधी साहित्य', 'पर्यावरण चेतना', 'वन्यजीव संरक्षण', 'मीडिया साक्षात्कार', 'General'] as $cat): ?>
+                                                <option value="<?= e($cat) ?>" <?= ($editVideo['category'] ?? '') === $cat ? 'selected' : '' ?>><?= e($cat) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <label class="form-label font-semibold">YouTube URL / Share Link *</label>
+                                        <input type="url" name="youtube_url" class="form-control" placeholder="https://www.youtube.com/watch?v=XXXXXX or https://youtu.be/XXXXXX" value="<?= e($editVideo['youtube_url'] ?? '') ?>" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label font-semibold">Duration (MM:SS)</label>
+                                        <input type="text" name="duration" class="form-control" placeholder="e.g. 14:25" value="<?= e($editVideo['duration'] ?? '05:30') ?>">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label font-semibold">Short Description / Excerpt</label>
+                                        <textarea name="description" class="form-control" rows="2" placeholder="Brief summary of the video content..."><?= e($editVideo['description'] ?? '') ?></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch mt-2">
+                                            <input class="form-check-input" type="checkbox" name="is_featured" value="1" id="isFeatured" <?= !empty($editVideo['is_featured']) ? 'checked' : '' ?>>
+                                            <label class="form-check-label font-semibold" for="isFeatured">Feature this video on top</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <?php if ($editVideo): ?>
+                                            <a href="?module=videos" class="btn btn-outline-secondary me-2">Cancel</a>
+                                        <?php endif; ?>
+                                        <button type="submit" class="btn btn-success px-4"><i class="fa-solid fa-check me-1"></i> Save Video</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Video Listing Grid -->
+                    <div class="row g-4">
+                        <?php foreach ($allVideos as $vid): 
+                            $ytId = !empty($vid['youtube_id']) ? $vid['youtube_id'] : VideoModel::extractYoutubeId($vid['youtube_url']);
+                            $thumb = !empty($vid['thumbnail']) ? $vid['thumbnail'] : "https://img.youtube.com/vi/{$ytId}/hqdefault.jpg";
+                        ?>
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 border-0 shadow-sm overflow-hidden">
+                                    <div class="position-relative bg-dark" style="aspect-ratio:16/9;">
+                                        <img src="<?= e($thumb) ?>" class="w-100 h-100 object-fit-cover opacity-90">
+                                        <a href="<?= e($vid['youtube_url']) ?>" target="_blank" class="position-absolute top-50 start-50 translate-middle btn btn-danger rounded-circle p-2 shadow">
+                                            <i class="fa-solid fa-play fa-lg"></i>
+                                        </a>
+                                        <span class="position-absolute bottom-0 end-0 bg-dark text-white px-2 py-0.5 small m-2 rounded font-mono"><?= e($vid['duration']) ?></span>
+                                        <span class="position-absolute top-0 start-0 bg-success text-white px-2 py-0.5 small m-2 rounded"><?= e($vid['category']) ?></span>
+                                    </div>
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <div>
+                                            <h6 class="fw-bold text-dark mb-1 line-clamp-2"><?= e($vid['title']) ?></h6>
+                                            <p class="small text-muted mb-2 line-clamp-2"><?= e($vid['description']) ?></p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center pt-2 border-top">
+                                            <span class="badge bg-light text-dark border"><?= number_format((int)$vid['views_count']) ?> views</span>
+                                            <div>
+                                                <a href="?module=videos&edit_id=<?= $vid['id'] ?>" class="btn btn-sm btn-outline-primary me-1" title="Edit"><i class="fa-solid fa-edit"></i></a>
+                                                <form method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this video?')">
+                                                    <?= csrf_field() ?>
+                                                    <input type="hidden" name="action" value="delete_video">
+                                                    <input type="hidden" name="id" value="<?= $vid['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete"><i class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php elseif ($module === 'volunteers'): ?>
                 <?php include __DIR__ . '/volunteers.php'; ?> 
                 <?php elseif ($module === 'contacts'): ?>
                 <div class="admin-card">
@@ -3290,6 +3632,55 @@ function copyFormSocialCopy() {
     navigator.clipboard.writeText(data.postCopy).then(() => {
         Swal.fire({ icon: 'success', title: 'Copied!', text: 'Social media post text & link copied to clipboard.', timer: 2000, showConfirmButton: false });
     });
+}
+
+function previewSelectedImage(input, imgId, filenameId) {
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.getElementById(imgId);
+            const filename = document.getElementById(filenameId);
+            const container = document.getElementById('event_preview_container');
+            const label = document.getElementById('event_preview_label');
+            
+            if (img) img.src = e.target.result;
+            if (filename) filename.textContent = 'Selected file: ' + file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+            if (label) label.textContent = 'Selected Image Preview (Click "Save Event" to apply):';
+            if (container) container.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+}
+function filterBlogsTable() {
+    const searchVal = (document.getElementById('blogSearchInput')?.value || '').toLowerCase().trim();
+    const catVal = (document.getElementById('blogCategoryFilter')?.value || '').toLowerCase().trim();
+    const statusVal = (document.getElementById('blogStatusFilter')?.value || '').toLowerCase().trim();
+
+    const rows = document.querySelectorAll('.blog-table-row');
+    rows.forEach(row => {
+        const title = row.dataset.title || '';
+        const author = row.dataset.author || '';
+        const cat = row.dataset.category || '';
+        const status = row.dataset.status || '';
+
+        const matchesSearch = !searchVal || title.includes(searchVal) || author.includes(searchVal);
+        const matchesCat = !catVal || cat.includes(catVal);
+        const matchesStatus = !statusVal || status === statusVal;
+
+        if (matchesSearch && matchesCat && matchesStatus) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
+
+function resetBlogFilters() {
+    if (document.getElementById('blogSearchInput')) document.getElementById('blogSearchInput').value = '';
+    if (document.getElementById('blogCategoryFilter')) document.getElementById('blogCategoryFilter').value = '';
+    if (document.getElementById('blogStatusFilter')) document.getElementById('blogStatusFilter').value = '';
+    filterBlogsTable();
 }
 </script>
 </body>

@@ -194,6 +194,12 @@ $route = current_path();
                                 <i class="fa-solid fa-phone text-warning"></i>
                                 <span><?= e($settings['phone']) ?></span>
                             </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="fa-brands fa-whatsapp text-success"></i>
+                                <a href="https://api.whatsapp.com/send?phone=<?= urlencode(preg_replace('/[^0-9]/', '', $settings['phone'])) ?>" target="_blank" rel="noopener noreferrer" class="text-white-50 text-decoration-none">
+                                    <span>WhatsApp: <?= e($settings['phone']) ?></span>
+                                </a>
+                            </div>
                         <?php endif; ?>
                         <?php if (!empty($settings['email'])): ?>
                             <div class="d-flex align-items-center gap-2">
@@ -232,7 +238,7 @@ $route = current_path();
     <!-- Floating Interactive Speed-Dial Action Hub -->
     <div class="floating-action-hub">
         <div id="speedDialMenu" class="speed-dial-menu">
-            <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $settings['phone'] ?? '919876543210') ?>&text=<?= urlencode('नमस्ते, मैं प्रदीप सारंग से संपर्क करना चाहता हूँ।') ?>" target="_blank" class="speed-dial-btn whatsapp" title="WhatsApp पर संवाद करें">
+            <a href="https://api.whatsapp.com/send?phone=<?= preg_replace('/[^0-9]/', '', $settings['whatsapp'] ?? $settings['phone'] ?? '919919007190') ?>&amp;text=<?= urlencode('नमस्ते, मैं प्रदीप सारंग से संपर्क करना चाहता हूँ।') ?>" target="_blank" class="speed-dial-btn whatsapp" title="WhatsApp पर संवाद करें">
                 <i class="fa-brands fa-whatsapp"></i>
             </a>
             <a href="tel:<?= e($settings['phone'] ?? '') ?>" class="speed-dial-btn call" title="सीधे कॉल करें">

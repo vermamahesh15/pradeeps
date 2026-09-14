@@ -4,7 +4,7 @@
 .env.*.local
 config/database.local.php
 config/*.local.php
-
+.htaccess
 # Logs & Debugging
 *.log
 error_log

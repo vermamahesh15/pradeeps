@@ -209,31 +209,50 @@ $categories = $categories ?? [];
 
   <!-- Curated Articles Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="articles-grid">
-    <?php if (!empty($items)): foreach ($items as $idx => $post): ?>
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="<?= e((string)($post['category_id'] ?? 'all')) ?>">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
+    <?php if (!empty($items)): foreach ($items as $idx => $post): 
+      $img = ps_resolve_img($post['banner_image'] ?: ($post['featured_image'] ?? ''), 'assets/images/slider_final_1.webp');
+      $cleanTitle = html_entity_decode((string)$post['title'], ENT_QUOTES, 'UTF-8');
+      $cleanExcerpt = html_entity_decode((string)($post['excerpt'] ?: ps_excerpt($post['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
+    ?>
+      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="<?= e((string)($post['category_id'] ?? 'all')) ?>">
+        <!-- Card Cover Image Container -->
+        <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
+          <img src="<?= e($img) ?>" alt="<?= e($cleanTitle) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute top-3 left-3">
+            <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
+              <?= e($post['category_name'] ?? ps_text('वैचारिक आलेख', 'Article')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
           <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e($post['category_name'] ?? ps_text('वैचारिक आलेख', 'Article')) ?>
-              </span>
-              <div class="flex items-center gap-2">
+            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2.5">
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-primary">schedule</span>
                 <span>8 <?= e(ps_text('मिनट पठन', '8 min read')) ?></span>
-                <span>•</span>
+              </span>
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-text-muted">calendar_month</span>
                 <span><?= e(date('d M Y', strtotime($post['published_at'] ?? $post['created_at'] ?? 'now'))) ?></span>
-              </div>
+              </span>
             </div>
+
             <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
               <a href="<?= e(base_url('/blog/' . $post['slug'])) ?>" class="hover:text-primary transition-colors">
-                <?= e($post['title']) ?>
+                <?= e($cleanTitle) ?>
               </a>
             </h3>
+
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e($post['excerpt'] ?: ps_excerpt($post['content'] ?? '', 120)) ?>
+              <?= e($cleanExcerpt) ?>
             </p>
           </div>
+
           <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(($post['author'] ?? '') ?: ($post['author_name'] ?? ps_text('प्रदीप सारंग', 'Pradeep Sarang'))) ?></span>
+            <span class="font-label-sm text-label-sm text-secondary font-semibold">
+              <span><?= e(($post['author'] ?? '') ?: ($post['author_name'] ?? ps_text('प्रदीप सारंग', 'Pradeep Sarang'))) ?></span>
+            </span>
             <a href="<?= e(base_url('/blog/' . $post['slug'])) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
               <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
               <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -242,32 +261,46 @@ $categories = $categories ?? [];
         </div>
       </article>
     <?php endforeach; else: ?>
-      <!-- Curated Fallback Articles matching Pradeep Sarang Literature -->
+      <!-- Curated Fallback Articles with Cover Images -->
       <!-- Card 1: Sughari -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="awadhi">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
+      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="awadhi">
+        <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
+          <img src="<?= e(base_url('uploads/6a0c9561a4f1b_headerbackground.webp')) ?>" alt="Sughari" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute top-3 left-3">
+            <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
+              <?= e(ps_text('अवधी गद्य', 'Awadhi Prose')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
           <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('अवधी गद्य', 'Awadhi Prose')) ?>
+            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2.5">
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-primary">schedule</span>
+                <span>8 <?= e(ps_text('मिनट पठन', '8 min read')) ?></span>
               </span>
-              <div class="flex items-center gap-2">
-                <span>8 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px]">calendar_month</span>
                 <span>18 Dec 2025</span>
-              </div>
+              </span>
             </div>
+
             <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
               <a href="<?= e(base_url('/blog/sughari')) ?>" class="hover:text-primary transition-colors">
                 <?= e(ps_text('सुघरी (अवधी लोक-गद्य कथा)', 'Sughari (Awadhi Folk Tale)')) ?>
               </a>
             </h3>
+
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('"मेला जाय की खुशी मा, गोबर की खेप लइकै जाय रही \'सुघरी\' के कदमन की चाल आजु अपने आपै कुछ बढ़ी हुई है। माथे पर पसीने की बूंदें चमक रही हैं और मन मा रामलीला मैदान की रंग-बिरंगी चकरी घूम रही है..."', '"Happy about going to the village fair, Sughari walks with energetic steps carrying her basket..."')) ?>
+              <?= e(ps_text("मेला जाय की खुशी मा, गोबर की खेप लइकै जाय रही 'सुघरी' के कदमन की चाल आजु अपने आपै कुछ बढ़ी हुई है। माथे पर पसीने की बूंदें चमक रही हैं और मन मा रामलीला मैदान की रंग-बिरंगी चकरी घूम रही है...", "Happy about going to the village fair, Sughari walks with energetic steps carrying her basket...")) ?>
             </p>
           </div>
+
           <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('अवधी लोक-संस्कृति', 'Awadhi Folk Culture')) ?></span>
+            <span class="font-label-sm text-label-sm text-secondary font-semibold">
+              <span><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+            </span>
             <a href="<?= e(base_url('/blog/sughari')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
               <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
               <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -277,30 +310,44 @@ $categories = $categories ?? [];
       </article>
 
       <!-- Card 2: Jharihakh -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="awadhi">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
+      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="awadhi">
+        <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
+          <img src="<?= e(base_url('uploads/69edd6098e8c2_slider_final_1.webp')) ?>" alt="Jharihakh" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute top-3 left-3">
+            <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
+              <?= e(ps_text('साक्षात्कार व संस्मरण', 'Interview & Memoir')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
           <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('संस्मरण व गद्य', 'Memoirs')) ?>
+            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2.5">
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-primary">schedule</span>
+                <span>6 <?= e(ps_text('मिनट पठन', '6 min read')) ?></span>
               </span>
-              <div class="flex items-center gap-2">
-                <span>6 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px]">calendar_month</span>
                 <span>05 Nov 2025</span>
-              </div>
+              </span>
             </div>
+
             <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
               <a href="<?= e(base_url('/blog/jharihakh')) ?>" class="hover:text-primary transition-colors">
                 <?= e(ps_text('झरिहख (बरसात और बचपन का संस्मरण)', 'Jharihakh (Monsoon & Childhood Memory)')) ?>
               </a>
             </h3>
+
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('"आजु जब हम सोय कै जागेन, तौ झमाझम बारिस होत रही। बादलों की गड़गड़ाहट और मिट्टी की सोंधी खुशबू के बीच पुरानी चौपाल की यादें, जब छत से टपकते पानी के नीचे थालियाँ लगा दी जाती थीं..."', '"Waking up to heavy monsoon rains, clouds rumbling and fragrance of damp soil..."')) ?>
+              <?= e(ps_text("आजु जब हम सोय कै जागेन, तौ झमाझम बारिस होत रही। बादलों की गड़गड़ाहट और मिट्टी की सोंधी खुशबू के बीच पुरानी चौपाल की यादें, जब छत से टपकते पानी के नीचे थालियाँ लगा दी जाती थीं...", "Waking up to heavy monsoon rains, clouds rumbling and fragrance of damp soil...")) ?>
             </p>
           </div>
+
           <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('अवधी बोली व स्मृति', 'Awadhi Dialect')) ?></span>
+            <span class="font-label-sm text-label-sm text-secondary font-semibold">
+              <span><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+            </span>
             <a href="<?= e(base_url('/blog/jharihakh')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
               <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
               <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
@@ -310,130 +357,45 @@ $categories = $categories ?? [];
       </article>
 
       <!-- Card 3: Sukhte Taal aur Parinde -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="green">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
+      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="green">
+        <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
+          <img src="<?= e(base_url('uploads/69edd6098de58_slider_final_3.webp')) ?>" alt="Sukhte Taal" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute top-3 left-3">
+            <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
+              <?= e(ps_text('पर्यावरण व जीव-दया', 'Ecology & Bird Compassion')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
           <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('पर्यावरण व जीव-दया', 'Ecology & Bird Compassion')) ?>
+            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2.5">
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px] text-primary">schedule</span>
+                <span>10 <?= e(ps_text('मिनट पठन', '10 min read')) ?></span>
               </span>
-              <div class="flex items-center gap-2">
-                <span>10 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
+              <span class="flex items-center gap-1 font-medium">
+                <span class="material-symbols-outlined text-[15px]">calendar_month</span>
                 <span>24 Oct 2025</span>
-              </div>
+              </span>
             </div>
+
             <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
               <a href="<?= e(base_url('/blog/sukhte-taal')) ?>" class="hover:text-primary transition-colors">
                 <?= e(ps_text('सूखते ताल और बेजुबान परिंदों की पुकार — ग्रीष्म में मानवीय परीक्षा', 'Drying Ponds & Call of Birds — A Human Test in Summer')) ?>
               </a>
             </h3>
+
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
               <?= e(ps_text('गाँवों के तालाब अब केवल जल-स्रोत नहीं रहे, वे हमारे संवेदनहीन होते समाज का आईना हैं। हर ग्रीष्म में जब सकोरों में पानी रखने का अभियान शुरू होता है, तो यह केवल चिड़ियों को बचाने का नहीं, मनुष्य के भीतर की करुणा को जीवित रखने का उपक्रम है।', 'Village ponds are mirrors of our society. Hanging water bowls is an exercise to keep human empathy alive.')) ?>
             </p>
           </div>
+
           <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-primary font-semibold"><?= e(ps_text('परिंदा संरक्षण', 'Bird Conservation')) ?></span>
+            <span class="font-label-sm text-label-sm text-primary font-semibold">
+              <span><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+            </span>
             <a href="<?= e(base_url('/blog/sukhte-taal')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
-              <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 4: Sarang Kundaliyan -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="rural">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('साहित्यिक चिंतन', 'Literary Essay')) ?>
-              </span>
-              <div class="flex items-center gap-2">
-                <span>15 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
-                <span>12 Sep 2025</span>
-              </div>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
-              <a href="<?= e(base_url('/blog/sarang-hundaliyan')) ?>" class="hover:text-primary transition-colors">
-                <?= e(ps_text('सारंग-कुंडलियों की रचना यात्रा — लोक छंद में जन-सरोकारों का समन्वय', 'Journey of Sarang-Kundaliyan — Blending Folk Metres with Social Reality')) ?>
-              </a>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('कुण्डलिया छंद की प्राचीन मर्यादा को ग्रामीण समकालीन यथार्थ से जोड़कर \'सारंग-कुंडलियों\' का जन्म कैसे हुआ? शोषण, सामाजिक विसंगतियों और पर्यावरण क्षरण पर चोट करती लोक-छंद की यह यात्रा वास्तव में जन-जागरण की यात्रा है।', 'How Kundaliya meter was connected to rural realities, addressing environmental degradation & social concerns.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('अवधी छंद शास्त्र', 'Awadhi Metres')) ?></span>
-            <a href="<?= e(base_url('/blog/sarang-hundaliyan')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
-              <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 5: Chopal se Lupt Baatkahi -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="rural">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('समाज व संस्कृति', 'Society & Culture')) ?>
-              </span>
-              <div class="flex items-center gap-2">
-                <span>7 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
-                <span>28 Aug 2025</span>
-              </div>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
-              <a href="<?= e(base_url('/blog/baatkahi')) ?>" class="hover:text-primary transition-colors">
-                <?= e(ps_text('गाँव की चौपाल से लुप्त होती \'बातकही\' और बुजुर्गों का अकेलापन', 'Disappearing Village Conversations & Loneliness of Elders')) ?>
-              </a>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('स्मार्टफोन की चमकीली स्क्रीन ने हमारे ग्रामीण दालानों से वह रसदार \'बातकही\' छीन ली है जिसने पीढ़ियों को संस्कारित किया था। आज का बुजुर्ग अपनी ही चौपाल पर मौन बैठा अतीत के क़िस्सों को सहेज रहा है।', 'Smartphones have taken away rich traditional village dialogues that nurtured generations.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-deep-forest font-semibold"><?= e(ps_text('लोक-संवाद', 'Folk Dialogue')) ?></span>
-            <a href="<?= e(base_url('/blog/baatkahi')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
-              <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
-              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- Card 6: Neem aur Peepal -->
-      <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="green">
-        <div class="flex-1 flex flex-col justify-between space-y-4">
-          <div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-3">
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-1 rounded font-semibold border border-border-warm">
-                <?= e(ps_text('हरित चेतना', 'Green Awareness')) ?>
-              </span>
-              <div class="flex items-center gap-2">
-                <span>9 <?= e(ps_text('मिनट पठन', 'min read')) ?></span>
-                <span>•</span>
-                <span>15 Jul 2025</span>
-              </div>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
-              <a href="<?= e(base_url('/blog/neem-aur-peepal')) ?>" class="hover:text-primary transition-colors">
-                <?= e(ps_text('नीम और पीपल: केवल वृक्ष नहीं, भारतीय ग्राम्य जीवन की जीवन-रेखा', 'Neem & Peepal: Lifelines of Indian Village Ecosystem')) ?>
-              </a>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('कंक्रीट की अंधी दौड़ में हमने उन देव-वृक्षों को खो दिया जो हमारे वायुमंडल को शुद्ध रखने के साथ-साथ प्राकृतिक औषधालय थे। \'ग्रीन गैंग\' का संकल्प है हर गाँव के चौराहे पर कम से कम पाँच परंपरागत वृक्षों का रोपण।', 'Neem and Peepal purifying atmosphere and serving as natural dispensaries.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
-            <span class="font-label-sm text-label-sm text-primary font-semibold"><?= e(ps_text('पौधारोपण पहल', 'Tree Drive Initiative')) ?></span>
-            <a href="<?= e(base_url('/blog/neem-aur-peepal')) ?>" class="text-primary hover:text-deep-forest font-label-md text-label-md inline-flex items-center gap-1 font-bold">
               <span><?= e(ps_text('पढ़ें', 'Read')) ?></span>
               <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>

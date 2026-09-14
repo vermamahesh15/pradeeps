@@ -159,7 +159,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
         <!-- Card 1: सरदार पटेल अभियान (राष्ट्रीय एकता व चेतना) - Featured Large Primary Campaign -->
         <article class="campaign-card lg:col-span-12 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col lg:flex-row" data-category="unity">
           <div class="lg:w-5/12 relative min-h-[320px] lg:min-h-full">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
+            <img src="assets/images/sardar_patel.webp" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
             <div class="absolute top-4 left-4 flex flex-col gap-2">
               <span class="inline-flex items-center gap-1.5 bg-deep-forest text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
                 <span class="material-symbols-outlined text-[14px] text-tertiary-fixed">flag</span>
@@ -283,7 +283,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
         <!-- Card 5: सरदार पटेल अभियान (राष्ट्रीय एकता व अखंडता) -->
         <article class="campaign-card lg:col-span-6 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col" data-category="unity">
           <div class="relative h-64 w-full">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
+            <img src="assets/images/sardar_patel.webp" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
             <div class="absolute top-4 left-4">
               <span class="inline-flex items-center gap-1.5 bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
                 <span class="material-symbols-outlined text-[14px]">flag</span>

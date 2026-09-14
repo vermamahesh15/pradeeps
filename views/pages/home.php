@@ -2,29 +2,31 @@
 declare(strict_types=1);
 
 // Helper to resolve images cleanly
-function ps_resolve_img(?string $dbPath, string $fallback): string {
-    $root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
-    if (!empty($dbPath)) {
-        if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
-        $clean = ltrim($dbPath, '/');
-        if (file_exists($root . '/' . $clean)) {
-            return base_url($clean);
+if (!function_exists('ps_resolve_img')) {
+    function ps_resolve_img(?string $dbPath, string $fallback): string {
+        $root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
+        if (!empty($dbPath)) {
+            if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
+            $clean = ltrim($dbPath, '/');
+            if (file_exists($root . '/' . $clean)) {
+                return base_url($clean);
+            }
+            $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+            if (file_exists($root . '/' . $webp)) {
+                return base_url($webp);
+            }
         }
-        $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
-        if (file_exists($root . '/' . $webp)) {
-            return base_url($webp);
+        if (preg_match('#^https?://#i', $fallback)) return $fallback;
+        $cleanFallback = ltrim($fallback, '/');
+        if (file_exists($root . '/' . $cleanFallback)) {
+            return base_url($cleanFallback);
         }
-    }
-    if (preg_match('#^https?://#i', $fallback)) return $fallback;
-    $cleanFallback = ltrim($fallback, '/');
-    if (file_exists($root . '/' . $cleanFallback)) {
+        $webpFallback = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanFallback);
+        if (file_exists($root . '/' . $webpFallback)) {
+            return base_url($webpFallback);
+        }
         return base_url($cleanFallback);
     }
-    $webpFallback = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanFallback);
-    if (file_exists($root . '/' . $webpFallback)) {
-        return base_url($webpFallback);
-    }
-    return base_url($cleanFallback);
 }
 
 $heroImg = ps_resolve_img($sliders[0]['image'] ?? '', 'assets/images/slider_final_1.jpg');
@@ -34,18 +36,18 @@ $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.
 $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Kamrawan, Barabanki, Uttar Pradesh, India');
 
 // Green Gang campaign
-$greenImg = ps_resolve_img($green['image'] ?? '', 'assets/images/slider_final_1.jpg');
+$greenImg = base_url('assets/images/hariyali_abhiyan.webp');
 $greenSlug = $green['slug'] ?? 'hariyali-campaign';
 
 // Parinda campaign
-$parindaImg = ps_resolve_img($parinda['image'] ?? '', 'assets/images/slider_final_2.jpg');
+$parindaImg = ps_resolve_img($parinda['image'] ?? '', 'assets/images/slider_final_2.webp');
 $parindaSlug = $parinda['slug'] ?? 'bird-conservation-campaign';
 
 // Awadhi campaign
 $awadhiSlug = $awadhi['slug'] ?? 'language-and-literature-promotion-campaign';
 
 // Patel campaign (Primary Campaign)
-$patelImg = ps_resolve_img($patel['image'] ?? '', 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN');
+$patelImg = base_url('assets/images/sardar_patel.webp');
 $patelSlug = $patel['slug'] ?? 'patel-campaign';
 
 // Tulsi campaign
@@ -54,7 +56,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 <div class="flex flex-col w-full">
 
 <!-- 1. HERO SECTION -->
-<section class="relative overflow-hidden px-4 sm:px-8 py-10 lg:py-16 bg-gradient-to-b from-[#FAF8F3] to-[#F1F7F2]">
+<section class="relative overflow-hidden px-4 sm:px-8 py-8 lg:py-12 bg-gradient-to-b from-[#FAF8F3] to-[#F1F7F2]">
   <div class="max-w-container-max mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
       <!-- Hero Text & Mission -->
@@ -191,25 +193,18 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 3. STORYTELLING BIOGRAPHY (एक परिचय — प्रदीप सारंग) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow" id="story">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow" id="story">
   <div class="max-w-container-max mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
       <!-- Collage / Visuals -->
       <div class="lg:col-span-5 relative">
-        <div class="grid grid-cols-12 gap-4 items-end">
-          <div class="col-span-8 rounded-2xl overflow-hidden shadow-lg border border-border-warm bg-pure-white">
-            <img class="w-full h-80 object-cover" 
-                 src="<?= e(base_url('assets/images/slider_final_3.jpg')) ?>" 
-                 alt="<?= e(ps_text('प्रदीप सारंग सम्मान समारोह मंच पर', 'Pradeep Sarang at an official recognition dais')) ?>"/>
-          </div>
-          <div class="col-span-4 rounded-xl overflow-hidden shadow-md -mb-4 border border-border-warm bg-pure-white">
-            <img class="w-full h-44 object-cover" 
-                 src="<?= e(base_url('assets/images/slider_final_2.jpg')) ?>" 
-                 alt="<?= e(ps_text('परिंदा संरक्षण सकोरा पहल', 'Bird feeder water bowl initiative')) ?>"/>
-          </div>
+        <div class="relative rounded-2xl overflow-hidden shadow-md border border-border-warm bg-pure-white">
+          <img class="w-full h-72 sm:h-80 object-cover" 
+               src="<?= e(base_url('assets/images/slider_final_3.webp')) ?>" 
+               alt="<?= e(ps_text('प्रदीप सारंग सम्मान समारोह मंच पर', 'Pradeep Sarang at an official recognition dais')) ?>"/>
         </div>
         <!-- Origin Tag Badge -->
-        <div class="mt-6 bg-pure-white rounded-xl p-4 shadow-sm flex items-center gap-3 border border-border-warm">
+        <div class="mt-4 bg-pure-white rounded-xl p-4 shadow-sm flex items-center gap-3 border border-border-warm">
           <span class="material-symbols-outlined text-secondary text-[24px]">location_home</span>
           <div class="flex flex-col">
             <span class="font-label-sm text-label-sm uppercase text-text-muted font-bold"><?= e(ps_text('जन्म स्थान एवं कर्मभूमि', 'Birthplace & Roots')) ?></span>
@@ -272,7 +267,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 4. FLAGSHIP CAMPAIGNS (प्रमुख जन-अभियान) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="campaigns">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="campaigns">
   <div class="max-w-container-max mx-auto">
     <!-- Section Header -->
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
@@ -293,8 +288,8 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
     <div class="space-y-8 mb-12">
       <!-- Feature 1: Sardar Patel Abhiyan (Primary Flagship Campaign) -->
       <div class="bg-pure-white rounded-2xl p-6 lg:p-10 shadow-sm border border-border-warm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-6 rounded-xl overflow-hidden shadow-md h-72 lg:h-96 bg-surface-container">
-          <img class="w-full h-full object-cover" 
+        <div class="lg:col-span-6 rounded-xl overflow-hidden shadow-sm h-72 lg:h-96 bg-surface-variant flex items-center justify-center p-2">
+          <img class="w-full h-full object-contain rounded-lg" 
                src="<?= e($patelImg) ?>" 
                alt="<?= e(ps_text('सरदार पटेल अभियान — राष्ट्रीय एकता व अखंडता', 'Sardar Patel Campaign - National Integration')) ?>"/>
         </div>
@@ -346,8 +341,8 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </a>
           </div>
         </div>
-        <div class="lg:col-span-6 order-1 lg:order-2 rounded-xl overflow-hidden shadow-md h-72 lg:h-96 bg-surface-container">
-          <img class="w-full h-full object-cover" 
+        <div class="lg:col-span-6 order-1 lg:order-2 rounded-xl overflow-hidden shadow-sm h-72 lg:h-96 bg-surface-variant flex items-center justify-center p-2">
+          <img class="w-full h-full object-contain rounded-lg" 
                src="<?= e($greenImg) ?>" 
                alt="<?= e(ps_text('हरियाली-अभियान (ग्रीन गैंग) पौधरोपण', 'Hariyali Abhiyan Green Gang Plantation')) ?>"/>
         </div>
@@ -445,7 +440,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 5. FEATURED GREEN GANG SPOTLIGHT (ग्रीन गैंग विशेष खंड) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-deep-forest text-on-primary" id="greengang">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-deep-forest text-on-primary" id="greengang">
   <div class="max-w-container-max mx-auto">
     <div class="max-w-3xl mx-auto text-center mb-14">
       <div class="inline-flex items-center gap-2 bg-primary-container px-3.5 py-1 rounded-full text-on-primary font-label-sm text-label-sm mb-4">
@@ -522,7 +517,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 6. SOCIAL IMPACT AREAS (कार्यक्षेत्र मैट्रिक्स) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="impact">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="impact">
   <div class="max-w-container-max mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-12">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"><?= e(ps_text('समग्र समाज-सुधार', 'Holistic Social Reforms')) ?></span>
@@ -601,7 +596,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 7. IMPACT STORIES / FIELD CASE STUDIES (बदलाव की कहानियाँ) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow">
   <div class="max-w-container-max mx-auto">
     <div class="mb-12">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold"><?= e(ps_text('धरातल पर परिणाम', 'Real Ground Results')) ?></span>
@@ -703,7 +698,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 8. JOURNEY TIMELINE (चार दशकों की सेवा यात्रा: 1987 से आज तक) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="journey">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="journey">
   <div class="max-w-container-max mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-14">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"><?= e(ps_text('इतिहास एवं पड़ाव', 'Milestones & History')) ?></span>
@@ -788,7 +783,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 9. FIELD WORK PHOTO STORY (सेवा के क्षण - सचित्र दीर्घा) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow" id="gallery">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow" id="gallery">
   <div class="max-w-container-max mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
       <div>
@@ -816,14 +811,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           $displayGallery = array_slice($gallery, 0, 8);
       }
       $samplePhotos = [
-          ['title' => ps_text('ग्रीन चौपाल सतरिख • 2026', 'Green Chaupal Satrikh 2026'), 'image' => 'assets/images/slider_final_1.jpg', 'cat' => 'env'],
-          ['title' => ps_text('काव्य-मंजरी संपादन • बाराबंकी', 'Kavya-Manjari Release Barabanki'), 'image' => 'assets/images/slider_final_3.jpg', 'cat' => 'lit'],
-          ['title' => ps_text('परिंदा जलपात्र वितरण • ग्रीष्म', 'Bird Water Feeder Distribution'), 'image' => 'assets/images/slider_final_2.jpg', 'cat' => 'env'],
-          ['title' => ps_text('सारंग-कुंडलियाँ विमोचन मंच', 'Sarang-Kundaliyan Book Launch'), 'image' => 'assets/images/slider_final_3.jpg', 'cat' => 'award'],
-          ['title' => ps_text('नाट्य अभिनय कार्यशाला • बाराबंकी', 'Theatre Workshop Barabanki'), 'image' => 'assets/images/pradeepsarang.jpeg', 'cat' => 'lit'],
-          ['title' => ps_text('मा. वन मंत्री जी के संग चौपाल', 'Chaupal with UP Forest Minister'), 'image' => 'assets/images/slider_final_1.jpg', 'cat' => 'env'],
-          ['title' => ps_text('युवा चेतना संवाद', 'Youth Motivation Session'), 'image' => 'assets/images/pradeepsarang.png', 'cat' => 'lit'],
-          ['title' => ps_text('रंगमंच फाउंडेशन बाराबंकी', 'Rangmanch Foundation Barabanki'), 'image' => 'assets/images/slider_final_2.jpg', 'cat' => 'award'],
+          ['title' => ps_text('ग्रीन चौपाल सतरिख • 2026', 'Green Chaupal Satrikh 2026'), 'image' => 'assets/images/slider_final_1.webp', 'cat' => 'env'],
+          ['title' => ps_text('काव्य-मंजरी संपादन • बाराबंकी', 'Kavya-Manjari Release Barabanki'), 'image' => 'assets/images/slider_final_3.webp', 'cat' => 'lit'],
+          ['title' => ps_text('परिंदा जलपात्र वितरण • ग्रीष्म', 'Bird Water Feeder Distribution'), 'image' => 'assets/images/slider_final_2.webp', 'cat' => 'env'],
+          ['title' => ps_text('सारंग-कुंडलियाँ विमोचन मंच', 'Sarang-Kundaliyan Book Launch'), 'image' => 'assets/images/slider_final_3.webp', 'cat' => 'award'],
+          ['title' => ps_text('नाट्य अभिनय कार्यशाला • बाराबंकी', 'Theatre Workshop Barabanki'), 'image' => 'assets/images/slider_final_4.webp', 'cat' => 'lit'],
+          ['title' => ps_text('मा. वन मंत्री जी के संग चौपाल', 'Chaupal with UP Forest Minister'), 'image' => 'assets/images/slider_final_1.webp', 'cat' => 'env'],
+          ['title' => ps_text('युवा चेतना संवाद', 'Youth Motivation Session'), 'image' => 'assets/images/slider_final_5.webp', 'cat' => 'lit'],
+          ['title' => ps_text('रंगमंच फाउंडेशन बाराबंकी', 'Rangmanch Foundation Barabanki'), 'image' => 'assets/images/slider_final_2.webp', 'cat' => 'award'],
       ];
 
       foreach ($samplePhotos as $idx => $photo): 
@@ -847,7 +842,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 10. AWARDS & ACHIEVEMENTS (सम्मान एवं उपलब्धियाँ) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="awards">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="awards">
   <div class="max-w-container-max mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-14">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-tertiary font-bold"><?= e(ps_text('राष्ट्रीय व राजकीय मान्यता', 'State & National Recognition')) ?></span>
@@ -918,7 +913,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 11. MEDIA COVERAGE & PRESS ARCHIVE (अखबारों के पन्नों से) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow" id="media">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow" id="media">
   <div class="max-w-container-max mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
@@ -975,7 +970,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 12. UPCOMING & PAST EVENTS (कार्यक्रम व गतिविधियाँ) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="events">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="events">
   <div class="max-w-container-max mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
@@ -1137,7 +1132,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 13. LITERARY & AWADHI HERITAGE (साहित्य और अवधी संस्कृति) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow" id="literature">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow" id="literature">
   <div class="max-w-container-max mx-auto">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
       <div>
@@ -1216,8 +1211,8 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </p>
       </div>
       <div class="lg:col-span-4 flex justify-start lg:justify-end">
-        <a class="inline-flex items-center gap-2 bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md px-5 py-3 rounded-lg shadow transition-colors font-semibold" href="tel:<?= e($phoneClean) ?>">
-          <span class="material-symbols-outlined text-[18px]">menu_book</span>
+        <a class="inline-flex items-center gap-2 bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md px-5 py-3 rounded-lg shadow transition-colors font-semibold" href="https://api.whatsapp.com/send?phone=<?= urlencode(preg_replace('/[^0-9]/', '', $phoneClean)) ?>&amp;text=<?= urlencode(ps_text('नमस्ते श्री सारंग जी, मुझे "सारंग-कुंडलियाँ" पुस्तक प्रति हेतु जानकारी चाहिए।', 'Hello Shri Sarang ji, I would like to request a copy of the "Sarang-Kundaliyan" book.')) ?>" target="_blank" rel="noopener noreferrer">
+          <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.394 0 0 5.392 0 12.029c0 2.122.553 4.195 1.604 6.015L.03 24l6.096-1.599c1.761.96 3.75 1.464 5.905 1.464 6.637 0 12.031-5.393 12.031-12.031C24.062 5.392 18.668 0 12.031 0zm6.654 17.002c-.276.776-1.365 1.424-2.235 1.611-.595.127-1.372.228-3.987-.856-3.346-1.386-5.502-4.786-5.669-5.008-.166-.222-1.36-1.808-1.36-3.448 0-1.64 0.858-2.449 1.162-2.781.304-.333.664-.416.885-.416.221 0 .443.002.637.011.206.01.482-.078.753.573.277.665.941 2.296 1.024 2.463.083.167.139.36.028.582-.11.222-.166.36-.332.554-.166.194-.349.433-.498.582-.166.166-.339.347-.146.679.194.332.862 1.414 1.848 2.292 1.267 1.129 2.336 1.479 2.668 1.645.332.166.526.139.72-.083.194-.222.831-.97 1.052-1.302.221-.332.443-.277.747-.166.304.111 1.936.914 2.268 1.08.332.166.554.249.637.388.083.139.083.804-.193 1.58z"/></svg>
           <span><?= e(ps_text('पुस्तक प्रति हेतु संपर्क करें', 'Request Book Copy')) ?></span>
         </a>
       </div>
@@ -1241,7 +1236,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 15. COMMUNITY ENGAGEMENT & VOLUNTEER (बदलाव का हिस्सा बनें) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="volunteer">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="volunteer">
   <div class="max-w-container-max mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-14">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"><?= e(ps_text('नागरिक सहभागिता', 'Citizen Engagement')) ?></span>
@@ -1332,7 +1327,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 </section>
 
 <!-- 16. ACCESSIBLE CONTACT & DIALOGUE FORM (संपर्क एवं संवाद) -->
-<section class="w-full px-4 sm:px-8 py-16 lg:py-24 bg-soft-meadow" id="contact">
+<section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow" id="contact">
   <div class="max-w-container-max mx-auto">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
       <!-- Contact Info & Direct Access -->

@@ -112,6 +112,32 @@ class PageController
             return;
         }
 
+        if ($slug === '/videos' || $slug === '/video-gallery' || $slug === '/youtube-videos') {
+            require_once __DIR__ . '/../models/VideoModel.php';
+            $videoModel = new VideoModel();
+            $category = trim($_GET['category'] ?? '');
+            $search = trim($_GET['q'] ?? '');
+            $page = max(1, (int)($_GET['page'] ?? 1));
+            $limit = 12;
+            $offset = ($page - 1) * $limit;
+
+            $videos = $videoModel->allActive($limit, $offset, $category, $search);
+            $totalVideos = $videoModel->getTotalActiveCount($category, $search);
+            $totalPages = max(1, (int)ceil($totalVideos / $limit));
+
+            $this->render('videos', [
+                'title' => 'वीडियो दीर्घा (Video Gallery)',
+                'videos' => $videos,
+                'selectedCategory' => $category ?: 'all',
+                'searchQuery' => $search,
+                'currentPage' => $page,
+                'totalPages' => $totalPages,
+                'totalVideos' => $totalVideos,
+                'limit' => $limit,
+            ]);
+            return;
+        }
+
         if ($slug === '/blog' || $slug === '/blog-and-thoughts') {
             $this->render('blog', [
                 'title' => 'Blog',
@@ -373,7 +399,7 @@ class PageController
                 $item = [
                     'title' => 'सरदार पटेल राष्ट्रीय एकता अभियान',
                     'slug' => $slug,
-                    'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN',
+                    'image' => 'assets/images/sardar_patel.webp',
                     'excerpt' => 'राष्ट्रीय एकता, सामाजिक समरसता और अखंड भारत के संदेश को जन-जन तक पहुँचाने हेतु संचालित प्राथमिक जन-अभियान।',
                     'content' => '<p>भारत के प्रथम गृहमंत्री भारत रत्न सरदार वल्लभभाई पटेल के कृतित्व एवं व्यक्तित्व से जन-जन को परिचित कराने तथा राष्ट्रीय एकता और सामाजिक समरसता के सिद्धांतों के प्रसार हेतु यह प्रमुख अभियान संचालित है। इसके माध्यम से युवाओं को राष्ट्र निर्माण, नागरिक दायित्व एवं निःस्वार्थ सेवा के प्रति निरंतर प्रेरित किया जाता है।</p><p>इसके अंतर्गत उत्तर प्रदेश के विभिन्‍न अंचलों में निरंतर राष्ट्रीय चेतना यात्राएं, युवा संवाद, गणतंत्र दिवस परेड (NSS 1987-88) के आदर्शों का संवर्धन और सर्वधर्म समरसता गोष्ठियां आयोजित की जाती हैं।</p>',
                 ];
@@ -406,7 +432,12 @@ class PageController
             return;
         }
 
-        $this->render('event-detail', ['title' => $item['title'], 'item' => $item]);
+        $allEvents = $this->content->allEvents();
+        $this->render('event-detail', [
+            'title' => $item['title'],
+            'item' => $item,
+            'events' => $allEvents
+        ]);
     }
 
     public function handleForms(): void

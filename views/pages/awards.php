@@ -223,7 +223,7 @@ $allHonors = !empty($dbHonors) ? array_merge($dbHonors, $defaultHonors) : $defau
       <!-- 2-Photo Governor Award & Citation Showcase -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAOc4i9Cb2VjM79mjezJCpudnHfiDO3eypcROFKyBmdEIdVRKmDtbuGCNhiMd91Y_R3WA5ShPNtU2qpynVq_9X9SauqvqnsaHFcSif4HjpcluLDdVj4X9LSrag69kOjlnE1fpZaRp-JanhslkRn9lem5w51HY9jy_1vnUORrc7QJ956-mLTOozQwtLsmrdunjblUVDPTWxOrx4DASFFfukLpjvXG2ItdY2f3h8GLbD2_dQGwl48vbN" alt="Governor Award Presentation" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="Governor Award Presentation" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
             <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('राजभवन लखनऊ (1991)', 'Raj Bhavan Lucknow (1991)')) ?></span>
             <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार - महामहिम राज्यपाल अलंकरण', 'Swami Vivekananda State Youth Award Presentation')) ?></p>

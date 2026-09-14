@@ -5,9 +5,10 @@ declare(strict_types=1);
 return [
     'settings' => [
         'site_tagline' => 'Empowering people through community action, learning, and social impact.',
-        'phone' => '+91 98765 43210',
-        'email' => 'hello@sahyogfoundation.org',
-        'address' => '21 Civil Lines, Jaipur, Rajasthan, India',
+        'phone' => '+91 9919007190',
+        'whatsapp' => '+91 9919007190',
+        'email' => 'contact@pradeepsarang.in',
+        'address' => 'ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत',
         'facebook' => '#',
         'instagram' => '#',
         'linkedin' => '#',
@@ -28,7 +29,7 @@ return [
           [
             'title' => '',
             'subtitle' => '',
-            'image' => 'assets/images/slider_final_3.jpg',
+            'image' => 'assets/images/slider_final_3.webp',
         ],
     ],
     'services' => [

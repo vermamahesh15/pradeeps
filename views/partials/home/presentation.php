@@ -4,7 +4,8 @@ declare(strict_types=1);
 function ps_text(string $hi, string $en): string { return current_lang() === 'hi' ? $hi : $en; }
 function ps_content_lang(string $text): string { return preg_match('/[\x{0900}-\x{097F}]/u', $text) ? 'hi' : 'en'; }
 function ps_excerpt(array $item, int $length = 180): string {
-    $text = trim(html_entity_decode(strip_tags(($item['excerpt'] ?? '') ?: ($item['content'] ?? $item['description'] ?? '')), ENT_QUOTES, 'UTF-8'));
+    $raw = ($item['excerpt'] ?? '') ?: ($item['content'] ?? $item['description'] ?? '');
+    $text = trim(ps_decode_entities(strip_tags($raw)));
     return mb_strlen($text) > $length ? mb_substr($text, 0, $length) . '…' : $text;
 }
 function ps_image_path(string $path): ?string {
@@ -96,7 +97,10 @@ function ps_cta(string $heading, string $description = ''): void {
     ?><section class="ps-section ps-inner-cta"><div class="ps-container"><div><h2><?= e($heading) ?></h2><?php if($description): ?><p><?= e($description) ?></p><?php endif; ?></div><div class="ps-actions"><a class="ps-button ps-button-inverse" href="<?= e(base_url('/volunteer')) ?>"><?= e(ps_text('स्वयंसेवक बनें','Become a volunteer')) ?> ↗</a><a class="ps-light-link" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('संवाद करें','Contact')) ?> →</a></div></div></section><?php
 }
 function ps_rich_text(string $html): string {
-    return $html !== '' ? $html : '<p>' . e(ps_text('विस्तृत जानकारी जल्द उपलब्ध होगी।','More information will be available soon.')) . '</p>';
+    if (trim($html) === '') {
+        return '<p>' . e(ps_text('विस्तृत जानकारी जल्द उपलब्ध होगी।', 'More information will be available soon.')) . '</p>';
+    }
+    return ps_decode_entities($html);
 }
 function ps_card(array $item, string $kind = 'campaigns', bool $featured = false): void {
     $title = $item['title'];
@@ -159,6 +163,7 @@ $nav = [
         'label' => ps_text('गैलरी व मीडिया', 'Gallery & Media'),
         'children' => [
             ['/portfolio', ps_text('छायाचित्र दीर्घा', 'Photo Gallery')],
+            ['/videos', ps_text('वीडियो दीर्घा', 'Video Gallery')],
             ['/media', ps_text('प्रेस व कतरनें', 'Press Coverage')]
         ]
     ],

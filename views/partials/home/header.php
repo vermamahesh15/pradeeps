@@ -33,19 +33,22 @@ $currPath = current_path();
     <!-- Main Navigation Bar -->
     <div class="h-20 bg-[#FFFEFB] backdrop-blur-md px-4 sm:px-8 flex items-center border-b border-[#E5E7EB]">
         <div class="max-w-container-max mx-auto w-full flex items-center justify-between gap-4">
-            <!-- Brand Identity: Stylish Typography Mark -->
-            <a href="<?= e(base_url('/')) ?>" class="flex items-center gap-2.5 group shrink-0 py-1">
-                <div class="w-9 h-9 rounded-xl bg-[#14532D] text-white flex items-center justify-center shadow-xs border border-[#15803D]/40 group-hover:bg-[#0F3D21] transition-colors">
-                    <span class="material-symbols-outlined text-[20px] text-[#86EFAC]" style="font-variation-settings: 'FILL' 1;">eco</span>
-                </div>
-                <div class="flex flex-col">
-                    <span class="font-serif text-2xl sm:text-[26px] tracking-tight leading-none font-bold">
-                        <span class="font-normal text-[#14532D] italic">प्रदीप</span> <span class="font-bold text-[#172033]">सारंग</span>
-                    </span>
-                    <span class="font-label-sm text-[10.5px] text-[#667085] tracking-widest uppercase font-semibold mt-1">
-                        <?= e(ps_text('पर्यावरणविद् • लोकसेवक • साहित्यकार', 'Environmentalist • Social Worker')) ?>
-                    </span>
-                </div>
+            <!-- Brand Identity: Logo Image Only -->
+            <?php 
+              $siteLogo = setting('logo', 'assets/images/logo.webp');
+              $hasLogo = !empty($siteLogo) && (file_exists('/var/www/html/pradeep/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
+            ?>
+            <a href="<?= e(base_url('/')) ?>" class="flex items-center group shrink-0 py-1" title="<?= e(app_config('name', 'Pradeep Sarang')) ?>">
+                <?php if ($hasLogo): ?>
+                    <img src="<?= e(base_url($siteLogo)) ?>" alt="<?= e(app_config('name', 'Pradeep Sarang')) ?>" class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105" loading="eager">
+                <?php else: ?>
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-[#14532D] text-white flex items-center justify-center shadow-xs border border-[#15803D]/40 group-hover:bg-[#0F3D21] transition-colors">
+                            <span class="material-symbols-outlined text-[22px] text-[#86EFAC]" style="font-variation-settings: 'FILL' 1;">eco</span>
+                        </div>
+                        <span class="font-serif text-2xl font-bold text-[#14532D]">प्रदीप सारंग</span>
+                    </div>
+                <?php endif; ?>
             </a>
 
             <!-- Desktop Nav Links -->

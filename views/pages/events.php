@@ -16,7 +16,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
     'location' => ps_text('गांधी भवन प्रेक्षागृह, बाराबंकी (उ.प्र.)', 'Gandhi Bhawan Auditorium, Barabanki (U.P.)'),
     'excerpt' => ps_text('अवध के प्रतिष्ठित कवियों एवं मनीषियों की गरिमामयी उपस्थिति में अवधी भाषा प्रसार तथा भव्य काव्य गोष्ठी का आयोजन।', 'Awadhi literature symposium and poetry meet with distinguished Awadh scholars.'),
     'slug' => 'awadhi-literature-conference-2026',
-    'image' => 'uploads/6a471c1fedba6_Photo-20260702-074405-S-1079x1085.png'
+    'image' => 'assets/images/slider_final_1.webp'
 ];
 ?>
 
@@ -148,7 +148,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
     <div class="bg-surface-container-lowest rounded-2xl border border-border-warm shadow-md overflow-hidden grid grid-cols-1 lg:grid-cols-12 transition-all">
       <!-- Visual Column -->
       <div class="lg:col-span-5 relative min-h-[320px] lg:min-h-full">
-        <img src="<?= e(!empty($featuredUpcoming['image']) ? base_url($featuredUpcoming['image']) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6kx70EQZpcht7op-V1_uG47WMdVT_DrFqqiVRM-0tBmuWlJdaA4Cj9FB_XGq8Mto67ZEqJ4MpKzqkDo4DJPJxL07Whm5W8wUQGhvKojVPBlNUoGAIT8MW5mGQ07-UXsIroO7CK4PzWeh0A6KJnspL4-L43bsVzRCEVviMsQOZO_BeiJgW0yoxYxIds0-sw090RYpteXF-Bcf6D8CBAd9c-XDNfPiivzr7JFw_5gO1BEORpYbmhPam') ?>" alt="<?= e($featuredUpcoming['title']) ?>" class="w-full h-full object-cover">
+        <img src="<?= e(ps_resolve_img($featuredUpcoming['image'] ?? '', 'assets/images/slider_final_1.webp')) ?>" alt="<?= e($featuredUpcoming['title']) ?>" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/30 to-transparent"></div>
         <div class="absolute top-4 left-4">
           <span class="bg-secondary text-pure-white px-3 py-1 rounded-md font-label-sm text-label-sm font-semibold shadow-sm flex items-center gap-1.5">
@@ -235,7 +235,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
           <div>
             <div class="relative h-48 w-full overflow-hidden bg-surface-container">
-              <img src="<?= e(!empty($ev['image']) ? base_url($ev['image']) : 'https://lh3.googleusercontent.com/aida-public/AB6AXuCJza7S46WFFJSwNs0D5xs_ecbeULhv-3IjFXCftYNpanTdkVmilHSu2T3axctN7k1ZsUHMl6s56TDlC9IxIsEKx_KkKqa1Y1s_z6i1nznKifKUeXptt2aFbTg5RGE608Dn7YB4z_qrcOtufJvoCLCRmIu6KC96mDSfYw-dsjHHnNt5stQZVNG-eCAjJpkJgBwjJODXq5y-VyrglqJbW2iYk0k5X-7FTGXxSknDn3Fnan23REwhkvhE') ?>" alt="<?= e($ev['title']) ?>" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
+              <img src="<?= e(ps_resolve_img($ev['image'] ?? '', 'assets/images/slider_final_1.webp')) ?>" alt="<?= e($ev['title']) ?>" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
               <div class="absolute top-3 left-3 bg-secondary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold">
                 <?= e(ps_text('आगामी आयोजन', 'Upcoming Event')) ?>
               </div>
