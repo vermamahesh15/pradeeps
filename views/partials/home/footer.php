@@ -11,7 +11,8 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
             <!-- Bio & Contact -->
             <?php 
               $siteLogo = setting('logo', 'assets/images/logo.webp');
-              $hasLogo = !empty($siteLogo) && (file_exists('/var/www/html/pradeep/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
+              $rootDir = dirname(__DIR__, 3);
+              $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
             ?>
             <div class="lg:col-span-4 flex flex-col">
                 <div class="flex items-center gap-3 mb-4">

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /config/
+Disallow: /models/
+Disallow: /controllers/
+Disallow: /includes/
+
+Sitemap: https://pradeepsarang.in/sitemap.xml

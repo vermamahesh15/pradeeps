@@ -36,7 +36,8 @@ $currPath = current_path();
             <!-- Brand Identity: Logo Image Only -->
             <?php 
               $siteLogo = setting('logo', 'assets/images/logo.webp');
-              $hasLogo = !empty($siteLogo) && (file_exists('/var/www/html/pradeep/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
+              $rootDir = dirname(__DIR__, 3);
+              $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
             ?>
             <a href="<?= e(base_url('/')) ?>" class="flex items-center group shrink-0 py-1" title="<?= e(app_config('name', 'Pradeep Sarang')) ?>">
                 <?php if ($hasLogo): ?>
