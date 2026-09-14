@@ -2,6 +2,38 @@
 
 declare(strict_types=1);
 
+// Force Full Error Display & Shutdown Error Capture for Live Server Debugging
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+
+set_exception_handler(function (Throwable $e) {
+    if (!headers_sent()) {
+        header('HTTP/1.1 200 OK');
+    }
+    echo "<div style='font-family:sans-serif; padding:20px; background:#fef2f2; border:2px solid #ef4444; color:#991b1b; border-radius:12px; margin:20px; z-index:999999; position:relative;'>";
+    echo "<h2 style='margin-top:0;'>⚠️ Admin Server Exception</h2>";
+    echo "<p><strong>Message:</strong> " . htmlspecialchars($e->getMessage()) . "</p>";
+    echo "<p><strong>File:</strong> " . htmlspecialchars($e->getFile()) . " (Line " . $e->getLine() . ")</p>";
+    echo "<pre style='background:#fff; padding:10px; border-radius:6px; overflow:auto; max-height:300px; font-size:13px; color:#333;'>" . htmlspecialchars($e->getTraceAsString()) . "</pre>";
+    echo "</div>";
+    exit;
+});
+
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR], true)) {
+        if (!headers_sent()) {
+            header('HTTP/1.1 200 OK');
+        }
+        echo "<div style='font-family:sans-serif; padding:20px; background:#fef2f2; border:2px solid #ef4444; color:#991b1b; border-radius:12px; margin:20px; z-index:999999; position:relative;'>";
+        echo "<h2 style='margin-top:0;'>⚠️ Admin Server Fatal Error</h2>";
+        echo "<p><strong>Message:</strong> " . htmlspecialchars($error['message']) . "</p>";
+        echo "<p><strong>File:</strong> " . htmlspecialchars($error['file']) . " (Line " . $error['line'] . ")</p>";
+        echo "</div>";
+    }
+});
+
 require_once __DIR__ . '/../includes/helpers.php';
 require_once __DIR__ . '/../models/ContentModel.php';
 require_once __DIR__ . '/../models/Blog.php';
