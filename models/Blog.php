@@ -231,7 +231,6 @@ class Blog extends BaseModel
             ':seo_title' => $data['seo_title'] ?? null,
             ':meta_description' => $data['meta_description'] ?? null,
             ':meta_keywords' => $data['meta_keywords'] ?? null,
-            ':canonical_url' => $data['canonical_url'] ?? null,
             ':og_image' => $data['og_image'] ?? null,
             ':published_at' => $data['published_at'] ?? null,
         ]);
@@ -239,11 +238,12 @@ class Blog extends BaseModel
         return (int) $this->db->lastInsertId();
     }
 
-    public function update(int $id, array $data): bool
+    public function update($id, array $data): bool
     {
         if (!$this->db) return false;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
-        $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at WHERE id = :id');
+        $whereSql = is_numeric($id) ? 'WHERE id = :id' : 'WHERE slug = :id';
+        $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at ' . $whereSql);
         return $stmt->execute([
             ':category_id' => $data['category_id'],
             ':author_id' => $data['author_id'] ?? null,
@@ -267,21 +267,26 @@ class Blog extends BaseModel
         ]);
     }
 
-    public function delete(int $id): bool
+    public function delete($id): bool
     {
         if (!$this->db) return false;
-        $stmt = $this->db->prepare('DELETE FROM blogs WHERE id = :id');
+        $whereSql = is_numeric($id) ? 'WHERE id = :id' : 'WHERE slug = :id';
+        $stmt = $this->db->prepare('DELETE FROM blogs ' . $whereSql);
         return $stmt->execute([':id' => $id]);
     }
 
-    public function slugExists(string $slug, ?int $excludeId = null): bool
+    public function slugExists(string $slug, $excludeId = null): bool
     {
         if (!$this->db) return false;
         $sql = 'SELECT COUNT(*) FROM blogs WHERE slug = :slug';
         $params = [':slug' => $slug];
 
-        if ($excludeId !== null) {
-            $sql .= ' AND id != :exclude_id';
+        if ($excludeId !== null && $excludeId !== '' && $excludeId !== 0 && $excludeId !== '0') {
+            if (is_numeric($excludeId)) {
+                $sql .= ' AND id != :exclude_id';
+            } else {
+                $sql .= ' AND slug != :exclude_id';
+            }
             $params[':exclude_id'] = $excludeId;
         }
 
@@ -291,7 +296,7 @@ class Blog extends BaseModel
         return (int) $stmt->fetchColumn() > 0;
     }
 
-    public function normalizeSlug(string $title, ?int $excludeId = null): string
+    public function normalizeSlug(string $title, $excludeId = null): string
     {
         // Support Hindi / non-latin titles by falling back, but try to convert English if possible.
         // For non-latin titles, we can generate a random unique hash or direct transliteration.
