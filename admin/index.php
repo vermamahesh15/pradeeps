@@ -2071,6 +2071,7 @@ $metrics = $content->metrics();
                                             $coverImg = ps_resolve_img($b['banner_image'] ?: $b['featured_image'], 'assets/images/slider_final_1.webp');
                                             $catName = $b['category_name'] ?? 'Uncategorized';
                                             $authorName = $b['author'] ?: ($b['author_name'] ?: 'प्रदीप सारंग');
+                                            $blogKey = !empty($b['id']) ? $b['id'] : ($b['slug'] ?? '');
                                         ?>
                                             <tr class="blog-table-row" 
                                                 data-title="<?= e(mb_strtolower($b['title'] . ' ' . $b['slug'])) ?>" 
@@ -2128,7 +2129,7 @@ $metrics = $content->metrics();
                                                 <td class="text-end">
                                                     <div class="d-flex justify-content-end gap-1.5 align-items-center">
                                                         <button type="button" class="btn btn-sm btn-outline-primary shadow-xs px-2.5 py-1" onclick="openSocialShareModal(<?= htmlspecialchars(json_encode([
-                                                            'id' => $b['id'],
+                                                            'id' => $blogKey,
                                                             'title' => $b['title'],
                                                             'excerpt' => $b['excerpt'] ?: ps_excerpt($b['content'] ?? '', 120),
                                                             'url' => base_url('/blog/' . ($b['slug'] ?? ''))
@@ -2136,27 +2137,27 @@ $metrics = $content->metrics();
                                                             <i class="fa-solid fa-share-nodes me-1"></i> Share Social
                                                         </button>
 
-                                                        <a href="?module=blogs&edit_id=<?= $b['id'] ?>" class="btn btn-sm btn-outline-dark px-2.5 py-1" title="Edit Article"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
+                                                        <a href="?module=blogs&edit_id=<?= urlencode((string)$blogKey) ?>" class="btn btn-sm btn-outline-dark px-2.5 py-1" title="Edit Article"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
 
                                                         <?php if (is_role('admin') && $b['status'] !== 'published'): ?>
                                                             <form method="post" class="d-inline">
                                                                 <?= csrf_field() ?>
                                                                 <input type="hidden" name="action" value="update_blog_status">
-                                                                <input type="hidden" name="id" value="<?= $b['id'] ?>">
+                                                                <input type="hidden" name="id" value="<?= e($blogKey) ?>">
                                                                 <input type="hidden" name="status" value="published">
                                                                 <button type="submit" class="btn btn-sm btn-success px-2.5 py-1" title="Approve and publish by Admin"><i class="fa-solid fa-circle-check me-1"></i> Approve</button>
                                                             </form>
                                                         <?php endif; ?>
 
                                                         <?php if (is_role('admin') && $b['status'] === 'pending'): ?>
-                                                            <button type="button" class="btn btn-sm btn-outline-danger px-2.5 py-1" onclick="rejectBlog(<?= $b['id'] ?>)">Reject</button>
+                                                            <button type="button" class="btn btn-sm btn-outline-danger px-2.5 py-1" onclick="rejectBlog(<?= htmlspecialchars(json_encode((string)$blogKey), ENT_QUOTES, 'UTF-8') ?>)">Reject</button>
                                                         <?php endif; ?>
 
                                                         <?php if (!is_role('author') || $b['status'] !== 'published'): ?>
                                                             <form method="post" onsubmit="return confirm('Delete this blog post permanently?')" class="d-inline">
                                                                 <?= csrf_field() ?>
                                                                 <input type="hidden" name="action" value="delete_blog">
-                                                                <input type="hidden" name="id" value="<?= $b['id'] ?>">
+                                                                <input type="hidden" name="id" value="<?= e($blogKey) ?>">
                                                                 <button type="submit" class="btn btn-sm btn-outline-danger px-2 py-1" title="Delete Blog"><i class="fa-solid fa-trash"></i></button>
                                                             </form>
                                                         <?php endif; ?>
