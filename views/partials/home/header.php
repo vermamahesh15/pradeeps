@@ -5,17 +5,7 @@ $phone = !empty($contact['phone']) ? $contact['phone'] : '+91 9919007190';
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.in';
 $currPath = current_path();
-?><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-0YJRF6JN7F');
-</script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796"
-     crossorigin="anonymous"></script>
 if (!isset($nav) || !is_array($nav)) {
     $nav = [
         ['/', ps_text('मुख्य पृष्ठ', 'Home')],
@@ -51,6 +41,17 @@ if (!isset($nav) || !is_array($nav)) {
     ];
 }
 ?>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0YJRF6JN7F');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796"
+     crossorigin="anonymous"></script>
 <header class="fixed top-0 left-0 w-full z-[9999] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
     <!-- Top Utility Bar -->
     <div class="w-full bg-[#172033] text-[#FFFFFF] py-1.5 px-4 sm:px-8">
