@@ -210,7 +210,7 @@ $allHonors = !empty($dbHonors) ? array_merge($dbHonors, $defaultHonors) : $defau
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
-          <span><?= e(ps_text('100+ प्रामाणिक प्रशस्ति पत्र व राज्यस्तरीय सम्मान (1987 — 2026)', '100+ Authenticated Honors & State Citations (1987 — 2026)')) ?></span>
+          <span><?= e(ps_text('100+ प्रामाणिक प्रशस्ति पत्र व राज्यस्तरीय सम्मान (1987 से आज तक)', '100+ Authenticated Honors & State Citations (1987 — Present)')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('महामहिम राज्यपाल से लेकर ग्राम चौपाल तक प्राप्त ऐतिहासिक सम्मान', 'Honors & Citations from the UP Governor to Village Chaupals')) ?>
@@ -397,7 +397,7 @@ $allHonors = !empty($dbHonors) ? array_merge($dbHonors, $defaultHonors) : $defau
       <div class="text-center max-w-3xl mx-auto mb-space-xl">
         <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('कालक्रमानुसार अभिलेखागार', 'Chronological Honors Timeline')) ?></span>
         <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
-          <?= e(ps_text('सम्पूर्ण वर्षवार सम्मान तालिका (1987 — 2026)', 'Complete Year-by-Year Honors Archive')) ?>
+          <?= e(ps_text('सम्पूर्ण वर्षवार सम्मान तालिका (1987 से आज तक)', 'Complete Year-by-Year Honors Archive (1987 — Present)')) ?>
         </h2>
         <p class="font-body-md text-body-md text-text-muted mt-2">
           <?= e(ps_text('चार दशकों में प्राप्त सभी प्रमुख राष्ट्रीय, राज्य स्तरीय, साहित्यिक एवं सामाजिक सम्मान।', 'All authenticated national, state, literary, and social awards over four decades.')) ?>

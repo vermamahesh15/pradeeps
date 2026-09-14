@@ -25,7 +25,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">analytics</span>
-          <span><?= e(ps_text('100% पारदर्शी एवं प्रत्यक्ष ज़मीनी प्रभाव (1987 — 2026)', '100% Transparent Grassroots Impact (1987 — 2026)')) ?></span>
+          <span><?= e(ps_text('100% पारदर्शी एवं प्रत्यक्ष ज़मीनी प्रभाव (1987 से आज तक)', '100% Transparent Grassroots Impact (1987 — Present)')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('चार दशकों की साधना: पारदर्शी और सजीव सामुदायिक प्रभाव', 'Grassroots Impact & Ground Transformation Across Awadh')) ?>

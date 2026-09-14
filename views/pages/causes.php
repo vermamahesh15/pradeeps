@@ -29,7 +29,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
         <div class="lg:col-span-8 flex flex-col items-start">
           <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
             <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
-            <span><?= e(ps_text('चार दशकों की सतत ज़मीनी साधना (1987 — 2026)', 'Four Decades of Community Dedication (1987 — 2026)')) ?></span>
+            <span><?= e(ps_text('चार दशकों की सतत ज़मीनी साधना (1987 से आज तक)', 'Four Decades of Community Dedication (1987 — Present)')) ?></span>
           </div>
 
           <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">

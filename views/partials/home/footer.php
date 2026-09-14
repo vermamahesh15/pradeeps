@@ -205,7 +205,12 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
         <!-- Bottom Line -->
         <div class="mt-space-md pt-space-md border-t border-surface-container-high/15 flex flex-col sm:flex-row items-center justify-between gap-4 font-label-sm text-label-sm text-surface-container-high">
             <p>© <?= date('Y') ?> <?= e(app_config('name', 'प्रदीप सारंग')) ?>. <?= e(ps_text('सर्वाधिकार सुरक्षित।', 'All rights reserved.')) ?></p>
-            <div class="flex items-center gap-6">
+            <div class="flex items-center gap-4">
+                <?php $visitorCount = (new ContentModel())->trackVisitorSession(); ?>
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-label-sm font-label-sm text-surface-container-high" title="<?= e(ps_text('प्रामाणिक अद्वितीय आगंतुक संख्या', 'Authenticated Unique Visitors')) ?>">
+                    <span class="material-symbols-outlined text-[15px] text-[#6FD08C]">visibility</span>
+                    <span><?= e(ps_text('कुल आगंतुक: ', 'Total Visitors: ')) ?><strong class="text-white font-mono"><?= number_format($visitorCount) ?></strong></span>
+                </div>
                 <a class="hover:text-tertiary-fixed text-surface-container-high/70 transition-colors flex items-center gap-1" href="<?= e(base_url('/admin')) ?>">
                     <span class="material-symbols-outlined text-[13px]">lock</span>
                     <span><?= e(ps_text('प्रशासनिक लॉगिन', 'Admin Portal')) ?></span>

@@ -200,9 +200,9 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         <span class="material-symbols-outlined text-[28px]">school</span>
                     </div>
                     <span class="font-label-sm text-xs text-secondary uppercase font-bold mb-1"><?= e(ps_text('०४ • युवा मार्गदर्शन', '04 • Youth Mentorship')) ?></span>
-                    <h3 class="font-title-md text-xl text-deep-forest font-bold mb-2"><?= e(ps_text('युवा प्रेरणा व करियर द्वंद्व', 'Youth Inspiration & Career Path')) ?></h3>
+                    <h3 class="font-title-md text-xl text-deep-forest font-bold mb-2"><?= e(ps_text('युवा प्रेरणा व आत्मबल संवर्धन', 'Youth Inspiration & Self-Reliance')) ?></h3>
                     <p class="font-body-sm text-sm text-on-surface-variant leading-relaxed">
-                        <?= e(ps_text('लक्ष्य निर्धारण, ग्रामीण व कस्बाई युवाओं में हीनभावना दूर करना, सेवा, कृषि-उद्यमिता व स्वरोजगार के अवसरों की सटीक समझ।', 'Goal setting, boosting confidence among rural youth, self-employment, and sustainable agricultural entrepreneurship.')) ?>
+                        <?= e(ps_text('ग्रामीण व कस्बाई युवाओं में हीनभावना दूर कर आत्मविश्वास जगाना, लक्ष्य निर्धारण, समाज सेवा, कृषि-उद्यमिता व स्वावलंबन हेतु प्रेरक मार्गदर्शन।', 'Building confidence and self-worth among rural youth, fostering leadership, social service, self-reliance, and sustainable agricultural initiatives.')) ?>
                     </p>
                 </div>
 
@@ -218,15 +218,15 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                     </p>
                 </div>
 
-                <!-- 6. Workplace Dynamics -->
+                <!-- 6. Work Integrity & Moral Values -->
                 <div class="flex flex-col bg-pure-white p-6 rounded-2xl shadow-xs hover:shadow-md transition-all border border-border-warm group">
                     <div class="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-on-primary transition-colors">
-                        <span class="material-symbols-outlined text-[28px]">work_history</span>
+                        <span class="material-symbols-outlined text-[28px]">balance</span>
                     </div>
-                    <span class="font-label-sm text-xs text-secondary uppercase font-bold mb-1"><?= e(ps_text('०६ • आजीविका व कार्य', '06 • Career & Ethics')) ?></span>
-                    <h3 class="font-title-md text-xl text-deep-forest font-bold mb-2"><?= e(ps_text('व्यावसायिक चुनौतियाँ', 'Workplace & Financial Stress')) ?></h3>
+                    <span class="font-label-sm text-xs text-secondary uppercase font-bold mb-1"><?= e(ps_text('०६ • कार्य-सदाचार व जीवन-मूल्य', '06 • Work Integrity & Values')) ?></span>
+                    <h3 class="font-title-md text-xl text-deep-forest font-bold mb-2"><?= e(ps_text('आजीविका में ईमानदारी व नीति-संतुलन', 'Ethical Work & Living')) ?></h3>
                     <p class="font-body-sm text-sm text-on-surface-variant leading-relaxed">
-                        <?= e(ps_text('सहकर्मियों संग तनाव, व्यावसायिक असहजता, ईमानदारी व आर्थिक दबावों के बीच संतुलन साधने की व्यावहारिक नीतियां।', 'Workplace ethics, conflict resolution with colleagues, financial strain, and maintaining personal integrity.')) ?>
+                        <?= e(ps_text('आजीविका कमाते समय सत्य, ईमानदारी और नैतिक मूल्यों की रक्षा, कार्यक्षेत्र में मानसिक शांति एवं कठिन परिस्थितियों में नीतिगत संतुलन।', 'Upholding truth, ethics, and moral dignity in daily work, maintaining inner peace, and managing difficult life dilemmas with wisdom.')) ?>
                     </p>
                 </div>
 
@@ -448,7 +448,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                     <option value=""><?= e(ps_text('-- कृपया विषय चुनें --', '-- Select Consultation Topic --')) ?></option>
                                     <option value="पारिवारिक एवं वैवाहिक समन्वय"><?= e(ps_text('पारिवारिक एवं वैवाहिक समन्वय', 'Family & Marital Reconciliation')) ?></option>
                                     <option value="मानसिक व वैचारिक उलझन"><?= e(ps_text('मानसिक व वैचारिक उलझन / तनाव', 'Mental Confusion & Stress')) ?></option>
-                                    <option value="युवा मार्गदर्शन व करियर द्वंद्व"><?= e(ps_text('युवा मार्गदर्शन व करियर द्वंद्व', 'Youth Mentorship & Career Guidance')) ?></option>
+                                    <option value="युवा प्रेरणा व स्वावलंबन मार्गदर्शन"><?= e(ps_text('युवा प्रेरणा व स्वावलंबन मार्गदर्शन', 'Youth Inspiration & Self-Reliance')) ?></option>
                                     <option value="भावनात्मक अकेलापन व आघात"><?= e(ps_text('भावनात्मक अकेलापन व आघात', 'Emotional Solitude & Healing')) ?></option>
                                     <option value="सामाजिक व पंचायती समस्याएँ"><?= e(ps_text('सामाजिक व पंचायती समस्याएँ', 'Community & Social Disputes')) ?></option>
                                     <option value="शारीरिक स्वास्थ्य व प्राकृतिक दिनचर्या"><?= e(ps_text('शारीरिक स्वास्थ्य व प्राकृतिक दिनचर्या (आयुर्वेद)', 'Natural Health & Ayurveda Regimen')) ?></option>

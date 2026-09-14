@@ -25,7 +25,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
-          <span><?= e(ps_text('चार दशकों की अविरल जनसेवा एवं लोक-चेतना (1987 — 2026)', 'Four Decades of Community Dedication (1987 — 2026)')) ?></span>
+          <span><?= e(ps_text('चार दशकों की अविरल जनसेवा एवं लोक-चेतना (1987 से आज तक)', 'Four Decades of Community Dedication (1987 — Present)')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और अवधी की मिठास', 'Rooted in Service, Nature & Awadhi Heritage')) ?>
@@ -355,20 +355,20 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           </div>
         </div>
 
-        <!-- 5. रक्तदान व लोक स्वास्थ्य -->
+        <!-- 5. পরিंदा व जल-सकोरा संवर्धन -->
         <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
           <div>
-            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-secondary flex items-center justify-center mb-4 border border-border-warm">
-              <span class="material-symbols-outlined">vital_signs</span>
+            <div class="w-10 h-10 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4 border border-border-warm">
+              <span class="material-symbols-outlined">nest_cam_iq_outdoor</span>
             </div>
-            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('रक्तदान व लोक स्वास्थ्य सेवा', 'Blood Donation & Public Health')) ?></h3>
+            <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation')) ?></h3>
             <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
-              <?= e(ps_text('सैकड़ों रक्तदान शिविरों का संचालन व युवाओं को नियमित रक्तदान की प्रेरणा। रेडक्रॉस सोसाइटी सम्मान। 2020 की वैश्विक महामारी में अग्रिम मोर्चे पर रहकर \'कोरोना योद्धा\' के रूप में जीवनरक्षक सेवाएं।', 'Organized blood donation camps. Recognized as Corona Warrior & Red Cross Awardee.')) ?>
+              <?= e(ps_text('गर्मी के दिनों में 10,000+ मिट्टी के जल-सकोरों का निःशुल्क वितरण, दाना-पानी प्रबंध और विलुप्त होती गौरैया के संरक्षण हेतु युवाओं को प्रेरित करना।', 'Free distribution of 10,000+ earthen water bowls during summer and inspiring youth to protect local sparrows.')) ?>
             </p>
           </div>
-          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-secondary border border-border-warm font-semibold">
-            <span class="material-symbols-outlined text-[16px]">medical_services</span>
-            <span><?= e(ps_text('कोरोना योद्धा व रेडक्रॉस अलंकरण', 'Corona Warrior & Red Cross Honor')) ?></span>
+          <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-deep-forest border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[16px]">water_drop</span>
+            <span><?= e(ps_text('10,000+ मिट्टी के जल-सकोरे वितरित', '10,000+ Water Bowls Distributed')) ?></span>
           </div>
         </div>
 
@@ -392,14 +392,14 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
     </div>
   </section>
 
-  <!-- चार दशकों का ऐतिहासिक पड़ाव व सम्मान अभिलेखागार (TIMELINE OF HONORS 1987 — 2026) -->
+  <!-- चार दशकों का ऐतिहासिक पड़ाव व सम्मान अभिलेखागार (TIMELINE OF HONORS 1987 से आज तक) -->
   <section class="w-full bg-soft-meadow py-space-2xl md:py-space-4xl border-b border-border-warm" id="milestones-section">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-space-xl">
         <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase"><?= e(ps_text('प्रामाणिक अभिलेखागार (Authentic Archive)', 'Authentic Honors Archive')) ?></span>
         <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
-          <?= e(ps_text('चार दशकों की सेवा-यात्रा एवं प्रमुख सम्मान (1987 — 2026)', 'Four Decades of Service & Honors (1987 — 2026)')) ?>
+          <?= e(ps_text('चार दशकों की सेवा-यात्रा एवं प्रमुख सम्मान (1987 से आज तक)', 'Four Decades of Service & Honors (1987 — Present)')) ?>
         </h2>
         <p class="font-body-md text-body-md text-text-muted mt-2">
           <?= e(ps_text('महामहिम राज्यपाल से लेकर ग्राम चौपाल तक प्राप्त सम्मान व प्रशस्ति पत्रों की ऐतिहासिक शृंखला।', 'Honors from the UP Governor to village chaupals.')) ?>
@@ -532,21 +532,21 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           </div>
         </div>
 
-        <!-- 2010 (Social) -->
+        <!-- 2010 (Bird Conservation) -->
         <div class="timeline-item bg-pure-white rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="social">
           <div>
             <div class="flex items-center justify-between mb-3">
               <span class="font-headline-sm text-headline-sm text-deep-forest font-bold">2010</span>
-              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold border border-border-warm"><?= e(ps_text('रक्तदान', 'Blood Donation')) ?></span>
+              <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold border border-border-warm"><?= e(ps_text('परिंदा संरक्षण', 'Bird Protection')) ?></span>
             </div>
-            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('रक्तदान एवं नागरिक अभिनंदन', 'Blood Donation & Civic Honor')) ?></h4>
+            <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('जल-सकोरा वितरण एवं नागरिक अभिनंदन', 'Water Bowl Drive & Civic Honor')) ?></h4>
             <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-              <?= e(ps_text('नियमित रक्तदान, आपातकालीन रक्त व्यवस्था एवं विश्वकर्मा जयंती के अवसर पर जनपद के प्रबुद्ध नागरिकों द्वारा नागरिक अभिनंदन पत्र।', 'Honored for organizing voluntary blood donation drives across Barabanki hospitals.')) ?>
+              <?= e(ps_text('मिट्टी के जल-सकोरों का बड़े पैमाने पर वितरण एवं बेजुबान परिंदों के संरक्षण हेतु जनपद के प्रबुद्ध नागरिकों द्वारा सार्वजनिक अभिनंदन।', 'Honored for organizing bird water bowl distribution drives across Barabanki villages.')) ?>
             </p>
           </div>
           <div class="mt-4 pt-3 border-t border-border-warm text-label-sm font-label-sm text-text-muted flex items-center gap-1.5 font-semibold">
             <span class="material-symbols-outlined text-[15px]">volunteer_activism</span>
-            <span><?= e(ps_text('जिलाधिकारी द्वारा प्रमाण पत्र', 'District Magistrate Citation')) ?></span>
+            <span><?= e(ps_text('जनपदवासियों द्वारा अभिनंदन पत्र', 'Civic Citation of Honor')) ?></span>
           </div>
         </div>
 

@@ -233,25 +233,25 @@ $states = $states ?? [];
           <div class="w-12 h-12 rounded-lg bg-error-container/40 flex items-center justify-center text-error mb-4">
             <span class="material-symbols-outlined text-[28px]">emergency_share</span>
           </div>
-          <span class="inline-block px-2.5 py-0.5 rounded bg-error-container/60 text-error font-label-sm text-label-sm font-semibold mb-2">
-            <?= e(ps_text('स्तम्भ ४ : राहत व स्वास्थ्य', 'Pillar 4: Emergency Relief')) ?>
+          <span class="inline-block px-2.5 py-0.5 rounded bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-semibold mb-2 border border-border-warm">
+            <?= e(ps_text('स्तम्भ ४ : पक्षी व परिंदा संरक्षण', 'Pillar 4: Bird Conservation')) ?>
           </span>
-          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('आपात सेवा व रक्तदान दल', 'Emergency & Blood Donation Taskforce')) ?></h3>
+          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('जल-सकोरा व पक्षी संरक्षण दल', 'Water Bowl & Bird Protection Taskforce')) ?></h3>
           <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-            <?= e(ps_text('आपात रक्तदाता नेटवर्क में सहभागिता, शीत ऋतु में \'कपड़ा बैंक\' के माध्यम से गर्म कपड़ों का वितरण और ग्रामीण स्वास्थ्य शिविरों में सहयोग।', 'Participation in emergency blood donation network, winter cloth bank distribution & health camp assistance.')) ?>
+            <?= e(ps_text('भीषण गर्मी में मिट्टी के जल-सकोरे वितरण, दाना-पानी प्रबंध, पक्षी आश्रय निर्माण और गौरैया संरक्षण जागरूकता में सहभागिता।', 'Participating in clay water bowl distribution, grain-feed setup, and sparrow protection drives.')) ?>
           </p>
           <div class="space-y-2 mb-6">
             <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-error">schedule</span>
-              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('आवश्यकतानुसार / ऑन-कॉल', 'As needed / On-call')) ?></span>
+              <span class="material-symbols-outlined text-[16px] text-deep-forest">schedule</span>
+              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('ग्रीष्म ऋतु / नियमित साप्ताहिक', 'Summer Season / Weekly')) ?></span>
             </div>
             <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-error">person_check</span>
-              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('युवा, स्वास्थ्यकर्मी, सामाजिक कार्यकर्ता', 'Youth, Healthcare Workers, Social Workers')) ?></span>
+              <span class="material-symbols-outlined text-[16px] text-deep-forest">person_check</span>
+              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('युवा, प्रकृति प्रेमी, छात्र, सामाजिक कार्यकर्ता', 'Youth, Nature Lovers, Students')) ?></span>
             </div>
           </div>
         </div>
-        <button type="button" onclick="selectPillar('रक्तदान, कपड़ा बैंक व आपात सेवा')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
+        <button type="button" onclick="selectPillar('जल-सकोरा व परिंदा संरक्षण अभियान')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
           <span><?= e(ps_text('यह स्तम्भ चुनें', 'Select this pillar')) ?></span>
           <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
         </button>
@@ -525,7 +525,7 @@ $states = $states ?? [];
           <label class="block font-title-md text-title-md text-deep-forest font-bold mb-3">
             <?= e(ps_text('आप किस अभियान में सहभागिता करना चाहते हैं? (रुचि/कौशल)', 'Which initiatives interest you? (Interests & Skills)')) ?> <span class="text-error">*</span>
           </label>
-          <input type="text" id="userInterests" name="interests" required placeholder="<?= e(ps_text('उदा. हरियाली अभियान, परिंदा संरक्षण, अवधी साहित्य, रक्तदान सेवा...', 'e.g. Hariyali Gang, Bird Conservation, Awadhi Literature...')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+          <input type="text" id="userInterests" name="interests" required placeholder="<?= e(ps_text('उदा. हरियाली अभियान, परिंदा संरक्षण, जल-सकोरा वितरण, अवधी साहित्य...', 'e.g. Hariyali Gang, Bird Conservation, Water Bowl Drive, Awadhi Literature...')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
         </div>
 
         <!-- Selection: Time Availability -->

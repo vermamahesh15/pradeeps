@@ -71,7 +71,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </h1>
 
         <p class="font-body-lg text-body-lg text-[#52606D] leading-relaxed">
-          <?= e(ps_text('बाराबंकी के कमरावां गांव से शुरू होकर चार दशकों तक फैली निस्वार्थ जनसेवा — पर्यावरण संरक्षण, रक्तदान, गौरैया व पक्षी संवर्धन, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Selfless community service spanning four decades from Kamrawan, Barabanki — environmental protection, blood donation, sparrow and bird conservation, Awadhi language promotion and continuous youth empowerment.')) ?>
+          <?= e(ps_text('बाराबंकी के कमरावां गांव से शुरू होकर चार दशकों तक फैली निस्वार्थ जनसेवा — पर्यावरण संरक्षण, गौरैया व पक्षी संवर्धन, जल-सकोरा वितरण, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Selfless community service spanning four decades from Kamrawan, Barabanki — environmental protection, sparrow and bird conservation, water bowl distribution, Awadhi language promotion and continuous youth empowerment.')) ?>
         </p>
 
         <!-- Green Greeting Pill -->
@@ -151,7 +151,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           </div>
         </div>
         <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('वर्ष निरंतर जनसेवा', 'Years of Continuous Service')) ?></span>
-        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('1987 से 2026 तक निस्वार्थ ग्रामीण व सामाजिक योगदान', 'Selfless rural and community contribution from 1987 to 2026')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('1987 से आज तक निस्वार्थ ग्रामीण व सामाजिक योगदान', 'Selfless rural and community contribution from 1987 to Present')) ?></span>
       </div>
 
       <div class="flex flex-col">
@@ -162,7 +162,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           </div>
         </div>
         <span class="font-title-md text-title-md font-semibold text-[#FFFFFF]"><?= e(ps_text('सक्रिय जन-अभियान', 'Active Movements')) ?></span>
-        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('ग्रीन गैंग, परिंदा संरक्षण, रक्तदान, अवधी संवर्धन', 'Green Gang, Bird Protection, Blood Donation, Awadhi')) ?></span>
+        <span class="font-body-sm text-body-sm text-[#CBD5E1] mt-1"><?= e(ps_text('ग्रीन गैंग, परिंदा संरक्षण, जल-सकोरा अभियान, अवधी संवर्धन', 'Green Gang, Bird Protection, Water Bowl Campaign, Awadhi')) ?></span>
       </div>
 
       <div class="flex flex-col">
@@ -234,7 +234,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </p>
 
         <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-          <?= e(ps_text('उनका जीवन समाज सेवा, शिक्षा, पर्यावरण-संरक्षण और जन-जागरूकता के कार्यों के लिए समर्पित है। ग्रामीण विकास, मतदाता जागरूकता, रक्तदान, पर्यावरण संरक्षण, गौरैया संरक्षण, कपड़ा-बैंक तथा अवधी-भाषा-संस्कृति के संरक्षण संवर्धन जैसे कार्यों में उनकी विशेष रुचि है।', 'His life is devoted to community upliftment, education, environmental conservation and civic awareness. Rural empowerment, voter mobilization, blood donation drives, sparrow shelters, cloth banks and the preservation of Awadhi folk culture are central to his mission.')) ?>
+          <?= e(ps_text('उनका जीवन समाज सेवा, शिक्षा, पर्यावरण-संरक्षण और जन-जागरूकता के कार्यों के लिए समर्पित है। ग्रामीण विकास, मतदाता जागरूकता, पर्यावरण संरक्षण, गौरैया व परिंदा संरक्षण, जल-सकोरा अभियान तथा अवधी-भाषा-संस्कृति के संरक्षण संवर्धन जैसे कार्यों में उनकी विशेष रुचि है।', 'His life is devoted to community upliftment, education, environmental conservation and civic awareness. Rural empowerment, voter mobilization, sparrow shelters, earthen water bowls and the preservation of Awadhi folk culture are central to his mission.')) ?>
         </p>
 
         <!-- Signature Poetic Quote -->
@@ -422,22 +422,22 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
       </div>
 
-      <!-- Blood Donation & Health -->
+      <!-- Bird & Sparrow Conservation -->
       <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-error-container/50 flex items-center justify-center text-error mb-4">
-            <span class="material-symbols-outlined text-2xl">bloodtype</span>
+          <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4">
+            <span class="material-symbols-outlined text-2xl">nest_cam_iq_outdoor</span>
           </div>
           <h4 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <?= e(ps_text('रक्तदान व स्वास्थ्य चेतना', 'Blood Donation & Health')) ?>
+            <?= e(ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation')) ?>
           </h4>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('ग्रामीण इलाकों में स्वैच्छिक रक्तदान शिविर, कपड़ा-बैंक सहायता और प्राथमिक स्वास्थ्य परामर्श शिविरों का आयोजन।', 'Voluntary blood donation camps, cloth bank drives and primary health screening across villages.')) ?>
+            <?= e(ps_text('गर्मी के दिनों में बेजुबान पक्षियों हेतु मिट्टी के जल-सकोरे का वितरण, दाना-पानी प्रबंध और गौरैया संरक्षण जागरूकता।', 'Distributing clay water bowls and food shelters for sparrows and birds during hot summer months.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
-          <span class="font-label-sm text-label-sm text-error font-bold"><?= e(ps_text('जीवन रक्षा संकल्प', 'Life Saving Mission')) ?></span>
-          <a href="<?= e(base_url('/volunteer')) ?>" class="text-error hover:text-deep-forest">↗</a>
+          <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जीव-दया व प्रकृति प्रेम', 'Animal Compassion')) ?></span>
+          <a href="<?= e(base_url('/volunteer')) ?>" class="text-deep-forest hover:text-primary">↗</a>
         </div>
       </div>
     </div>
@@ -550,11 +550,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-error flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">favorite</span>
+        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-2xl">water_drop</span>
         </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('रक्तदान एवं जीवन रक्षा', 'Blood Donation & Lifesaving')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('दुर्लभ रक्त समूहों की आपातकालीन उपलब्धता और युवा रक्तदाताओं की डिजिटल डायरेक्टरी।', 'Emergency voluntary donor network and healthcare assistance for rural families.')) ?></p>
+        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('जल-सकोरा व पक्षी संरक्षण', 'Bird & Water Conservation')) ?></h3>
+        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('गर्मी में पक्षियों के लिए 10,000+ मिट्टी के जल-सकोरों का वितरण और बेजुबान परिंदों का संरक्षण।', 'Free distribution of 10,000+ earthen water bowls for birds and sparrow protection.')) ?></p>
       </div>
 
       <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
@@ -673,41 +673,41 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <!-- Case 3 -->
       <div class="bg-pure-white rounded-2xl p-6 lg:p-8 shadow-sm border border-border-warm flex flex-col justify-between">
         <div>
-          <div class="inline-flex items-center gap-1.5 bg-error-container/40 text-error px-3 py-1 rounded-full font-label-sm text-label-sm mb-4">
-            <span class="material-symbols-outlined text-[15px]">bloodtype</span>
-            <span><?= e(ps_text('स्वास्थ्य सेवा', 'Healthcare Support')) ?></span>
+          <div class="inline-flex items-center gap-1.5 bg-soft-meadow text-deep-forest px-3 py-1 rounded-full font-label-sm text-label-sm mb-4 border border-border-warm font-semibold">
+            <span class="material-symbols-outlined text-[15px]">water_drop</span>
+            <span><?= e(ps_text('परिंदा संरक्षण', 'Bird Protection')) ?></span>
           </div>
-          <h3 class="font-title-lg text-title-lg text-deep-forest font-bold"><?= e(ps_text('ग्रामीण स्वैच्छिक रक्तदान ड्राइव', 'Rural Voluntary Blood Donation Drive')) ?></h3>
+          <h3 class="font-title-lg text-title-lg text-deep-forest font-bold"><?= e(ps_text('मिट्टी के जल-सकोरे व गौरैया बचाओ अभियान', 'Sparrow & Bird Protection Drive')) ?></h3>
           <div class="mt-4 space-y-3 font-body-sm text-body-sm">
             <div class="bg-surface-container-low p-3 rounded-lg">
-              <span class="font-bold text-error"><?= e(ps_text('समस्या:', 'Challenge:')) ?></span>
-              <p class="text-on-surface mt-0.5"><?= e(ps_text('ग्रामीणों में रक्तदान के प्रति भ्रांतियां और जिला अस्पताल में समय पर रक्त न मिलना।', 'Hesitation regarding blood donation and critical shortages during medical emergencies.')) ?></p>
+              <span class="font-bold text-deep-forest"><?= e(ps_text('समस्या:', 'Challenge:')) ?></span>
+              <p class="text-on-surface mt-0.5"><?= e(ps_text('भीषण गर्मी में पानी और भोजन के अभाव में बेजुबान पक्षियों एवं विलुप्त होती गौरैया का संकट।', 'Shortage of water and food causing severe decline in local sparrows and birds during summer.')) ?></p>
             </div>
             <div class="bg-surface-container-low p-3 rounded-lg">
               <span class="font-bold text-secondary"><?= e(ps_text('पहल:', 'Initiative:')) ?></span>
-              <p class="text-on-surface mt-0.5"><?= e(ps_text('प्रदीप सारंग ने खुद रक्तदान कर युवाओं को जागरूक किया और नियमित मेडिकल कैंप लगवाए।', 'Personal example by Pradeep Sarang followed by regular awareness and donation camps.')) ?></p>
+              <p class="text-on-surface mt-0.5"><?= e(ps_text('प्रदीप सारंग द्वारा 10,000+ मिट्टी के जल-सकोरों का वितरण एवं युवाओं द्वारा नियमित दाना-पानी व्यवस्था।', 'Distribution of 10,000+ earthen water bowls and establishing grain feeds across villages.')) ?></p>
             </div>
             <div class="bg-surface-container-low p-3 rounded-lg">
               <span class="font-bold text-primary"><?= e(ps_text('परिणाम:', 'Outcome:')) ?></span>
-              <p class="text-on-surface mt-0.5"><?= e(ps_text('150+ नियमित युवा डोनर्स की तैयार हेल्पलाइन जिससे आपातकाल में 100+ जानें बचाई गईं।', 'A standby helpline of 150+ regular youth donors saving 100+ critical lives.')) ?></p>
+              <p class="text-on-surface mt-0.5"><?= e(ps_text('हजारों परिंदों को मिला जीवन और ग्रामीण युवाओं में बेजुबानों के प्रति करुणा का प्रसार।', 'Thousands of birds saved and compassion fostered among village youth.')) ?></p>
             </div>
           </div>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between text-text-muted font-label-sm text-label-sm">
-          <span><?= e(ps_text('स्थान: बाराबंकी / लखनऊ', 'Location: Barabanki / Lucknow')) ?></span>
-          <span class="text-error font-bold"><?= e(ps_text('100+ जीवन रक्षित', '100+ Lives Saved')) ?></span>
+          <span><?= e(ps_text('स्थान: बाराबंकी (कमरावां व ग्रामीण अंचल)', 'Location: Barabanki Rural')) ?></span>
+          <span class="text-deep-forest font-bold"><?= e(ps_text('10,000+ जल-सकोरे वितरित', '10,000+ Bowls Distributed')) ?></span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- 8. JOURNEY TIMELINE (चार दशकों की सेवा यात्रा: 1987–2026) -->
+<!-- 8. JOURNEY TIMELINE (चार दशकों की सेवा यात्रा: 1987 से आज तक) -->
 <section class="w-full px-4 sm:px-8 py-16 lg:py-24" id="journey">
   <div class="max-w-container-max mx-auto">
     <div class="text-center max-w-2xl mx-auto mb-14">
       <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"><?= e(ps_text('इतिहास एवं पड़ाव', 'Milestones & History')) ?></span>
-      <h2 class="font-headline-lg text-headline-lg text-deep-forest font-bold mt-1"><?= e(ps_text('चार दशकों की सेवा यात्रा (1987–2026)', 'Four Decades of Service (1987–2026)')) ?></h2>
+      <h2 class="font-headline-lg text-headline-lg text-deep-forest font-bold mt-1"><?= e(ps_text('चार दशकों की सेवा यात्रा (1987 से आज तक)', 'Four Decades of Service (1987 — Present)')) ?></h2>
       <p class="font-body-md text-body-md text-text-muted mt-2">
         <?= e(ps_text('कमरावां के एक संवेदनशील किशोर से लेकर राष्ट्रीय मंचों तक समाज व पर्यावरण की अथक साधना', 'From Kamrawan youth leadership to statewide recognition in social service and literature')) ?>
       </p>
@@ -1242,7 +1242,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('स्वयंसेवक (Volunteer) बनें', 'Become a Volunteer')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text('अपने गाँव या शहर में ग्रीन गैंग व रक्तदान अभियानों में सक्रिय भागीदारी दें।', 'Take active part in tree plantation and blood donation initiatives in your locality.')) ?>
+            <?= e(ps_text('अपने गाँव या शहर में ग्रीन गैंग व परिंदा संरक्षण अभियानों में सक्रिय भागीदारी दें।', 'Take active part in tree plantation and bird conservation initiatives in your locality.')) ?>
           </p>
         </div>
         <div class="mt-6">
@@ -1429,7 +1429,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                   <option value="volunteer"><?= e(ps_text('स्वयंसेवक के रूप में योगदान', 'Volunteer Contribution')) ?></option>
                   <option value="invite"><?= e(ps_text('कार्यक्रम / चौपाल में आमंत्रित करना', 'Invite for Event / Chaupal')) ?></option>
                   <option value="literature"><?= e(ps_text('साहित्यिक कृति / हुण्डलियाँ प्रति हेतु', 'Literary Work / Book Copy')) ?></option>
-                  <option value="blood"><?= e(ps_text('रक्तदान व स्वास्थ्य सेवा सहयोग', 'Blood Donation & Health Support')) ?></option>
+                  <option value="bird_conservation"><?= e(ps_text('परिंदा संरक्षण व जल-सकोरा अभियान', 'Bird Conservation & Water Bowl Campaign')) ?></option>
                   <option value="media"><?= e(ps_text('मीडिया व साक्षात्कार संवाद', 'Media & Interview Inquiries')) ?></option>
                 </select>
               </div>

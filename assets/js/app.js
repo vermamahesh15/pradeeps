@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 2. Interactive Typewriter Headline Effect
     const typeWriterEl = document.getElementById('typeWriterText');
     if (typeWriterEl) {
-        const words = ['सामाजिक कार्यकर्ता', 'संवेदनशील साहित्यकार', 'पर्यावरण संरक्षक', 'रक्तदान प्रेरक', 'समर्पित जनसेवक'];
+        const words = ['सामाजिक कार्यकर्ता', 'संवेदनशील साहित्यकार', 'पर्यावरण संरक्षक', 'परिंदा संरक्षक', 'समर्पित जनसेवक'];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;

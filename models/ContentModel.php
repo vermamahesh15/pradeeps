@@ -820,6 +820,116 @@ class ContentModel extends BaseModel
         } catch (Throwable $e) {}
     }
 
+    public function getVisitorHistoricalTotal(): int
+    {
+        $this->ensureSettingsTable();
+        if (!$this->db) return 8421;
+
+        try {
+            $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'visitor_historical_total'");
+            $stmt->execute();
+            $val = $stmt->fetchColumn();
+
+            if ($val === false) {
+                $initialCount = 8421;
+                $initStmt = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('visitor_historical_total', :val)");
+                $initStmt->execute([':val' => (string)$initialCount]);
+                return $initialCount;
+            }
+
+            return (int)$val;
+        } catch (Throwable $e) {
+            return 8421;
+        }
+    }
+
+    public function trackVisitorSession(): int
+    {
+        if (!$this->db) {
+            return 8421;
+        }
+
+        try {
+            $historicalTotal = $this->getVisitorHistoricalTotal();
+
+            $userAgent = strtolower($_SERVER['HTTP_USER_AGENT'] ?? '');
+            $isBot = false;
+            $botPatterns = ['bot', 'crawler', 'spider', 'slurp', 'ahrefs', 'semrush', 'facebookexternalhit', 'twitterbot', 'curl', 'wget', 'bytespider', 'gptbot'];
+            foreach ($botPatterns as $pattern) {
+                if (strpos($userAgent, $pattern) !== false) {
+                    $isBot = true;
+                    break;
+                }
+            }
+
+            // Only insert new log into existing 'visitors' table for new human session
+            if (!$isBot && empty($_SESSION['has_visited_site'])) {
+                $_SESSION['has_visited_site'] = true;
+                $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
+                $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+                $pageUrl = current_path();
+
+                $inStmt = $this->db->prepare("INSERT INTO visitors (ip_address, user_agent, page_url) VALUES (:ip, :ua, :url)");
+                $inStmt->execute([
+                    ':ip' => substr($ip, 0, 45),
+                    ':ua' => $ua,
+                    ':url' => substr($pageUrl, 0, 255)
+                ]);
+            }
+
+            $liveCount = (int)$this->db->query("SELECT COUNT(*) FROM visitors")->fetchColumn();
+            return $historicalTotal + $liveCount;
+        } catch (Throwable $e) {
+            return 8421;
+        }
+    }
+
+    public function getVisitorStats(): array
+    {
+        $historical = $this->getVisitorHistoricalTotal();
+        $live = 0;
+        if ($this->db) {
+            try {
+                $live = (int)$this->db->query("SELECT COUNT(*) FROM visitors")->fetchColumn();
+            } catch (Throwable $e) {}
+        }
+        return [
+            'historical_total' => $historical,
+            'live_count' => $live,
+            'total' => $historical + $live
+        ];
+    }
+
+    public function archiveAndResetVisitors(): array
+    {
+        if (!$this->db) {
+            return ['status' => false, 'message' => 'Database connection unavailable.'];
+        }
+
+        try {
+            $liveCount = (int)$this->db->query("SELECT COUNT(*) FROM visitors")->fetchColumn();
+            $currentHistorical = $this->getVisitorHistoricalTotal();
+            $newHistorical = $currentHistorical + $liveCount;
+
+            // 1. Upsert Historical Total in Settings
+            $upStmt = $this->db->prepare("INSERT INTO settings (setting_key, setting_value) VALUES ('visitor_historical_total', :val) ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)");
+            $upStmt->execute([':val' => (string)$newHistorical]);
+
+            // 2. Truncate Table 1 (visitors table)
+            $this->db->exec("TRUNCATE TABLE visitors");
+
+            return [
+                'status' => true,
+                'archived_count' => $liveCount,
+                'previous_historical' => $currentHistorical,
+                'new_historical_total' => $newHistorical,
+                'message' => "Successfully archived $liveCount visitor logs. New baseline historical total is " . number_format($newHistorical) . "."
+            ];
+        } catch (Throwable $e) {
+            return ['status' => false, 'message' => 'Archiving failed: ' . $e->getMessage()];
+        }
+    }
+
     public function getSettings(): array
     {
         $defaultSettings = (require __DIR__ . '/../includes/data.php')['settings'];

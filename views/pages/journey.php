@@ -211,7 +211,7 @@ $allMilestones = !empty($dbJourney) ? array_merge($dbJourney, $defaultJourney) :
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">timeline</span>
-          <span><?= e(ps_text('चार दशकों की अनवरत लोक-सेवा यात्रा (1987 — 2026)', 'Four Decades of Continuous Service Journey (1987 — 2026)')) ?></span>
+          <span><?= e(ps_text('चार दशकों की अनवरत लोक-सेवा यात्रा (1987 से आज तक)', 'Four Decades of Continuous Service Journey (1987 — Present)')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और चार दशकों की साधना', 'Rooted in Service, Nature & Awadhi Heritage Across 39 Years')) ?>

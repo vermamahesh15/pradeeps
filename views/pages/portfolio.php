@@ -159,7 +159,7 @@ if (count($featuredPhotos) < 3) {
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">photo_library</span>
-          <span><?= e(ps_text('100+ प्रामाणिक छायाचित्र अभिलेखागार (1987 — 2026)', '100+ Authentic Photo Archives (1987 — 2026)')) ?></span>
+          <span><?= e(ps_text('100+ प्रामाणिक छायाचित्र अभिलेखागार (1987 से आज तक)', '100+ Authentic Photo Archives (1987 — Present)')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('चार दशकों की ऐतिहासिक सेवा यात्रा के सजीव छायाचित्र', 'Visual Legacy of Four Decades of Community Dedication')) ?>
@@ -305,7 +305,7 @@ if (count($featuredPhotos) < 3) {
           <?= e(ps_text('क्या आपके पास सारंग जी की ऐतिहासिक तस्वीरें हैं?', 'Do You Have Archival Photos of Pradeep Sarang Ji?')) ?>
         </h3>
         <p class="font-body-md text-body-md text-on-surface-variant max-w-xl mx-auto mb-6">
-          <?= e(ps_text('यदि आपके पास 1987 से 2026 के मध्य किसी कार्यक्रम, पौधारोपण, सकोरा वितरण या कवि सम्मेलन की पुरानी तस्वीरें हैं, तो कृपया हमारे आधिकारिक डिजिटल अभिलेखागार में साझा करें।', 'If you possess old photographs of past campaigns, poetry meets, or village drives, please share them for our digital archive.')) ?>
+          <?= e(ps_text('यदि आपके पास 1987 से आज तक के मध्य किसी कार्यक्रम, पौधारोपण, सकोरा वितरण या कवि सम्मेलन की पुरानी तस्वीरें हैं, तो कृपया हमारे आधिकारिक डिजिटल अभिलेखागार में साझा करें।', 'If you possess old photographs of past campaigns, poetry meets, or village drives, please share them for our digital archive.')) ?>
         </p>
 
         <div class="flex flex-wrap items-center justify-center gap-3">

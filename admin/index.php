@@ -61,8 +61,25 @@ if (is_post()) {
         unset($_SESSION['user_role']);
         unset($_SESSION['user_name']);
         session_destroy();
-        session_start();
         redirect('/admin/index.php');
+    }
+
+    // Archive Visitor Logs Action (Super Admin & Admin)
+    if ($loggedIn && ($_POST['action'] ?? '') === 'archive_visitor_logs') {
+        if (!is_role('admin') && !is_role('super_admin')) {
+            flash('admin_error', 'Access Restricted: Only Admin / Super Admin can archive visitor logs.');
+            redirect('/admin/index.php?module=settings');
+        }
+        $res = $content->archiveAndResetVisitors();
+        if (!empty($res['status'])) {
+            if (isset($_SESSION['user_id'])) {
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Archived Visitor Logs (' . ($res['archived_count'] ?? 0) . ' rows)', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+            }
+            flash('admin_success', $res['message'] ?? 'Visitor logs archived successfully.');
+        } else {
+            flash('admin_error', $res['message'] ?? 'Failed to archive visitor logs.');
+        }
+        redirect('/admin/index.php?module=settings');
     }
 
     // Blog CRUD (Role and Ownership Aware)
@@ -1221,6 +1238,48 @@ $metrics = $content->metrics();
                             </div>
                         </div>
                         <div class="col-lg-5"><div class="admin-card"><h2>Website Settings</h2><p>Logo, footer, social links, contact details, SEO meta, and sitemap generation are all represented in this CMS structure.</p></div></div>
+                    </div>
+
+                    <!-- Super Admin Visitor Analytics & Archiving Card -->
+                    <div class="admin-card mt-4 border-start border-4 border-success">
+                        <?php $vStats = $content->getVisitorStats(); ?>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="text-success mb-0"><i class="fa-solid fa-chart-pie me-2"></i>Visitor Analytics & Monthly Database Archival</h3>
+                            <span class="badge bg-success">Super Admin Tool</span>
+                        </div>
+                        <p class="text-muted mb-4">Real-time unique visits are logged in Table 1 (<code>visitors</code>). At the end of each month, click the button below to archive Table 1 counts into Table 2 (<code>settings: visitor_historical_total</code>) and reset Table 1 to 0 rows.</p>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <div class="text-muted small font-bold text-uppercase">Table 2: Historical Total</div>
+                                    <div class="fs-3 fw-bold text-dark mt-1"><?= number_format($vStats['historical_total']) ?></div>
+                                    <small class="text-muted">Archived Cumulative Sum</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <div class="text-muted small font-bold text-uppercase">Table 1: Active Month Logs</div>
+                                    <div class="fs-3 fw-bold text-primary mt-1"><?= number_format($vStats['live_count']) ?></div>
+                                    <small class="text-muted">Live Rows in <code>visitors</code> Table</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <div class="text-muted small font-bold text-uppercase">Combined Displayed Total</div>
+                                    <div class="fs-3 fw-bold text-success mt-1"><?= number_format($vStats['total']) ?></div>
+                                    <small class="text-muted">Live Public Total (Footer)</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form method="post" onsubmit="return confirm('Are you sure you want to archive current month logs? This will add <?= number_format($vStats['live_count']) ?> logs to the historical baseline and reset Table 1 (visitors) to 0 rows.');">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="action" value="archive_visitor_logs">
+                            <button type="submit" class="btn btn-success font-semibold px-4">
+                                <i class="fa-solid fa-box-archive me-2"></i>Archive & Reset Current Month Visitor Logs
+                            </button>
+                        </form>
                     </div>
                 <?php endif; ?>
             <?php elseif ($module === 'pages'): ?>
@@ -2906,13 +2965,43 @@ $metrics = $content->metrics();
                     </form>
                 </div>
 
-                <div class="admin-card">
-                    <h3 class="text-danger mb-3">Sitemap Generator</h3>
-                    <p>Re-generate the XML sitemap of the website containing all static pages, custom dynamic pages, published blogs, campaigns, and events.</p>
-                    <form method="post">
+                </div>
+
+                <div class="admin-card mt-4 border-start border-4 border-success">
+                    <?php $vStats = $content->getVisitorStats(); ?>
+                    <h3 class="text-success mb-2"><i class="fa-solid fa-chart-pie me-2"></i>Visitor Analytics & Monthly Database Archival</h3>
+                    <p class="text-muted mb-4">Real-time unique visits are logged in Table 1 (<code>visitors</code>). Super Admins can archive live counts into Table 2 (<code>settings: visitor_historical_total</code>) at the end of each month and reset Table 1 to 0 rows.</p>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="text-muted small font-bold text-uppercase">Table 2: Historical Total</div>
+                                <div class="fs-3 fw-bold text-dark mt-1"><?= number_format($vStats['historical_total']) ?></div>
+                                <small class="text-muted">Archived Cumulative Sum</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="text-muted small font-bold text-uppercase">Table 1: Active Month Logs</div>
+                                <div class="fs-3 fw-bold text-primary mt-1"><?= number_format($vStats['live_count']) ?></div>
+                                <small class="text-muted">Live Rows in <code>visitors</code> Table</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-light rounded-3 border">
+                                <div class="text-muted small font-bold text-uppercase">Combined Displayed Total</div>
+                                <div class="fs-3 fw-bold text-success mt-1"><?= number_format($vStats['total']) ?></div>
+                                <small class="text-muted">Live Public Total (Footer)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form method="post" onsubmit="return confirm('Are you sure you want to archive current month logs? This will add <?= number_format($vStats['live_count']) ?> logs to the historical baseline and reset Table 1 (visitors) to 0 rows.');">
                         <?= csrf_field() ?>
-                        <input type="hidden" name="action" value="generate_sitemap">
-                        <button type="submit" class="btn btn-outline-danger">Generate sitemap.xml</button>
+                        <input type="hidden" name="action" value="archive_visitor_logs">
+                        <button type="submit" class="btn btn-success font-semibold px-4">
+                            <i class="fa-solid fa-box-archive me-2"></i>Archive & Reset Current Month Visitor Logs
+                        </button>
                     </form>
                 </div>
 

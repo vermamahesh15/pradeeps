@@ -151,7 +151,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
           </div>
           <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold mb-1"><?= e(ps_text('सीधा दूरभाष व WhatsApp संवाद', 'Direct Phone & WhatsApp')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mb-4">
-            <?= e(ps_text('प्रातः 8:00 से सायं 8:00 बजे तक (आपातकालीन रक्तदान व जनसेवा हेतु 24x7 तत्पर)', '8:00 AM to 8:00 PM (24x7 ready for emergency blood donation & service)')) ?>
+            <?= e(ps_text('प्रातः 8:00 से सायं 8:00 बजे तक (हरियाली व जनसेवा हेतु तत्पर)', '8:00 AM to 8:00 PM (Ready for green & community service)')) ?>
           </p>
           <div class="bg-soft-meadow rounded-xl p-4 border border-border-warm mb-5">
             <div class="font-label-sm text-label-sm text-text-muted mb-1"><?= e(ps_text('आधिकारिक हेल्पलाइन नंबर', 'Official Helpline Number')) ?></div>
@@ -479,7 +479,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
                 <option value="परिंदा संरक्षण (सकोरा आवश्यकता)"><?= e(ps_text('परिंदा संरक्षण (सकोरा व दाना-पानी आवश्यकता)', 'Bird Conservation (Sakora Request)')) ?></option>
                 <option value="अवधी साहित्य व काव्य गोष्ठी"><?= e(ps_text('अवधी साहित्य व काव्य गोष्ठी (Literature Desk)', 'Awadhi Literature & Poetry Meet')) ?></option>
                 <option value="मीडिया व साक्षात्कार"><?= e(ps_text('मीडिया, प्रेस व शोध साक्षात्कार (Media Desk)', 'Media & Research Interview')) ?></option>
-                <option value="रक्तदान व आपातकालीन सेवा"><?= e(ps_text('रक्तदान व आपातकालीन जनसेवा', 'Emergency Blood Donation Drive')) ?></option>
+                <option value="जल-सकोरा व पक्षी संरक्षण"><?= e(ps_text('जल-सकोरा वितरण व परिंदा संरक्षण', 'Water Bowl & Bird Protection Drive')) ?></option>
                 <option value="अन्य"><?= e(ps_text('अन्य विशिष्ट विषय (Other)', 'Other Specific Inquiry')) ?></option>
               </select>
             </div>
