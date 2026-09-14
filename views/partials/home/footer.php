@@ -132,37 +132,25 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <form method="post" action="<?= e(base_url('/')) ?>" class="flex flex-col space-y-2.5">
                     <?= csrf_field() ?>
                     <input type="hidden" name="form_type" value="newsletter">
-                    <input class="w-full px-3.5 py-2.5 rounded-lg bg-white text-[#172033] font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#14532D]" placeholder="<?= e(ps_text('आपका ईमेल या फोन नंबर', 'Your email address')) ?>" name="email" type="email" required/>
+                    <input class="w-full px-3.5 py-2.5 rounded-lg bg-white/10 text-white placeholder-gray-400 border border-white/10 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#F0B45C]" placeholder="<?= e(ps_text('आपका ईमेल या फोन नंबर', 'Your email address')) ?>" name="email" type="email" required/>
                     <button class="w-full bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 shadow font-bold" type="submit">
                         <span class="material-symbols-outlined text-[16px]">send</span>
                         <span><?= e(ps_text('हरियाली व सामाजिक अपडेट्स पाएं', 'Get Green & Social Updates')) ?></span>
                     </button>
                 </form>
-                <div class="pt-2 flex flex-wrap gap-3 text-[#CBD5E1] font-label-sm text-label-sm">
-                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1" href="<?= e(base_url('/volunteer')) ?>">
+                <div class="pt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-[#CBD5E1] text-xs">
+                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1 whitespace-nowrap" href="<?= e(base_url('/volunteer')) ?>">
                         <span class="material-symbols-outlined text-[14px] text-[#6FD08C]">volunteer_activism</span>
                         <span><?= e(ps_text('स्वयंसेवक बनें', 'Become a Volunteer')) ?></span>
                     </a>
                     <span class="opacity-30">•</span>
-                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1" href="<?= e(base_url('/#contact')) ?>">
+                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1 whitespace-nowrap" href="<?= e(base_url('/#contact')) ?>">
                         <span class="material-symbols-outlined text-[14px] text-[#F0B45C]">event</span>
                         <span><?= e(ps_text('कार्यक्रम में आमंत्रित करें', 'Invite for Event')) ?></span>
                     </a>
                     <span class="opacity-30">•</span>
-                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1" href="<?= e(base_url('/#contact')) ?>">
+                    <a class="hover:text-[#F0B45C] transition-colors flex items-center gap-1 whitespace-nowrap" href="<?= e(base_url('/#contact')) ?>">
                         <span class="material-symbols-outlined text-[14px] text-[#76B7D8]">chat</span>
-                        <span><?= e(ps_text('विचार साझा करें', 'Share Thoughts')) ?></span>
-                    </a>
-                </div>
-            </div>
-                    <span class="opacity-30">•</span>
-                    <a class="hover:text-[#F59E0B] transition-colors flex items-center gap-1" href="<?= e(base_url('/#contact')) ?>">
-                        <span class="material-symbols-outlined text-[14px] text-[#FBBF24]">event</span>
-                        <span><?= e(ps_text('कार्यक्रम में आमंत्रित करें', 'Invite for Event')) ?></span>
-                    </a>
-                    <span class="opacity-30">•</span>
-                    <a class="hover:text-[#F59E0B] transition-colors flex items-center gap-1" href="<?= e(base_url('/#contact')) ?>">
-                        <span class="material-symbols-outlined text-[14px] text-[#7DD3FC]">chat</span>
                         <span><?= e(ps_text('विचार साझा करें', 'Share Thoughts')) ?></span>
                     </a>
                 </div>
@@ -170,48 +158,48 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
         </div>
 
         <!-- Site Policy & Guidelines Links Grid -->
-        <div class="mt-space-2xl pt-space-xl border-t border-surface-container-high/15 space-y-3 text-center sm:text-left">
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 font-label-md text-label-sm text-surface-container-high">
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/about')) ?>"><?= e(ps_text('परिचय (About)', 'About')) ?></a>
+        <div class="mt-10 pt-6 border-t border-white/10 space-y-3 text-center sm:text-left">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#CBD5E1]">
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/about')) ?>"><?= e(ps_text('परिचय (About)', 'About')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/portfolio')) ?>"><?= e(ps_text('दीर्घा (Portfolio)', 'Portfolio')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/portfolio')) ?>"><?= e(ps_text('दीर्घा (Portfolio)', 'Portfolio')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/blog')) ?>"><?= e(ps_text('ब्लॉग (Blog)', 'Blog')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/blog')) ?>"><?= e(ps_text('ब्लॉग (Blog)', 'Blog')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('संपर्क (Contact)', 'Contact')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('संपर्क (Contact)', 'Contact')) ?></a>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 font-label-sm text-label-sm text-tertiary-fixed/90">
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/privacy-policy')) ?>"><?= e(ps_text('गोपनीयता नीति (Privacy Policy)', 'Privacy Policy')) ?></a>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#94A3B8]">
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/privacy-policy')) ?>"><?= e(ps_text('गोपनीयता नीति (Privacy Policy)', 'Privacy Policy')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/cookie-policy')) ?>"><?= e(ps_text('कुकी नीति (Cookie Policy)', 'Cookie Policy')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/cookie-policy')) ?>"><?= e(ps_text('कुकी नीति (Cookie Policy)', 'Cookie Policy')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/terms-and-conditions')) ?>"><?= e(ps_text('नियम एवं शर्तें (Terms & Conditions)', 'Terms & Conditions')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/terms-and-conditions')) ?>"><?= e(ps_text('नियम एवं शर्तें (Terms & Conditions)', 'Terms & Conditions')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/disclaimer')) ?>"><?= e(ps_text('अस्वीकरण (Disclaimer)', 'Disclaimer')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/disclaimer')) ?>"><?= e(ps_text('अस्वीकरण (Disclaimer)', 'Disclaimer')) ?></a>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 font-label-sm text-label-sm text-surface-container-high/80">
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/editorial-policy')) ?>"><?= e(ps_text('संपादकीय नीति (Editorial Policy)', 'Editorial Policy')) ?></a>
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#94A3B8]">
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/editorial-policy')) ?>"><?= e(ps_text('संपादकीय नीति (Editorial Policy)', 'Editorial Policy')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors font-semibold text-tertiary-fixed" href="<?= e(base_url('/author-guidelines')) ?>"><?= e(ps_text('लेखक दिशा-निर्देश (Author Guidelines)', 'Author Guidelines')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/author-guidelines')) ?>"><?= e(ps_text('लेखक दिशा-निर्देश (Author Guidelines)', 'Author Guidelines')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/disclaimer#copyright')) ?>"><?= e(ps_text('कॉपीराइट व DMCA', 'Copyright/DMCA')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/disclaimer#copyright')) ?>"><?= e(ps_text('कॉपीराइट व DMCA', 'Copyright/DMCA')) ?></a>
                 <span class="opacity-30">•</span>
-                <a class="hover:text-pure-white transition-colors" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('विज्ञापन एवं सहभागिता', 'Advertise With Us')) ?></a>
+                <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('विज्ञापन एवं सहभागिता', 'Advertise With Us')) ?></a>
             </div>
         </div>
 
         <!-- Bottom Line -->
-        <div class="mt-space-md pt-space-md border-t border-surface-container-high/15 flex flex-col sm:flex-row items-center justify-between gap-4 font-label-sm text-label-sm text-surface-container-high">
+        <div class="mt-6 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#94A3B8]">
             <p>© <?= date('Y') ?> <?= e(app_config('name', 'प्रदीप सारंग')) ?>. <?= e(ps_text('सर्वाधिकार सुरक्षित।', 'All rights reserved.')) ?></p>
             <div class="flex items-center gap-4">
                 <?php $visitorCount = (new ContentModel())->trackVisitorSession(); ?>
-                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-label-sm font-label-sm text-surface-container-high" title="<?= e(ps_text('प्रामाणिक अद्वितीय आगंतुक संख्या', 'Authenticated Unique Visitors')) ?>">
+                <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-[#CBD5E1]" title="<?= e(ps_text('प्रामाणिक अद्वितीय आगंतुक संख्या', 'Authenticated Unique Visitors')) ?>">
                     <span class="material-symbols-outlined text-[15px] text-[#6FD08C]">visibility</span>
                     <span><?= e(ps_text('कुल आगंतुक: ', 'Total Visitors: ')) ?><strong class="text-white font-mono"><?= number_format($visitorCount) ?></strong></span>
                 </div>
-                <a class="hover:text-tertiary-fixed text-surface-container-high/70 transition-colors flex items-center gap-1" href="<?= e(base_url('/admin')) ?>">
+                <a class="hover:text-[#F0B45C] text-[#94A3B8] transition-colors flex items-center gap-1" href="<?= e(base_url('/admin')) ?>">
                     <span class="material-symbols-outlined text-[13px]">lock</span>
                     <span><?= e(ps_text('प्रशासनिक लॉगिन', 'Admin Portal')) ?></span>
                 </a>

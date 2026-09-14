@@ -15,6 +15,8 @@ if (!$conn) {
 mysqli_set_charset($conn, $config['charset'] ?? "utf8mb4");
 
 if (!defined('BASE_URL')) {
-    define('BASE_URL', '/pradeep/');
+    $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+    $dir = rtrim(dirname($script), '/');
+    define('BASE_URL', $dir ? $dir . '/' : '/');
 }
 ?>

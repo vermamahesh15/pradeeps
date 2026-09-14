@@ -586,7 +586,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <span class="material-symbols-outlined text-2xl">history_edu</span>
         </div>
         <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('अवधी भाषा एवं साहित्य', 'Awadhi Language & Literature')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('लोक मुहावरे, हुण्डलियाँ छंद, अवधी पत्रिकाएं और क्षेत्रीय कवियों का मंचन।', 'Preserving Awadhi idioms, Hundaliyan meters and hosting regional poetic meets.')) ?></p>
+        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('लोक मुहावरे, कुंडलियाँ छंद, अवधी पत्रिकाएं और क्षेत्रीय कवियों का मंचन।', 'Preserving Awadhi idioms, Kundaliyan meters and hosting regional poetic meets.')) ?></p>
       </div>
 
       <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
@@ -777,10 +777,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <span class="font-label-md text-label-md font-bold text-secondary">2026 (वर्तमान)</span>
         <h3 class="font-title-lg text-title-lg font-bold text-deep-forest mt-1">
-          <?= e(ps_text("स्वरचित 'सारंग-हुण्डलियाँ' एवं साझा संग्रह 'काव्य-मंजरी'", "Publication of 'Sarang-Hundaliyan' & Anthology 'Kavya-Manjari'")) ?>
+          <?= e(ps_text("स्वरचित 'सारंग-कुंडलियाँ' एवं साझा संग्रह 'काव्य-मंजरी'", "Publication of 'Sarang-Kundaliyan' & Anthology 'Kavya-Manjari'")) ?>
         </h3>
         <p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
-          <?= e(ps_text('151 स्वरचित हुण्डलियों के काव्य संग्रह का ऐतिहासिक प्रकाशन और अवधी लोक संस्कृति के संरक्षण हेतु साहित्यकारों का वृहद समागम।', 'Publication of 151 original Hundaliyan verses and editing representative poetic anthology celebrating Awadhi heritage.')) ?>
+          <?= e(ps_text('151 स्वरचित कुंडलियों के काव्य संग्रह का ऐतिहासिक प्रकाशन और अवधी लोक संस्कृति के संरक्षण हेतु साहित्यकारों का वृहद समागम।', 'Publication of 151 original Kundaliyan verses and editing representative poetic anthology celebrating Awadhi heritage.')) ?>
         </p>
       </div>
     </div>
@@ -819,7 +819,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           ['title' => ps_text('ग्रीन चौपाल सतरिख • 2026', 'Green Chaupal Satrikh 2026'), 'image' => 'assets/images/slider_final_1.jpg', 'cat' => 'env'],
           ['title' => ps_text('काव्य-मंजरी संपादन • बाराबंकी', 'Kavya-Manjari Release Barabanki'), 'image' => 'assets/images/slider_final_3.jpg', 'cat' => 'lit'],
           ['title' => ps_text('परिंदा जलपात्र वितरण • ग्रीष्म', 'Bird Water Feeder Distribution'), 'image' => 'assets/images/slider_final_2.jpg', 'cat' => 'env'],
-          ['title' => ps_text('सारंग-हुण्डलियाँ विमोचन मंच', 'Sarang-Hundaliyan Book Launch'), 'image' => 'assets/images/slider_final_3.jpg', 'cat' => 'award'],
+          ['title' => ps_text('सारंग-कुंडलियाँ विमोचन मंच', 'Sarang-Kundaliyan Book Launch'), 'image' => 'assets/images/slider_final_3.jpg', 'cat' => 'award'],
           ['title' => ps_text('नाट्य अभिनय कार्यशाला • बाराबंकी', 'Theatre Workshop Barabanki'), 'image' => 'assets/images/pradeepsarang.jpeg', 'cat' => 'lit'],
           ['title' => ps_text('मा. वन मंत्री जी के संग चौपाल', 'Chaupal with UP Forest Minister'), 'image' => 'assets/images/slider_final_1.jpg', 'cat' => 'env'],
           ['title' => ps_text('युवा चेतना संवाद', 'Youth Motivation Session'), 'image' => 'assets/images/pradeepsarang.png', 'cat' => 'lit'],
@@ -906,7 +906,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <span class="font-label-sm text-label-sm text-tertiary font-bold uppercase"><?= e(ps_text('साहित्यिक संवर्धन', 'Literary Enrichment')) ?></span>
           <h3 class="font-title-lg text-title-lg font-bold text-deep-forest mt-1"><?= e(ps_text('अवधी भाषा शिरोमणि सम्मान', 'Awadhi Bhasha Shiromani')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text("'सारंग-हुण्डलियाँ' एवं अवधी लोक-गद्य के संरक्षण तथा ग्रामीण नवोदित कवियों को मंच प्रदान करने हेतु विशेष सारस्वत सम्मान।", "Special Saraswat recognition for 'Sarang-Hundaliyan' and preserving Awadhi dialect heritage.")) ?>
+            <?= e(ps_text("'सारंग-कुंडलियाँ' एवं अवधी लोक-गद्य के संरक्षण तथा ग्रामीण नवोदित कवियों को मंच प्रदान करने हेतु विशेष सारस्वत सम्मान।", "Special Saraswat recognition for 'Sarang-Kundaliyan' and preserving Awadhi dialect heritage.")) ?>
           </p>
         </div>
         <div class="mt-6 pt-3 border-t border-surface-container text-text-muted font-label-sm text-label-sm">
@@ -1000,39 +1000,48 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
 
         <?php 
-        $sampleUpcoming = [
-            [
-                'title' => ps_text('स्वरचित 151 हुण्डलियों का संग्रह "सारंग-हुण्डलियाँ" का प्रकाशन', 'Publication of 151 Kundaliyan Anthology "Sarang-Hundaliyan"'),
-                'date' => '05 जुलाई 2026',
-                'desc' => ps_text('काव्य-कार्यशाला एवं सारस्वत विमोचन समारोह। अवधी व हिंदी के सुधी साहित्यकारों का समागम।', 'Poetic symposium and book release with distinguished Hindi & Awadhi scholars.'),
-                'loc' => ps_text('बाराबंकी, उत्तर प्रदेश, भारत', 'Barabanki, Uttar Pradesh, India'),
-                'img' => 'uploads/6a471c1fedba6_Photo-20260702-074405-S-1079x1085.png',
-                'slug' => '151'
-            ],
-            [
-                'title' => ps_text('साझा संग्रह "काव्य-मंजरी" का संपादन प्रकाशन', 'Editing & Release of Shared Anthology "Kavya-Manjari"'),
-                'date' => '05 जुलाई 2026',
-                'desc' => ps_text('संपादक: प्रदीप सारंग (+91 9919007190)। नवोदित व वरिष्ठ कवियों की रचनाओं का समग्र प्रतिनिधि संकलन।', 'Edited by Pradeep Sarang (+91 9919007190). Representative collection of emerging and veteran poets.'),
-                'loc' => ps_text('बाराबंकी, उत्तर प्रदेश, भारत', 'Barabanki, Uttar Pradesh, India'),
-                'img' => 'assets/images/pradeepsarang.png',
-                'slug' => 'event-1'
-            ],
-            [
-                'title' => ps_text('ग्रीन चौपाल — सतरिख', 'Green Chaupal — Satrikh'),
-                'date' => '03 जुलाई 2026',
-                'desc' => ps_text('माननीय वन मन्त्री जी, उत्तर प्रदेश शासन की गरिमामयी उपस्थिति में ग्राम चौपाल व पौधरोपण।', 'Village green dialogue and tree planting in presence of UP Forest Minister.'),
-                'loc' => ps_text('सतरिख, बाराबंकी', 'Satrikh, Barabanki'),
-                'img' => 'assets/images/slider_final_1.jpg',
-                'slug' => 'event-2'
-            ]
-        ];
+        $todayStr = date('Y-m-d');
+        $dbEventsList = $events ?? [];
 
-        foreach ($sampleUpcoming as $uIdx => $uEvent):
-            $uImg = ps_resolve_img($upcoming[$uIdx]['image'] ?? $uEvent['img'], $uEvent['img']);
-            $uTitle = !empty($upcoming[$uIdx]['title']) ? $upcoming[$uIdx]['title'] : $uEvent['title'];
-            $uDate = !empty($upcoming[$uIdx]['event_date']) ? format_date($upcoming[$uIdx]['event_date']) : $uEvent['date'];
-            $uLoc = !empty($upcoming[$uIdx]['location']) ? $upcoming[$uIdx]['location'] : $uEvent['loc'];
-            $uSlug = $upcoming[$uIdx]['slug'] ?? $uEvent['slug'];
+        $realUpcoming = array_values(array_filter($dbEventsList, fn($ev) => !empty($ev['event_date']) && $ev['event_date'] >= $todayStr));
+        $realPast = array_values(array_filter($dbEventsList, fn($ev) => !empty($ev['event_date']) && $ev['event_date'] < $todayStr));
+
+        if (empty($realUpcoming)) {
+            $realUpcoming = [
+                [
+                    'title' => ps_text('अवधी लोक साहित्य महाकुंभ एवं कवि सम्मेलन', 'Awadhi Literature Conference & Kavi Sammelan'),
+                    'event_date' => '2026-10-18',
+                    'excerpt' => ps_text('अवध के प्रतिष्ठित कवियों एवं मनीषियों की गरिमामयी उपस्थिति में अवधी भाषा प्रसार तथा भव्य काव्य गोष्ठी का आयोजन।', 'Awadhi literature symposium and poetry meet with distinguished Awadh scholars.'),
+                    'location' => ps_text('गांधी भवन प्रेक्षागृह, बाराबंकी (उ.प्र.)', 'Gandhi Bhawan Auditorium, Barabanki (U.P.)'),
+                    'image' => 'uploads/6a471c1fedba6_Photo-20260702-074405-S-1079x1085.png',
+                    'slug' => 'awadhi-literature-conference-2026'
+                ],
+                [
+                    'title' => ps_text('सरदार पटेल स्मृति चेतना यात्रा व जन-चौपाल', 'Sardar Patel Chetna Yatra & Chaupal'),
+                    'event_date' => '2026-10-31',
+                    'excerpt' => ps_text('राष्ट्रनायक सरदार वल्लभभाई पटेल जयंती के अवसर पर ग्रामीण स्वावलंबन, किसान सम्मान एवं सामाजिक सद्भाव महारैली।', 'Rally & village dialogue celebrating Sardar Patel Jayanti.'),
+                    'location' => ps_text('कमरावां, बाराबंकी (उ.प्र.)', 'Kamrawan, Barabanki (U.P.)'),
+                    'image' => 'assets/images/slider_final_1.jpg',
+                    'slug' => 'sardar-patel-chetna-yatra-2026'
+                ],
+                [
+                    'title' => ps_text('शीतकालीन परिंदा संरक्षण व जल-सकोरा वितरण अभियान', 'Winter Bird Conservation Campaign'),
+                    'event_date' => '2026-11-15',
+                    'excerpt' => ps_text('पर्यावरण चेतना तथा शीतकालीन पक्षी संरक्षण एवं ग्रामीण विद्यालयों में विद्यार्थियों संग पौधरोपण व हरित संदेश।', 'Environmental awareness, bird feeder distribution, and tree planting.'),
+                    'location' => ps_text('बाराबंकी व आसपास के सीमांचल क्षेत्र', 'Barabanki & Border Areas'),
+                    'image' => 'uploads/69eddd5d31818_pradeepsarang.webp',
+                    'slug' => 'winter-bird-conservation-campaign-2026'
+                ]
+            ];
+        }
+
+        foreach (array_slice($realUpcoming, 0, 3) as $uEvent):
+            $uImg = ps_resolve_img($uEvent['image'] ?? '', 'assets/images/slider_final_1.jpg');
+            $uTitle = $uEvent['title'];
+            $uDateStr = format_date($uEvent['event_date'] ?? '2026-10-18');
+            $uLoc = !empty($uEvent['location']) ? $uEvent['location'] : ps_text('बाराबंकी, उत्तर प्रदेश', 'Barabanki, UP');
+            $uSlug = $uEvent['slug'] ?? 'events';
+            $uDesc = !empty($uEvent['excerpt']) ? $uEvent['excerpt'] : (!empty($uEvent['content']) ? ps_excerpt($uEvent, 140) : '');
         ?>
           <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-shadow flex flex-col sm:flex-row gap-5 items-start">
             <div class="w-full sm:w-36 h-36 rounded-lg overflow-hidden shrink-0 bg-surface-container">
@@ -1042,13 +1051,13 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </div>
             <div class="flex flex-col flex-1">
               <div class="flex items-center gap-2">
-                <span class="bg-primary-container text-on-primary text-[11px] font-bold px-2 py-0.5 rounded">Upcoming</span>
-                <span class="font-label-sm text-label-sm text-text-muted"><?= e($uDate) ?></span>
+                <span class="bg-primary-container text-on-primary text-[11px] font-bold px-2 py-0.5 rounded"><?= e(ps_text('आगामी', 'Upcoming')) ?></span>
+                <span class="font-label-sm text-label-sm text-text-muted"><?= e($uDateStr) ?></span>
               </div>
               <h4 class="font-title-lg text-title-lg font-bold text-deep-forest mt-1.5">
                 <a href="<?= e(base_url('/events/' . $uSlug)) ?>" class="hover:text-primary transition-colors"><?= e($uTitle) ?></a>
               </h4>
-              <p class="font-body-sm text-body-sm text-text-muted mt-1"><?= e($uEvent['desc']) ?></p>
+              <p class="font-body-sm text-body-sm text-text-muted mt-1"><?= e($uDesc) ?></p>
               <div class="mt-3 flex items-center gap-1.5 text-text-muted font-body-sm text-body-sm">
                 <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
                 <span><?= e($uLoc) ?></span>
@@ -1065,43 +1074,52 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <h3 class="font-title-lg text-title-lg font-bold text-deep-forest"><?= e(ps_text('सम्पन्न आयोजन (Past Events)', 'Past Events')) ?></h3>
         </div>
 
-        <div class="bg-pure-white rounded-xl p-5 shadow-sm border border-border-warm">
-          <div class="flex items-center justify-between">
-            <span class="bg-surface-container text-on-surface-variant text-[11px] font-semibold px-2 py-0.5 rounded">Past</span>
-            <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('10 जून 2026', '10 June 2026')) ?></span>
-          </div>
-          <h4 class="font-headline-sm text-headline-sm font-semibold text-deep-forest mt-2">
-            <a href="<?= e(base_url('/events/event')) ?>" class="hover:text-primary transition-colors">
-              <?= e(ps_text('नाट्य अभिनय कार्यशाला बाराबंकी', 'Theatre Acting Workshop Barabanki')) ?>
-            </a>
-          </h4>
-          <p class="font-body-sm text-body-sm text-text-muted mt-1">
-            <?= e(ps_text('वरिष्ठ रंगकर्मी चंद्रभाष सिंह जी के निर्देशन में ग्रामीण युवाओं हेतु 7-दिवसीय नाट्य एवं लोक-संवाद प्रशिक्षण।', '7-day rural youth theatre & dialogue training directed by senior artist Chandra Bhash Singh.')) ?>
-          </p>
-          <div class="mt-3 flex items-center gap-1 text-text-muted font-label-sm text-label-sm">
-            <span class="material-symbols-outlined text-[15px]">location_on</span>
-            <span><?= e(ps_text('बाराबंकी में', 'Barabanki')) ?></span>
-          </div>
-        </div>
+        <?php 
+        if (empty($realPast)) {
+            $realPast = [
+                [
+                    'title' => ps_text('स्वरचित 151 कुंडलियों का संग्रह "सारंग-कुंडलियाँ" का प्रकाशन', 'Publication of 151 Kundaliyan Anthology "Sarang-Kundaliyan"'),
+                    'event_date' => '2026-07-05',
+                    'excerpt' => ps_text('काव्य-कार्यशाला एवं सारस्वत विमोचन समारोह। अवधी व हिंदी के सुधी साहित्यकारों का समागम।', 'Poetic symposium and book release with distinguished Hindi & Awadhi scholars.'),
+                    'location' => ps_text('बाराबंकी, उत्तर प्रदेश, भारत', 'Barabanki, Uttar Pradesh, India'),
+                    'slug' => '151'
+                ],
+                [
+                    'title' => ps_text('नाट्य अभिनय कार्यशाला बाराबंकी', 'Theatre Acting Workshop Barabanki'),
+                    'event_date' => '2026-06-10',
+                    'excerpt' => ps_text('वरिष्ठ रंगकर्मी चंद्रभाष सिंह जी के निर्देशन में ग्रामीण युवाओं हेतु 7-दिवसीय नाट्य एवं लोक-संवाद प्रशिक्षण।', '7-day rural youth theatre & dialogue training directed by senior artist Chandra Bhash Singh.'),
+                    'location' => ps_text('बाराबंकी में', 'Barabanki'),
+                    'slug' => 'event'
+                ]
+            ];
+        }
 
+        foreach (array_slice($realPast, 0, 3) as $pEvent):
+            $pTitle = $pEvent['title'];
+            $pDateStr = format_date($pEvent['event_date'] ?? '2026-07-05');
+            $pLoc = !empty($pEvent['location']) ? $pEvent['location'] : ps_text('बाराबंकी', 'Barabanki');
+            $pSlug = $pEvent['slug'] ?? 'events';
+            $pDesc = !empty($pEvent['excerpt']) ? $pEvent['excerpt'] : (!empty($pEvent['content']) ? ps_excerpt($pEvent, 120) : '');
+        ?>
         <div class="bg-pure-white rounded-xl p-5 shadow-sm border border-border-warm">
           <div class="flex items-center justify-between">
-            <span class="bg-surface-container text-on-surface-variant text-[11px] font-semibold px-2 py-0.5 rounded">Past</span>
-            <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('05 अप्रैल 2026', '05 April 2026')) ?></span>
+            <span class="bg-surface-container text-on-surface-variant text-[11px] font-semibold px-2 py-0.5 rounded"><?= e(ps_text('सम्पन्न', 'Past')) ?></span>
+            <span class="font-label-sm text-label-sm text-text-muted"><?= e($pDateStr) ?></span>
           </div>
           <h4 class="font-headline-sm text-headline-sm font-semibold text-deep-forest mt-2">
-            <a href="<?= e(base_url('/events/community-health-camp')) ?>" class="hover:text-primary transition-colors">
-              <?= e(ps_text('सामुदायिक स्वास्थ्य व परामर्श शिविर', 'Community Health & Consultation Camp')) ?>
+            <a href="<?= e(base_url('/events/' . $pSlug)) ?>" class="hover:text-primary transition-colors">
+              <?= e($pTitle) ?>
             </a>
           </h4>
           <p class="font-body-sm text-body-sm text-text-muted mt-1">
-            <?= e(ps_text('विशेषज्ञ चिकित्सकों द्वारा ग्रामीण महिलाओं व वृद्धजनों का निःशुल्क स्वास्थ्य परीक्षण एवं दवा वितरण।', 'Free medical screening and consultation for rural elders and women.')) ?>
+            <?= e($pDesc) ?>
           </p>
           <div class="mt-3 flex items-center gap-1 text-text-muted font-label-sm text-label-sm">
             <span class="material-symbols-outlined text-[15px]">location_on</span>
-            <span><?= e(ps_text('लखनऊ / बाराबंकी सीमांचल', 'Lucknow / Barabanki Border')) ?></span>
+            <span><?= e($pLoc) ?></span>
           </div>
         </div>
+        <?php endforeach; ?>
 
         <!-- Mini Calendar Highlight Card -->
         <div class="bg-soft-meadow rounded-xl p-5 border-l-4 border-primary border border-border-warm">
@@ -1190,11 +1208,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="lg:col-span-8">
         <div class="inline-flex items-center gap-1 text-secondary font-label-sm text-label-sm font-semibold mb-2">
           <span class="material-symbols-outlined text-[16px]">edit_note</span>
-          <span><?= e(ps_text('स्वरचित 151 हुण्डलियों का संकलन', 'Collection of 151 Original Kundaliyan')) ?></span>
+          <span><?= e(ps_text('स्वरचित 151 कुंडलियों का संकलन', 'Collection of 151 Original Kundaliyan')) ?></span>
         </div>
-        <h4 class="font-headline-sm text-headline-sm font-bold text-deep-forest"><?= e(ps_text('"सारंग-हुण्डलियाँ" — लोक जीवन के छंदबद्ध सरोकार', '"Sarang-Hundaliyan" — Verses of Folk Life')) ?></h4>
+        <h4 class="font-headline-sm text-headline-sm font-bold text-deep-forest"><?= e(ps_text('"सारंग-कुंडलियाँ" — लोक जीवन के छंदबद्ध सरोकार', '"Sarang-Kundaliyan" — Verses of Folk Life')) ?></h4>
         <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-          <?= e(ps_text('कुण्डलियाँ छंद की प्राचीन समृद्ध परंपरा को जीवित रखते हुए समकालीन सामाजिक विद्रूपताओं, प्रकृति-प्रेम और मानवीय मूल्यों पर आधारित 151 मौलिक हुण्डलियाँ।', 'Preserving ancient metrical traditions while engaging modern environmental and humanitarian themes in 151 poetic verses.')) ?>
+          <?= e(ps_text('कुण्डलियाँ छंद की प्राचीन समृद्ध परंपरा को जीवित रखते हुए समकालीन सामाजिक विद्रूपताओं, प्रकृति-प्रेम और मानवीय मूल्यों पर आधारित 151 मौलिक कुंडलियाँ।', 'Preserving ancient metrical traditions while engaging modern environmental and humanitarian themes in 151 poetic verses.')) ?>
         </p>
       </div>
       <div class="lg:col-span-4 flex justify-start lg:justify-end">
@@ -1428,7 +1446,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                   <option value="greengang"><?= e(ps_text('ग्रीन गैंग / पौधरोपण अभियान से जुड़ना', 'Join Green Gang / Tree Plantation')) ?></option>
                   <option value="volunteer"><?= e(ps_text('स्वयंसेवक के रूप में योगदान', 'Volunteer Contribution')) ?></option>
                   <option value="invite"><?= e(ps_text('कार्यक्रम / चौपाल में आमंत्रित करना', 'Invite for Event / Chaupal')) ?></option>
-                  <option value="literature"><?= e(ps_text('साहित्यिक कृति / हुण्डलियाँ प्रति हेतु', 'Literary Work / Book Copy')) ?></option>
+                  <option value="literature"><?= e(ps_text('साहित्यिक कृति / कुंडलियाँ प्रति हेतु', 'Literary Work / Book Copy')) ?></option>
                   <option value="bird_conservation"><?= e(ps_text('परिंदा संरक्षण व जल-सकोरा अभियान', 'Bird Conservation & Water Bowl Campaign')) ?></option>
                   <option value="media"><?= e(ps_text('मीडिया व साक्षात्कार संवाद', 'Media & Interview Inquiries')) ?></option>
                 </select>

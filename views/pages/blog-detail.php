@@ -442,7 +442,7 @@ $postExcerpt = trim($post['excerpt'] ?? '') ?: ps_text('"वर्षा, बच
               </article>
             </div>
 
-            <!-- ================= STORY 3 (Spread 2): सारंग-हुण्डलियाँ ================= -->
+            <!-- ================= STORY 3 (Spread 2): सारंग-कुंडलियाँ ================= -->
             <div class="spread-slide hidden min-h-full" data-spread="2">
               <article class="p-6 sm:p-10 md:p-12 lg:p-14 max-w-4xl mx-auto flex flex-col justify-between min-h-full bg-[#faf8f2] book-page-content">
                 <div>

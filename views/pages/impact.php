@@ -143,7 +143,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
               3. <?= e(ps_text('अवधी भाषा, साहित्य व लोक-सांस्कृतिक चेतना', 'Awadhi Language & Heritage Protection')) ?>
             </h3>
             <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-4">
-              <?= e(ps_text('अवधी भाषा के संरक्षण हेतु संस्मरण संकलन \'झरिहख\', 151 छन्दबद्ध कुंडलियों का ग्रन्थ \'सारंग-हुण्डलियाँ\' तथा प्रतिवर्ष 16 से 31 अगस्त तक आयोजित \'तुलसी जयंती पखवारा\'। जनकवि बंशीधर शुक्ल व तुलसी सम्मान से अलंकृत।', 'Author of Awadhi memoirs Jharihakh and 151 Sarang Kundaliyan poetic verses. Organizer of annual Tulsi Jayanti Pakhwara.')) ?>
+              <?= e(ps_text('अवधी भाषा के संरक्षण हेतु संस्मरण संकलन \'झरिहख\', 151 छन्दबद्ध कुंडलियों का ग्रन्थ \'सारंग-कुंडलियाँ\' तथा प्रतिवर्ष 16 से 31 अगस्त तक आयोजित \'तुलसी जयंती पखवारा\'। जनकवि बंशीधर शुक्ल व तुलसी सम्मान से अलंकृत।', 'Author of Awadhi memoirs Jharihakh and 151 Sarang Kundaliyan poetic verses. Organizer of annual Tulsi Jayanti Pakhwara.')) ?>
             </p>
             <div class="space-y-2 bg-soft-meadow p-4 rounded-xl border border-border-warm font-body-sm text-body-sm text-deep-forest">
               <div class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span> <span><strong>151</strong> <?= e(ps_text('अवधी कुंडलियाँ एवं काव्य ग्रन्थ', 'Awadhi Poetic Verses')) ?></span></div>
@@ -279,7 +279,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
         <div class="bg-pure-white rounded-3xl p-6 sm:p-7 shadow-sm border border-border-warm flex flex-col justify-between">
           <p class="font-quote-editorial text-body-md text-deep-forest italic mb-4 leading-relaxed">
-            "<?= e(ps_text('अवधी साहित्य में सारंग जी की \'सारंग-हुण्डलियाँ\' और \'झरिहख\' ग्रन्थ हमारी लोक-सांस्कृतिक पहचान को अमर बना रहे हैं। उनकी रचनाशीलता युवा पीढ़ी के लिए अनुपम प्रेरणा है।', 'Sarang Ji\'s Awadhi Kundaliyan and memoirs immortalize our cultural identity for the youth.')) ?>"
+            "<?= e(ps_text('अवधी साहित्य में सारंग जी की \'सारंग-कुंडलियाँ\' और \'झरिहख\' ग्रन्थ हमारी लोक-सांस्कृतिक पहचान को अमर बना रहे हैं। उनकी रचनाशीलता युवा पीढ़ी के लिए अनुपम प्रेरणा है।', 'Sarang Ji\'s Awadhi Kundaliyan and memoirs immortalize our cultural identity for the youth.')) ?>"
           </p>
           <div class="pt-3 border-t border-border-warm flex items-center gap-3">
             <div class="w-9 h-9 rounded-full bg-tertiary text-on-tertiary flex items-center justify-center font-bold">

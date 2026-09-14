@@ -65,6 +65,10 @@ class ContentModel extends BaseModel
                 return $this->db->query('SELECT * FROM campaigns ORDER BY is_primary DESC, sort_order ASC, created_at DESC')->fetchAll();
             }
             if ($type === 'events') {
+                try {
+                    $this->db->exec("UPDATE events SET status = 'past' WHERE event_date < CURRENT_DATE() AND status != 'past'");
+                    $this->db->exec("UPDATE events SET status = 'upcoming' WHERE event_date >= CURRENT_DATE() AND status != 'upcoming'");
+                } catch (Throwable $e) {}
                 return $this->db->query('SELECT * FROM events ORDER BY event_date DESC')->fetchAll();
             }
             if ($type === 'blogs') {
@@ -86,6 +90,10 @@ class ContentModel extends BaseModel
     public function allEvents(): array
     {
         if (!$this->db) return $this->allFromDemo('events');
+        try {
+            $this->db->exec("UPDATE events SET status = 'past' WHERE event_date < CURRENT_DATE() AND status != 'past'");
+            $this->db->exec("UPDATE events SET status = 'upcoming' WHERE event_date >= CURRENT_DATE() AND status != 'upcoming'");
+        } catch (Throwable $e) {}
         return $this->db->query('SELECT * FROM events ORDER BY event_date DESC')->fetchAll();
     }
 

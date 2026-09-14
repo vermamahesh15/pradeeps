@@ -417,7 +417,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-deep-forest mb-2 font-bold">
-            <?= e(ps_text('"अवधी लोक-संस्कृति और सारंग-हुण्डलियों पर विशेष परिचर्चा"', '"Discussion on Awadhi Folk Culture & Sarang-Hundaliyan"')) ?>
+            <?= e(ps_text('"अवधी लोक-संस्कृति और सारंग-कुंडलियों पर विशेष परिचर्चा"', '"Discussion on Awadhi Folk Culture & Sarang-Kundaliyan"')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
             <?= e(ps_text('आकाशवाणी पर अवधी भाषा की मिठास, छंद विधान और ग्रामीण लोकरंग के संरक्षण पर सारंग जी का सारगर्भित वक्तव्य।', 'Discussion on AIR regarding Awadhi linguistic preservation & folk metres.')) ?>

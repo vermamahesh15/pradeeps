@@ -1,19 +1,22 @@
 <?php
 declare(strict_types=1);
 
-$events = $events ?? [];
-$upcoming = $upcoming ?? [];
-$past = $past ?? [];
+$todayStr = date('Y-m-d');
+$rawEvents = $items ?? $events ?? [];
+
+$upcoming = array_values(array_filter($rawEvents, fn($ev) => !empty($ev['event_date']) && $ev['event_date'] >= $todayStr));
+$past = array_values(array_filter($rawEvents, fn($ev) => !empty($ev['event_date']) && $ev['event_date'] < $todayStr));
+
 $contactPhone = $settings['phone'] ?? '+91 9919007190';
 $contactEmail = $settings['email'] ?? 'contact@pradeepsarang.in';
 
 $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
-    'title' => ps_text('स्वरचित 151 हुण्डलियों के संग्रह "सारंग-हुण्डलियाँ" का भव्य विमोचन एवं अवधी लोक-संस्कृति समागम', 'Release of "Sarang-Hundaliyan" & Awadhi Folk Culture Meet'),
-    'event_date' => '2026-07-05',
+    'title' => ps_text('अवधी लोक साहित्य महाकुंभ एवं कवि सम्मेलन', 'Awadhi Literature Conference & Kavi Sammelan'),
+    'event_date' => '2026-10-18',
     'location' => ps_text('गांधी भवन प्रेक्षागृह, बाराबंकी (उ.प्र.)', 'Gandhi Bhawan Auditorium, Barabanki (U.P.)'),
-    'excerpt' => ps_text('अवध के वरिष्ठ साहित्यकारों, पर्यावरणविदों एवं लोक-कलाकारों की गरिमामयी उपस्थिति में प्रदीप सारंग के मौलिक 151 हुण्डली छंदों का विधिवत लोकार्पण।', 'Official release of 151 original Hundali verses by Pradeep Sarang amidst senior writers & scholars of Awadh.'),
-    'slug' => 'sarang-hundaliyan-book-launch-2026',
-    'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuA6kx70EQZpcht7op-V1_uG47WMdVT_DrFqqiVRM-0tBmuWlJdaA4Cj9FB_XGq8Mto67ZEqJ4MpKzqkDo4DJPJxL07Whm5W8wUQGhvKojVPBlNUoGAIT8MW5mGQ07-UXsIroO7CK4PzWeh0A6KJnspL4-L43bsVzRCEVviMsQOZO_BeiJgW0yoxYxIds0-sw090RYpteXF-Bcf6D8CBAd9c-XDNfPiivzr7JFw_5gO1BEORpYbmhPam'
+    'excerpt' => ps_text('अवध के प्रतिष्ठित कवियों एवं मनीषियों की गरिमामयी उपस्थिति में अवधी भाषा प्रसार तथा भव्य काव्य गोष्ठी का आयोजन।', 'Awadhi literature symposium and poetry meet with distinguished Awadh scholars.'),
+    'slug' => 'awadhi-literature-conference-2026',
+    'image' => 'uploads/6a471c1fedba6_Photo-20260702-074405-S-1079x1085.png'
 ];
 ?>
 

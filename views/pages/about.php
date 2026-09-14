@@ -188,7 +188,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
             </div>
             <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
               <span class="font-headline-lg text-headline-md text-tertiary leading-tight font-bold">151</span>
-              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('हुण्डलियों के रचयिता', 'Awadhi Verses')) ?></span>
+              <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('कुंडलियों के रचयिता', 'Awadhi Verses')) ?></span>
             </div>
           </div>
         </div>
@@ -329,7 +329,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
             </div>
             <h3 class="font-title-lg text-title-md text-deep-forest font-bold mb-2"><?= e(ps_text('अवधी भाषा, साहित्य व संस्कृति', 'Awadhi Literature & Culture')) ?></h3>
             <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed mb-4">
-              <?= e(ps_text('अवधी संस्मरण संकलन \'झरिहख\' एवं 151 छन्दबद्ध कुंडलियों का ग्रन्थ \'सारंग-हुण्डलियाँ\'। \'काव्य-मंजरी\' का कुशल संपादन। अवधी लोकगीत, कहावत एवं समृद्ध अवधी विरासत के संरक्षण के लिए सतत सृजन।', 'Author of Awadhi memoirs Jharihakh and 151 Sarang Kundaliyan poetic verses.')) ?>
+              <?= e(ps_text('अवधी संस्मरण संकलन \'झरिहख\' एवं 151 छन्दबद्ध कुंडलियों का ग्रन्थ \'सारंग-कुंडलियाँ\'। \'काव्य-मंजरी\' का कुशल संपादन। अवधी लोकगीत, कहावत एवं समृद्ध अवधी विरासत के संरक्षण के लिए सतत सृजन।', 'Author of Awadhi memoirs Jharihakh and 151 Sarang Kundaliyan poetic verses.')) ?>
             </p>
           </div>
           <div class="bg-soft-meadow p-3 rounded-xl flex items-center gap-2 font-label-sm text-label-sm text-tertiary border border-border-warm font-semibold">

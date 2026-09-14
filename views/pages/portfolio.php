@@ -81,7 +81,7 @@ $defaultPhotos = [
         'featured' => false,
     ],
     [
-        'title' => ps_text('अवधी संस्मरण \'झरिहख\' एवं \'सारंग-हुण्डलियाँ\' ग्रन्थ विमोचन', 'Awadhi Book Launch Jharihakh & Sarang Hundliyan'),
+        'title' => ps_text('अवधी संस्मरण \'झरिहख\' एवं \'सारंग-कुंडलियाँ\' ग्रन्थ विमोचन', 'Awadhi Book Launch Jharihakh & Sarang Hundliyan'),
         'category' => 'literature',
         'category_name' => ps_text('अवधी साहित्य व मंच', 'Awadhi Literature'),
         'location' => ps_text('उत्तर प्रदेश हिंदी संस्थान, लखनऊ', 'UP Hindi Sansthan, Lucknow'),

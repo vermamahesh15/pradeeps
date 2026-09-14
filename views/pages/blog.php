@@ -342,7 +342,7 @@ $categories = $categories ?? [];
         </div>
       </article>
 
-      <!-- Card 4: Sarang Hundaliyan -->
+      <!-- Card 4: Sarang Kundaliyan -->
       <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden group p-6" data-cat="rural">
         <div class="flex-1 flex flex-col justify-between space-y-4">
           <div>
@@ -358,11 +358,11 @@ $categories = $categories ?? [];
             </div>
             <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
               <a href="<?= e(base_url('/blog/sarang-hundaliyan')) ?>" class="hover:text-primary transition-colors">
-                <?= e(ps_text('सारंग-हुण्डलियों की रचना यात्रा — लोक छंद में जन-सरोकारों का समन्वय', 'Journey of Sarang-Hundaliyan — Blending Folk Metres with Social Reality')) ?>
+                <?= e(ps_text('सारंग-कुंडलियों की रचना यात्रा — लोक छंद में जन-सरोकारों का समन्वय', 'Journey of Sarang-Kundaliyan — Blending Folk Metres with Social Reality')) ?>
               </a>
             </h3>
             <p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5 line-clamp-3 leading-relaxed">
-              <?= e(ps_text('कुण्डलिया छंद की प्राचीन मर्यादा को ग्रामीण समकालीन यथार्थ से जोड़कर \'सारंग-हुण्डलियों\' का जन्म कैसे हुआ? शोषण, सामाजिक विसंगतियों और पर्यावरण क्षरण पर चोट करती लोक-छंद की यह यात्रा वास्तव में जन-जागरण की यात्रा है।', 'How Kundaliya meter was connected to rural realities, addressing environmental degradation & social concerns.')) ?>
+              <?= e(ps_text('कुण्डलिया छंद की प्राचीन मर्यादा को ग्रामीण समकालीन यथार्थ से जोड़कर \'सारंग-कुंडलियों\' का जन्म कैसे हुआ? शोषण, सामाजिक विसंगतियों और पर्यावरण क्षरण पर चोट करती लोक-छंद की यह यात्रा वास्तव में जन-जागरण की यात्रा है।', 'How Kundaliya meter was connected to rural realities, addressing environmental degradation & social concerns.')) ?>
             </p>
           </div>
           <div class="pt-3 flex items-center justify-between bg-soft-meadow -mx-6 -mb-6 px-6 py-3.5 border-t border-border-warm">
@@ -604,7 +604,7 @@ $categories = $categories ?? [];
           <?= e(ps_text('अवधी साहित्य व काव्य धरोहर', 'Awadhi Literature & Poetry')) ?>
         </h4>
         <p class="font-body-sm text-body-sm text-text-muted mt-2">
-          <?= e(ps_text('सारंग-हुण्डलियों, लोक छंदों और अवधी कविताओं का प्रामाणिक संग्रह एवं ऑडियो रिकॉर्डिंग्स।', 'Collection of Sarang-Hundaliyan, folk metres & audio recordings.')) ?>
+          <?= e(ps_text('सारंग-कुंडलियों, लोक छंदों और अवधी कविताओं का प्रामाणिक संग्रह एवं ऑडियो रिकॉर्डिंग्स।', 'Collection of Sarang-Kundaliyan, folk metres & audio recordings.')) ?>
         </p>
       </div>
       <div class="mt-4 pt-3 flex items-center text-primary font-label-sm text-label-sm font-semibold">
