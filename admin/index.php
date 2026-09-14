@@ -166,7 +166,7 @@ if (is_post()) {
                 redirect('/admin/index.php?module=blogs');
             }
             // Authors can only edit their own blogs
-            if (is_role('author') && (int)$existing['author_id'] !== (int)$_SESSION['user_id']) {
+            if (!is_role('admin', 'super_admin') && is_role('author') && !empty($existing['author_id']) && (int)$existing['author_id'] !== (int)$_SESSION['user_id']) {
                 http_response_code(403);
                 exit('Unauthorized access: You do not own this blog post.');
             }
@@ -1717,19 +1717,20 @@ $metrics = $content->metrics();
             <?php elseif ($module === 'blogs'): ?>
                 <?php
                 $action = $_GET['action'] ?? '';
-                $editId = (int)($_GET['edit_id'] ?? 0);
-                $isCreateOrEdit = ($action === 'create' || $editId > 0);
+                $rawEditId = $_GET['edit_id'] ?? ($_GET['id'] ?? null);
+                $editId = is_numeric($rawEditId) ? (int)$rawEditId : $rawEditId;
+                $isCreateOrEdit = ($action === 'create' || $action === 'edit' || !empty($editId));
 
-                $blogs = is_role('author') 
+                $blogs = (is_role('author') && !is_role('admin', 'super_admin'))
                     ? $blogModel->all(100, 0, (int)$_SESSION['user_id']) 
                     : $blogModel->all(100, 0);
                 $categories = $categoryModel->all();
                 $success = flash('admin_success');
 
-                $editBlog = $editId > 0 ? $blogModel->find($editId) : null;
+                $editBlog = !empty($editId) ? $blogModel->find($editId) : null;
                 
-                // Enforce author edit restrictions
-                if ($editBlog && is_role('author') && (int)$editBlog['author_id'] !== (int)$_SESSION['user_id']) {
+                // Enforce author edit restrictions for non-admin users
+                if ($editBlog && !is_role('admin', 'super_admin') && is_role('author') && !empty($editBlog['author_id']) && (int)$editBlog['author_id'] !== (int)$_SESSION['user_id']) {
                     $editBlog = null;
                     flash('admin_error', 'Unauthorized access: You do not own this blog post.');
                     $isCreateOrEdit = false;

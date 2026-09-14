@@ -172,11 +172,18 @@ class Blog extends BaseModel
         return $result === false ? null : $result;
     }
 
-    public function find(int $id): ?array
+    public function find($id): ?array
     {
+        if (empty($id)) return null;
         if ($this->db) {
             try {
-                $stmt = $this->db->prepare('SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE b.id = :id');
+                $sql = 'SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE ';
+                if (is_numeric($id)) {
+                    $sql .= 'b.id = :id';
+                } else {
+                    $sql .= 'b.slug = :id';
+                }
+                $stmt = $this->db->prepare($sql);
                 $stmt->execute([':id' => $id]);
                 $result = $stmt->fetch();
                 if ($result) {
@@ -190,7 +197,7 @@ class Blog extends BaseModel
 
         $demo = $this->allFromDemo('blogs');
         foreach ($demo as $item) {
-            if ((int)($item['id'] ?? 0) === $id) {
+            if ((string)($item['id'] ?? '') === (string)$id || ($item['slug'] ?? '') === (string)$id) {
                 $authorName = !empty($item['author']) ? $item['author'] : (!empty($item['author_name']) ? $item['author_name'] : 'प्रदीप सारंग');
                 $item['author'] = $authorName;
                 $item['author_name'] = $authorName;
