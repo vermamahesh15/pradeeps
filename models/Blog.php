@@ -212,9 +212,8 @@ class Blog extends BaseModel
     {
         if (!$this->db) return 0;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
-        $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
-            VALUES (:category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
-        $stmt->execute([
+        
+        $params = [
             ':category_id' => $data['category_id'],
             ':author_id' => $data['author_id'] ?? null,
             ':title' => $data['title'],
@@ -231,11 +230,44 @@ class Blog extends BaseModel
             ':seo_title' => $data['seo_title'] ?? null,
             ':meta_description' => $data['meta_description'] ?? null,
             ':meta_keywords' => $data['meta_keywords'] ?? null,
+            ':canonical_url' => $data['canonical_url'] ?? null,
             ':og_image' => $data['og_image'] ?? null,
             ':published_at' => $data['published_at'] ?? null,
-        ]);
+        ];
 
-        return (int) $this->db->lastInsertId();
+        try {
+            // Attempt standard AUTO_INCREMENT insert
+            $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
+                VALUES (:category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
+            $stmt->execute($params);
+            $lastId = (int) $this->db->lastInsertId();
+            if ($lastId > 0) {
+                return $lastId;
+            }
+        } catch (Throwable $e) {
+            // Auto-repair missing AUTO_INCREMENT constraint on id column
+            try {
+                $this->db->exec('ALTER TABLE blogs MODIFY id INT NOT NULL AUTO_INCREMENT');
+                $stmt = $this->db->prepare('INSERT INTO blogs (category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
+                    VALUES (:category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
+                $stmt->execute($params);
+                $lastId = (int) $this->db->lastInsertId();
+                if ($lastId > 0) return $lastId;
+            } catch (Throwable $ex) {}
+
+            // Manual Next ID calculation fallback if ALTER TABLE is restricted
+            $maxStmt = $this->db->query('SELECT COALESCE(MAX(id), 0) FROM blogs');
+            $nextId = (int) $maxStmt->fetchColumn() + 1;
+
+            $params[':id'] = $nextId;
+            $stmt = $this->db->prepare('INSERT INTO blogs (id, category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
+                VALUES (:id, :category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
+            $stmt->execute($params);
+            return $nextId;
+        }
+
+        $maxStmt = $this->db->query('SELECT COALESCE(MAX(id), 0) FROM blogs');
+        return (int) $maxStmt->fetchColumn();
     }
 
     public function update($id, array $data): bool
@@ -341,7 +373,7 @@ class Blog extends BaseModel
         if (empty($blogData['meta_keywords'])) {
             $catName = '';
             if (!empty($blogData['category_id']) && $categoryModel !== null) {
-                $catObj = $categoryModel->find((int)$blogData['category_id']);
+                $catObj = $categoryModel->find($blogData['category_id']);
                 if ($catObj && !empty($catObj['name'])) {
                     $catName = $catObj['name'];
                 }
@@ -359,9 +391,13 @@ class Blog extends BaseModel
             $blogData['meta_keywords'] = implode(', ', array_unique(array_filter($keywords)));
         }
 
-        // 4. Auto Canonical URL
+        // 4. Auto Canonical URL & Clean Duplicated Schemes
         if (empty($blogData['canonical_url']) && !empty($blogData['slug'])) {
             $blogData['canonical_url'] = base_url('/blog/' . $blogData['slug']);
+        } elseif (!empty($blogData['canonical_url'])) {
+            if (preg_match('#^(https?://[^/]+)+(https?://.+)#i', $blogData['canonical_url'], $m)) {
+                $blogData['canonical_url'] = $m[2];
+            }
         }
 
         // 5. Auto Open Graph Image

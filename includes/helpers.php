@@ -220,6 +220,9 @@ if (!function_exists('ps_resolve_img')) {
             if (file_exists($root . '/' . $webp)) {
                 return base_url($webp);
             }
+            if (strpos($clean, 'uploads/') === 0) {
+                return base_url($clean);
+            }
         }
         if (empty($fallback)) {
             $fallback = 'assets/images/slider_final_1.webp';
@@ -371,7 +374,7 @@ if (!function_exists('is_role')) {
 
 if (!function_exists('upload_file')) {
     /**
-     * Uploads, validates, resizes, and optimizes uploaded files.
+     * Handles secure file uploading with automatic image optimization & WebP conversion.
      * For blog featured images and site graphics, constrains maximum dimensions to 1200x630
      * and converts to optimized WebP format with full mobile responsiveness.
      */
@@ -406,8 +409,9 @@ if (!function_exists('upload_file')) {
         $uploadDir = $root . '/uploads' . ($cleanSubfolder ? '/' . $cleanSubfolder : '');
 
         if (!is_dir($uploadDir)) {
-            @mkdir($uploadDir, 0755, true);
+            @mkdir($uploadDir, 0775, true);
         }
+        @chmod($uploadDir, 0775);
 
         $isImage = false;
         $imgInfo = @getimagesize($tmpPath);
@@ -439,16 +443,20 @@ if (!function_exists('upload_file')) {
 
                 imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $targetW, $targetH, $origW, $origH);
 
+                $saved = false;
                 if (function_exists('imagewebp')) {
-                    imagewebp($dstImg, $destPath, 85);
-                } else {
-                    imagejpeg($dstImg, $destPath, 85);
+                    $saved = @imagewebp($dstImg, $destPath, 85);
+                }
+                if (!$saved) {
+                    $saved = @imagejpeg($dstImg, $destPath, 85);
                 }
 
                 imagedestroy($srcImg);
                 imagedestroy($dstImg);
 
-                return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+                if ($saved && file_exists($destPath) && filesize($destPath) > 0) {
+                    return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+                }
             }
         }
 
@@ -458,10 +466,12 @@ if (!function_exists('upload_file')) {
         $destPath = $uploadDir . '/' . $filename;
 
         if (@move_uploaded_file($tmpPath, $destPath) || @copy($tmpPath, $destPath)) {
-            return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+            if (file_exists($destPath) && filesize($destPath) > 0) {
+                return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+            }
         }
 
-        $error = 'Failed to save uploaded file to disk.';
+        $error = 'Failed to save uploaded file to disk. Please check directory permissions for uploads/';
         return null;
     }
 }
