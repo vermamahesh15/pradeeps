@@ -240,7 +240,7 @@ if (is_post()) {
             if (is_role('admin')) {
                 // Admin (Pradeep Sarang) can directly approve and publish
                 $blogData['status'] = in_array($requestedStatus, ['draft', 'pending', 'published', 'rejected', 'archived'], true) ? $requestedStatus : 'published';
-                $blogData['published_at'] = ($blogData['status'] === 'published') ? ($_POST['published_at'] ?: date('Y-m-d H:i:s')) : null;
+                $blogData['published_at'] = ($blogData['status'] === 'published') ? (!empty($_POST['published_at']) ? $_POST['published_at'] : date('Y-m-d H:i:s')) : null;
                 $blogData['author_id'] = $isEdit ? ($existing['author_id'] ?: (int)$_SESSION['user_id']) : (int)$_SESSION['user_id'];
             } else {
                 // Non-admin roles (including Super Admin and Authors):
@@ -2253,7 +2253,7 @@ $metrics = $content->metrics();
 
                         if (!canonicalElem.value || canonicalElem.dataset.auto === 'true') {
                             const rawSlug = slugVal || titleVal.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-                            canonicalElem.value = window.location.origin + '<?= e(base_url("/blog/")) ?>' + (rawSlug || 'article');
+                            canonicalElem.value = '<?= e(rtrim(base_url("/blog/"), "/")) ?>/' + (rawSlug || 'article');
                             canonicalElem.dataset.auto = 'true';
                         }
                     }
@@ -2287,7 +2287,7 @@ $metrics = $content->metrics();
                         pvTitle.textContent = (seoTitleVal || (titleVal + ' | <?= e(app_config("name")) ?>'));
                     }
                     if (pvUrl) {
-                        pvUrl.textContent = (canonicalVal || (window.location.origin + '<?= e(base_url("/blog/")) ?>' + (slugVal || titleVal.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))));
+                        pvUrl.textContent = (canonicalVal || ('<?= e(rtrim(base_url("/blog/"), "/")) ?>/' + (slugVal || titleVal.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''))));
                     }
                     if (pvDesc) {
                         pvDesc.textContent = (metaDescVal || excerptVal || 'Brief search engine snippet preview will appear here as you write your post content.');
