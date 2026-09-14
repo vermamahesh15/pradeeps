@@ -363,6 +363,7 @@ if (!function_exists('is_role')) {
         if (empty($roles)) return true;
         foreach ($roles as $role) {
             if ($userRole === $role) return true;
+            if ($role === 'admin' && $userRole === 'super_admin') return true;
         }
         return false;
     }

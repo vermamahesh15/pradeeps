@@ -174,17 +174,31 @@ class Blog extends BaseModel
 
     public function find(int $id): ?array
     {
-        if (!$this->db) return null;
-        $stmt = $this->db->prepare('SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE b.id = :id');
-        $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch();
-        if ($result) {
-            $authorName = !empty($result['author']) ? $result['author'] : (!empty($result['author_name']) ? $result['author_name'] : 'प्रदीप सारंग');
-            $result['author'] = $authorName;
-            $result['author_name'] = $authorName;
+        if ($this->db) {
+            try {
+                $stmt = $this->db->prepare('SELECT b.*, c.name AS category_name, c.slug AS category_slug, u.name AS author_name, u.email AS author_email FROM blogs b LEFT JOIN blog_categories c ON b.category_id = c.id LEFT JOIN users u ON b.author_id = u.id WHERE b.id = :id');
+                $stmt->execute([':id' => $id]);
+                $result = $stmt->fetch();
+                if ($result) {
+                    $authorName = !empty($result['author']) ? $result['author'] : (!empty($result['author_name']) ? $result['author_name'] : 'प्रदीप सारंग');
+                    $result['author'] = $authorName;
+                    $result['author_name'] = $authorName;
+                    return $result;
+                }
+            } catch (Throwable $e) {}
         }
 
-        return $result === false ? null : $result;
+        $demo = $this->allFromDemo('blogs');
+        foreach ($demo as $item) {
+            if ((int)($item['id'] ?? 0) === $id) {
+                $authorName = !empty($item['author']) ? $item['author'] : (!empty($item['author_name']) ? $item['author_name'] : 'प्रदीप सारंग');
+                $item['author'] = $authorName;
+                $item['author_name'] = $authorName;
+                return $item;
+            }
+        }
+
+        return null;
     }
 
     public function create(array $data): int
