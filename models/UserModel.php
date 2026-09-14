@@ -34,11 +34,40 @@ class UserModel extends BaseModel
         return $stmt->fetchAll();
     }
 
+    private function ensureExtraColumns(): void
+    {
+        if (!$this->db) return;
+        static $checked = false;
+        if ($checked) return;
+        $checked = true;
+
+        $columns = [
+            'designation' => 'VARCHAR(255) NULL',
+            'location' => 'VARCHAR(255) NULL',
+            'section_badge' => 'VARCHAR(255) NULL',
+            'inspiring_quote' => 'TEXT NULL',
+            'stat_badges' => 'VARCHAR(255) NULL',
+            'whatsapp_link' => 'VARCHAR(255) NULL',
+            'youtube_link' => 'VARCHAR(255) NULL',
+            'instagram_link' => 'VARCHAR(255) NULL',
+        ];
+
+        foreach ($columns as $col => $type) {
+            try {
+                $this->db->exec("ALTER TABLE users ADD COLUMN {$col} {$type}");
+            } catch (\Throwable $e) {
+                // Column exists
+            }
+        }
+    }
+
     public function create(array $data): int
     {
         if (!$this->db) return 0;
-        $stmt = $this->db->prepare('INSERT INTO users (name, email, password, role, status, biography, facebook_link, twitter_link, linkedin_link, profile_photo) 
-            VALUES (:name, :email, :password, :role, :status, :biography, :facebook_link, :twitter_link, :linkedin_link, :profile_photo)');
+        $this->ensureExtraColumns();
+
+        $stmt = $this->db->prepare('INSERT INTO users (name, email, password, role, status, biography, designation, location, section_badge, inspiring_quote, stat_badges, facebook_link, twitter_link, linkedin_link, whatsapp_link, youtube_link, instagram_link, profile_photo) 
+            VALUES (:name, :email, :password, :role, :status, :biography, :designation, :location, :section_badge, :inspiring_quote, :stat_badges, :facebook_link, :twitter_link, :linkedin_link, :whatsapp_link, :youtube_link, :instagram_link, :profile_photo)');
         $stmt->execute([
             ':name' => $data['name'],
             ':email' => $data['email'],
@@ -46,9 +75,17 @@ class UserModel extends BaseModel
             ':role' => $data['role'] ?? 'author',
             ':status' => $data['status'] ?? 'active',
             ':biography' => $data['biography'] ?? null,
+            ':designation' => $data['designation'] ?? null,
+            ':location' => $data['location'] ?? null,
+            ':section_badge' => $data['section_badge'] ?? null,
+            ':inspiring_quote' => $data['inspiring_quote'] ?? null,
+            ':stat_badges' => $data['stat_badges'] ?? null,
             ':facebook_link' => $data['facebook_link'] ?? null,
             ':twitter_link' => $data['twitter_link'] ?? null,
             ':linkedin_link' => $data['linkedin_link'] ?? null,
+            ':whatsapp_link' => $data['whatsapp_link'] ?? null,
+            ':youtube_link' => $data['youtube_link'] ?? null,
+            ':instagram_link' => $data['instagram_link'] ?? null,
             ':profile_photo' => $data['profile_photo'] ?? null,
         ]);
         return (int) $this->db->lastInsertId();
@@ -57,6 +94,7 @@ class UserModel extends BaseModel
     public function update(int $id, array $data): bool
     {
         if (!$this->db) return false;
+        $this->ensureExtraColumns();
         
         $fields = [
             'name = :name',
@@ -64,9 +102,17 @@ class UserModel extends BaseModel
             'role = :role',
             'status = :status',
             'biography = :biography',
+            'designation = :designation',
+            'location = :location',
+            'section_badge = :section_badge',
+            'inspiring_quote = :inspiring_quote',
+            'stat_badges = :stat_badges',
             'facebook_link = :facebook_link',
             'twitter_link = :twitter_link',
-            'linkedin_link = :linkedin_link'
+            'linkedin_link = :linkedin_link',
+            'whatsapp_link = :whatsapp_link',
+            'youtube_link = :youtube_link',
+            'instagram_link = :instagram_link'
         ];
         
         $params = [
@@ -75,9 +121,17 @@ class UserModel extends BaseModel
             ':role' => $data['role'],
             ':status' => $data['status'],
             ':biography' => $data['biography'] ?? null,
+            ':designation' => $data['designation'] ?? null,
+            ':location' => $data['location'] ?? null,
+            ':section_badge' => $data['section_badge'] ?? null,
+            ':inspiring_quote' => $data['inspiring_quote'] ?? null,
+            ':stat_badges' => $data['stat_badges'] ?? null,
             ':facebook_link' => $data['facebook_link'] ?? null,
             ':twitter_link' => $data['twitter_link'] ?? null,
             ':linkedin_link' => $data['linkedin_link'] ?? null,
+            ':whatsapp_link' => $data['whatsapp_link'] ?? null,
+            ':youtube_link' => $data['youtube_link'] ?? null,
+            ':instagram_link' => $data['instagram_link'] ?? null,
             ':id' => $id
         ];
 
@@ -360,9 +414,9 @@ class UserModel extends BaseModel
     public function getRolePermissions(): array
     {
         $defaults = [
-            'super_admin' => ['dashboard', 'authors', 'timeline', 'blogs', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'role_access', 'settings', 'audit_logs'],
-            'admin'       => ['dashboard', 'authors', 'timeline', 'blogs', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers'],
-            'author'      => ['dashboard', 'blogs', 'profile', 'change_password'],
+            'super_admin' => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'role_access', 'settings', 'audit_logs'],
+            'admin'       => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers'],
+            'author'      => ['dashboard', 'blogs', 'categories', 'profile', 'change_password'],
         ];
 
         require_once __DIR__ . '/ContentModel.php';

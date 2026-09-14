@@ -18,7 +18,7 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <div class="flex items-center gap-3 mb-4">
                     <?php if ($hasLogo): ?>
                         <div class="bg-white/95 p-2 rounded-xl border border-white/20 shadow-sm">
-                            <img src="<?= e(base_url($siteLogo)) ?>" alt="Pradeep Sarang Logo" class="h-10 w-auto object-contain">
+                            <img src="<?= e(base_url($siteLogo)) ?>" alt="Pradeep Sarang Logo" class="h-10 w-auto object-contain" style="max-height: 40px; width: auto; object-fit: contain;">
                         </div>
                     <?php else: ?>
                         <div class="w-9 h-9 rounded-full bg-[#14532D] flex items-center justify-center border border-[#B28A42]/40">

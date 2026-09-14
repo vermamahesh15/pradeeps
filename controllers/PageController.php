@@ -278,7 +278,20 @@ class PageController
     {
         $post = $this->blogModel->findBySlug($slug);
         if ($post === null) {
-            if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
+            if ($slug === 'how-to-become-a-journalist-key-things-you-should-know' || $slug === 'how-to-become-a-journalist' || $slug === 'journalist') {
+                $post = [
+                    'id' => 99,
+                    'title' => 'पत्रकार कैसे बनें: मुख्य बातें जो आपको जाननी चाहिए',
+                    'slug' => 'how-to-become-a-journalist-key-things-you-should-know',
+                    'category_name' => 'पत्रकारिता एवं मीडिया',
+                    'author' => 'श्री प्रदीप सारंग',
+                    'author_name' => 'श्री प्रदीप सारंग',
+                    'published_at' => '2026-05-20',
+                    'excerpt' => 'पत्रकारिता लोकतंत्र का चौथा स्तंभ है। यदि आप एक सफल, निष्पक्ष और प्रभावकारी पत्रकार बनना चाहते हैं, तो इन महत्वपूर्ण बातों, शैक्षणिक योग्यता और नैतिक सिद्धांतों को जानना आपके लिए अत्यंत आवश्यक है।',
+                    'featured_image' => 'assets/images/slider_final_1.webp',
+                    'content' => '',
+                ];
+            } else if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
                 $post = [
                     'title' => 'झरिहख',
                     'slug' => 'jharihakh',
@@ -308,7 +321,20 @@ class PageController
     {
         $post = $this->blogModel->findBySlug($slug);
         if ($post === null) {
-            if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
+            if ($slug === 'how-to-become-a-journalist-key-things-you-should-know' || $slug === 'how-to-become-a-journalist' || $slug === 'journalist') {
+                $post = [
+                    'id' => 99,
+                    'title' => 'पत्रकार कैसे बनें: मुख्य बातें जो आपको जाननी चाहिए',
+                    'slug' => 'how-to-become-a-journalist-key-things-you-should-know',
+                    'category_name' => 'पत्रकारिता एवं मीडिया',
+                    'author' => 'श्री प्रदीप सारंग',
+                    'author_name' => 'श्री प्रदीप सारंग',
+                    'published_at' => '2026-05-20',
+                    'excerpt' => 'पत्रकारिता लोकतंत्र का चौथा स्तंभ है। यदि आप एक सफल, निष्पक्ष और प्रभावकारी पत्रकार बनना चाहते हैं, तो इन महत्वपूर्ण बातों, शैक्षणिक योग्यता और नैतिक सिद्धांतों को जानना आपके लिए अत्यंत आवश्यक है।',
+                    'featured_image' => 'assets/images/slider_final_1.webp',
+                    'content' => '',
+                ];
+            } else if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
                 $post = [
                     'title' => 'झरिहख',
                     'slug' => 'jharihakh',

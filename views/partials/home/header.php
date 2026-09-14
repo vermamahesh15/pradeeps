@@ -5,6 +5,51 @@ $phone = !empty($contact['phone']) ? $contact['phone'] : '+91 9919007190';
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.in';
 $currPath = current_path();
+?><!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0YJRF6JN7F');
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796"
+     crossorigin="anonymous"></script>
+if (!isset($nav) || !is_array($nav)) {
+    $nav = [
+        ['/', ps_text('मुख्य पृष्ठ', 'Home')],
+        ['/about', ps_text('परिचय', 'About')],
+        [
+            'label' => ps_text('अभियान व पहल', 'Campaigns'),
+            'children' => [
+                ['/campaigns', ps_text('सभी अभियान', 'All Campaigns')],
+                ['/green-gang', ps_text('ग्रीन गैंग', 'Green Gang')],
+                ['/volunteer', ps_text('स्वयंसेवक बनें', 'Join as Volunteer')]
+            ]
+        ],
+        [
+            'label' => ps_text('प्रभाव व यात्रा', 'Impact & Journey'),
+            'children' => [
+                ['/impact', ps_text('जनप्रभाव', 'Community Impact')],
+                ['/journey', ps_text('सेवा यात्रा', 'Service Journey')],
+                ['/awards', ps_text('सम्मान व पुरस्कार', 'Awards & Recognition')]
+            ]
+        ],
+        [
+            'label' => ps_text('गैलरी व मीडिया', 'Gallery & Media'),
+            'children' => [
+                ['/portfolio', ps_text('छायाचित्र दीर्घा', 'Photo Gallery')],
+                ['/videos', ps_text('वीडियो दीर्घा', 'Video Gallery')],
+                ['/media', ps_text('प्रेस व कतरनें', 'Press Coverage')]
+            ]
+        ],
+        ['/salahkaar', ps_text('सलाहकार', 'Counsellor')],
+        ['/events', ps_text('कार्यक्रम','Events')],
+        ['/blog', ps_text('साहित्य व विचार', 'Literature & Writings')],
+        ['/contact', ps_text('संपर्क','Contact')]
+    ];
+}
 ?>
 <header class="fixed top-0 left-0 w-full z-[9999] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
     <!-- Top Utility Bar -->
@@ -39,9 +84,9 @@ $currPath = current_path();
               $rootDir = dirname(__DIR__, 3);
               $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
             ?>
-            <a href="<?= e(base_url('/')) ?>" class="flex items-center group shrink-0 py-1" title="<?= e(app_config('name', 'Pradeep Sarang')) ?>">
+            <a href="<?= e(base_url('/')) ?>" class="flex items-center group shrink-0 py-1" style="max-height: 64px;" title="<?= e(app_config('name', 'Pradeep Sarang')) ?>">
                 <?php if ($hasLogo): ?>
-                    <img src="<?= e(base_url($siteLogo)) ?>" alt="<?= e(app_config('name', 'Pradeep Sarang')) ?>" class="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105" loading="eager">
+                    <?= ps_responsive_img($siteLogo, app_config('name', 'Pradeep Sarang'), 'h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform group-hover:scale-105', '(max-width: 640px) 180px, 240px', 'eager', ['style' => 'max-height: 56px; width: auto; max-width: 100%; object-fit: contain;']) ?>
                 <?php else: ?>
                     <div class="flex items-center gap-2">
                         <div class="w-10 h-10 rounded-xl bg-[#14532D] text-white flex items-center justify-center shadow-xs border border-[#15803D]/40 group-hover:bg-[#0F3D21] transition-colors">

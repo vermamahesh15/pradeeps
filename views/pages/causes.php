@@ -64,7 +64,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
         <div class="lg:col-span-4 flex justify-center lg:justify-end w-full">
           <div class="w-full max-w-sm bg-cream-canvas rounded-2xl p-6 shadow-md border border-border-warm relative overflow-hidden">
             <div class="w-full flex justify-center py-4 bg-soft-meadow rounded-xl mb-4 border border-border-warm">
-              <img src="<?= e(asset('images/logo.png')) ?>" onerror="this.src='<?= e(base_url('assets/images/home/icon.svg')) ?>'" alt="<?= e(app_config('name')) ?>" class="h-28 w-auto object-contain drop-shadow-sm">
+              <img src="<?= e(ps_resolve_img(setting('logo', 'assets/images/logo.webp'))) ?>" onerror="this.src='<?= e(base_url('assets/images/home/icon.svg')) ?>'" alt="<?= e(app_config('name')) ?>" class="h-28 w-auto object-contain drop-shadow-sm">
             </div>
             <div class="space-y-3">
               <div class="flex items-center gap-2">

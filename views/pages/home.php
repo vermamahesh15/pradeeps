@@ -116,9 +116,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="lg:col-span-5 relative">
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-pure-white p-3 border border-border-warm">
           <div class="relative w-full h-[440px] sm:h-[480px] rounded-xl overflow-hidden bg-surface-container">
-            <img class="w-full h-full object-cover" 
-                 src="<?= e($heroImg) ?>" 
-                 alt="<?= e(ps_text('श्री प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist')) ?>"/>
+            <?= ps_responsive_img($heroImg, ps_text('श्री प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-cover', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
             <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/30 to-transparent flex flex-col justify-end p-6 text-pure-white">
               <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed mb-1 font-semibold"><?= e(ps_text('संस्थापक — ग्रीन गैंग (2019)', 'Founder — Green Gang (2019)')) ?></span>
               <h3 class="font-headline-sm text-headline-sm font-semibold"><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></h3>
@@ -289,9 +287,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <!-- Feature 1: Sardar Patel Abhiyan (Primary Flagship Campaign) -->
       <div class="bg-pure-white rounded-2xl p-6 lg:p-10 shadow-sm border border-border-warm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-6 rounded-xl overflow-hidden shadow-sm h-72 lg:h-96 bg-surface-variant flex items-center justify-center p-2">
-          <img class="w-full h-full object-contain rounded-lg" 
-               src="<?= e($patelImg) ?>" 
-               alt="<?= e(ps_text('सरदार पटेल अभियान — राष्ट्रीय एकता व अखंडता', 'Sardar Patel Campaign - National Integration')) ?>"/>
+          <?= ps_responsive_img($patelImg, ps_text('सरदार पटेल अभियान — राष्ट्रीय एकता व अखंडता', 'Sardar Patel Campaign - National Integration'), 'w-full h-full object-contain rounded-lg', '(max-width: 1024px) 100vw, 50vw', 'lazy') ?>
         </div>
         <div class="lg:col-span-6 flex flex-col space-y-4">
           <div class="inline-flex items-center gap-2 self-start bg-secondary-fixed/40 px-3 py-1 rounded-full text-secondary font-label-sm text-label-sm border border-secondary/20">
@@ -342,9 +338,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           </div>
         </div>
         <div class="lg:col-span-6 order-1 lg:order-2 rounded-xl overflow-hidden shadow-sm h-72 lg:h-96 bg-surface-variant flex items-center justify-center p-2">
-          <img class="w-full h-full object-contain rounded-lg" 
-               src="<?= e($greenImg) ?>" 
-               alt="<?= e(ps_text('हरियाली-अभियान (ग्रीन गैंग) पौधरोपण', 'Hariyali Abhiyan Green Gang Plantation')) ?>"/>
+          <?= ps_responsive_img($greenImg, ps_text('हरियाली-अभियान (ग्रीन गैंग) पौधरोपण', 'Hariyali Abhiyan Green Gang Plantation'), 'w-full h-full object-contain rounded-lg', '(max-width: 1024px) 100vw, 50vw', 'lazy') ?>
         </div>
       </div>
     </div>

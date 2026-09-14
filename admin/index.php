@@ -243,25 +243,25 @@ if (is_post()) {
                 $blogData['updated_by'] = (int)$_SESSION['user_id'];
             }
 
-            // File uploading for banner image & featured image
+            // File uploading for banner image & featured image (max 1200x630 responsive WebP)
             $bannerPath = $_POST['existing_banner'] ?? '';
             if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] === UPLOAD_ERR_OK) {
                 $errorUpload = '';
-                $uploaded = upload_file($_FILES['banner_image'], $errorUpload, 'blogs');
+                $uploaded = upload_file($_FILES['banner_image'], $errorUpload, 'blogs', 1200, 630);
                 if ($uploaded) {
                     $bannerPath = $uploaded;
                 } else {
-                    flash('admin_error', 'Banner upload failed: ' . $errorUpload);
+                    flash('admin_error', 'Featured image upload failed: ' . $errorUpload);
                 }
             }
             $blogData['banner_image'] = $bannerPath;
             $blogData['featured_image'] = $bannerPath;
             $blogData['og_image'] = $bannerPath;
 
-            // Optional explicit OG Image
+            // Optional explicit OG Image (max 1200x630)
             if (isset($_FILES['og_image_file']) && $_FILES['og_image_file']['error'] === UPLOAD_ERR_OK) {
                 $errorUpload = '';
-                $uploaded = upload_file($_FILES['og_image_file'], $errorUpload, 'seo');
+                $uploaded = upload_file($_FILES['og_image_file'], $errorUpload, 'seo', 1200, 630);
                 if ($uploaded) {
                     $blogData['og_image'] = $uploaded;
                 }
@@ -341,6 +341,56 @@ if (is_post()) {
         redirect('/admin/index.php?module=blogs');
     }
 
+    // Category Creation / Update
+    if ($loggedIn && (($_POST['action'] ?? '') === 'save_category' || ($_POST['action'] ?? '') === 'create_category' || ($_POST['action'] ?? '') === 'update_category')) {
+        verify_csrf();
+        $id = (int)($_POST['id'] ?? 0);
+        $name = trim($_POST['name'] ?? '');
+        $slug = trim($_POST['slug'] ?? '');
+
+        if (empty($name)) {
+            flash('admin_error', 'Category name is required.');
+        } else {
+            $finalSlug = $categoryModel->normalizeSlug(!empty($slug) ? $slug : $name, $id > 0 ? $id : null);
+            try {
+                if ($id > 0) {
+                    $categoryModel->update($id, [
+                        'name' => $name,
+                        'slug' => $finalSlug,
+                    ]);
+                    $userModel->logAudit((int)$_SESSION['user_id'], 'Category Updated: ' . $name . ' (ID: ' . $id . ')', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                    flash('admin_success', 'Category "' . e($name) . '" updated successfully.');
+                } else {
+                    $newId = $categoryModel->create([
+                        'name' => $name,
+                        'slug' => $finalSlug,
+                    ]);
+                    $userModel->logAudit((int)$_SESSION['user_id'], 'Category Created: ' . $name . ' (ID: ' . $newId . ')', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                    flash('admin_success', 'Category "' . e($name) . '" created successfully.');
+                }
+            } catch (Throwable $e) {
+                flash('admin_error', 'Database error: ' . $e->getMessage());
+            }
+        }
+        redirect('/admin/index.php?module=categories');
+    }
+
+    // Category Deletion
+    if ($loggedIn && ($_POST['action'] ?? '') === 'delete_category') {
+        verify_csrf();
+        $id = (int)($_POST['id'] ?? 0);
+        $cat = $categoryModel->find($id);
+        if ($cat) {
+            try {
+                $categoryModel->delete($id);
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Category Deleted: ' . ($cat['name'] ?? $id), $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                flash('admin_success', 'Category "' . e($cat['name']) . '" deleted successfully.');
+            } catch (Throwable $e) {
+                flash('admin_error', 'Delete failed: ' . $e->getMessage());
+            }
+        }
+        redirect('/admin/index.php?module=categories');
+    }
 
     if ($loggedIn && (($_POST['action'] ?? '') === 'create_timeline' || ($_POST['action'] ?? '') === 'update_timeline')) {
         $isEdit = $_POST['action'] === 'update_timeline';
@@ -678,6 +728,15 @@ if (is_post()) {
             'youtube' => trim($_POST['youtube'] ?? ''),
             'social_hashtags' => trim($_POST['social_hashtags'] ?? '#PradeepSarang #AwadhiLiterature #GreenGang'),
             'footer_text' => trim($_POST['footer_text'] ?? ''),
+
+            // AUTHOR PROFILE & BIO CARD FIELDS
+            'author_name' => trim($_POST['author_name'] ?? 'श्री प्रदीप सारंग'),
+            'author_role' => trim($_POST['author_role'] ?? 'वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता'),
+            'author_location' => trim($_POST['author_location'] ?? 'कमरावां, सतरिख, बाराबंकी (उ० प्र०)'),
+            'author_badge' => trim($_POST['author_badge'] ?? 'साहित्यिक व जमीनी सरोकार'),
+            'author_bio' => trim($_POST['author_bio'] ?? ''),
+            'author_quote' => trim($_POST['author_quote'] ?? ''),
+            'author_badges_list' => trim($_POST['author_badges_list'] ?? '40+ वर्ष साहित्य सेवा, ग्रीन गैंग संस्थापक'),
         ];
 
         $logoPath = $_POST['existing_logo'] ?? '';
@@ -691,6 +750,18 @@ if (is_post()) {
             }
         }
         $data['logo'] = $logoPath;
+
+        $authorImgPath = $_POST['existing_author_image'] ?? '';
+        if (isset($_FILES['author_image']) && $_FILES['author_image']['error'] === UPLOAD_ERR_OK) {
+            $errorUpload = '';
+            $uploaded = upload_file($_FILES['author_image'], $errorUpload, 'author');
+            if ($uploaded) {
+                $authorImgPath = $uploaded;
+            } else {
+                flash('admin_error', 'Author image upload failed: ' . $errorUpload);
+            }
+        }
+        $data['author_image'] = $authorImgPath;
 
         try {
             $content->updateSettings($data);
@@ -907,9 +978,17 @@ if (is_post()) {
             'role' => $role,
             'status' => $status,
             'biography' => trim($_POST['biography'] ?? ''),
+            'designation' => trim($_POST['designation'] ?? ''),
+            'location' => trim($_POST['location'] ?? ''),
+            'section_badge' => trim($_POST['section_badge'] ?? ''),
+            'inspiring_quote' => trim($_POST['inspiring_quote'] ?? ''),
+            'stat_badges' => trim($_POST['stat_badges'] ?? ''),
             'facebook_link' => trim($_POST['facebook_link'] ?? ''),
             'twitter_link' => trim($_POST['twitter_link'] ?? ''),
             'linkedin_link' => trim($_POST['linkedin_link'] ?? ''),
+            'whatsapp_link' => trim($_POST['whatsapp_link'] ?? ''),
+            'youtube_link' => trim($_POST['youtube_link'] ?? ''),
+            'instagram_link' => trim($_POST['instagram_link'] ?? ''),
         ];
 
         $errors = [];
@@ -1115,6 +1194,7 @@ $metrics = $content->metrics();
     <title>Admin Panel | <?= e(app_config('name')) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     <link href="<?= e(asset('css/admin.css')) ?>" rel="stylesheet">
 </head>
 <body class="admin-body">
@@ -1143,6 +1223,7 @@ $metrics = $content->metrics();
                     <a href="?module=timeline&filter_type=award" class="<?= $module === 'timeline' && ($_GET['filter_type'] ?? '') === 'award' ? 'active' : '' ?>"><i class="fa-solid fa-award me-1"></i> Samman & Puraskar</a>
                     <a href="?module=timeline" class="<?= $module === 'timeline' && !isset($_GET['filter_type']) ? 'active' : '' ?>">All Timeline Entries</a>
                     <a href="?module=blogs" class="<?= $module === 'blogs' ? 'active' : '' ?>">Blogs</a>
+                    <a href="?module=categories" class="<?= $module === 'categories' ? 'active' : '' ?>"><i class="fa-solid fa-folder-tree me-1"></i> Categories</a>
                     <a href="?module=events" class="<?= $module === 'events' ? 'active' : '' ?>">Events</a>
                     <a href="?module=campaigns" class="<?= $module === 'campaigns' ? 'active' : '' ?>">Campaigns</a>
                     <a href="?module=donations" class="<?= $module === 'donations' ? 'active' : '' ?>">Donations</a>
@@ -1823,9 +1904,9 @@ $metrics = $content->metrics();
                                             </div>
                                         <?php endif; ?>
                                         <div class="mb-3">
-                                            <label class="form-label">Upload New Image</label>
+                                            <label class="form-label">Upload New Featured Image</label>
                                             <input type="file" name="banner_image" class="form-control" accept="image/*">
-                                            <div class="form-text">Recommended resolution: 1200x630 (JPEG, PNG, WebP)</div>
+                                            <div class="form-text text-success"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Auto-resized to max 1200x630 & mobile responsive (WebP)</div>
                                         </div>
                                     </div>
 
@@ -2201,6 +2282,133 @@ $metrics = $content->metrics();
                     });
                 }
                 </script>
+            <?php elseif ($module === 'categories'): ?>
+                <?php
+                $categories = $categoryModel->allWithPostCount();
+                $success = flash('admin_success');
+                $error = flash('admin_error');
+                $editCatId = (int)($_GET['edit_id'] ?? 0);
+                $editCat = $editCatId > 0 ? $categoryModel->find($editCatId) : null;
+                ?>
+
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+                    <div>
+                        <h2 class="mb-0 fw-bold"><i class="fa-solid fa-folder-tree text-success me-2"></i>Blog Categories</h2>
+                        <p class="text-muted mb-0 small">Create, edit, and organize article categories across the website.</p>
+                    </div>
+                </div>
+
+                <?php if ($success): ?><div class="alert alert-success alert-dismissible fade show" role="alert"><?= e($success) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+                <?php if ($error): ?><div class="alert alert-danger alert-dismissible fade show" role="alert"><?= e($error) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+
+                <div class="row g-4">
+                    <!-- Left Side: Add / Edit Form Card -->
+                    <div class="col-lg-4">
+                        <div class="admin-card h-100">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h5 class="mb-0 fw-bold text-dark">
+                                    <i class="fa-solid <?= $editCat ? 'fa-pen-to-square text-primary' : 'fa-plus-circle text-success' ?> me-2"></i>
+                                    <?= $editCat ? 'Edit Category' : 'Add New Category' ?>
+                                </h5>
+                                <?php if ($editCat): ?>
+                                    <a href="?module=categories" class="btn btn-sm btn-outline-secondary">Cancel</a>
+                                <?php endif; ?>
+                            </div>
+
+                            <form method="post">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="save_category">
+                                <?php if ($editCat): ?>
+                                    <input type="hidden" name="id" value="<?= (int)$editCat['id'] ?>">
+                                <?php endif; ?>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Category Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="name" class="form-control" placeholder="e.g., अवधी साहित्य (Awadhi Literature)" value="<?= e($editCat['name'] ?? '') ?>" required>
+                                    <div class="form-text">Name displayed in headers, post metadata, and category filters.</div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Slug (URL identifier)</label>
+                                    <input type="text" name="slug" class="form-control" placeholder="e.g., awadhi-literature" value="<?= e($editCat['slug'] ?? '') ?>">
+                                    <div class="form-text">Optional. If left blank, it will be automatically generated from the category name.</div>
+                                </div>
+
+                                <div class="d-grid gap-2 mt-4">
+                                    <button type="submit" class="btn <?= $editCat ? 'btn-primary' : 'btn-success' ?> fw-semibold">
+                                        <i class="fa-solid <?= $editCat ? 'fa-check' : 'fa-plus' ?> me-1"></i>
+                                        <?= $editCat ? 'Update Category' : 'Create Category' ?>
+                                    </button>
+                                    <?php if ($editCat): ?>
+                                        <a href="?module=categories" class="btn btn-light border">Cancel Editing</a>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Categories Data Table -->
+                    <div class="col-lg-8">
+                        <div class="admin-card">
+                            <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                                <h5 class="mb-0 fw-bold text-dark"><i class="fa-solid fa-list me-2"></i>Existing Categories</h5>
+                                <span class="badge bg-success rounded-pill px-3 py-2 fs-6"><?= count($categories) ?> Categories</span>
+                            </div>
+
+                            <?php if (empty($categories)): ?>
+                                <div class="text-center py-5 text-muted">
+                                    <i class="fa-solid fa-folder-open text-secondary mb-3 display-5"></i>
+                                    <p class="mb-0">No categories found. Create your first category using the form.</p>
+                                </div>
+                            <?php else: ?>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th style="width: 60px;">ID</th>
+                                                <th>Category Name</th>
+                                                <th>Slug</th>
+                                                <th class="text-center">Associated Posts</th>
+                                                <th class="text-end" style="width: 140px;">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($categories as $cat): ?>
+                                                <tr class="<?= ($editCatId === (int)$cat['id']) ? 'table-warning' : '' ?>">
+                                                    <td class="fw-bold text-secondary">#<?= (int)$cat['id'] ?></td>
+                                                    <td>
+                                                        <span class="fw-bold text-dark"><?= e($cat['name']) ?></span>
+                                                    </td>
+                                                    <td>
+                                                        <code class="bg-light px-2 py-1 rounded text-dark small"><?= e($cat['slug']) ?></code>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-secondary rounded-pill px-2.5 py-1.5"><?= (int)($cat['post_count'] ?? 0) ?> Posts</span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="btn-group btn-group-sm">
+                                                            <a href="?module=categories&edit_id=<?= (int)$cat['id'] ?>" class="btn btn-outline-primary" title="Edit Category">
+                                                                <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                            </a>
+                                                            <form method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete category \'<?= e(addslashes($cat['name'])) ?>\'?');">
+                                                                <?= csrf_field() ?>
+                                                                <input type="hidden" name="action" value="delete_category">
+                                                                <input type="hidden" name="id" value="<?= (int)$cat['id'] ?>">
+                                                                <button type="submit" class="btn btn-outline-danger" title="Delete Category">
+                                                                    <i class="fa-solid fa-trash-can"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
             <?php elseif ($module === 'campaigns'): ?>
                 <?php
                 $campaigns = $content->allCampaigns();
@@ -2849,16 +3057,20 @@ $metrics = $content->metrics();
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Profile Photo</label>
-                                        <input type="file" name="profile_photo" class="form-control" accept="image/*">
+                                        <label class="form-label">Location / Address Tag</label>
+                                        <input type="text" name="location" class="form-control" value="<?= e($editUser['location'] ?? '') ?>" placeholder="e.g. कमरावां, सतरिख, बाराबंकी (उ० प्र०)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">LinkedIn Profile Link</label>
+                                        <input type="text" name="section_badge" class="form-control" value="<?= e($editUser['section_badge'] ?? '') ?>" placeholder="e.g. साहित्यिक व जमीनी सरोकार">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Facebook Profile Link</label>
-                                        <input type="url" name="facebook_link" class="form-control" value="<?= e($editUser['facebook_link'] ?? '') ?>">
+                                        <input type="url" name="facebook_link" class="form-control" value="<?= e($editUser['facebook_link'] ?? '') ?>" placeholder="https://facebook.com/username">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Twitter / X Profile Link</label>
-                                        <input type="url" name="twitter_link" class="form-control" value="<?= e($editUser['twitter_link'] ?? '') ?>">
+                                        <input type="url" name="twitter_link" class="form-control" value="<?= e($editUser['twitter_link'] ?? '') ?>" placeholder="https://twitter.com/username">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">LinkedIn Profile Link</label>
@@ -3282,6 +3494,61 @@ $metrics = $content->metrics();
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Address</label>
                                 <textarea name="address" class="form-control" rows="1"><?= e($settings['address'] ?? '') ?></textarea>
+                            </div>
+
+                            <hr>
+
+                            <!-- Author Profile & Bio Card Settings -->
+                            <div class="col-12" id="author-settings">
+                                <h4 class="mb-1 text-success"><i class="fa-solid fa-user-pen me-2"></i> Author Profile & Bio Card Settings</h4>
+                                <p class="text-muted small mb-0">Manage author photo, designation, biography text, signature quote, stats badges, and location displayed in the Author Bio section across articles.</p>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Author Full Name</label>
+                                <input type="text" name="author_name" class="form-control" placeholder="श्री प्रदीप सारंग" value="<?= e($settings['author_name'] ?? 'श्री प्रदीप सारंग') ?>">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Designation / Role</label>
+                                <input type="text" name="author_role" class="form-control" placeholder="वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता" value="<?= e($settings['author_role'] ?? 'वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता') ?>">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">Location / Address Tag</label>
+                                <input type="text" name="author_location" class="form-control" placeholder="कमरावां, सतरिख, बाराबंकी (उ० प्र०)" value="<?= e($settings['author_location'] ?? 'कमरावां, सतरिख, बाराबंकी (उ० प्र०)') ?>">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Author Profile Photo / Avatar</label>
+                                <input type="file" name="author_image" class="form-control mb-2" accept="image/*">
+                                <input type="hidden" name="existing_author_image" value="<?= e($settings['author_image'] ?? '') ?>">
+                                <?php if (!empty($settings['author_image'])): ?>
+                                    <div class="mt-2 d-flex align-items-center gap-2">
+                                        <small class="text-muted d-block mb-1">Current Photo:</small>
+                                        <img src="<?= e(base_url($settings['author_image'])) ?>" alt="Author Photo" style="max-height: 60px; border-radius: 10px; border: 1px solid #ddd; object-fit: cover;">
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Literary Section Badge</label>
+                                <input type="text" name="author_badge" class="form-control" placeholder="साहित्यिक व जमीनी सरोकार" value="<?= e($settings['author_badge'] ?? 'साहित्यिक व जमीनी सरोकार') ?>">
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Author Biography Description</label>
+                                <textarea name="author_bio" class="form-control" rows="3" placeholder="विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन..."><?= e($settings['author_bio'] ?? 'विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।') ?></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Signature Inspiring Quote / Poem</label>
+                                <textarea name="author_quote" class="form-control" rows="2" placeholder="हारना सीखा नहीं है, जीत का मैं गीत हूँ..."><?= e($settings['author_quote'] ?? 'हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।') ?></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Quick Stat Badges (Comma Separated)</label>
+                                <input type="text" name="author_badges_list" class="form-control" placeholder="40+ वर्ष साहित्य सेवा, ग्रीन गैंग संस्थापक" value="<?= e($settings['author_badges_list'] ?? '40+ वर्ष साहित्य सेवा, ग्रीन गैंग संस्थापक') ?>">
                             </div>
 
                             <hr>
@@ -3714,6 +3981,80 @@ function resetBlogFilters() {
     if (document.getElementById('blogStatusFilter')) document.getElementById('blogStatusFilter').value = '';
     filterBlogsTable();
 }
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+<script>
+$(document).ready(function() {
+    // 1. Initialize Rich Text Editor for Summary / Excerpt fields
+    const $excerptElems = $('textarea[name="excerpt"]');
+    if ($excerptElems.length) {
+        $excerptElems.summernote({
+            placeholder: 'Write a concise 2-3 sentence summary or excerpt...',
+            tabsize: 2,
+            height: 120,
+            toolbar: [
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['insert', ['link']],
+                ['view', ['codeview', 'fullscreen']]
+            ],
+            callbacks: {
+                onChange: function(contents) {
+                    $excerptElems.val(contents);
+                    if (typeof updateLiveSEOPreview === 'function') {
+                        updateLiveSEOPreview();
+                    }
+                }
+            }
+        });
+    }
+
+    // 2. Initialize Rich Text Editor for Full Content fields
+    const $contentElems = $('textarea[name="content"], #blogContentEditor');
+    if ($contentElems.length) {
+        $contentElems.summernote({
+            placeholder: 'Write the full article content here with formatting, headings, quotes, and media...',
+            tabsize: 2,
+            height: 400,
+            toolbar: [
+                ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video', 'hr']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            callbacks: {
+                onChange: function(contents) {
+                    $contentElems.val(contents);
+                    if (typeof updateLiveSEOPreview === 'function') {
+                        updateLiveSEOPreview();
+                    }
+                }
+            }
+        });
+    }
+
+    // Ensure Summernote content syncs cleanly on form submission
+    $('form').on('submit', function() {
+        $excerptElems.each(function() {
+            if ($(this).data('summernote')) {
+                $(this).val($(this).summernote('code'));
+            }
+        });
+        $contentElems.each(function() {
+            if ($(this).data('summernote')) {
+                $(this).val($(this).summernote('code'));
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>
