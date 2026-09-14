@@ -1,31 +1,26 @@
 <?php
 declare(strict_types=1);
 
-function ps_text(string $hi, string $en): string { return current_lang() === 'hi' ? $hi : $en; }
-function ps_content_lang(string $text): string { return preg_match('/[\x{0900}-\x{097F}]/u', $text) ? 'hi' : 'en'; }
-function ps_excerpt(array $item, int $length = 180): string {
-    $raw = ($item['excerpt'] ?? '') ?: ($item['content'] ?? $item['description'] ?? '');
-    $text = trim(ps_decode_entities(strip_tags($raw)));
-    return mb_strlen($text) > $length ? mb_substr($text, 0, $length) . '…' : $text;
+if (!function_exists('ps_text')) {
+    function ps_text(string $hi, string $en): string { return current_lang() === 'hi' ? $hi : $en; }
 }
-function ps_image_path(string $path): ?string {
-    $path = trim($path);
-    if ($path === '') return null;
-    if (preg_match('#^https?://#i', $path)) return $path;
-
-    $cleanPath = ltrim($path, '/');
-    $root = realpath(__DIR__ . '/../../..') ?: dirname(__DIR__, 3);
-
-    if (is_file($root . '/' . $cleanPath)) {
-        return $cleanPath;
+if (!function_exists('ps_content_lang')) {
+    function ps_content_lang(string $text): string { return preg_match('/[\x{0900}-\x{097F}]/u', $text) ? 'hi' : 'en'; }
+}
+if (!function_exists('ps_excerpt')) {
+    function ps_excerpt(array $item, int $length = 180): string {
+        $raw = ($item['excerpt'] ?? '') ?: ($item['content'] ?? $item['description'] ?? '');
+        $text = trim(ps_decode_entities(strip_tags($raw)));
+        return mb_strlen($text) > $length ? mb_substr($text, 0, $length) . '…' : $text;
     }
-
-    $pathWebp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
-    if (is_file($root . '/' . $pathWebp)) {
-        return $pathWebp;
+}
+if (!function_exists('ps_image_path')) {
+    function ps_image_path(string $path): ?string {
+        $path = trim($path);
+        if ($path === '') return null;
+        if (preg_match('#^https?://#i', $path)) return $path;
+        return base_url(ltrim($path, '/'));
     }
-
-    return $cleanPath;
 }
 function ps_image(string $path, string $alt, string $class = '', bool $hero = false): void {
     $path = trim($path);

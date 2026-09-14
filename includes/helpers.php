@@ -25,7 +25,7 @@ function db_config(): array
 /**
  * Recursively decodes HTML entity codes (e.g. &#039;, &#39;, &quot;, &amp;, &lt;, &gt;, &nbsp;, etc.) into actual character symbols.
  */
-function ps_decode_entities(?string $value): string
+function ps_decode_entities($value): string
 {
     if ($value === null || $value === '') {
         return '';
@@ -41,7 +41,7 @@ function ps_decode_entities(?string $value): string
     return $str;
 }
 
-function e(?string $value): string
+function e($value): string
 {
     if ($value === null || $value === '') {
         return '';
@@ -78,451 +78,133 @@ function base_url(string $path = ''): string
         return $path;
     }
 
-    $configured = app_config('base_url');
-    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
+    $baseUrl = rtrim(app_config('base_url', ''), '/');
+    $cleanPath = '/' . ltrim($path, '/');
 
-    if ($httpHost !== '') {
-        $scheme = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https') ? 'https' : 'http';
-        $script = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
-        $root = rtrim(dirname($script), '/');
-        if (substr($root, -6) === '/admin') {
-            $root = substr($root, 0, -6);
+    if (!empty($_SERVER['HTTP_HOST'])) {
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = $_SERVER['HTTP_HOST'];
+        
+        $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+        $subDir = dirname($scriptName);
+        $subDir = ($subDir === '/' || $subDir === '\\') ? '' : rtrim(str_replace('\\', '/', $subDir), '/');
+        
+        if (preg_match('#/admin(?=/|$)#i', $subDir)) {
+            $subDir = preg_replace('#/admin(?=/|$)#i', '', $subDir);
         }
-        if ($root === '/' || $root === '.') {
-            $root = '';
-        }
-        $baseUrl = $scheme . '://' . $httpHost . $root;
-    } else {
-        $baseUrl = rtrim((string) ($configured ?: ''), '/');
+
+        return $scheme . '://' . $host . $subDir . $cleanPath;
     }
 
-    $path = ltrim($path, '/');
-    return $baseUrl . ($path !== '' ? '/' . $path : '');
+    return $baseUrl . $cleanPath;
+}
+
+function asset(string $path): string
+{
+    return base_url('assets/' . ltrim($path, '/'));
 }
 
 function current_path(): string
 {
-    $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-    $baseUrl = base_url();
-    $basePath = parse_url($baseUrl, PHP_URL_PATH) ?: '';
-    $basePath = rtrim($basePath, '/');
-
-    if ($basePath !== '' && strpos($uri, $basePath) === 0) {
-        $uri = substr($uri, strlen($basePath)) ?: '/';
-    }
-
-    return trim($uri, '/') === '' ? '/' : rtrim($uri, '/');
+    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+    $path = parse_url($uri, PHP_URL_PATH) ?: '/';
+    return '/' . trim($path, '/');
 }
 
-function is_post(): bool
+function is_active(string $path): string
 {
-    return strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
+    return current_path() === '/' . trim($path, '/') ? 'active' : '';
+}
+
+function is_nav_item_active(string $navUrl, string $currentPath): bool
+{
+    $cleanNav = '/' . trim($navUrl, '/');
+    $cleanCurr = '/' . trim($currentPath, '/');
+    
+    if ($cleanNav === '/') {
+        return $cleanCurr === '/';
+    }
+    
+    return $cleanCurr === $cleanNav || str_starts_with($cleanCurr, $cleanNav . '/');
+}
+
+function ps_text(string $hi, string $en): string
+{
+    return current_lang() === 'hi' ? $hi : $en;
+}
+
+function json_response(array $data, int $statusCode = 200): void
+{
+    http_response_code($statusCode);
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
 }
 
 function csrf_token(): string
 {
-    if (empty($_SESSION['_csrf'])) {
-        $_SESSION['_csrf'] = bin2hex(random_bytes(32));
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
 
-    return $_SESSION['_csrf'];
+    return $_SESSION['csrf_token'];
 }
 
 function csrf_field(): string
 {
-    return '<input type="hidden" name="_csrf" value="' . e(csrf_token()) . '">';
+    return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
 }
 
 function verify_csrf(): void
 {
-    if (!is_post()) {
-        return;
-    }
-
-    $token = $_POST['_csrf'] ?? '';
-    if (!hash_equals($_SESSION['_csrf'] ?? '', $token)) {
-        http_response_code(419);
-        exit('Invalid CSRF token.');
+    $token = $_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+    if (empty($token) || !hash_equals(csrf_token(), $token)) {
+        json_response(['status' => 'error', 'message' => 'CSRF token mismatch.'], 403);
     }
 }
 
-function flash(string $key, ?string $message = null): ?string
+function is_post(): bool
 {
-    if ($message !== null) {
-        $_SESSION['_flash'][$key] = $message;
-        return null;
-    }
-
-    $value = $_SESSION['_flash'][$key] ?? null;
-    unset($_SESSION['_flash'][$key]);
-    return $value;
+    return ($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST';
 }
 
-function redirect(string $path): never
+function redirect(string $path): void
 {
     header('Location: ' . base_url($path));
     exit;
 }
 
-function asset(string $path): string
+function flash(string $key, ?string $message = null): ?string
 {
-    $cleanPath = ltrim($path, '/');
-    $webpVersion = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
-    $localWebpPath = __DIR__ . '/../assets/' . $webpVersion;
-    if ($webpVersion !== $cleanPath && file_exists($localWebpPath)) {
-        return base_url('assets/' . $webpVersion);
-    }
-    return base_url('assets/' . $cleanPath);
-}
-
-function is_nav_item_active(string $url, string $currPath): bool
-{
-    $url = '/' . ltrim($url, '/');
-    $currPath = '/' . ltrim(preg_replace('#^/pradeep#i', '', $currPath), '/');
-
-    // 1. Home
-    if ($url === '/') {
-        return $currPath === '/' || $currPath === '' || $currPath === '/home';
-    }
-
-    // 2. Green Gang (takes priority over generic campaigns)
-    if ($url === '/green-gang') {
-        return $currPath === '/green-gang'
-            || $currPath === '/greengang'
-            || str_contains($currPath, 'green-gang')
-            || str_contains($currPath, 'greengang')
-            || str_contains($currPath, 'hariyali');
-    }
-
-    // 3. Campaigns (excluding Green Gang)
-    if ($url === '/campaigns') {
-        if ($currPath === '/green-gang' || $currPath === '/greengang' || str_contains($currPath, 'green-gang') || str_contains($currPath, 'greengang') || str_contains($currPath, 'hariyali')) {
-            return false;
-        }
-        return $currPath === '/campaigns' 
-            || $currPath === '/causes' 
-            || str_starts_with($currPath, '/campaigns/') 
-            || str_starts_with($currPath, '/causes/');
-    }
-
-    // 4. About
-    if ($url === '/about') {
-        return $currPath === '/about' || $currPath === '/about-us' || $currPath === '/parichay';
-    }
-
-    // 5. Impact
-    if ($url === '/impact') {
-        return $currPath === '/impact' || $currPath === '/janprabhav' || $currPath === '/community-impact' || $currPath === '/proof';
-    }
-
-    // 6. Journey
-    if ($url === '/journey') {
-        return $currPath === '/journey' || $currPath === '/timeline' || $currPath === '/seva-yatra';
-    }
-
-    // 7. Awards
-    if ($url === '/awards') {
-        return $currPath === '/awards' || $currPath === '/samman' || $currPath === '/recognition';
-    }
-
-    // 8. Portfolio (Photo Gallery)
-    if ($url === '/portfolio') {
-        return $currPath === '/portfolio' || $currPath === '/gallery' || $currPath === '/chhayachitra' || str_starts_with($currPath, '/portfolio/');
-    }
-
-    // 8.5 Video Gallery
-    if ($url === '/videos') {
-        return $currPath === '/videos' || $currPath === '/video-gallery' || $currPath === '/youtube-videos' || str_starts_with($currPath, '/videos/');
-    }
-
-    // 9. Media (Press & Clippings)
-    if ($url === '/media') {
-        return $currPath === '/media' || $currPath === '/press' || $currPath === '/news' || str_starts_with($currPath, '/media/');
-    }
-
-    // 10. Salahkaar / Counsellor
-    if ($url === '/salahkaar') {
-        return $currPath === '/salahkaar' || $currPath === '/counsellor' || $currPath === '/counsellor-guidance' || $currPath === '/advisor';
-    }
-
-    // 11. Events
-    if ($url === '/events') {
-        return $currPath === '/events' || $currPath === '/karyakram' || str_starts_with($currPath, '/events/');
-    }
-
-    // 12. Blog / Literature & Writings
-    if ($url === '/blog') {
-        return $currPath === '/blog' 
-            || $currPath === '/blogs' 
-            || $currPath === '/blog-and-thoughts' 
-            || str_starts_with($currPath, '/blog/') 
-            || str_starts_with($currPath, '/blogs/') 
-            || str_starts_with($currPath, '/categories/');
-    }
-
-    // 13. Contact
-    if ($url === '/contact') {
-        return $currPath === '/contact' || $currPath === '/sampark' || $currPath === '/contact-us';
-    }
-
-    // 14. Volunteer
-    if ($url === '/volunteer') {
-        return $currPath === '/volunteer' || $currPath === '/join' || $currPath === '/shramdaan';
-    }
-
-    // 15. Donation
-    if ($url === '/donation') {
-        return $currPath === '/donation' || $currPath === '/donate';
-    }
-
-    // Default fallback check
-    return $currPath === $url || (!str_starts_with($url, '/#') && str_starts_with($currPath, $url . '/'));
-}
-
-function is_active(string $path): string
-{
-    return is_nav_item_active($path, current_path()) ? 'active' : '';
-}
-
-function format_date(string $date): string
-{
-    return date('d M Y', strtotime($date));
-}
-
-function json_response($data, int $status = 200): never
-{
-    http_response_code($status);
-    header('Content-Type: application/json; charset=UTF-8');
-    echo json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-function request_payload(): array
-{
-    $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
-    if (str_contains($contentType, 'application/json')) {
-        $data = json_decode(file_get_contents('php://input'), true);
-        return is_array($data) ? $data : [];
-    }
-
-    return $_POST;
-}
-
-function setting(string $key, $default = null)
-{
-    static $settings = null;
-    if ($settings === null) {
-        $settings = (new ContentModel())->getSettings();
-    }
-    return $settings[$key] ?? $default;
-}
-
-/**
- * Converts an image file (JPG, JPEG, PNG, GIF, BMP) to WebP format.
- * Returns absolute path to the WebP image.
- */
-function convert_image_to_webp(string $filePath, int $quality = 82): string
-{
-    if (!file_exists($filePath) || !function_exists('imagewebp')) {
-        return $filePath;
-    }
-
-    $info = @getimagesize($filePath);
-    if (!$info) {
-        return $filePath;
-    }
-
-    $mime = $info['mime'] ?? '';
-    $imageResource = null;
-
-    switch ($mime) {
-        case 'image/jpeg':
-        case 'image/jpg':
-        case 'image/pjpeg':
-            $imageResource = @imagecreatefromjpeg($filePath);
-            break;
-        case 'image/png':
-            $imageResource = @imagecreatefrompng($filePath);
-            if ($imageResource) {
-                imagealphablending($imageResource, false);
-                imagesavealpha($imageResource, true);
-            }
-            break;
-        case 'image/gif':
-            $imageResource = @imagecreatefromgif($filePath);
-            if ($imageResource) {
-                imagealphablending($imageResource, false);
-                imagesavealpha($imageResource, true);
-            }
-            break;
-        case 'image/bmp':
-        case 'image/x-ms-bmp':
-            if (function_exists('imagecreatefrombmp')) {
-                $imageResource = @imagecreatefrombmp($filePath);
-            }
-            break;
-        case 'image/webp':
-            return $filePath;
-        default:
-            return $filePath;
-    }
-
-    if (!$imageResource) {
-        return $filePath;
-    }
-
-    $pathInfo = pathinfo($filePath);
-    $webpPath = $pathInfo['dirname'] . DIRECTORY_SEPARATOR . $pathInfo['filename'] . '.webp';
-
-    $success = @imagewebp($imageResource, $webpPath, $quality);
-    imagedestroy($imageResource);
-
-    if ($success && file_exists($webpPath)) {
-        if (realpath($filePath) !== realpath($webpPath) && file_exists($filePath)) {
-            @unlink($filePath);
-        }
-        return $webpPath;
-    }
-
-    return $filePath;
-}
-
-/**
- * Centralized file upload handler with automatic WebP conversion
- */
-function upload_file(array $file, string &$error = '', string $subfolder = ''): ?string
-{
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        $error = 'File upload error code: ' . $file['error'];
+    if ($message !== null) {
+        $_SESSION['flash'][$key] = $message;
         return null;
     }
 
-    // File size validation (10MB max)
-    $maxSize = 10 * 1024 * 1024;
-    if ($file['size'] > $maxSize) {
-        $error = 'File is too large. Maximum size is 10MB.';
-        return null;
-    }
+    $val = $_SESSION['flash'][$key] ?? null;
+    unset($_SESSION['flash'][$key]);
 
-    // File extension validation
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'pdf', 'svg', 'bmp'];
-    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($extension, $allowedExtensions, true)) {
-        $error = 'Invalid file type. Allowed types: ' . implode(', ', $allowedExtensions);
-        return null;
-    }
-
-    $baseDir = app_config('uploads_dir');
-    $relativeDir = 'uploads' . ($subfolder ? '/' . trim($subfolder, '/') : '');
-    $absoluteDir = rtrim($baseDir, '/\\') . ($subfolder ? DIRECTORY_SEPARATOR . trim($subfolder, '/\\') : '');
-
-    if (!is_dir($absoluteDir)) {
-        if (!@mkdir($absoluteDir, 0775, true)) {
-            $error = 'Could not create directory: ' . $absoluteDir;
-            return null;
-        }
-    }
-
-    if (!is_writable($absoluteDir)) {
-        $error = 'The directory is not writable: ' . $absoluteDir;
-        return null;
-    }
-
-    // Clean unique filename
-    $rawBaseName = pathinfo($file['name'], PATHINFO_FILENAME);
-    $cleanBaseName = preg_replace('/[^a-zA-Z0-9_-]/', '', $rawBaseName) ?: 'img';
-    $fileName = uniqid() . '_' . $cleanBaseName . '.' . $extension;
-    $targetFile = $absoluteDir . DIRECTORY_SEPARATOR . $fileName;
-
-    if (move_uploaded_file($file['tmp_name'], $targetFile)) {
-        // Automatically convert images to WebP for optimal compression & performance
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'bmp'], true)) {
-            $finalPath = convert_image_to_webp($targetFile, 82);
-            $finalFileName = basename($finalPath);
-            return $relativeDir . '/' . $finalFileName;
-        }
-        return $relativeDir . '/' . $fileName;
-    }
-
-    $error = 'Failed to save uploaded file on server. Directory permissions error.';
-    return null;
+    return $val;
 }
 
-function get_logged_in_user(): ?array
+function ps_image_path(?string $dbPath): ?string
 {
-    static $userModel;
-    if (!isset($_SESSION['user_id'])) {
-        return null;
+    if (empty($dbPath)) return null;
+    if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
+
+    $clean = ltrim($dbPath, '/');
+    $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+
+    if (file_exists($root . '/' . $clean)) {
+        return base_url($clean);
     }
-    if ($userModel === null) {
-        require_once __DIR__ . '/../models/UserModel.php';
-        $userModel = new UserModel();
+
+    $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+    if (file_exists($root . '/' . $webp)) {
+        return base_url($webp);
     }
-    return $userModel->find((int)$_SESSION['user_id']);
-}
 
-function is_role(string ...$roles): bool
-{
-    $user = get_logged_in_user();
-    if ($user === null) {
-        return false;
-    }
-    return in_array($user['role'], $roles, true);
-}
-
-function log_audit(string $action): void
-{
-    $user = get_logged_in_user();
-    $userId = $user ? (int)$user['id'] : null;
-    $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-    $ua = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-    
-    require_once __DIR__ . '/../models/UserModel.php';
-    $userModel = new UserModel();
-    if ($userId !== null) {
-        $userModel->logAudit($userId, $action, $ip, $ua);
-    }
-}
-
-function add_notification(int $userId, string $title, string $message): void
-{
-    require_once __DIR__ . '/../models/UserModel.php';
-    $userModel = new UserModel();
-    $userModel->addNotification($userId, $title, $message);
-}
-
-function ps_amp_content(string $html): string
-{
-    if (trim($html) === '') return '';
-
-    $html = preg_replace_callback('/<img([^>]+)>/i', function ($matches) {
-        $attrs = $matches[1];
-        $src = '';
-        $alt = '';
-        $width = '800';
-        $height = '500';
-
-        if (preg_match('/src=["\']([^"\']+)["\']/i', $attrs, $m)) $src = $m[1];
-        if (preg_match('/alt=["\']([^"\']+)["\']/i', $attrs, $m)) $alt = $m[1];
-        if (preg_match('/width=["\']([^"\']+)["\']/i', $attrs, $m)) $width = $m[1];
-        if (preg_match('/height=["\']([^"\']+)["\']/i', $attrs, $m)) $height = $m[1];
-
-        if (empty($src)) return '';
-
-        return sprintf(
-            '<amp-img src="%s" width="%s" height="%s" layout="responsive" alt="%s"></amp-img>',
-            e($src),
-            e($width),
-            e($height),
-            e($alt)
-        );
-    }, $html);
-
-    $html = preg_replace('/style=["\']([^"\']*)["\']/i', '', $html);
-    $html = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $html);
-    $html = preg_replace('/<iframe\b[^>]*>(.*?)<\/iframe>/is', '', $html);
-
-    return $html;
+    return base_url($clean);
 }
 
 if (!function_exists('ps_resolve_img')) {
@@ -554,4 +236,353 @@ if (!function_exists('ps_resolve_img')) {
         return base_url($cleanFallback);
     }
 }
-?>
+
+if (!function_exists('setting')) {
+    function setting(string $key, $default = null)
+    {
+        static $settings = null;
+        if ($settings === null) {
+            try {
+                if (class_exists('ContentModel')) {
+                    $content = new ContentModel();
+                    $settings = $content->getSettings();
+                } else {
+                    $settings = [];
+                }
+            } catch (\Throwable $e) {
+                $settings = [];
+            }
+        }
+        return $settings[$key] ?? $default;
+    }
+}
+
+if (!function_exists('ps_responsive_img')) {
+    /**
+     * Renders a production-grade responsive HTML5 <picture> element with WebP fallback,
+     * srcset attributes, lazy loading, and modern performance decoding.
+     *
+     * @param string|null $src Image relative path or full URL
+     * @param string $alt Alt text for accessibility
+     * @param string $class CSS classes for the <img> tag
+     * @param string $sizes Viewport sizes attribute (e.g. "(max-width: 768px) 100vw, 50vw")
+     * @param string $loading Loading attribute ("lazy" or "eager")
+     * @param array $extraAttributes Additional attributes (e.g. ['id' => 'hero-img'])
+     * @return string Rendered HTML <picture> or <img> markup
+     */
+    function ps_responsive_img(
+        ?string $src,
+        string $alt = '',
+        string $class = '',
+        string $sizes = '100vw',
+        string $loading = 'lazy',
+        array $extraAttributes = []
+    ): string {
+        $resolved = ps_resolve_img($src);
+        if (empty($resolved)) {
+            return '';
+        }
+
+        $altAttr = e($alt);
+        $classAttr = !empty($class) ? ' class="' . e($class) . '"' : '';
+        $sizesAttr = !empty($sizes) ? ' sizes="' . e($sizes) . '"' : '';
+        $loadingAttr = ' loading="' . ($loading === 'eager' ? 'eager' : 'lazy') . '"';
+        $decodingAttr = ' decoding="async"';
+
+        $extraStr = '';
+        foreach ($extraAttributes as $k => $v) {
+            $extraStr .= ' ' . e((string)$k) . '="' . e((string)$v) . '"';
+        }
+
+        // External URLs or SVGs return enhanced standard <img>
+        if (preg_match('#^https?://#i', $resolved) || preg_match('/\.svg$/i', $resolved)) {
+            return sprintf(
+                '<img src="%s" alt="%s"%s%s%s%s>',
+                e($resolved),
+                $altAttr,
+                $classAttr,
+                $sizesAttr,
+                $loadingAttr . $decodingAttr,
+                $extraStr
+            );
+        }
+
+        // Local images: check for WebP version and generate <picture> element
+        $cleanPath = parse_url($resolved, PHP_URL_PATH) ?? '';
+        $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+        $webpPath = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
+
+        $pictureClass = !empty($class) ? ' class="' . e($class) . '"' : '';
+        $html = '<picture' . $pictureClass . ' style="display: inline-flex; align-items: center; max-width: 100%;">';
+        
+        // If webp version exists on disk, add WebP <source>
+        if ($webpPath !== $cleanPath && file_exists($root . '/' . ltrim($webpPath, '/'))) {
+            $html .= sprintf(
+                '<source srcset="%s"%s type="image/webp">',
+                e(base_url(ltrim($webpPath, '/'))),
+                $sizesAttr
+            );
+        }
+
+        $html .= sprintf(
+            '<img src="%s" alt="%s"%s%s%s%s>',
+            e($resolved),
+            $altAttr,
+            $classAttr,
+            $sizesAttr,
+            $loadingAttr . $decodingAttr,
+            $extraStr
+        );
+
+        $html .= '</picture>';
+
+        return $html;
+    }
+}
+
+if (!function_exists('format_date')) {
+    function format_date(?string $dateStr, string $format = 'd M Y'): string {
+        if (empty($dateStr)) return '';
+        $timestamp = strtotime($dateStr);
+        return $timestamp ? date($format, $timestamp) : $dateStr;
+    }
+}
+
+if (!function_exists('ps_excerpt')) {
+    function ps_excerpt($item, int $length = 140): string {
+        $content = is_array($item) ? ($item['excerpt'] ?? $item['content'] ?? '') : (string)$item;
+        $clean = strip_tags(ps_decode_entities($content));
+        if (mb_strlen($clean) <= $length) return $clean;
+        return mb_substr($clean, 0, $length) . '...';
+    }
+}
+
+if (!function_exists('is_role')) {
+    function is_role(...$roles): bool {
+        $userRole = $_SESSION['user_role'] ?? 'author';
+        if (empty($roles)) return true;
+        foreach ($roles as $role) {
+            if ($userRole === $role) return true;
+        }
+        return false;
+    }
+}
+
+if (!function_exists('upload_file')) {
+    /**
+     * Uploads, validates, resizes, and optimizes uploaded files.
+     * For blog featured images and site graphics, constrains maximum dimensions to 1200x630
+     * and converts to optimized WebP format with full mobile responsiveness.
+     */
+    function upload_file(array $file, string &$error = '', string $subfolder = 'blogs', int $maxWidth = 1200, int $maxHeight = 630): ?string {
+        $error = '';
+        if (empty($file) || !isset($file['error']) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+            $error = 'No file uploaded.';
+            return null;
+        }
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $error = 'File upload error code: ' . $file['error'];
+            return null;
+        }
+
+        if ($file['size'] > 15 * 1024 * 1024) {
+            $error = 'File size exceeds maximum limit of 15MB.';
+            return null;
+        }
+
+        $tmpPath = $file['tmp_name'];
+        if (!is_uploaded_file($tmpPath) && !file_exists($tmpPath)) {
+            $error = 'Invalid uploaded file source.';
+            return null;
+        }
+
+        $origName = pathinfo($file['name'], PATHINFO_FILENAME);
+        $cleanSlug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $origName), '-')) ?: 'upload';
+        
+        $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+        $cleanSubfolder = trim(str_replace(['..', '\\'], ['', '/'], $subfolder), '/');
+        $uploadDir = $root . '/uploads' . ($cleanSubfolder ? '/' . $cleanSubfolder : '');
+
+        if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0755, true);
+        }
+
+        $isImage = false;
+        $imgInfo = @getimagesize($tmpPath);
+        if ($imgInfo !== false && in_array($imgInfo[2], [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) {
+            $isImage = true;
+        }
+
+        if ($isImage && extension_loaded('gd')) {
+            $filename = uniqid() . '_' . substr($cleanSlug, 0, 40) . '.webp';
+            $destPath = $uploadDir . '/' . $filename;
+
+            $raw = @file_get_contents($tmpPath);
+            $srcImg = $raw ? @imagecreatefromstring($raw) : false;
+
+            if ($srcImg) {
+                $origW = imagesx($srcImg);
+                $origH = imagesy($srcImg);
+
+                // Calculate scaling ratio to constrain max dimensions to 1200x630
+                $scale = min(1.0, min($maxWidth / $origW, $maxHeight / $origH));
+                $targetW = max(1, (int)round($origW * $scale));
+                $targetH = max(1, (int)round($origH * $scale));
+
+                $dstImg = imagecreatetruecolor($targetW, $targetH);
+                imagealphablending($dstImg, false);
+                imagesavealpha($dstImg, true);
+                $transparent = imagecolorallocatealpha($dstImg, 255, 255, 255, 127);
+                imagefilledrectangle($dstImg, 0, 0, $targetW, $targetH, $transparent);
+
+                imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $targetW, $targetH, $origW, $origH);
+
+                if (function_exists('imagewebp')) {
+                    imagewebp($dstImg, $destPath, 85);
+                } else {
+                    imagejpeg($dstImg, $destPath, 85);
+                }
+
+                imagedestroy($srcImg);
+                imagedestroy($dstImg);
+
+                return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+            }
+        }
+
+        // Non-image file or GD fallback
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $filename = uniqid() . '_' . substr($cleanSlug, 0, 40) . ($ext ? '.' . strtolower($ext) : '');
+        $destPath = $uploadDir . '/' . $filename;
+
+        if (@move_uploaded_file($tmpPath, $destPath) || @copy($tmpPath, $destPath)) {
+            return 'uploads/' . ($cleanSubfolder ? $cleanSubfolder . '/' : '') . $filename;
+        }
+
+        $error = 'Failed to save uploaded file to disk.';
+        return null;
+    }
+}
+
+if (!function_exists('get_awadhi_master_dictionary')) {
+    function get_awadhi_master_dictionary(): array
+    {
+        return [
+            'झरिहख' => [
+                'word' => 'झरिहख',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'अनवरत कई दिनों तक चलने वाली लगातार धीमी फुहार व मूसलाधार बारिश।',
+                'meaning_en' => 'Continuous drizzle and rain lasting uninterruptedly for days.'
+            ],
+            'घरैतिन' => [
+                'word' => 'घरैतिन',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'गृहस्वामिनी, घर की मालकिन अथवा धर्मपत्नी के लिए आदरसूचक शब्द।',
+                'meaning_en' => 'Respectful Awadhi term for homemaker or wife.'
+            ],
+            'कनकी' => [
+                'word' => 'कनकी',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'चावल का खंडित टुकड़ा (खंढा), जो पक्षियों को चुगाने के काम आता है।',
+                'meaning_en' => 'Broken rice grains fed to birds.'
+            ],
+            'हरहा गोरु' => [
+                'word' => 'हरहा गोरु',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'हल जोतने वाले बैल एवं मवेशी जानवर, जो खूंटे पर बंधे रहते हैं।',
+                'meaning_en' => 'Ploughing oxen and farm cattle tethered at posts.'
+            ],
+            'सुरा बघ्घी' => [
+                'word' => 'सुरा बघ्घी',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'अवध क्षेत्र का प्रसिद्ध पारंपरिक चौपाल खेल (बकरी और बाघ का खेल)।',
+                'meaning_en' => 'Traditional Awadhi chaupal game of goats and tigers.'
+            ],
+            'ओसारा' => [
+                'word' => 'ओसारा',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'मकान के सामने बना बरामदा या छज्जे के नीचे की बैठक जहाँ चौपाल लगती है।',
+                'meaning_en' => 'Shaded front verandah or porch of a rural home.'
+            ],
+            'चौपाल' => [
+                'word' => 'चौपाल',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'गांव का सार्वजनिक सामुदायिक बैठक स्थल जहां लोक चर्चाएं होती हैं।',
+                'meaning_en' => 'Traditional village community meeting ground.'
+            ],
+            'सकोरा' => [
+                'word' => 'सकोरा',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'मिट्टी का छोटा पात्र या पुरवा, जिसमें पक्षियों के लिए पानी रखा जाता है।',
+                'meaning_en' => 'Earthen pot for birds water.'
+            ],
+            'मँड़ई' => [
+                'word' => 'मँड़ई',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'पुआल और बांस से छाई गई छोटी ग्रामीण कुटिया या छप्पर।',
+                'meaning_en' => 'Traditional thatched roof cottage.'
+            ],
+            'खलियान' => [
+                'word' => 'खलियान',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'गांव का वह खुला खेत जहां फसल काटकर दँवनी के लिए एकत्र की जाती है।',
+                'meaning_en' => 'Threshing floor in agricultural fields.'
+            ],
+            'बरही' => [
+                'word' => 'बरही',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'शिशु के जन्म के बारहवें दिन आयोजित होने वाला पारंपरिक मांगलिक लोक उत्सव।',
+                'meaning_en' => 'Traditional 12th-day newborn ceremony.'
+            ],
+            'पुरवा' => [
+                'word' => 'पुरवा',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'पूर्व दिशा से बहने वाली ठंडी व नमीयुक्त हवा अथवा मिट्टी का कुल्हड़।',
+                'meaning_en' => 'Easterly breeze or small clay cup.'
+            ],
+            'हरियाली' => [
+                'word' => 'हरियाली',
+                'type' => 'संज्ञा • Awadhi',
+                'meaning_hi' => 'प्राकृतिक पेड़-पौधे और वृक्षारोपण से फैली समृद्ध प्राकृतिक संपदा।',
+                'meaning_en' => 'Lush natural greenery and environmental wealth.'
+            ]
+        ];
+    }
+}
+
+if (!function_exists('get_awadhi_lexicon_for_post')) {
+    function get_awadhi_lexicon_for_post(string $title, string $content, array $customLexicon = []): array
+    {
+        if (!empty($customLexicon)) {
+            return array_slice($customLexicon, 0, 6);
+        }
+
+        $master = get_awadhi_master_dictionary();
+        $textToScan = mb_strtolower($title . ' ' . strip_tags($content));
+
+        $matched = [];
+        foreach ($master as $term => $data) {
+            if (mb_strpos($textToScan, mb_strtolower($term)) !== false) {
+                $matched[$term] = $data;
+            }
+        }
+
+        if (count($matched) < 6) {
+            foreach ($master as $term => $data) {
+                if (!isset($matched[$term])) {
+                    $matched[$term] = $data;
+                }
+                if (count($matched) >= 6) {
+                    break;
+                }
+            }
+        }
+
+        return array_slice(array_values($matched), 0, 6);
+    }
+}
+
+
+
+

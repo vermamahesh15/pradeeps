@@ -239,7 +239,7 @@ class BlogController
         }
 
         $err = '';
-        $uploaded = upload_file($file, $err, 'blogs');
+        $uploaded = upload_file($file, $err, 'blogs', 1200, 630);
         return $uploaded ?: $existingPath;
     }
 }

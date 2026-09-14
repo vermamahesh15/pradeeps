@@ -32,6 +32,24 @@ class ContentModel extends BaseModel
         $checked = true;
 
         try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS campaigns (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                en_title VARCHAR(190) NULL,
+                slug VARCHAR(190) NULL,
+                short_description TEXT NULL,
+                description TEXT NULL,
+                target_amount DECIMAL(10,2) DEFAULT 0.00,
+                raised_amount DECIMAL(10,2) DEFAULT 0.00,
+                banner_image VARCHAR(255) NULL,
+                status VARCHAR(50) DEFAULT 'active',
+                is_primary TINYINT(1) DEFAULT 0,
+                sort_order INT DEFAULT 0,
+                category VARCHAR(100) DEFAULT 'unity',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
             $cols = $this->db->query("SHOW COLUMNS FROM campaigns")->fetchAll(PDO::FETCH_COLUMN);
             if (!in_array('en_title', $cols, true)) {
                 $this->db->exec("ALTER TABLE campaigns ADD COLUMN en_title VARCHAR(190) NULL");
@@ -556,6 +574,19 @@ class ContentModel extends BaseModel
         $checked = true;
 
         try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS timeline (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                entry_type VARCHAR(50) DEFAULT 'yatra',
+                category VARCHAR(100) DEFAULT 'social',
+                year VARCHAR(50) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                description TEXT NULL,
+                image VARCHAR(255) NULL,
+                sort_order INT DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
             $cols = $this->db->query("SHOW COLUMNS FROM timeline")->fetchAll(PDO::FETCH_COLUMN);
             if (!in_array('entry_type', $cols, true)) {
                 $this->db->exec("ALTER TABLE timeline ADD COLUMN entry_type VARCHAR(50) DEFAULT 'yatra'");
@@ -629,10 +660,20 @@ class ContentModel extends BaseModel
     {
         if (!$this->db) return null;
         $this->ensureTimelineColumns();
-        $stmt = $this->db->prepare('SELECT * FROM timeline WHERE id = :id');
-        $stmt->execute([':id' => $id]);
-        $result = $stmt->fetch();
-        return $result ?: null;
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM timeline WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            $result = $stmt->fetch();
+            if ($result) return $result;
+        } catch (Throwable $e) {}
+
+        $demo = $this->allFromDemo('timeline');
+        foreach ($demo as $item) {
+            if ((int)($item['id'] ?? 0) === $id) {
+                return $item;
+            }
+        }
+        return null;
     }
 
     public function createTimeline(array $data): bool

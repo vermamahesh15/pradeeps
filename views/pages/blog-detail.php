@@ -116,7 +116,7 @@ if (empty($sughariImg)) {
 <!-- 2. BREADCRUMB & READING TOOLBAR STRIP -->
 <div class="flex flex-col w-full">
   <!-- Breadcrumb and Reader Tools -->
-  <section class="w-full bg-soft-meadow border-b border-border-warm py-2.5 relative z-30 shadow-xs">
+  <section class="w-full bg-soft-meadow border-b border-border-warm py-1.5 relative z-30 shadow-xs">
     <div class="max-w-container-max mx-auto px-4 sm:px-8 flex flex-wrap items-center justify-between gap-3">
       <!-- Breadcrumb Navigation -->
       <nav class="flex items-center gap-2 font-label-sm text-label-sm text-on-surface-variant">
@@ -191,7 +191,7 @@ if (empty($sughariImg)) {
   </div>
 
   <!-- 3. MAIN CONTENT BODY — REALISTIC OPEN-BOOK EXPERIENCE WITH 3D FLIP MECHANISM -->
-  <section class="w-full bg-[#1b261d] py-8 lg:py-14 px-3 sm:px-6 md:px-8 relative overflow-hidden">
+  <section class="w-full bg-[#1b261d] py-3 lg:py-5 px-3 sm:px-6 md:px-8 relative overflow-hidden">
     <!-- Ambient Vignette & Texture Gradients -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
     <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
@@ -199,7 +199,7 @@ if (empty($sughariImg)) {
 
     <div class="max-w-[1240px] mx-auto relative z-10">
       <!-- Realistic Hardcover Leather Binder Backing with 3D Depth -->
-      <div class="rounded-2xl p-2.5 sm:p-4 md:p-6 bg-[#261d18] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_12px_24px_rgba(0,0,0,0.6)] border border-[#3d2c22] relative">
+      <div class="rounded-2xl p-2 sm:p-3.5 md:p-5 bg-[#261d18] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_12px_24px_rgba(0,0,0,0.6)] border border-[#3d2c22] relative">
         <!-- Top Floating Book Binder Nav Controls -->
         <div class="flex items-center justify-between gap-3 mb-3 text-cream-canvas font-label-sm text-label-sm px-1">
           <div class="flex items-center gap-2">
@@ -255,13 +255,26 @@ if (empty($sughariImg)) {
                     <div class="w-12 h-px bg-secondary/40"></div>
                   </div>
 
-                  <?php if (!empty($postImage)): ?>
                   <!-- 2-COLUMN TOP HEADER LAYOUT (Image Left, Text Right) -->
                   <div class="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center mb-8 pb-6 border-b border-[#e2dacf]">
-                    <!-- Left Column: Featured Cover Image -->
+                    <!-- Left Column: Featured Cover Image or Symbol Image -->
                     <div class="md:col-span-5 flex justify-center items-center">
                       <div class="w-full overflow-hidden rounded-2xl shadow-md border border-[#e2dacf] bg-white p-1.5 group">
-                        <img src="<?= e($postImage) ?>" alt="<?= e($postTitle) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" />
+                        <?php if (!empty($postImage)): ?>
+                          <img src="<?= e($postImage) ?>" alt="<?= e($postTitle) ?>" class="w-full h-auto max-h-[380px] object-cover rounded-xl group-hover:scale-[1.02] transition-transform duration-500" loading="eager" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                          <div class="w-full min-h-[220px] rounded-xl bg-gradient-to-br from-emerald-900 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center" style="display:none;">
+                            <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Symbol" class="w-16 h-16 object-contain mb-2 filter drop-shadow">
+                            <span class="font-serif font-bold text-base text-amber-300"><?= e($postTitle) ?></span>
+                          </div>
+                        <?php else: ?>
+                          <!-- Symbol Image Emblem Placeholder -->
+                          <div class="w-full min-h-[220px] rounded-xl bg-gradient-to-br from-emerald-900 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-6 text-center shadow-inner relative overflow-hidden">
+                            <div class="absolute inset-0 bg-white/5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] opacity-30"></div>
+                            <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Literary Emblem Symbol" class="w-20 h-20 object-contain relative z-10 mb-2 filter drop-shadow-md">
+                            <span class="font-serif font-bold text-sm tracking-wider text-amber-300 relative z-10 uppercase"><?= e($postCategory) ?></span>
+                            <span class="font-serif text-xs text-emerald-200 mt-1 relative z-10"><?= e($postTitle) ?></span>
+                          </div>
+                        <?php endif; ?>
                       </div>
                     </div>
 
@@ -718,50 +731,20 @@ if (empty($sughariImg)) {
         </span>
       </div>
 
-      <!-- Vocabulary Grid: 6 Items -->
+      <!-- Vocabulary Grid: Dynamically Scanned & Generated for Article -->
+      <?php 
+      $lexiconItems = get_awadhi_lexicon_for_post($postTitle, $postContent);
+      ?>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+        <?php foreach ($lexiconItems as $idx => $lexItem): ?>
         <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-secondary font-bold font-headline-sm text-title-md">झरिहख</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
+          <span class="<?= $idx % 2 === 0 ? 'text-secondary' : 'text-deep-forest' ?> font-bold font-headline-sm text-title-md"><?= e($lexItem['word']) ?></span>
+          <span class="block text-text-muted text-[11px] font-semibold mt-0.5"><?= e($lexItem['type'] ?? 'संज्ञा • Awadhi') ?></span>
           <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('अनवरत कई दिनों तक चलने वाली लगातार धीमी फुहार व मूसलाधार बारिश।', 'Continuous drizzle and rain lasting uninterruptedly for days.')) ?>
+            <?= e(ps_text($lexItem['meaning_hi'], $lexItem['meaning_en'] ?? $lexItem['meaning_hi'])) ?>
           </p>
         </div>
-        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-deep-forest font-bold font-headline-sm text-title-md">घरैतिन</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
-          <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('गृहस्वामिनी, घर की मालकिन अथवा धर्मपत्नी के लिए आदरसूचक शब्द।', 'Respectful Awadhi term for homemaker or wife.')) ?>
-          </p>
-        </div>
-        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-secondary font-bold font-headline-sm text-title-md">कनकी</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
-          <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('चावल का खंडित टुकड़ा (खंढा), जो पक्षियों को चुगाने के काम आता है।', 'Broken rice grains fed to birds.')) ?>
-          </p>
-        </div>
-        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-deep-forest font-bold font-headline-sm text-title-md">हरहा गोरु</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
-          <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('हल जोतने वाले बैल एवं मवेशी जानवर, जो खूंटे पर बंधे रहते हैं।', 'Ploughing oxen and farm cattle tethered at posts.')) ?>
-          </p>
-        </div>
-        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-secondary font-bold font-headline-sm text-title-md">सुरा बघ्घी</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
-          <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('अवध क्षेत्र का प्रसिद्ध पारंपरिक चौपाल खेल (बकरी और बाघ का खेल)।', 'Traditional Awadhi chaupal game of goats and tigers.')) ?>
-          </p>
-        </div>
-        <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
-          <span class="text-deep-forest font-bold font-headline-sm text-title-md">ओसारा</span>
-          <span class="block text-text-muted text-[11px] font-semibold mt-0.5">संज्ञा • Awadhi</span>
-          <p class="font-body-sm text-body-sm text-on-surface mt-2">
-            <?= e(ps_text('मकान के सामने बना बरामदा या छज्जे के नीचे की बैठक जहाँ चौपाल लगती है।', 'Shaded front verandah or porch of a rural home.')) ?>
-          </p>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
@@ -781,60 +764,173 @@ if (empty($sughariImg)) {
         $shareUrl = base_url('/blog/' . ($post['slug'] ?? ''));
         $shareText = $postTitle . ' - ' . ps_excerpt(['excerpt' => $postExcerpt], 120);
         ?>
-        <a href="https://api.whatsapp.com/send?text=<?= urlencode($shareText . "\n\n" . $shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#25D366]/15 text-[#128C7E] hover:bg-[#25D366] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+        <a href="https://api.whatsapp.com/send?text=<?= urlencode($shareText . "\n\n" . $shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#25D366]/15 text-[#128C7E] hover:bg-[#25D366] hover:text-pure-white transition-all flex items-center gap-2 font-label-md text-label-md font-semibold">
+          <i class="fa-brands fa-whatsapp text-lg"></i>
           <span>WhatsApp</span>
         </a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-pure-white transition-all flex items-center gap-2 font-label-md text-label-md font-semibold">
+          <i class="fa-brands fa-facebook text-lg"></i>
           <span>Facebook</span>
         </a>
-        <a href="https://twitter.com/intent/tweet?text=<?= urlencode($postTitle) ?>&url=<?= urlencode($shareUrl) ?>&hashtags=PradeepSarang,AwadhiLiterature" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-black/5 text-on-surface hover:bg-black hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+        <a href="https://twitter.com/intent/tweet?text=<?= urlencode($postTitle) ?>&url=<?= urlencode($shareUrl) ?>&hashtags=PradeepSarang,AwadhiLiterature" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-black/5 text-on-surface hover:bg-black hover:text-pure-white transition-all flex items-center gap-2 font-label-md text-label-md font-semibold">
+          <i class="fa-brands fa-x-twitter text-lg"></i>
           <span>Twitter/X</span>
         </a>
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] hover:bg-[#0A66C2] hover:text-pure-white transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold">
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?= urlencode($shareUrl) ?>" target="_blank" rel="noopener noreferrer" class="px-3.5 py-2 rounded-lg bg-[#0A66C2]/10 text-[#0A66C2] hover:bg-[#0A66C2] hover:text-pure-white transition-all flex items-center gap-2 font-label-md text-label-md font-semibold">
+          <i class="fa-brands fa-linkedin text-lg"></i>
           <span>LinkedIn</span>
         </a>
-        <button type="button" class="px-3.5 py-2 rounded-lg bg-surface-container text-deep-forest hover:bg-surface-container-high transition-all flex items-center gap-1.5 font-label-md text-label-md font-semibold cursor-pointer" id="copy-link-btn">
-          <span class="material-symbols-outlined text-[17px]">content_copy</span>
+        <button type="button" class="px-3.5 py-2 rounded-lg bg-surface-container text-deep-forest hover:bg-surface-container-high transition-all flex items-center gap-2 font-label-md text-label-md font-semibold cursor-pointer" id="copy-link-btn">
+          <span class="material-symbols-outlined text-[18px]">content_copy</span>
           <span id="copy-text-label"><?= e(ps_text('लिंक कॉपी करें', 'Copy Link')) ?></span>
         </button>
       </div>
     </div>
   </section>
 
-  <!-- 4C. Author Bio Card -->
+  <!-- 4C. Author Bio Card (Redesigned & Settings Connected) -->
+  <?php 
+  $authorNameVal = !empty($settings['author_name']) ? $settings['author_name'] : $postAuthor;
+  $authorRoleVal = !empty($settings['author_role']) ? $settings['author_role'] : ps_text('वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता', 'Senior Awadhi Author & Environmentalist');
+  $authorLocVal = !empty($settings['author_location']) ? $settings['author_location'] : ps_text('कमरावां, सतरिख, बाराबंकी (उ० प्र०)', 'Kamrawan, Satrikh, Barabanki (U.P.)');
+  $authorBadgeVal = !empty($settings['author_badge']) ? $settings['author_badge'] : ps_text('साहित्यिक व जमीनी सरोकार', 'Literary & Social Legacy');
+  $authorBioVal = !empty($settings['author_bio']) ? $settings['author_bio'] : ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Shri Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.');
+  $authorQuoteVal = !empty($settings['author_quote']) ? $settings['author_quote'] : ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.');
+  $authorBadgesRaw = !empty($settings['author_badges_list']) ? $settings['author_badges_list'] : '40+ वर्ष साहित्य सेवा, ग्रीन गैंग संस्थापक';
+  $authorBadgesArr = array_filter(array_map('trim', explode(',', $authorBadgesRaw)));
+  
+  $authorImgUrl = trim(($settings['author_image'] ?? '') ?: ($post['author_avatar'] ?? '') ?: ($post['author_image'] ?? '') ?: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDV_HGESOnSGI8q8ywujcEK6vRtVsOrdz502F3M5Z3_iBt-apeIJvCT2qEGffDgf8Hfw3Trl6b4LOb0u23MwhSMq1XATA2O5p6C7IszVlI0mgmGc1XsnvwEBgG9k4M5un7ZUweEDJAYP3NFJTvABtAibY-POBUWwX4dxzERa9DsVb1z2_UJ7sQSkS8sCpvCTx4WZfu5t9HvRgWa45RYIVUJREA6xPYv0Ptsgz_zk346-4A4ws_a5mPu');
+  if ($authorImgUrl && !preg_match('#^https?://#i', $authorImgUrl)) {
+      $authorImgUrl = base_url($authorImgUrl);
+  }
+  ?>
   <section class="max-w-container-max mx-auto px-4 sm:px-8 pb-space-3xl w-full">
-    <div class="bg-pure-white border border-border-warm rounded-2xl shadow-sm p-6 sm:p-8 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-      <div class="md:col-span-4 flex flex-col items-center text-center">
-        <div class="w-36 h-36 sm:w-44 sm:h-44 rounded-2xl overflow-hidden shadow-md relative group">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV_HGESOnSGI8q8ywujcEK6vRtVsOrdz502F3M5Z3_iBt-apeIJvCT2qEGffDgf8Hfw3Trl6b4LOb0u23MwhSMq1XATA2O5p6C7IszVlI0mgmGc1XsnvwEBgG9k4M5un7ZUweEDJAYP3NFJTvABtAibY-POBUWwX4dxzERa9DsVb1z2_UJ7sQSkS8sCpvCTx4WZfu5t9HvRgWa45RYIVUJREA6xPYv0Ptsgz_zk346-4A4ws_a5mPu" alt="<?= e($postAuthor) ?>" class="w-full h-full object-cover">
-        </div>
-        <h3 class="font-headline-sm text-title-lg text-deep-forest mt-4 mb-0.5 font-bold"><?= e($postAuthor) ?></h3>
-        <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता', 'Senior Awadhi Author & Environmentalist')) ?></span>
-        <span class="font-label-sm text-text-muted text-[12px] mt-1"><?= e(ps_text('कमरावां, सतरिख, बाराबंकी (उ० प्र०)', 'Kamrawan, Satrikh, Barabanki (U.P.)')) ?></span>
-      </div>
+    <div class="relative bg-gradient-to-br from-[#fbf8f3] via-white to-[#edf4ec] border border-emerald-900/10 rounded-2xl sm:rounded-3xl shadow-xl shadow-emerald-950/5 p-6 sm:p-8 md:p-10 overflow-hidden">
+      <!-- Decorative background accent blurred glows -->
+      <div class="absolute -top-16 -right-16 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-16 -left-16 w-64 h-64 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="md:col-span-8 space-y-3">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-semibold">
-          <span class="material-symbols-outlined text-[16px]">psychology_alt</span>
-          <span><?= e(ps_text('साहित्यिक व जमीनी सरोकार', 'Literary & Social Legacy')) ?></span>
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <!-- Left: Author Profile Column -->
+        <div class="lg:col-span-4 flex flex-col items-center text-center lg:border-r lg:border-emerald-900/10 lg:pr-8">
+          <div class="relative group">
+            <div class="w-36 h-36 sm:w-44 sm:h-44 p-1.5 bg-gradient-to-tr from-amber-600 via-emerald-700 to-emerald-500 rounded-2xl shadow-lg transform group-hover:scale-[1.02] transition-all duration-300">
+              <div class="w-full h-full rounded-[14px] overflow-hidden bg-white flex items-center justify-center relative">
+                <?php if (!empty($authorImgUrl)): ?>
+                  <img src="<?= e($authorImgUrl) ?>" alt="<?= e($postAuthor) ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                  <div class="w-full h-full bg-gradient-to-br from-emerald-800 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-3 text-center" style="display:none;">
+                    <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Emblem Symbol" class="w-12 h-12 object-contain mb-1 filter drop-shadow">
+                    <span class="font-serif font-bold text-xs text-amber-300"><?= e($postAuthor) ?></span>
+                  </div>
+                <?php else: ?>
+                  <!-- Symbol Image Emblem Placeholder when no image is present -->
+                  <div class="w-full h-full bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-950 text-white flex flex-col items-center justify-center p-3 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-white/5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
+                    <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Author Symbol Emblem" class="w-14 h-14 object-contain relative z-10 mb-1 filter drop-shadow-md">
+                    <span class="font-serif font-bold text-[11px] tracking-wider text-amber-300 relative z-10 uppercase"><?= e(ps_text('साहित्य प्रतीक', 'Literary Symbol')) ?></span>
+                  </div>
+                <?php endif; ?>
+              </div>
+            </div>
+            <div class="absolute -bottom-2 -right-2 bg-emerald-700 text-white p-2 rounded-xl shadow-md border-2 border-white flex items-center justify-center" title="<?= e(ps_text('सत्यापित लेखक', 'Verified Author')) ?>">
+              <span class="material-symbols-outlined text-[18px]">verified</span>
+            </div>
+          </div>
+
+          <h3 class="font-serif text-2xl font-bold text-emerald-950 mt-5 mb-1 tracking-tight"><?= e($authorNameVal) ?></h3>
+          <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-800 bg-emerald-100/70 px-3 py-1 rounded-full mt-1">
+            <span class="material-symbols-outlined text-[15px]">edit_note</span>
+            <span><?= e($authorRoleVal) ?></span>
+          </span>
+          <span class="text-xs text-stone-500 flex items-center gap-1 mt-2">
+            <span class="material-symbols-outlined text-[14px] text-amber-700">location_on</span>
+            <span><?= e($authorLocVal) ?></span>
+          </span>
+
+          <!-- Quick Stats / Badges -->
+          <?php if (!empty($authorBadgesArr)): ?>
+          <div class="flex flex-wrap items-center justify-center gap-2 mt-4 pt-3 border-t border-emerald-900/10 w-full">
+            <?php foreach ($authorBadgesArr as $bIdx => $badgeTxt): ?>
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-md <?= $bIdx % 2 === 0 ? 'bg-amber-50 text-amber-900 border border-amber-200/60' : 'bg-emerald-50 text-emerald-900 border border-emerald-200/60' ?>">
+                <?= e($badgeTxt) ?>
+              </span>
+            <?php endforeach; ?>
+          </div>
+          <?php endif; ?>
+
+          <!-- Author Social Profiles -->
+          <div class="flex flex-col items-center gap-1.5 mt-3 pt-3 border-t border-emerald-900/10 w-full">
+            <span class="text-[11px] font-bold text-emerald-950/70 uppercase tracking-wider"><?= e(ps_text('लेखक सोशल मीडिया जुड़ें', 'Follow Author')) ?></span>
+            <div class="flex items-center justify-center gap-2 mt-0.5">
+              <a href="<?= e($settings['facebook'] ?? 'https://facebook.com/pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white flex items-center justify-center transition-all shadow-sm transform hover:-translate-y-0.5" title="Facebook Profile">
+                <i class="fa-brands fa-facebook-f text-xs"></i>
+              </a>
+              <a href="<?= e($settings['twitter'] ?? 'https://twitter.com/pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-black/10 text-stone-800 hover:bg-black hover:text-white flex items-center justify-center transition-all shadow-sm transform hover:-translate-y-0.5" title="Twitter / X">
+                <i class="fa-brands fa-x-twitter text-xs"></i>
+              </a>
+              <a href="<?= e($settings['whatsapp'] ?? 'https://api.whatsapp.com/send?phone=919919007190') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#25D366]/15 text-[#128C7E] hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-all shadow-sm transform hover:-translate-y-0.5" title="WhatsApp">
+                <i class="fa-brands fa-whatsapp text-sm"></i>
+              </a>
+              <a href="<?= e($settings['youtube'] ?? 'https://youtube.com/@pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white flex items-center justify-center transition-all shadow-sm transform hover:-translate-y-0.5" title="YouTube Channel">
+                <i class="fa-brands fa-youtube text-xs"></i>
+              </a>
+              <a href="<?= e($settings['instagram'] ?? 'https://instagram.com/pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#E4405F]/10 text-[#E4405F] hover:bg-[#E4405F] hover:text-white flex items-center justify-center transition-all shadow-sm transform hover:-translate-y-0.5" title="Instagram">
+                <i class="fa-brands fa-instagram text-xs"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <p class="font-body-md text-body-md text-on-surface leading-relaxed">
-          <?= e(ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Shri Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.')) ?>
-        </p>
-        <div class="p-3.5 rounded-xl bg-soft-meadow border-l-4 border-secondary">
-          <blockquote class="font-quote-editorial italic text-deep-forest text-body-md sm:text-body-lg">
-            “<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.')) ?>”
-          </blockquote>
-          <cite class="block font-label-sm text-label-sm text-secondary uppercase tracking-wider mt-1 not-italic font-bold">
-            — Pradeep Sarang
-          </cite>
-        </div>
-        <div class="flex flex-wrap gap-2 pt-1">
-          <a href="<?= e(base_url('/about')) ?>" data-path="about" class="px-4 py-2 rounded-lg bg-deep-forest text-on-primary font-title-md text-body-sm hover:bg-primary transition-colors inline-flex items-center gap-1.5 shadow-sm font-semibold">
-            <span class="material-symbols-outlined text-[17px]">person</span>
-            <span><?= e(ps_text('संपूर्ण जीवनी व कृतियाँ', 'Full Biography')) ?></span>
-          </a>
-        </div>
+
+        <!-- Right: Bio Details Column -->
+        <div class="lg:col-span-8 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-100/80 text-emerald-900 font-bold text-xs uppercase tracking-wider shadow-sm">
+            <span class="material-symbols-outlined text-[16px] text-emerald-700">psychology_alt</span>
+            <span><?= e($authorBadgeVal) ?></span>
+          </div>
+
+          <p class="text-stone-700 text-sm sm:text-base leading-relaxed font-normal">
+            <?= e($authorBioVal) ?>
+          </p>
+
+          <!-- Pull Quote Block -->
+          <div class="relative p-4 sm:p-5 rounded-2xl bg-emerald-50/70 border-l-4 border-emerald-700 shadow-inner overflow-hidden">
+            <span class="material-symbols-outlined absolute -right-2 -bottom-3 text-[72px] text-emerald-900/5 select-none pointer-events-none">format_quote</span>
+            <blockquote class="font-serif italic text-emerald-950 text-base sm:text-lg leading-snug font-medium relative z-10">
+              “<?= e($authorQuoteVal) ?>”
+            </blockquote>
+            <cite class="block text-xs font-bold text-emerald-700 uppercase tracking-widest mt-2 not-italic relative z-10">
+              — <?= e($authorNameVal) ?>
+            </cite>
+          </div>
+
+          <!-- Action Buttons & Social Row -->
+          <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-emerald-900/10">
+            <div class="flex flex-wrap items-center gap-3">
+              <a href="<?= e(base_url('/about')) ?>" data-path="about" class="px-5 py-2.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">account_box</span>
+                <span><?= e(ps_text('संपूर्ण जीवनी व कृतियाँ', 'Full Biography & Works')) ?></span>
+                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+              </a>
+              <a href="<?= e(base_url('/contact')) ?>" data-path="contact" class="px-4 py-2.5 rounded-xl bg-white hover:bg-stone-100 text-emerald-900 border border-emerald-900/20 font-bold text-sm shadow-sm transition-all inline-flex items-center gap-2">
+                <span class="material-symbols-outlined text-[18px]">mail</span>
+                <span><?= e(ps_text('संपर्क करें', 'Contact Author')) ?></span>
+              </a>
+            </div>
+
+            <!-- Quick Social Media Links -->
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-stone-500 hidden sm:inline"><?= e(ps_text('सोशल:', 'Social:')) ?></span>
+              <a href="<?= e($settings['facebook'] ?? 'https://facebook.com/pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#1877F2]/10 text-[#1877F2] hover:bg-[#1877F2] hover:text-white flex items-center justify-center transition-all" title="Facebook">
+                <i class="fa-brands fa-facebook-f text-xs"></i>
+              </a>
+              <a href="<?= e($settings['twitter'] ?? 'https://twitter.com/pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-black/10 text-stone-800 hover:bg-black hover:text-white flex items-center justify-center transition-all" title="Twitter / X">
+                <i class="fa-brands fa-x-twitter text-xs"></i>
+              </a>
+              <a href="<?= e($settings['youtube'] ?? 'https://youtube.com/@pradeepsarang') ?>" target="_blank" rel="noopener noreferrer" class="w-8 h-8 rounded-lg bg-[#FF0000]/10 text-[#FF0000] hover:bg-[#FF0000] hover:text-white flex items-center justify-center transition-all" title="YouTube">
+                <i class="fa-brands fa-youtube text-xs"></i>
+              </a>
+            </div>
+          </div>
       </div>
     </div>
   </section>

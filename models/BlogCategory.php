@@ -36,13 +36,29 @@ class BlogCategory extends BaseModel
     public function create(array $data): int
     {
         if (!$this->db) return 0;
-        $stmt = $this->db->prepare('INSERT INTO blog_categories (name, slug) VALUES (:name, :slug)');
-        $stmt->execute([
-            ':name' => $data['name'],
-            ':slug' => $data['slug'],
-        ]);
+        try {
+            $stmt = $this->db->prepare('INSERT INTO blog_categories (name, slug) VALUES (:name, :slug)');
+            $stmt->execute([
+                ':name' => $data['name'],
+                ':slug' => $data['slug'],
+            ]);
+            $id = (int) $this->db->lastInsertId();
+            if ($id > 0) return $id;
+        } catch (Throwable $e) {
+            $maxStmt = $this->db->query('SELECT COALESCE(MAX(id), 0) FROM blog_categories');
+            $nextId = (int) $maxStmt->fetchColumn() + 1;
 
-        return (int) $this->db->lastInsertId();
+            $stmt = $this->db->prepare('INSERT INTO blog_categories (id, name, slug) VALUES (:id, :name, :slug)');
+            $stmt->execute([
+                ':id' => $nextId,
+                ':name' => $data['name'],
+                ':slug' => $data['slug'],
+            ]);
+            return $nextId;
+        }
+
+        $maxStmt = $this->db->query('SELECT COALESCE(MAX(id), 0) FROM blog_categories');
+        return (int) $maxStmt->fetchColumn();
     }
 
     public function update(int $id, array $data): bool
@@ -82,8 +98,8 @@ class BlogCategory extends BaseModel
 
     public function normalizeSlug(string $name, ?int $excludeId = null): string
     {
-        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $name), '-'));
-        $slug = preg_replace('/-+/', '-', $slug);
+        $slug = trim(preg_replace('/[^\p{L}\p{N}]+/u', '-', $name), '-');
+        $slug = mb_strtolower(preg_replace('/-+/', '-', $slug), 'UTF-8');
         if ($slug === '') {
             $slug = 'category';
         }
@@ -97,4 +113,32 @@ class BlogCategory extends BaseModel
 
         return $slug;
     }
+
+    public function allWithPostCount(): array
+    {
+        if (!$this->db) {
+            $cats = $this->all();
+            foreach ($cats as &$c) {
+                $c['post_count'] = 0;
+            }
+            return $cats;
+        }
+        try {
+            $stmt = $this->db->query('
+                SELECT c.*, COUNT(b.id) AS post_count
+                FROM blog_categories c
+                LEFT JOIN blogs b ON b.category_id = c.id
+                GROUP BY c.id, c.name, c.slug, c.created_at, c.updated_at
+                ORDER BY c.name ASC
+            ');
+            return $stmt->fetchAll();
+        } catch (Throwable $e) {
+            $cats = $this->all();
+            foreach ($cats as &$c) {
+                $c['post_count'] = 0;
+            }
+            return $cats;
+        }
+    }
 }
+

@@ -47,6 +47,16 @@ $blogController = new BlogController(new Blog(), new BlogCategory());
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 $override = strtoupper($_POST['_method'] ?? '') ?: $method;
 
+if ($path === '/sitemap.xml') {
+    header('Content-Type: application/xml; charset=utf-8');
+    if (file_exists(__DIR__ . '/sitemap.xml')) {
+        echo file_get_contents(__DIR__ . '/sitemap.xml');
+    } else {
+        echo '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>' . htmlspecialchars(base_url('/')) . '</loc></url></urlset>';
+    }
+    return;
+}
+
 if ($path === '/') {
     $controller->home();
     return;
