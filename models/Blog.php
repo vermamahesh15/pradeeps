@@ -269,11 +269,18 @@ class Blog extends BaseModel
             $stmt = $this->db->prepare('INSERT INTO blogs (id, category_id, author_id, title, en_title, slug, excerpt, content, banner_image, author, created_by, updated_by, status, featured_image, seo_title, meta_description, meta_keywords, canonical_url, og_image, published_at) 
                 VALUES (:id, :category_id, :author_id, :title, :en_title, :slug, :excerpt, :content, :banner_image, :author, :created_by, :updated_by, :status, :featured_image, :seo_title, :meta_description, :meta_keywords, :canonical_url, :og_image, :published_at)');
             $stmt->execute($params);
+            if (function_exists('ps_generate_sitemap')) {
+                ps_generate_sitemap($this);
+            }
             return $nextId;
         }
 
         $maxStmt = $this->db->query('SELECT COALESCE(MAX(id), 0) FROM blogs');
-        return (int) $maxStmt->fetchColumn();
+        $createdId = (int) $maxStmt->fetchColumn();
+        if (function_exists('ps_generate_sitemap')) {
+            ps_generate_sitemap($this);
+        }
+        return $createdId;
     }
 
     public function update($id, array $data): bool
@@ -285,7 +292,7 @@ class Blog extends BaseModel
         }
         $whereSql = is_numeric($id) ? 'WHERE id = :id' : 'WHERE slug = :id';
         $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at ' . $whereSql);
-        return $stmt->execute([
+        $res = $stmt->execute([
             ':category_id' => $data['category_id'],
             ':author_id' => $data['author_id'] ?? null,
             ':title' => $data['title'],
@@ -306,6 +313,10 @@ class Blog extends BaseModel
             ':published_at' => $data['published_at'] ?? null,
             ':id' => $id,
         ]);
+        if ($res && function_exists('ps_generate_sitemap')) {
+            ps_generate_sitemap($this);
+        }
+        return $res;
     }
 
     public function delete($id): bool
@@ -313,7 +324,11 @@ class Blog extends BaseModel
         if (!$this->db) return false;
         $whereSql = is_numeric($id) ? 'WHERE id = :id' : 'WHERE slug = :id';
         $stmt = $this->db->prepare('DELETE FROM blogs ' . $whereSql);
-        return $stmt->execute([':id' => $id]);
+        $res = $stmt->execute([':id' => $id]);
+        if ($res && function_exists('ps_generate_sitemap')) {
+            ps_generate_sitemap($this);
+        }
+        return $res;
     }
 
     public function slugExists(string $slug, $excludeId = null): bool

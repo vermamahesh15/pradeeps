@@ -329,6 +329,8 @@ if (is_post()) {
                     } else {
                         flash('admin_success', 'Blog article created and published by Admin.');
                     }
+                    // Auto update sitemap.xml
+                    ps_generate_sitemap($blogModel, $content);
                 }
             } catch (Throwable $e) {
                 $_SESSION['blog_form_draft'] = $_POST;
@@ -361,6 +363,7 @@ if (is_post()) {
             try {
                 $blogModel->delete($id);
                 $userModel->logAudit((int)$_SESSION['user_id'], 'Blog Deleted: ' . $id, $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                ps_generate_sitemap($blogModel, $content);
                 flash('admin_success', 'Blog deleted successfully.');
             } catch (Throwable $e) {
                 flash('admin_error', 'Delete failed: ' . $e->getMessage());
@@ -806,65 +809,10 @@ if (is_post()) {
             exit('Unauthorized access.');
         }
 
-        try {
-            $urls = [
-                '',
-                '/about',
-                '/campaigns',
-                '/events',
-                '/portfolio',
-                '/contact',
-                '/volunteer',
-                '/donation',
-                '/blog'
-            ];
-
-            // Fetch published blogs
-            $blogs = $blogModel->allPublished(200);
-            foreach ($blogs as $b) {
-                $urls[] = '/blog/' . $b['slug'];
-            }
-
-            // Fetch campaigns
-            $campaigns = $content->all('campaigns');
-            foreach ($campaigns as $c) {
-                $urls[] = '/campaigns/' . $c['slug'];
-            }
-
-            // Fetch events
-            $events = $content->all('events');
-            foreach ($events as $e) {
-                $urls[] = '/events/' . $e['slug'];
-            }
-
-            // Fetch custom pages
-            $pages = $content->allPages();
-            foreach ($pages as $p) {
-                $urls[] = '/' . $p['slug'];
-            }
-
-            // Build dynamic XML
-            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
-            $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
-            foreach ($urls as $url) {
-                $absolute = base_url($url);
-                $xml .= '  <url>' . PHP_EOL;
-                $xml .= '    <loc>' . htmlspecialchars($absolute, ENT_XML1) . '</loc>' . PHP_EOL;
-                $xml .= '    <changefreq>weekly</changefreq>' . PHP_EOL;
-                $xml .= '    <priority>' . ($url === '' ? '1.0' : '0.8') . '</priority>' . PHP_EOL;
-                $xml .= '  </url>' . PHP_EOL;
-            }
-            $xml .= '</urlset>' . PHP_EOL;
-
-            // Write to the root directory
-            $sitemapFile = __DIR__ . '/../sitemap.xml';
-            if (file_put_contents($sitemapFile, $xml) !== false) {
-                flash('admin_success', 'sitemap.xml generated successfully at ' . date('Y-m-d H:i:s'));
-            } else {
-                flash('admin_error', 'Failed to write sitemap.xml to root folder. Please check file permissions.');
-            }
-        } catch (Throwable $e) {
-            flash('admin_error', 'Sitemap generation failed: ' . $e->getMessage());
+        if (ps_generate_sitemap($blogModel, $content)) {
+            flash('admin_success', 'sitemap.xml generated successfully at ' . date('Y-m-d H:i:s'));
+        } else {
+            flash('admin_error', 'Failed to write sitemap.xml to root folder. Please check file permissions.');
         }
         redirect('/admin/index.php?module=settings');
     }
@@ -950,6 +898,7 @@ if (is_post()) {
                     $updateData['published_at'] = date('Y-m-d H:i:s');
                 }
                 $blogModel->update($id, $updateData);
+                ps_generate_sitemap($blogModel, $content);
                 
                 $userModel->logAudit((int)$_SESSION['user_id'], 'Blog status updated by Admin (Pradeep Sarang) to ' . $status . ': ' . $id, $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
                 
