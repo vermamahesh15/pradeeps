@@ -3,6 +3,7 @@
 .env.local
 .env.*.local
 config/database.local.php
+config/database.php
 config/*.local.php
 .htaccess
 # Logs & Debugging

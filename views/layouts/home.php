@@ -188,6 +188,57 @@ $isHomePage = basename($viewFile) === 'home.php';
 </head>
     <?php $isFullPage = $isHomePage || in_array(basename($viewFile), ['contact.php', 'volunteer.php', 'blog.php', 'cause-detail.php', 'causes.php', 'events.php', 'media.php', 'blog-detail.php', 'donation.php', 'about.php', 'portfolio.php', 'awards.php', 'journey.php', 'impact.php', 'green-gang.php', 'salahkaar.php', 'videos.php'], true); ?>
 <body class="<?= $isFullPage ? 'bg-cream-canvas font-body-md text-body-md text-on-surface antialiased' : 'ps-site ps-inner-page' ?>">
+    <?php if (!empty($isAdminPreview) && !empty($post)): ?>
+        <div style="position: sticky; top: 0; left: 0; right: 0; z-index: 999999; background: #0f172a; color: #ffffff; padding: 10px 24px; border-bottom: 2px solid #334155; font-family: system-ui, -apple-system, sans-serif;" class="flex flex-wrap items-center justify-between gap-3 shadow-2xl">
+            <div class="flex items-center gap-3">
+                <a href="<?= e(base_url('/admin/index.php?module=blogs')) ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all text-decoration-none">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>← Back to Articles</span>
+                </a>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
+                    Unpublished Preview
+                </span>
+                <span class="text-xs text-slate-300 hidden sm:inline-block">
+                    <strong>Article Preview</strong> — Status: <span class="text-amber-400 font-bold uppercase"><?= e(ucfirst($post['status'] ?? 'pending')) ?></span>
+                </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <?php if (is_role('admin', 'super_admin') || (is_role('author') && !empty($post['author_id']) && (int)$post['author_id'] === (int)($_SESSION['user_id'] ?? 0))): ?>
+                    <a href="<?= e(base_url('/admin/index.php?module=blogs&edit_id=' . urlencode((string)$post['id']))) ?>" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white text-slate-900 hover:bg-slate-100 text-xs font-bold transition-all text-decoration-none">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <span>Edit Article</span>
+                    </a>
+                <?php endif; ?>
+
+                <?php if (is_role('admin') && ($post['status'] ?? '') !== 'published'): ?>
+                    <form method="post" action="<?= e(base_url('/admin/index.php')) ?>" class="inline-block m-0">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="action" value="update_blog_status">
+                        <input type="hidden" name="id" value="<?= e($post['id']) ?>">
+                        <input type="hidden" name="status" value="published">
+                        <button type="submit" class="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm transition-all border-0 cursor-pointer">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>Approve</span>
+                        </button>
+                    </form>
+                <?php endif; ?>
+
+                <?php if (is_role('admin') && ($post['status'] ?? '') === 'pending'): ?>
+                    <form method="post" action="<?= e(base_url('/admin/index.php')) ?>" class="inline-block m-0" onsubmit="return confirm('Reject this article?')">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="action" value="update_blog_status">
+                        <input type="hidden" name="id" value="<?= e($post['id']) ?>">
+                        <input type="hidden" name="status" value="rejected">
+                        <button type="submit" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-600/90 hover:bg-red-600 text-white text-xs font-bold shadow-sm transition-all border-0 cursor-pointer">
+                            <i class="fa-solid fa-ban"></i>
+                            <span>Reject</span>
+                        </button>
+                    </form>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-4 focus:py-2 focus:rounded-md"><?= e(ps_text('मुख्य सामग्री पर जाएं','Skip to content')) ?></a>
     
     <?php require __DIR__ . '/../partials/home/header.php'; ?>

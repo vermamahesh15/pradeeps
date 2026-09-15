@@ -594,6 +594,93 @@ if (!function_exists('get_awadhi_lexicon_for_post')) {
     }
 }
 
+if (!function_exists('ps_generate_sitemap')) {
+    /**
+     * Automatically regenerates sitemap.xml in the website root directory.
+     */
+    function ps_generate_sitemap($blogModel = null, $contentModel = null): bool
+    {
+        try {
+            if (!$blogModel) {
+                require_once __DIR__ . '/../models/Blog.php';
+                $blogModel = new Blog();
+            }
+            if (!$contentModel) {
+                require_once __DIR__ . '/../models/ContentModel.php';
+                $contentModel = new ContentModel();
+            }
+
+            $urls = [
+                '',
+                '/about',
+                '/campaigns',
+                '/events',
+                '/portfolio',
+                '/contact',
+                '/volunteer',
+                '/donation',
+                '/blog'
+            ];
+
+            // Fetch published blogs
+            $blogs = $blogModel->allPublished(500);
+            foreach ($blogs as $b) {
+                if (!empty($b['slug'])) {
+                    $urls[] = '/blog/' . $b['slug'];
+                }
+            }
+
+            // Fetch campaigns
+            $campaigns = $contentModel->all('campaigns');
+            foreach ($campaigns as $c) {
+                if (!empty($c['slug'])) {
+                    $urls[] = '/campaigns/' . $c['slug'];
+                }
+            }
+
+            // Fetch events
+            $events = $contentModel->all('events');
+            foreach ($events as $e) {
+                if (!empty($e['slug'])) {
+                    $urls[] = '/events/' . $e['slug'];
+                }
+            }
+
+            // Fetch custom pages
+            $pages = $contentModel->allPages();
+            foreach ($pages as $p) {
+                if (!empty($p['slug'])) {
+                    $urls[] = '/' . $p['slug'];
+                }
+            }
+
+            // Deduplicate URLs
+            $urls = array_unique($urls);
+
+            // Build dynamic XML
+            $xml = '<?xml version="1.0" encoding="UTF-8"?>' . PHP_EOL;
+            $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . PHP_EOL;
+            foreach ($urls as $url) {
+                $absolute = base_url($url);
+                $xml .= '  <url>' . PHP_EOL;
+                $xml .= '    <loc>' . htmlspecialchars($absolute, ENT_XML1) . '</loc>' . PHP_EOL;
+                $xml .= '    <changefreq>weekly</changefreq>' . PHP_EOL;
+                $xml .= '    <priority>' . ($url === '' ? '1.0' : '0.8') . '</priority>' . PHP_EOL;
+                $xml .= '  </url>' . PHP_EOL;
+            }
+            $xml .= '</urlset>' . PHP_EOL;
+
+            // Write to the root directory
+            $sitemapFile = __DIR__ . '/../sitemap.xml';
+            return (file_put_contents($sitemapFile, $xml) !== false);
+        } catch (Throwable $e) {
+            error_log('Sitemap auto-generation failed: ' . $e->getMessage());
+            return false;
+        }
+    }
+}
+
+
 
 
 

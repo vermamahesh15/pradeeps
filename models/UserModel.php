@@ -327,10 +327,14 @@ class UserModel extends BaseModel
 
     public function getAdminUsersFiltered(string $roleFilter = '', string $statusFilter = '', string $search = '', int $limit = 10, int $offset = 0): array
     {
+        $hideSuperAdmin = (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'super_admin');
         if ($this->db) {
             try {
                 $sql = "SELECT * FROM users WHERE 1=1";
                 $params = [];
+                if ($hideSuperAdmin) {
+                    $sql .= " AND role != 'super_admin'";
+                }
                 if ($roleFilter !== '' && $roleFilter !== 'all') {
                     $sql .= " AND role = :role";
                     $params[':role'] = $roleFilter;
@@ -352,7 +356,7 @@ class UserModel extends BaseModel
                 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
                 $stmt->execute();
                 $dbUsers = $stmt->fetchAll();
-                if (!empty($dbUsers)) return $dbUsers;
+                if ($dbUsers !== false) return $dbUsers;
             } catch (Throwable $e) {}
         }
 
@@ -367,6 +371,9 @@ class UserModel extends BaseModel
             ['id' => 7, 'name' => 'Acharya Devashish', 'email' => 'devashish@culture.in', 'role' => 'author', 'status' => 'active', 'biography' => 'Spiritual Scholar & Awadhi Culture Researcher', 'last_login' => null, 'profile_photo' => null],
         ];
 
+        if ($hideSuperAdmin) {
+            $demo = array_values(array_filter($demo, fn($u) => ($u['role'] ?? '') !== 'super_admin'));
+        }
         if ($roleFilter !== '' && $roleFilter !== 'all') {
             $demo = array_values(array_filter($demo, fn($u) => $u['role'] === $roleFilter));
         }
@@ -381,10 +388,14 @@ class UserModel extends BaseModel
 
     public function getAdminUsersFilteredCount(string $roleFilter = '', string $statusFilter = '', string $search = ''): int
     {
+        $hideSuperAdmin = (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'super_admin');
         if ($this->db) {
             try {
                 $sql = "SELECT COUNT(*) FROM users WHERE 1=1";
                 $params = [];
+                if ($hideSuperAdmin) {
+                    $sql .= " AND role != 'super_admin'";
+                }
                 if ($roleFilter !== '' && $roleFilter !== 'all') {
                     $sql .= " AND role = :role";
                     $params[':role'] = $roleFilter;
@@ -402,8 +413,7 @@ class UserModel extends BaseModel
                     $stmt->bindValue($k, $v);
                 }
                 $stmt->execute();
-                $count = (int)$stmt->fetchColumn();
-                if ($count > 0) return $count;
+                return (int)$stmt->fetchColumn();
             } catch (Throwable $e) {}
         }
 
