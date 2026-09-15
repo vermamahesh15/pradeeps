@@ -226,14 +226,19 @@ if (is_post()) {
                 $blogData['slug'] = $blogModel->normalizeSlug($blogData['en_title'], $isEdit ? $id : null);
             }
 
-            // All articles written by non-admin roles require Admin (Pradeep Sarang) approval.
+            // Articles generated/created by Super Admin or titled Super Admin default to प्रदीप सारंग
             $authorInput = trim($_POST['author'] ?? '');
-            if (!empty($authorInput)) {
+            if (is_role('super_admin') || ($_SESSION['user_role'] ?? '') === 'super_admin' || $authorInput === 'Super Admin') {
+                $blogData['author'] = 'प्रदीप सारंग';
+            } elseif (!empty($authorInput)) {
                 $blogData['author'] = ps_decode_entities($authorInput);
-            } elseif ($isEdit && !empty($existing['author'])) {
+            } elseif ($isEdit && !empty($existing['author']) && $existing['author'] !== 'Super Admin') {
                 $blogData['author'] = $existing['author'];
             } else {
                 $blogData['author'] = $_SESSION['user_name'] ?? 'प्रदीप सारंग';
+                if ($blogData['author'] === 'Super Admin') {
+                    $blogData['author'] = 'प्रदीप सारंग';
+                }
             }
             $requestedStatus = $_POST['status'] ?? 'pending';
 
@@ -978,19 +983,7 @@ if (is_post()) {
         $role = $_POST['role'] ?? 'author';
         $status = $_POST['status'] ?? 'active';
         
-        if (is_role('admin')) {
-            if ($role !== 'author') {
-                flash('admin_error', 'Admins can only manage Authors.');
-                redirect('/admin/index.php?module=authors');
-            }
-            if ($isEdit) {
-                $targetUser = $userModel->find($id);
-                if ($targetUser && $targetUser['role'] !== 'author') {
-                    flash('admin_error', 'Admins can only edit Authors.');
-                    redirect('/admin/index.php?module=authors');
-                }
-            }
-        } elseif (!is_role('super_admin')) {
+        if (!is_role('admin', 'super_admin')) {
             http_response_code(403);
             exit('Unauthorized');
         }
@@ -1201,7 +1194,36 @@ if (is_post()) {
         ];
         $content->updateSettings($socialData);
         $userModel->logAudit((int)$_SESSION['user_id'], 'Social Accounts Configured', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
-        json_response(['status' => 'success', 'data' => $socialData]);
+    }
+}
+
+// Full-page Admin Article Preview Handler
+if ($loggedIn && ($_GET['module'] ?? '') === 'blogs' && ($_GET['action'] ?? '') === 'preview') {
+    $rawEditId = $_GET['edit_id'] ?? ($_GET['id'] ?? null);
+    $editId = is_numeric($rawEditId) ? (int)$rawEditId : $rawEditId;
+    $previewBlog = !empty($editId) ? $blogModel->find($editId) : null;
+    if ($previewBlog) {
+        if (!is_role('admin', 'super_admin') && is_role('author') && !empty($previewBlog['author_id']) && (int)$previewBlog['author_id'] !== (int)$_SESSION['user_id']) {
+            flash('admin_error', 'Unauthorized access to preview this article.');
+            redirect('/admin/index.php?module=blogs');
+        }
+        require_once __DIR__ . '/../controllers/PageController.php';
+        $pageController = new PageController($content, $blogModel, $categoryModel);
+        $related = $blogModel->allPublished(3, 0, '', null);
+        $related = array_filter($related, fn ($b) => (int)($b['id'] ?? 0) !== (int)($previewBlog['id'] ?? 0));
+
+        $data = [
+            'title' => '[PREVIEW] ' . ($previewBlog['title'] ?? 'Article Preview'),
+            'post' => $previewBlog,
+            'related' => array_slice(array_values($related), 0, 3),
+            'isAdminPreview' => true,
+        ];
+
+        $pageController->render('blog-detail', $data);
+        exit;
+    } else {
+        flash('admin_error', 'Blog article not found for preview.');
+        redirect('/admin/index.php?module=blogs');
     }
 }
 
@@ -1289,7 +1311,7 @@ $metrics = $content->metrics();
                     $notifications = $sessUserId > 0 ? $userModel->getNotifications($sessUserId, false) : [];
                     ?>
                     <div class="dropdown">
-                        <button class="btn btn-outline-dark position-relative py-1 px-2 border-0" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <button class="btn btn-outline-dark position-relative py-1 px-2 border-0" type="button" id="notifDropdown" data-bs-toggle="dropdown" aria-expanded="false" onclick="markAllRead()">
                             <i class="fa-solid fa-bell fs-5"></i>
                             <?php if ($unreadCount > 0): ?>
                                 <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notifBadge" style="margin-top: 3px; margin-left: -5px;">
@@ -1301,7 +1323,7 @@ $metrics = $content->metrics();
                             <div class="bg-dark text-white p-3 d-flex justify-content-between align-items-center rounded-top">
                                 <h6 class="mb-0">Notifications</h6>
                                 <?php if ($unreadCount > 0): ?>
-                                    <button class="btn btn-sm btn-link text-white-50 p-0 text-decoration-none" onclick="markAllRead()">Mark all read</button>
+                                    <button class="btn btn-sm btn-link text-white-50 p-0 text-decoration-none" id="markAllReadBtn" onclick="markAllRead()">Mark all read</button>
                                 <?php endif; ?>
                             </div>
                             <div class="list-group list-group-flush" id="notifList">
@@ -1443,6 +1465,7 @@ $metrics = $content->metrics();
                     </div>
 
                     <!-- Super Admin Visitor Analytics & Archiving Card -->
+                    <?php if (is_role('super_admin')): ?>
                     <div class="admin-card mt-4 border-start border-4 border-success">
                         <?php $vStats = $content->getVisitorStats(); ?>
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -1483,6 +1506,7 @@ $metrics = $content->metrics();
                             </button>
                         </form>
                     </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             <?php elseif ($module === 'pages'): ?>
                 <?php
@@ -1742,7 +1766,10 @@ $metrics = $content->metrics();
                 $action = $_GET['action'] ?? '';
                 $rawEditId = $_GET['edit_id'] ?? ($_GET['id'] ?? null);
                 $editId = is_numeric($rawEditId) ? (int)$rawEditId : $rawEditId;
-                $isCreateOrEdit = ($action === 'create' || $action === 'edit' || !empty($editId));
+
+
+
+                $isCreateOrEdit = ($action === 'create' || $action === 'edit' || (!empty($editId) && $action !== 'preview'));
 
                 $blogs = (is_role('author') && !is_role('admin', 'super_admin'))
                     ? $blogModel->all(100, 0, (int)$_SESSION['user_id']) 
@@ -1929,7 +1956,7 @@ $metrics = $content->metrics();
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label font-semibold">Author Name</label>
-                                            <input type="text" name="author" class="form-control" value="<?= e($editBlog ? ($editBlog['author'] ?: ($editBlog['author_name'] ?: $_SESSION['user_name'])) : ($_SESSION['user_name'] ?? 'प्रदीप सारंग')) ?>" placeholder="Author Name">
+                                            <input type="text" name="author" class="form-control" value="<?= e(is_role('super_admin') ? 'प्रदीप सारंग' : (($editBlog && !empty($editBlog['author']) && $editBlog['author'] !== 'Super Admin') ? $editBlog['author'] : (($_SESSION['user_name'] ?? '') === 'Super Admin' ? 'प्रदीप सारंग' : ($_SESSION['user_name'] ?? 'प्रदीप सारंग')))) ?>" placeholder="Author Name">
                                             <small class="text-muted">Display name of the author writing this article.</small>
                                         </div>
                                         <div class="d-grid gap-2">
@@ -2179,6 +2206,8 @@ $metrics = $content->metrics();
                                                         ]), ENT_QUOTES, 'UTF-8') ?>)" title="Share to social media">
                                                             <i class="fa-solid fa-share-nodes me-1"></i> Share Social
                                                         </button>
+
+                                                        <a href="?module=blogs&action=preview&id=<?= urlencode((string)$blogKey) ?>" class="btn btn-sm btn-outline-info px-2.5 py-1" title="Preview Article"><i class="fa-solid fa-eye me-1"></i> Preview</a>
 
                                                         <a href="?module=blogs&edit_id=<?= urlencode((string)$blogKey) ?>" class="btn btn-sm btn-outline-dark px-2.5 py-1" title="Edit Article"><i class="fa-solid fa-pen-to-square me-1"></i> Edit</a>
 
@@ -3028,10 +3057,6 @@ $metrics = $content->metrics();
                 $limit = max(1, min(50, (int)($_GET['limit'] ?? 5)));
                 $offset = ($page - 1) * $limit;
 
-                if (is_role('admin') && ($roleFilter === '' || $roleFilter === 'all')) {
-                    $roleFilter = 'author';
-                }
-
                 $users = $userModel->getAdminUsersFiltered($roleFilter, $statusFilter, $searchQuery, $limit, $offset);
                 $totalUsers = $userModel->getAdminUsersFilteredCount($roleFilter, $statusFilter, $searchQuery);
                 $totalPages = max(1, (int)ceil($totalUsers / $limit));
@@ -3039,10 +3064,8 @@ $metrics = $content->metrics();
                 $success = flash('admin_success');
                 $editId = (int)($_GET['edit_id'] ?? 0);
                 $editUser = $editId > 0 ? $userModel->find($editId) : null;
-                
-                if ($editUser && is_role('admin') && $editUser['role'] !== 'author') {
+                if ($editUser && ($editUser['role'] ?? '') === 'super_admin' && !is_role('super_admin')) {
                     $editUser = null;
-                    flash('admin_error', 'Admins can only manage Author accounts.');
                 }
                 ?>
                 <div class="admin-card mb-4">
@@ -3076,22 +3099,20 @@ $metrics = $content->metrics();
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Email Address *</label>
-                                        <input type="email" name="email" class="form-control" value="<?= e($editUser['email'] ?? '') ?>" required placeholder="author@example.com">
+                                        <input type="email" name="email" class="form-control" value="<?= e($editUser['email'] ?? '') ?>" required placeholder="e.g. author@example.com">
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label">Password <?= $editUser ? '(Leave blank to keep current)' : '*' ?></label>
-                                        <input type="password" name="password" class="form-control" <?= $editUser ? '' : 'required' ?>>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Password <?= $editUser ? '(Leave blank to keep unchanged)' : '*' ?></label>
+                                        <input type="password" name="password" class="form-control" <?= $editUser ? '' : 'required' ?> placeholder="••••••••">
                                     </div>
-                                    <div class="col-md-3">
-                                        <label class="form-label">Role *</label>
-                                        <select name="role" class="form-select" required>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Role</label>
+                                        <select name="role" class="form-select">
                                             <?php if (is_role('super_admin')): ?>
-                                                <option value="super_admin" <?= ($editUser && $editUser['role'] === 'super_admin') ? 'selected' : '' ?>>Super Admin</option>
-                                                <option value="admin" <?= ($editUser && $editUser['role'] === 'admin') ? 'selected' : '' ?>>Admin</option>
-                                                <option value="author" <?= ($editUser && $editUser['role'] === 'author') ? 'selected' : '' ?>>Author / Writer</option>
-                                            <?php else: ?>
-                                                <option value="author" selected>Author / Writer</option>
+                                                <option value="super_admin" <?= ($editUser && ($editUser['role'] ?? '') === 'super_admin') ? 'selected' : '' ?>>Super Admin</option>
                                             <?php endif; ?>
+                                            <option value="admin" <?= ($editUser && ($editUser['role'] ?? '') === 'admin') ? 'selected' : '' ?>>Admin</option>
+                                            <option value="author" <?= (!$editUser || ($editUser['role'] ?? '') === 'author') ? 'selected' : '' ?>>Author / Writer</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
@@ -3149,7 +3170,9 @@ $metrics = $content->metrics();
                             <div class="col-md-3">
                                 <select name="role" class="form-select form-select-sm">
                                     <option value="all" <?= $roleFilter === '' || $roleFilter === 'all' ? 'selected' : '' ?>>All Roles</option>
-                                    <option value="super_admin" <?= $roleFilter === 'super_admin' ? 'selected' : '' ?>>Super Admin</option>
+                                    <?php if (is_role('super_admin')): ?>
+                                        <option value="super_admin" <?= $roleFilter === 'super_admin' ? 'selected' : '' ?>>Super Admin</option>
+                                    <?php endif; ?>
                                     <option value="admin" <?= $roleFilter === 'admin' ? 'selected' : '' ?>>Admin</option>
                                     <option value="author" <?= $roleFilter === 'author' ? 'selected' : '' ?>>Author / Writer</option>
                                 </select>
@@ -3653,6 +3676,7 @@ $metrics = $content->metrics();
 
                 </div>
 
+                <?php if (is_role('super_admin')): ?>
                 <div class="admin-card mt-4 border-start border-4 border-success">
                     <?php $vStats = $content->getVisitorStats(); ?>
                     <h3 class="text-success mb-2"><i class="fa-solid fa-chart-pie me-2"></i>Visitor Analytics & Monthly Database Archival</h3>
@@ -3690,6 +3714,7 @@ $metrics = $content->metrics();
                         </button>
                     </form>
                 </div>
+                <?php endif; ?>
 
             <?php else: ?>
                 <div class="admin-card">
@@ -4025,6 +4050,33 @@ function resetBlogFilters() {
     if (document.getElementById('blogCategoryFilter')) document.getElementById('blogCategoryFilter').value = '';
     if (document.getElementById('blogStatusFilter')) document.getElementById('blogStatusFilter').value = '';
     filterBlogsTable();
+}
+
+function markAllRead() {
+    const badge = document.getElementById('notifBadge');
+    if (badge) {
+        badge.remove();
+    }
+    const btn = document.getElementById('markAllReadBtn');
+    if (btn) {
+        btn.remove();
+    }
+    const notifItems = document.querySelectorAll('#notifList .list-group-item');
+    notifItems.forEach(item => {
+        item.classList.remove('bg-light');
+    });
+
+    if (window._notifMarked) return;
+    window._notifMarked = true;
+
+    const formData = new FormData();
+    formData.append('action', 'mark_notifications_read');
+    formData.append('csrf_token', '<?= csrf_token() ?>');
+
+    fetch('/admin/index.php', {
+        method: 'POST',
+        body: formData
+    }).catch(err => console.error('Failed to mark notifications read:', err));
 }
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

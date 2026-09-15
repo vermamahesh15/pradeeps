@@ -188,6 +188,11 @@ class BlogController
 
     private function sanitizeBlogData(array $input): array
     {
+        $author = trim((string) ($input['author'] ?? ''));
+        if (is_role('super_admin') || ($_SESSION['user_role'] ?? '') === 'super_admin' || $author === 'Super Admin' || $author === '') {
+            $author = 'प्रदीप सारंग';
+        }
+
         return [
             'category_id' => isset($input['category_id']) && is_numeric($input['category_id']) ? (int) $input['category_id'] : null,
             'title' => trim((string) ($input['title'] ?? '')),
@@ -195,7 +200,7 @@ class BlogController
             'excerpt' => trim((string) ($input['excerpt'] ?? '')),
             'content' => trim((string) ($input['content'] ?? '')),
             'banner_image' => trim((string) ($input['banner_image'] ?? '')),
-            'author' => trim((string) ($input['author'] ?? '')),
+            'author' => $author,
             'published_at' => trim((string) ($input['published_at'] ?? '')) ?: null,
         ];
     }

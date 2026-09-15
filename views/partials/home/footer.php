@@ -25,10 +25,6 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                             <span class="material-symbols-outlined text-[#F0B45C] text-[20px]">nature_people</span>
                         </div>
                     <?php endif; ?>
-                    <div class="flex flex-col">
-                        <span class="font-headline-sm text-headline-sm text-[#F9FAFB] font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
-                        <span class="font-label-sm text-label-sm text-[#F0B45C]"><?= e(ps_text('लोकसेवक • पर्यावरणविद् • साहित्यकार', 'Social Worker • Environmentalist • Writer')) ?></span>
-                    </div>
                 </div>
                 <div class="bg-white/5 rounded-xl p-4 my-3 border border-white/10">
                     <p class="font-quote-editorial text-body-md text-[#F0B45C] leading-relaxed italic">

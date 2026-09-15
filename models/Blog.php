@@ -42,6 +42,9 @@ class Blog extends BaseModel
         $items = $stmt->fetchAll();
         foreach ($items as &$item) {
             $authorName = !empty($item['author']) ? $item['author'] : (!empty($item['author_name']) ? $item['author_name'] : 'प्रदीप सारंग');
+            if ($authorName === 'Super Admin' || (isset($item['author_id']) && (int)$item['author_id'] === 1)) {
+                $authorName = 'प्रदीप सारंग';
+            }
             $item['author'] = $authorName;
             $item['author_name'] = $authorName;
         }
@@ -212,6 +215,9 @@ class Blog extends BaseModel
     {
         if (!$this->db) return 0;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
+        if ($authorName === 'Super Admin' || ($_SESSION['user_role'] ?? '') === 'super_admin' || (isset($data['author_id']) && (int)$data['author_id'] === 1)) {
+            $authorName = 'प्रदीप सारंग';
+        }
         
         $params = [
             ':category_id' => $data['category_id'],
@@ -274,6 +280,9 @@ class Blog extends BaseModel
     {
         if (!$this->db) return false;
         $authorName = !empty($data['author']) ? $data['author'] : (!empty($data['author_name']) ? $data['author_name'] : ($_SESSION['user_name'] ?? 'प्रदीप सारंग'));
+        if ($authorName === 'Super Admin' || ($_SESSION['user_role'] ?? '') === 'super_admin' || (isset($data['author_id']) && (int)$data['author_id'] === 1)) {
+            $authorName = 'प्रदीप सारंग';
+        }
         $whereSql = is_numeric($id) ? 'WHERE id = :id' : 'WHERE slug = :id';
         $stmt = $this->db->prepare('UPDATE blogs SET category_id = :category_id, author_id = :author_id, title = :title, en_title = :en_title, slug = :slug, excerpt = :excerpt, content = :content, banner_image = :banner_image, author = :author, updated_by = :updated_by, status = :status, featured_image = :featured_image, seo_title = :seo_title, meta_description = :meta_description, meta_keywords = :meta_keywords, canonical_url = :canonical_url, og_image = :og_image, published_at = :published_at ' . $whereSql);
         return $stmt->execute([

@@ -804,31 +804,7 @@ if (empty($sughariImg)) {
       <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
         <!-- Left: Author Profile Column -->
         <div class="lg:col-span-4 flex flex-col items-center text-center lg:border-r lg:border-emerald-900/10 lg:pr-8">
-          <div class="relative group">
-            <div class="w-36 h-36 sm:w-44 sm:h-44 p-1.5 bg-gradient-to-tr from-amber-600 via-emerald-700 to-emerald-500 rounded-2xl shadow-lg transform group-hover:scale-[1.02] transition-all duration-300">
-              <div class="w-full h-full rounded-[14px] overflow-hidden bg-white flex items-center justify-center relative">
-                <?php if (!empty($authorImgUrl)): ?>
-                  <img src="<?= e($authorImgUrl) ?>" alt="<?= e($postAuthor) ?>" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                  <div class="w-full h-full bg-gradient-to-br from-emerald-800 via-deep-forest to-emerald-950 text-white flex flex-col items-center justify-center p-3 text-center" style="display:none;">
-                    <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Emblem Symbol" class="w-12 h-12 object-contain mb-1 filter drop-shadow">
-                    <span class="font-serif font-bold text-xs text-amber-300"><?= e($postAuthor) ?></span>
-                  </div>
-                <?php else: ?>
-                  <!-- Symbol Image Emblem Placeholder when no image is present -->
-                  <div class="w-full h-full bg-gradient-to-br from-emerald-800 via-emerald-900 to-emerald-950 text-white flex flex-col items-center justify-center p-3 text-center relative overflow-hidden group">
-                    <div class="absolute inset-0 bg-white/5 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:12px_12px] opacity-40"></div>
-                    <img src="<?= e(asset('images/home/icon.svg')) ?>" alt="Author Symbol Emblem" class="w-14 h-14 object-contain relative z-10 mb-1 filter drop-shadow-md">
-                    <span class="font-serif font-bold text-[11px] tracking-wider text-amber-300 relative z-10 uppercase"><?= e(ps_text('साहित्य प्रतीक', 'Literary Symbol')) ?></span>
-                  </div>
-                <?php endif; ?>
-              </div>
-            </div>
-            <div class="absolute -bottom-2 -right-2 bg-emerald-700 text-white p-2 rounded-xl shadow-md border-2 border-white flex items-center justify-center" title="<?= e(ps_text('सत्यापित लेखक', 'Verified Author')) ?>">
-              <span class="material-symbols-outlined text-[18px]">verified</span>
-            </div>
-          </div>
-
-          <h3 class="font-serif text-2xl font-bold text-emerald-950 mt-5 mb-1 tracking-tight"><?= e($authorNameVal) ?></h3>
+          <h3 class="font-serif text-2xl font-bold text-emerald-950 mt-1 mb-1 tracking-tight"><?= e($authorNameVal) ?></h3>
           <span class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-emerald-800 bg-emerald-100/70 px-3 py-1 rounded-full mt-1">
             <span class="material-symbols-outlined text-[15px]">edit_note</span>
             <span><?= e($authorRoleVal) ?></span>
