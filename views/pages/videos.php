@@ -219,7 +219,7 @@ $youtubeChannelUrl = (!empty($ytSetting) && $ytSetting !== '#') ? $ytSetting : '
           <input type="hidden" name="category" value="<?= e($selectedCategory) ?>">
         <?php endif; ?>
         <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[20px]">search</span>
-        <input type="text" name="q" value="<?= e($searchQuery) ?>" placeholder="<?= e(ps_text('वीडियो खोजें...', 'Search videos...')) ?>" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-700 transition-all">
+        <input type="text" name="q" value="<?= e($searchQuery) ?>" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-700 transition-all">
         <?php if (!empty($searchQuery)): ?>
           <a href="<?= e(base_url('/videos' . ($selectedCategory !== 'all' ? '?category=' . urlencode($selectedCategory) : ''))) ?>" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700">
             <span class="material-symbols-outlined text-[18px]">close</span>

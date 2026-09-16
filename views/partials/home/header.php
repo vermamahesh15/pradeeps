@@ -37,6 +37,7 @@ if (!isset($nav) || !is_array($nav)) {
         ['/salahkaar', ps_text('सलाहकार', 'Counsellor')],
         ['/events', ps_text('कार्यक्रम','Events')],
         ['/blog', ps_text('साहित्य व विचार', 'Literature & Writings')],
+        ['/donation', ps_text('सहयोग करें', 'Donate Now')],
         ['/contact', ps_text('संपर्क','Contact')]
     ];
 }
@@ -156,23 +157,20 @@ if (!isset($nav) || !is_array($nav)) {
                 ?>
             </nav>
 
-            <!-- Actions: Language Switcher, CTA, Admin, Mobile Toggle -->
+            <!-- Actions: CTA, Admin, Mobile Toggle -->
             <div class="flex items-center gap-2.5 sm:gap-3.5">
-                <div class="flex items-center bg-[#FFFFFF] border border-[#E5E7EB] rounded-full p-0.5 shadow-xs">
-                    <a href="<?= e(base_url('/') . '?' . http_build_query(array_merge($_GET, ['lang' => 'hi']))) ?>" 
-                       class="px-2.5 py-1 rounded-full <?= $currentLang === 'hi' ? 'bg-[#14532D] text-white font-bold' : 'text-[#172033] hover:text-[#C05632]' ?> font-label-sm text-label-sm transition-colors">
-                        HI
-                    </a>
-                </div>
 
-                <a class="hidden md:inline-flex items-center justify-center gap-1.5 bg-[#C05632] text-white hover:bg-[#A9472B] px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold" href="<?= e(base_url('/volunteer')) ?>">
-                    <span class="material-symbols-outlined text-[17px]">handshake</span>
-                    <span><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
+                <a class="hidden sm:inline-flex items-center justify-center gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-3.5 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
+                    <span class="material-symbols-outlined text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें', 'Donate Now')) ?></span>
                 </a>
 
-                <a href="<?= e(base_url('/admin')) ?>" title="<?= e(ps_text('प्रशासनिक पोर्टल', 'Admin Portal')) ?>" class="w-8 h-8 rounded-full bg-[#172033] hover:bg-[#14532D] transition-colors flex items-center justify-center shrink-0 shadow-xs">
-                    <span class="material-symbols-outlined text-white text-[18px]">person</span>
+                <a class="hidden md:inline-flex items-center justify-center gap-1.5 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="openVolunteerModal(event)">
+                    <span class="material-symbols-outlined text-[17px] !text-white" style="color: #ffffff !important;">handshake</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
                 </a>
+
+                <!-- CTA Buttons & Mobile Toggle -->
 
                 <button id="ps-mobile-toggle" class="xl:hidden p-1.5 text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
                     <span class="material-symbols-outlined text-2xl">menu</span>
@@ -232,7 +230,7 @@ if (!isset($nav) || !is_array($nav)) {
             endforeach; 
             ?>
             <div class="pt-3 border-t border-border-warm flex flex-col gap-2.5">
-                <a class="inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center" href="<?= e(base_url('/volunteer')) ?>">
+                <a class="inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center cursor-pointer" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
                     <?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?>
                 </a>
             </div>

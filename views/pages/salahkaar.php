@@ -423,13 +423,13 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                 <label class="font-label-md text-xs font-bold text-deep-forest mb-1.5" for="fullName">
                                     <?= e(ps_text('आपका नाम (Full Name) *', 'Full Name *')) ?>
                                 </label>
-                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="fullName" placeholder="<?= e(ps_text('उदा. रमेश कुमार / अंजलि वर्मा', 'e.g. Ramesh Kumar')) ?>" required type="text"/>
+                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="fullName" required type="text"/>
                             </div>
                             <div class="flex flex-col">
                                 <label class="font-label-md text-xs font-bold text-deep-forest mb-1.5" for="phoneNumber">
                                     <?= e(ps_text('मोबाइल नंबर / व्हाट्सएप (Phone Number) *', 'Phone / WhatsApp Number *')) ?>
                                 </label>
-                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="phoneNumber" placeholder="+91 9919007190" required type="tel"/>
+                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="phoneNumber" required type="tel"/>
                             </div>
                         </div>
 
@@ -438,7 +438,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                 <label class="font-label-md text-xs font-bold text-deep-forest mb-1.5" for="ageProfession">
                                     <?= e(ps_text('आयु एवं पेशा (Age & Occupation - ऐच्छिक)', 'Age & Occupation (Optional)')) ?>
                                 </label>
-                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="ageProfession" placeholder="<?= e(ps_text('उदा. २८ वर्ष, शिक्षक / छात्र / किसान', 'e.g. 28 Yrs, Teacher / Student')) ?>" type="text"/>
+                                <input class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="ageProfession" type="text"/>
                             </div>
                             <div class="flex flex-col">
                                 <label class="font-label-md text-xs font-bold text-deep-forest mb-1.5" for="consultTopic">
@@ -485,7 +485,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                 </label>
                                 <span class="font-label-sm text-xs text-text-muted"><?= e(ps_text('संक्षेप में लिखें', 'Keep it brief')) ?></span>
                             </div>
-                            <textarea class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="problemNote" placeholder="<?= e(ps_text('अपनी समस्या के मुख्य बिंदु संक्षेप में लिखें ताकि सारंग जी विषय को पहले से समझ सकें...', 'Briefly explain your concern so Shri Sarang can understand before calling...')) ?>" required rows="4"></textarea>
+                            <textarea class="bg-surface-container-lowest p-3 rounded-xl font-body-md text-sm text-on-surface border border-border-warm focus:outline-none focus:ring-2 focus:ring-primary" id="problemNote" required rows="4"></textarea>
                         </div>
 
                         <div class="p-3 rounded-xl bg-soft-meadow text-deep-forest text-xs font-medium flex items-start gap-2 border border-border-warm/60">

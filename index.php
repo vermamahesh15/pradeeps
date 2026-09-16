@@ -63,7 +63,8 @@ if ($path === '/') {
 }
 
 if ($path === '/api/cities') {
-    $stateId = (int)($_GET['state_id'] ?? 0);
+    $rawStateId = $_GET['state_id'] ?? ($_GET['state'] ?? 0);
+    $stateId = is_numeric($rawStateId) ? (int)$rawStateId : trim((string)$rawStateId);
     $cities = $contentModel->getCitiesByState($stateId);
     json_response(['status' => 'success', 'data' => $cities]);
     return;

@@ -313,18 +313,18 @@ $isGreen = preg_match('/हरियाली|green|hariyali/iu', ($item['title'
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('आपका पूरा नाम *', 'Full Name *')) ?></label>
-            <input type="text" name="name" required placeholder="<?= e(ps_text('उदा. अमित कुमार वर्मा', 'e.g. Amit Kumar')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+            <input type="text" name="name" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
           </div>
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('व्हाट्सएप / मोबाइल नंबर *', 'Mobile / WhatsApp Number *')) ?></label>
-            <input type="tel" name="phone" required placeholder="<?= e(ps_text('10 अंकों का मोबाइल नंबर', '10 digit mobile number')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+            <input type="tel" name="phone" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('ईमेल पता', 'Email Address')) ?></label>
-            <input type="email" name="email" placeholder="name@example.com" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+            <input type="email" name="email" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
           </div>
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('गाँव / कस्बा / ज़िला', 'Village / Town / District')) ?></label>
@@ -334,7 +334,7 @@ $isGreen = preg_match('/हरियाली|green|hariyali/iu', ($item['title'
 
         <div>
           <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('आपका विचार या संदेश (वैकल्पिक)', 'Message / Proposal')) ?></label>
-          <textarea name="message" rows="3" placeholder="<?= e(ps_text('अपने विचार या सहयोग के बारे में लिखें...', 'Write your thoughts or proposal here...')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container"></textarea>
+          <textarea name="message" rows="3" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container"></textarea>
         </div>
 
         <div class="flex items-start gap-3 p-3.5 bg-surface-container-low rounded-xl border border-border-warm">

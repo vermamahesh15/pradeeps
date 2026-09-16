@@ -467,7 +467,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 </div>
                 <div class="relative">
                   <span class="absolute left-3.5 top-3.5 text-text-muted font-bold">₹</span>
-                  <input type="number" id="custom-amount" name="amount" placeholder="<?= e(ps_text('अथवा स्वेच्छा राशि दर्ज करें (e.g. 5100)', 'Or enter custom amount (e.g. 5100)')) ?>" class="w-full pl-8 pr-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
+                  <input type="number" id="custom-amount" name="amount" class="w-full pl-8 pr-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
                 </div>
               </div>
 
@@ -492,13 +492,13 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                   <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                     <?= e(ps_text('आपका पूरा नाम (Full Name) *', 'Full Name *')) ?>
                   </label>
-                  <input type="text" name="full_name" required placeholder="<?= e(ps_text('जैसे: आचार्य रमेश चंद्र वर्मा', 'e.g. Ramesh Chandra')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
+                  <input type="text" name="full_name" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
                 </div>
                 <div>
                   <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                     <?= e(ps_text('व्हाट्सएप / मोबाइल नंबर *', 'WhatsApp / Mobile *')) ?>
                   </label>
-                  <input type="tel" name="mobile" required placeholder="<?= e(ps_text('10 अंकों का फोन नंबर', '10 digit phone number')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
+                  <input type="tel" name="mobile" required class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
                 </div>
               </div>
 
@@ -507,13 +507,13 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                   <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                     <?= e(ps_text('ईमेल पता (Email ID)', 'Email Address')) ?>
                   </label>
-                  <input type="email" name="email" placeholder="email@example.com" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
+                  <input type="email" name="email" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
                 </div>
                 <div>
                   <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                     <?= e(ps_text('शहर / ज़िला (City & State)', 'City / District')) ?>
                   </label>
-                  <input type="text" name="city" placeholder="<?= e(ps_text('जैसे: बाराबंकी / लखनऊ', 'e.g. Barabanki / Lucknow')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
+                  <input type="text" name="city" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all">
                 </div>
               </div>
 
@@ -522,7 +522,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                   <?= e(ps_text('UPI संदर्भ / UTR नंबर (यदि भुगतान कर चुके हों)', 'UPI Reference / UTR Number')) ?>
                 </label>
-                <input type="text" name="transaction_id" placeholder="<?= e(ps_text('12 अंकों का UTR / Transaction ID', '12-digit UTR or Txn ID')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container font-mono border border-border-warm transition-all">
+                <input type="text" name="transaction_id" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container font-mono border border-border-warm transition-all">
                 <span class="text-[12px] text-text-muted mt-1 block"><?= e(ps_text('बैंक अथवा UPI ऐप में लेन-देन के बाद प्राप्त 12 अंकों का संदर्भ दर्ज करें।', 'Enter the 12-digit reference ID received after payment.')) ?></span>
               </div>
 
@@ -531,7 +531,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 <label class="block font-label-md text-label-md text-on-surface font-semibold mb-1.5">
                   <?= e(ps_text('स्मृति संकल्प अथवा विशेष संदेश (Memorial / Dedication)', 'Dedications or Special Message')) ?>
                 </label>
-                <textarea rows="3" name="message" placeholder="<?= e(ps_text('जैसे: \'स्वर्गीय माताजी की पुण्यतिथि पर 5 नीम के पौधे\' अथवा \'पुत्री के जन्मदिन पर पक्षी सकोरे\'', 'e.g. 5 trees in memory of late mother or bird feed on daughter\'s birthday')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all"></textarea>
+                <textarea rows="3" name="message" class="w-full px-4 py-3 rounded-xl bg-surface-container-low text-on-surface font-body-md text-body-md focus:outline-none focus:bg-pure-white focus:ring-2 focus:ring-primary-container border border-border-warm transition-all"></textarea>
               </div>
 
               <!-- Submit Button -->
@@ -645,7 +645,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           </div>
           <div>
             <h4 class="font-title-md text-title-md text-deep-forest font-bold"><?= e(ps_text('वस्तु-दान प्रेषण पता एवं सहायता संपर्क', 'Material Drop-off Address & Contact')) ?></h4>
-            <p class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('कार्यालय: प्रदीप सारंग सेवा केंद्र, निकट सतरिख नाका, जनपद बाराबंकी, उत्तर प्रदेश - 225001', 'Office: Pradeep Sarang Seva Kendra, Satrikh Naka, Barabanki, UP - 225001')) ?></p>
+            <p class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('कार्यालय: ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Office: Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></p>
           </div>
         </div>
         <a href="tel:<?= e(preg_replace('/[^+0-9]/', '', $contactPhone)) ?>" class="shrink-0 bg-deep-forest hover:bg-on-surface text-pure-white px-5 py-2.5 rounded-xl font-label-md text-label-md flex items-center gap-2 transition-all shadow-sm font-semibold">

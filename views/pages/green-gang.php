@@ -285,18 +285,18 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('आपका नाम *', 'Full Name *')) ?></label>
-              <input type="text" name="name" required placeholder="<?= e(ps_text('उदा. विकास वर्मा', 'e.g. Vikas Verma')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+              <input type="text" name="name" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
             </div>
             <div>
               <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('मोबाइल / WhatsApp *', 'Mobile / WhatsApp *')) ?></label>
-              <input type="tel" name="phone" required placeholder="<?= e(ps_text('10 अंकों का मोबाइल नंबर', '10 digit mobile number')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+              <input type="tel" name="phone" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
               <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('गाँव / स्कूल / संस्था का नाम *', 'Village / School / Org Name *')) ?></label>
-              <input type="text" name="address" required placeholder="<?= e(ps_text('उदा. ग्राम कमरावाँ / प्राथमिक विद्यालय', 'e.g. Kamrawan Primary School')) ?>" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+              <input type="text" name="address" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
             </div>
             <div>
               <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('कितने पौधों की आवश्यकता है?', 'Required Sapling Count')) ?></label>

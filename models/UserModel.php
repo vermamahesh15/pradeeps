@@ -424,8 +424,8 @@ class UserModel extends BaseModel
     public function getRolePermissions(): array
     {
         $defaults = [
-            'super_admin' => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'role_access', 'settings', 'audit_logs'],
-            'admin'       => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers'],
+            'super_admin' => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'about_photos', 'role_access', 'settings', 'audit_logs'],
+            'admin'       => ['dashboard', 'authors', 'timeline', 'blogs', 'categories', 'events', 'campaigns', 'donations', 'donation_settings', 'gallery', 'newspaper', 'volunteers', 'about_photos'],
             'author'      => ['dashboard', 'blogs', 'categories', 'profile', 'change_password'],
         ];
 

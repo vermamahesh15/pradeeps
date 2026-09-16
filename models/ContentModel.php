@@ -506,16 +506,26 @@ class ContentModel extends BaseModel
     {
         if (!$this->db) return [];
         try {
-            return $this->db->query("SELECT * FROM tab_state ORDER BY state_name ASC")->fetchAll();
+            return $this->db->query("SELECT * FROM tab_state WHERE state_status IS NULL OR state_status = 1 ORDER BY state_name ASC")->fetchAll();
         } catch (Throwable $e) { return []; }
     }
 
-    public function getCitiesByState(int $stateId): array
+    public function getCitiesByState($stateId): array
     {
         if (!$this->db) return [];
         try {
-            $stmt = $this->db->prepare("SELECT * FROM tab_city WHERE state_id = :state_id ORDER BY city_name ASC");
-            $stmt->execute([':state_id' => $stateId]);
+            if (!is_numeric($stateId) && is_string($stateId)) {
+                $stStmt = $this->db->prepare("SELECT state_id FROM tab_state WHERE LOWER(state_name) = LOWER(:name) LIMIT 1");
+                $stStmt->execute([':name' => $stateId]);
+                $foundId = $stStmt->fetchColumn();
+                if ($foundId) {
+                    $stateId = (int)$foundId;
+                } else {
+                    return [];
+                }
+            }
+            $stmt = $this->db->prepare("SELECT * FROM tab_city WHERE state_id = :state_id AND (city_status IS NULL OR city_status = 1) ORDER BY city_name ASC");
+            $stmt->execute([':state_id' => (int)$stateId]);
             return $stmt->fetchAll();
         } catch (Throwable $e) { return []; }
     }
@@ -723,6 +733,7 @@ class ContentModel extends BaseModel
         $pagesCount = 0;
         $newspaperCount = 0;
         $donationCount = 0;
+        $aboutPhotosCount = 0;
         if ($this->db) {
             try {
             $timelineCount = (int)$this->db->query('SELECT COUNT(*) FROM timeline')->fetchColumn();
@@ -730,6 +741,7 @@ class ContentModel extends BaseModel
             $donationCount = (int)$this->db->query('SELECT COUNT(*) FROM donations')->fetchColumn();
             $newspaperCount = (int)$this->db->query('SELECT COUNT(*) FROM newspaper_cuttings')->fetchColumn();
             $pagesCount = (int)$this->db->query('SELECT COUNT(*) FROM pages')->fetchColumn();
+            $aboutPhotosCount = (int)$this->db->query('SELECT COUNT(*) FROM about_personal_photos')->fetchColumn();
             } catch (Throwable $e) {}
         }
 
@@ -744,6 +756,7 @@ class ContentModel extends BaseModel
             'pages' => $pagesCount,
             'newspaper' => $newspaperCount,
             'donations' => $donationCount,
+            'about_photos' => $aboutPhotosCount,
             'visitors' => 8421,
         ];
     }
@@ -751,6 +764,43 @@ class ContentModel extends BaseModel
     public function saveVolunteer(array $data): bool
     {
         if (!$this->db) return false;
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS volunteers (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                full_name VARCHAR(150) NOT NULL,
+                volunteer_id VARCHAR(50) UNIQUE NULL,
+                father_name VARCHAR(150) NULL,
+                email VARCHAR(190) NOT NULL,
+                gender ENUM('Male', 'Female', 'Other') DEFAULT 'Male',
+                dob DATE NULL,
+                phone VARCHAR(50) NULL,
+                state VARCHAR(100) NULL,
+                district VARCHAR(100) NULL,
+                pincode VARCHAR(10) NULL,
+                occupation VARCHAR(150) NULL,
+                photo VARCHAR(255) NULL,
+                skills VARCHAR(255) NULL,
+                interests VARCHAR(255) NULL,
+                availability VARCHAR(100) NULL,
+                resume VARCHAR(255) NULL,
+                message TEXT NULL,
+                status ENUM('Active', 'Inactive', 'Pending') DEFAULT 'Pending',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )");
+        } catch (Throwable $e) {}
+
+        $stateVal = $data['state'] ?? '';
+        if (is_numeric($stateVal)) {
+            try {
+                $stNameStmt = $this->db->prepare("SELECT state_name FROM tab_state WHERE state_id = :sid LIMIT 1");
+                $stNameStmt->execute([':sid' => (int)$stateVal]);
+                $stName = $stNameStmt->fetchColumn();
+                if ($stName) {
+                    $stateVal = $stName;
+                }
+            } catch (Throwable $e) {}
+        }
+
         $stmt = $this->db->prepare("INSERT INTO volunteers (volunteer_id, full_name, father_name, email, gender, dob, phone, state, district, pincode, occupation, photo, skills, interests, availability, message, status) 
             VALUES (:vid, :fname, :father, :email, :gender, :dob, :phone, :state, :dist, :pin, :occ, :photo, :skills, :interests, :avail, :msg, :status)");
         
@@ -762,7 +812,7 @@ class ContentModel extends BaseModel
             ':gender' => $data['gender'] ?? 'Male',
             ':dob' => $data['dob'] ?? null,
             ':phone' => $data['phone'],
-            ':state' => $data['state'],
+            ':state' => $stateVal,
             ':dist' => $data['district'],
             ':pin' => $data['pincode'] ?? null,
             ':occ' => $data['occupation'] ?? null,
@@ -1057,5 +1107,11 @@ class ContentModel extends BaseModel
             $_SESSION['_demo_settings'] = array_merge($_SESSION['_demo_settings'] ?? [], $data);
             return true;
         }
+    }
+
+    public function getPublishedPersonalPhotos(): array
+    {
+        require_once __DIR__ . '/PersonalPhotoModel.php';
+        return (new PersonalPhotoModel())->allPublished();
     }
 }

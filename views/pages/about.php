@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 $timeline = $timeline ?? [];
+$personalPhotos = $personalPhotos ?? [];
 $phone = trim($settings['phone'] ?? '+91 9919007190');
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
@@ -103,7 +104,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 <span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
                 <span><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
               </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम – कमरावाँ, पोस्ट – नानमऊ, जनपद – बाराबंकी, उत्तर प्रदेश (225121)', 'Kamrawan, Barabanki, U.P.')) ?></span>
+              <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
               <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
@@ -715,6 +716,297 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
     </div>
   </section>
 
+  <?php if (!empty($personalPhotos)): ?>
+  <!-- जीवन के कुछ यादगार पल (PERSONAL MOMENTS GALLERY) -->
+  <section class="w-full py-space-2xl md:py-space-4xl bg-pure-white border-b border-border-warm" id="personal-moments">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-space-xl">
+        <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase flex items-center justify-center gap-1.5 mb-1">
+          <span class="material-symbols-outlined text-[18px]">photo_camera</span>
+          <span><?= e(ps_text('स्मृतियों की पावन धरोहर', 'ARCHIVE OF PERSONAL MOMENTS')) ?></span>
+        </span>
+        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
+          <?= e(ps_text('जीवन के कुछ यादगार पल (Personal Moments)', 'Personal Moments & Life Journey')) ?>
+        </h2>
+        <p class="font-body-md text-body-md text-text-muted mt-2 leading-relaxed">
+          <?= e(ps_text('श्री प्रदीप सारंग जी के सामाजिक संघर्ष, आत्मीय जन-सरोकारों, पर्यावरण साधना और ऐतिहासिक प्रसंगों का सचित्र संकलन।', 'A curated photographic chronicle capturing Shri Pradeep Sarang\'s grassroots dedication, social milestones, and memorable moments.')) ?>
+        </p>
+      </div>
+
+      <!-- Gallery Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="personal-gallery-grid">
+        <?php foreach ($personalPhotos as $idx => $photo): ?>
+          <?php 
+          $thumbImg = !empty($photo['thumbnail_path']) ? base_url($photo['thumbnail_path']) : base_url($photo['photo_path']);
+          $fullImg = base_url($photo['photo_path']);
+          $photoTitle = trim($photo['title'] ?? '');
+          $photoCaption = trim($photo['caption'] ?? '');
+          $photoYear = trim($photo['photo_year'] ?? '');
+          $photoLoc = trim($photo['location'] ?? '');
+          $isFeatured = ($idx === 0 && count($personalPhotos) >= 4);
+          ?>
+          <div class="<?= $isFeatured ? 'sm:col-span-2 lg:col-span-2' : '' ?> personal-photo-card group bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between cursor-pointer"
+               onclick="openPersonalPhotoLightbox(<?= $idx ?>)"
+               role="button"
+               tabindex="0"
+               onkeydown="if(event.key==='Enter'||event.key===' ') { event.preventDefault(); openPersonalPhotoLightbox(<?= $idx ?>); }"
+               aria-label="<?= e($photoTitle ?: 'View photograph') ?>">
+            
+            <!-- Photo Frame with Hover Zoom & Gradient Badge Overlay -->
+            <div class="relative overflow-hidden bg-surface-container <?= $isFeatured ? 'h-64 sm:h-80' : 'h-60' ?>">
+              <img src="<?= e($thumbImg) ?>" 
+                   alt="<?= e($photo['alt_text'] ?: ($photoTitle ?: 'Pradeep Sarang Photograph')) ?>" 
+                   loading="lazy"
+                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+
+              <!-- Top Floating Pills -->
+              <div class="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none">
+                <?php if (!empty($photoYear)): ?>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-deep-forest/85 backdrop-blur-sm text-pure-white text-xs font-semibold shadow-xs">
+                    <span class="material-symbols-outlined text-[13px] text-fresh-sprout">calendar_today</span>
+                    <span><?= e($photoYear) ?></span>
+                  </span>
+                <?php else: ?>
+                  <span></span>
+                <?php endif; ?>
+
+                <?php if ($isFeatured): ?>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary-container text-on-primary text-xs font-bold shadow-xs">
+                    <span class="material-symbols-outlined text-[13px]">star</span>
+                    <span><?= e(ps_text('विशेष स्मृति', 'Featured')) ?></span>
+                  </span>
+                <?php endif; ?>
+              </div>
+
+              <!-- Bottom Gradient Overlay with Location & Quick Expand Icon -->
+              <div class="absolute bottom-0 inset-x-0 p-3.5 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent flex items-end justify-between text-pure-white">
+                <?php if (!empty($photoLoc)): ?>
+                  <span class="inline-flex items-center gap-1 text-xs font-medium opacity-90 truncate max-w-[80%]">
+                    <span class="material-symbols-outlined text-[14px] text-fresh-sprout">location_on</span>
+                    <span class="truncate"><?= e($photoLoc) ?></span>
+                  </span>
+                <?php else: ?>
+                  <span></span>
+                <?php endif; ?>
+
+                <div class="w-8 h-8 rounded-full bg-pure-white/20 backdrop-blur-sm group-hover:bg-primary group-hover:text-pure-white transition-colors flex items-center justify-center text-pure-white shadow-xs ml-auto shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">fullscreen</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Content -->
+            <div class="p-4 sm:p-5 flex flex-col justify-between flex-1">
+              <div>
+                <h3 class="font-title-md text-title-md text-deep-forest font-bold mb-1 leading-snug group-hover:text-primary transition-colors">
+                  <?= e($photoTitle ?: ps_text('व्यक्तिगत संस्मरण छायाचित्र', 'Personal Moment Photograph')) ?>
+                </h3>
+                <?php if (!empty($photoCaption)): ?>
+                  <p class="font-body-sm text-body-sm text-text-muted line-clamp-2 leading-relaxed mt-1">
+                    <?= e($photoCaption) ?>
+                  </p>
+                <?php endif; ?>
+              </div>
+
+              <div class="mt-3 pt-3 border-t border-border-warm/60 flex items-center justify-between text-xs text-secondary font-medium">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px]">photo_library</span>
+                  <span><?= e(ps_text('विस्तार से देखें', 'View details')) ?></span>
+                </span>
+                <span class="text-text-muted">#<?= $idx + 1 ?></span>
+              </div>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Lightbox / Gallery Viewer Component -->
+  <div id="personal-photo-lightbox" class="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md hidden flex-col justify-between" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+    <!-- Lightbox Header -->
+    <div class="p-4 sm:px-8 flex items-center justify-between text-pure-white border-b border-white/10 shrink-0 bg-black/40">
+      <div class="flex items-center gap-3">
+        <span class="inline-block px-3 py-1 rounded-full bg-white/10 text-white font-mono text-xs font-semibold" id="lightbox-counter">1 / 1</span>
+        <span class="text-white/40 hidden sm:inline">•</span>
+        <span class="text-sm font-medium text-white/80 hidden sm:inline" id="lightbox-header-title">Personal Moment</span>
+      </div>
+      <button type="button" onclick="closePersonalPhotoLightbox()" class="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer border-0 text-xl font-bold" aria-label="<?= e(ps_text('बंद करें', 'Close viewer')) ?>">
+        ✕
+      </button>
+    </div>
+
+    <!-- Center Stage with Navigation Arrows and Large Image -->
+    <div class="relative flex-1 flex items-center justify-center p-4 overflow-hidden select-none" id="lightbox-stage">
+      <!-- Previous Arrow -->
+      <button type="button" onclick="prevPersonalPhoto(event)" class="absolute left-3 sm:left-6 z-20 w-12 h-12 rounded-full bg-black/50 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg" aria-label="<?= e(ps_text('पिछला चित्र', 'Previous photograph')) ?>">
+        <span class="material-symbols-outlined text-[28px]">chevron_left</span>
+      </button>
+
+      <!-- Main Photo Image -->
+      <div class="max-w-[92vw] max-h-[72vh] flex items-center justify-center">
+        <img id="lightbox-main-img" src="" alt="" class="max-w-full max-h-[72vh] object-contain rounded-xl shadow-2xl transition-opacity duration-200">
+      </div>
+
+      <!-- Next Arrow -->
+      <button type="button" onclick="nextPersonalPhoto(event)" class="absolute right-3 sm:right-6 z-20 w-12 h-12 rounded-full bg-black/50 hover:bg-white text-white hover:text-black border border-white/20 flex items-center justify-center transition-all cursor-pointer shadow-lg" aria-label="<?= e(ps_text('अगला चित्र', 'Next photograph')) ?>">
+        <span class="material-symbols-outlined text-[28px]">chevron_right</span>
+      </button>
+    </div>
+
+    <!-- Lightbox Footer Details Bar -->
+    <div class="p-5 sm:px-8 bg-black/70 border-t border-white/10 text-pure-white shrink-0">
+      <div class="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-3">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-1.5">
+            <h3 class="font-headline-sm text-base sm:text-lg font-bold text-pure-white leading-snug m-0" id="lightbox-title"></h3>
+            <span id="lightbox-year-badge" class="px-2.5 py-0.5 rounded-full bg-[#15803d] text-white text-xs font-semibold hidden"></span>
+            <span id="lightbox-loc-badge" class="px-2.5 py-0.5 rounded-full bg-white/10 text-white text-xs font-medium flex items-center gap-1 hidden">
+              <span class="material-symbols-outlined text-[13px] text-fresh-sprout">location_on</span>
+              <span id="lightbox-loc-text"></span>
+            </span>
+          </div>
+          <p class="font-body-sm text-xs sm:text-sm text-white/80 m-0 leading-relaxed max-w-2xl" id="lightbox-caption"></p>
+        </div>
+        <div class="text-white/40 text-xs flex items-center gap-3 shrink-0">
+          <span>← / → Keyboard Arrows</span>
+          <span>•</span>
+          <span>Esc to Close</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function initPersonalPhotosLightbox() {
+    const photosData = <?= json_encode(array_map(function($p) {
+      return [
+        'src'      => base_url($p['photo_path']),
+        'title'    => trim($p['title'] ?? ''),
+        'caption'  => trim($p['caption'] ?? ''),
+        'year'     => trim($p['photo_year'] ?? ''),
+        'location' => trim($p['location'] ?? ''),
+        'alt'      => trim($p['alt_text'] ?? '') ?: ($p['title'] ?? 'Pradeep Sarang Photograph')
+      ];
+    }, $personalPhotos), JSON_UNESCAPED_UNICODE) ?>;
+
+    let currentIndex = 0;
+    const lightbox = document.getElementById('personal-photo-lightbox');
+    const mainImg = document.getElementById('lightbox-main-img');
+    const titleEl = document.getElementById('lightbox-title');
+    const headerTitleEl = document.getElementById('lightbox-header-title');
+    const captionEl = document.getElementById('lightbox-caption');
+    const counterEl = document.getElementById('lightbox-counter');
+    const yearBadge = document.getElementById('lightbox-year-badge');
+    const locBadge = document.getElementById('lightbox-loc-badge');
+    const locText = document.getElementById('lightbox-loc-text');
+
+    function updateSlide(idx) {
+      if (!photosData || !photosData.length) return;
+      if (idx < 0) idx = photosData.length - 1;
+      if (idx >= photosData.length) idx = 0;
+      currentIndex = idx;
+
+      const cur = photosData[currentIndex];
+      mainImg.style.opacity = '0.3';
+      mainImg.src = cur.src;
+      mainImg.alt = cur.alt || cur.title || '';
+      mainImg.onload = function() {
+        mainImg.style.opacity = '1';
+      };
+
+      titleEl.textContent = cur.title || 'Personal Moment';
+      headerTitleEl.textContent = cur.title || 'Personal Moment';
+      captionEl.textContent = cur.caption || '';
+      counterEl.textContent = (currentIndex + 1) + ' / ' + photosData.length;
+
+      if (cur.year) {
+        yearBadge.textContent = cur.year;
+        yearBadge.classList.remove('hidden');
+      } else {
+        yearBadge.classList.add('hidden');
+      }
+
+      if (cur.location) {
+        locText.textContent = cur.location;
+        locBadge.classList.remove('hidden');
+      } else {
+        locBadge.classList.add('hidden');
+      }
+    }
+
+    window.openPersonalPhotoLightbox = function(index) {
+      if (!lightbox) return;
+      lightbox.classList.remove('hidden');
+      lightbox.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      updateSlide(index);
+    };
+
+    window.closePersonalPhotoLightbox = function() {
+      if (!lightbox) return;
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      document.body.style.overflow = '';
+    };
+
+    window.prevPersonalPhoto = function(e) {
+      if (e) e.stopPropagation();
+      updateSlide(currentIndex - 1);
+    };
+
+    window.nextPersonalPhoto = function(e) {
+      if (e) e.stopPropagation();
+      updateSlide(currentIndex + 1);
+    };
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (!lightbox || lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape') {
+        closePersonalPhotoLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        prevPersonalPhoto();
+      } else if (e.key === 'ArrowRight') {
+        nextPersonalPhoto();
+      }
+    });
+
+    // Touch swipe navigation for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const stage = document.getElementById('lightbox-stage');
+    if (stage) {
+      stage.addEventListener('touchstart', function(e) {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+
+      stage.addEventListener('touchend', function(e) {
+        touchEndX = e.changedTouches[0].screenX;
+        const deltaX = touchEndX - touchStartX;
+        if (Math.abs(deltaX) > 45) {
+          if (deltaX > 0) {
+            prevPersonalPhoto();
+          } else {
+            nextPersonalPhoto();
+          }
+        }
+      }, { passive: true });
+    }
+
+    // Close on clicking backdrop
+    if (lightbox) {
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox || e.target === stage) {
+          closePersonalPhotoLightbox();
+        }
+      });
+    }
+  })();
+  </script>
+  <?php endif; ?>
+
   <!-- वाणी व वैचारिक चिंतन (MEMORABLE QUOTE BANNER) -->
   <section class="w-full bg-deep-forest text-on-primary py-space-2xl md:py-space-3xl relative overflow-hidden">
     <!-- Subtle Ambient Leaf Ornament via SVG -->
@@ -751,7 +1043,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
             <div class="space-y-3 font-body-sm text-body-sm text-on-surface">
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-primary-container text-[20px] mt-0.5">home_pin</span>
-                <span><strong><?= e(ps_text('स्थायी कार्यालय पता:', 'Permanent Office Address:')) ?></strong> <?= e(ps_text('ग्राम – कमरावाँ, पोस्ट – नानमऊ, जनपद – बाराबंकी, उत्तर प्रदेश – 225121', 'Kamrawan, Post Nanmau, Barabanki, UP - 225121')) ?></span>
+                <span><strong><?= e(ps_text('स्थायी कार्यालय पता:', 'Permanent Office Address:')) ?></strong> <?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
               </div>
               <div class="flex items-center gap-3">
                 <span class="material-symbols-outlined text-primary-container text-[20px]">call</span>

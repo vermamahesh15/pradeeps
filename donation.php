@@ -86,7 +86,7 @@ $settings = mysqli_fetch_assoc($query);
                         </div>
                         <div class="col-12">
                             <label class="form-label">Purpose</label>
-                            <input type="text" name="purpose" class="form-control" placeholder="e.g. Education, Health">
+                            <input type="text" name="purpose" class="form-control">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Upload Screenshot (Optional)</label>

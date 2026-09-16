@@ -82,10 +82,6 @@ $route = current_path();
                         <a href="<?= e($settings['linkedin']) ?>" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
                     <?php endif; ?>
                 </div>
-                <div class="lang-switch-capsule">
-                    <!-- <a href="?lang=en" class="<?= current_lang() === 'en' ? 'active' : '' ?>">EN</a> -->
-                    <a href="?lang=hi" class="<?= current_lang() === 'hi' ? 'active' : '' ?>">HI</a>
-                </div>
             </div>
         </div>
     </div>
@@ -217,7 +213,7 @@ $route = current_path();
                         <?= csrf_field() ?>
                         <input type="hidden" name="form_type" value="newsletter">
                         <div class="input-group mb-2">
-                            <input class="form-control" type="email" name="email" placeholder="ईमेल पता दर्ज करें" required>
+                            <input class="form-control" type="email" name="email" required>
                             <button class="btn btn-brand" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
                         </div>
                     </form>
@@ -247,7 +243,7 @@ $route = current_path();
             <a href="<?= e(base_url('/donation')) ?>" class="speed-dial-btn donate" title="सहयोग करें">
                 <i class="fa-solid fa-heart"></i>
             </a>
-            <a href="<?= e(base_url('/volunteer')) ?>" class="speed-dial-btn volunteer" title="स्वयंसेवक बनें">
+            <a href="<?= e(base_url('/volunteer')) ?>" onclick="openVolunteerModal(event)" class="speed-dial-btn volunteer" title="स्वयंसेवक बनें">
                 <i class="fa-solid fa-handshake-angle"></i>
             </a>
         </div>
