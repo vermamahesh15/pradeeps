@@ -156,14 +156,15 @@ $contentHtml = !empty($item['content']) ? ps_rich_text($item['content']) : null;
         <div class="lg:col-span-8 space-y-8">
           
           <!-- HD Cover Image Container -->
-          <div class="relative rounded-2xl overflow-hidden shadow-lg bg-surface-container border border-border-warm group">
-            <img src="<?= e($image) ?>" alt="<?= e($title) ?>" class="w-full max-h-[480px] object-cover transition-transform duration-500 group-hover:scale-105">
-            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white flex justify-between items-end">
+          <div class="relative rounded-2xl overflow-hidden shadow-lg bg-surface-container border border-border-warm group flex items-center justify-center min-h-[260px] sm:min-h-[380px]">
+            <img src="<?= e($image) ?>" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-lg scale-110 opacity-40 pointer-events-none">
+            <img src="<?= e($image) ?>" alt="<?= e($title) ?>" class="relative z-10 w-full max-h-[520px] object-contain transition-transform duration-500 group-hover:scale-[1.01]">
+            <div class="absolute bottom-0 inset-x-0 z-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white flex justify-between items-end">
               <div>
                 <p class="font-bold text-sm sm:text-base leading-snug"><?= e($title) ?></p>
                 <p class="text-xs text-white/80"><i class="fa-solid fa-location-dot me-1 text-amber-400"></i><?= e($location) ?></p>
               </div>
-              <a href="<?= e($image) ?>" target="_blank" class="inline-flex items-center gap-1 text-xs bg-white/20 hover:bg-white/40 backdrop-blur-md text-white px-3 py-1.5 rounded-lg border border-white/30 transition-colors">
+              <a href="<?= e($image) ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs bg-white/20 hover:bg-white/40 backdrop-blur-md text-white px-3 py-1.5 rounded-lg border border-white/30 transition-colors">
                 <span class="material-symbols-outlined text-[15px]">fullscreen</span>
                 <span><?= e(ps_text('बड़ा देखें', 'Zoom Image')) ?></span>
               </a>
@@ -380,12 +381,13 @@ $contentHtml = !empty($item['content']) ? ps_rich_text($item['content']) : null;
           $relStamp = strtotime($rel['event_date'] ?? date('Y-m-d'));
         ?>
           <article class="bg-white rounded-2xl overflow-hidden border border-border-warm shadow-sm hover:shadow-md transition-shadow flex flex-col group">
-            <div class="relative h-44 overflow-hidden bg-surface-container">
-              <img src="<?= e($relImg) ?>" alt="<?= e($rel['title']) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
-              <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-deep-forest border border-border-warm shadow-sm">
+            <a href="<?= e(base_url('/events/' . $rel['slug'])) ?>" class="block relative w-full aspect-[16/10] overflow-hidden bg-surface-container flex items-center justify-center">
+              <img src="<?= e($relImg) ?>" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img src="<?= e($relImg) ?>" alt="<?= e($rel['title']) ?>" class="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-105">
+              <div class="absolute top-3 left-3 z-20 bg-white/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-deep-forest border border-border-warm shadow-sm">
                 <?= e(date('d M Y', $relStamp)) ?>
               </div>
-            </div>
+            </a>
             <div class="p-5 flex flex-col flex-grow">
               <h3 class="font-bold text-base text-deep-forest group-hover:text-primary transition-colors line-clamp-2 mb-2">
                 <a href="<?= e(base_url('/events/' . $rel['slug'])) ?>">

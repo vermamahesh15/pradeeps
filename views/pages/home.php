@@ -198,6 +198,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="lg:col-span-5 relative">
         <div class="relative rounded-2xl overflow-hidden shadow-md border border-border-warm bg-pure-white">
           <img class="w-full h-72 sm:h-80 object-cover" 
+               width="600"
+               height="320"
+               loading="lazy"
+               decoding="async"
                src="<?= e(base_url('assets/images/slider_final_3.webp')) ?>" 
                alt="<?= e(ps_text('प्रदीप सारंग सम्मान समारोह मंच पर', 'Pradeep Sarang at an official recognition dais')) ?>"/>
         </div>
@@ -824,6 +828,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
              data-category="<?= e($cat) ?>"
              onclick="openLightbox('<?= e($imgSrc) ?>', '<?= e($caption) ?>')">
           <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+               width="400"
+               height="400"
+               loading="lazy"
+               decoding="async"
                src="<?= e($imgSrc) ?>" 
                alt="<?= e($caption) ?>"/>
           <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-pure-white font-label-sm text-label-sm">
@@ -945,8 +953,13 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       ?>
         <div class="bg-pure-white rounded-xl overflow-hidden shadow-sm border border-border-warm flex flex-col hover:shadow-md transition-shadow cursor-pointer"
              onclick="openLightbox('<?= e($mediaImg) ?>', '<?= e($mediaTitle) ?>')">
-          <div class="h-60 bg-surface-container overflow-hidden">
-            <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+          <div class="h-60 bg-surface-container overflow-hidden relative flex items-center justify-center">
+            <img src="<?= e($mediaImg) ?>" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+            <img class="relative z-10 w-full h-full object-contain hover:scale-105 transition-transform duration-300" 
+                 width="400"
+                 height="240"
+                 loading="lazy"
+                 decoding="async"
                  src="<?= e($mediaImg) ?>" 
                  alt="<?= e($mediaTitle) ?>"/>
           </div>
@@ -1033,11 +1046,12 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             $uDesc = !empty($uEvent['excerpt']) ? $uEvent['excerpt'] : (!empty($uEvent['content']) ? ps_excerpt($uEvent, 140) : '');
         ?>
           <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm hover:shadow-md transition-shadow flex flex-col sm:flex-row gap-5 items-start">
-            <div class="w-full sm:w-36 h-36 rounded-lg overflow-hidden shrink-0 bg-surface-container">
-              <img class="w-full h-full object-cover" 
+            <a href="<?= e(base_url('/events/' . $uSlug)) ?>" class="w-full sm:w-44 aspect-[16/10] sm:aspect-[4/3] rounded-lg overflow-hidden shrink-0 bg-surface-container relative flex items-center justify-center group">
+              <img src="<?= e($uImg) ?>" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img class="relative z-10 w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]" 
                    src="<?= e($uImg) ?>" 
                    alt="<?= e($uTitle) ?>"/>
-            </div>
+            </a>
             <div class="flex flex-col flex-1">
               <div class="flex items-center gap-2">
                 <span class="bg-primary-container text-on-primary text-[11px] font-bold px-2 py-0.5 rounded"><?= e(ps_text('आगामी', 'Upcoming')) ?></span>
@@ -1404,14 +1418,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col space-y-1">
-                <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('आपका पूरा नाम *', 'Your Full Name *')) ?></label>
-                <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
+                <label for="home-contact-name" class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('आपका पूरा नाम *', 'Your Full Name *')) ?></label>
+                <input id="home-contact-name" class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="name" 
                        required type="text"/>
               </div>
               <div class="flex flex-col space-y-1">
-                <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('मोबाइल नंबर *', 'Mobile Number *')) ?></label>
-                <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
+                <label for="home-contact-phone" class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('मोबाइल नंबर *', 'Mobile Number *')) ?></label>
+                <input id="home-contact-phone" class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="phone" 
                        required type="tel"/>
               </div>
@@ -1419,14 +1433,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div class="flex flex-col space-y-1">
-                <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('ईमेल पता', 'Email Address')) ?></label>
-                <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
+                <label for="home-contact-email" class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('ईमेल पता', 'Email Address')) ?></label>
+                <input id="home-contact-email" class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="email" 
                        type="email"/>
               </div>
               <div class="flex flex-col space-y-1">
-                <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('संपर्क का उद्देश्य *', 'Purpose of Contact *')) ?></label>
-                <select class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
+                <label for="home-contact-subject" class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('संपर्क का उद्देश्य *', 'Purpose of Contact *')) ?></label>
+                <select id="home-contact-subject" class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                         name="subject" required>
                   <option value=""><?= e(ps_text('-- उद्देश्य चुनें --', '-- Select Purpose --')) ?></option>
                   <option value="greengang"><?= e(ps_text('ग्रीन गैंग / पौधरोपण अभियान से जुड़ना', 'Join Green Gang / Tree Plantation')) ?></option>
@@ -1440,8 +1454,8 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </div>
 
             <div class="flex flex-col space-y-1">
-              <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('संदेश अथवा प्रस्ताव विवरण *', 'Message or Proposal Details *')) ?></label>
-              <textarea class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
+              <label for="home-contact-message" class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('संदेश अथवा प्रस्ताव विवरण *', 'Message or Proposal Details *')) ?></label>
+              <textarea id="home-contact-message" class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                         name="message" 
                         required rows="4"></textarea>
             </div>

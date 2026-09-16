@@ -42,17 +42,37 @@ if (!isset($nav) || !is_array($nav)) {
     ];
 }
 ?>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F"></script>
+<!-- Defer Analytics & AdSense to post-load/idle to eliminate render-blocking and third-party overhead -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+window.addEventListener('load', function() {
+    function loadMarketingScripts() {
+        if (window.__marketingLoaded) return;
+        window.__marketingLoaded = true;
+        
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F';
+        document.head.appendChild(gtagScript);
 
-  gtag('config', 'G-0YJRF6JN7F');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0YJRF6JN7F');
+
+        var adsScript = document.createElement('script');
+        adsScript.async = true;
+        adsScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796';
+        adsScript.crossOrigin = 'anonymous';
+        document.head.appendChild(adsScript);
+    }
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadMarketingScripts, { timeout: 3000 });
+    } else {
+        setTimeout(loadMarketingScripts, 2000);
+    }
+});
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796"
-     crossorigin="anonymous"></script>
 <header class="fixed top-0 left-0 w-full z-[9999] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
     <!-- Top Utility Bar -->
     <div class="w-full bg-[#172033] text-[#FFFFFF] py-1.5 px-4 sm:px-8">
@@ -115,6 +135,8 @@ if (!isset($nav) || !is_array($nav)) {
                 ?>
                     <div class="relative group">
                         <button type="button" 
+                                aria-haspopup="true"
+                                aria-expanded="false"
                                 class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] flex items-center gap-1 cursor-pointer <?= $isParentActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-[#344054] hover:text-[#14532D] hover:bg-[#F3F5F1]' ?>">
                             <span><?= e($dropdownLabel) ?></span>
                             <span class="material-symbols-outlined text-[16px] text-[#667085] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
@@ -175,7 +197,7 @@ if (!isset($nav) || !is_array($nav)) {
 
                 <!-- CTA Buttons & Mobile Toggle -->
 
-                <button id="ps-mobile-toggle" class="xl:hidden p-1.5 text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
+                <button id="ps-mobile-toggle" class="xl:hidden w-11 h-11 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>

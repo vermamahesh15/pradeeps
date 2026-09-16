@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 // Force Full Error Display & Shutdown Error Capture for Live Server Debugging
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
+// error_reporting(E_ALL);
+// ini_set('display_errors', '1');
+// ini_set('display_startup_errors', '1');
 
 set_exception_handler(function (Throwable $e) {
     if (!headers_sent()) {
@@ -146,11 +146,7 @@ if (preg_match('#^/blog/([^/]+)/amp$#', $path, $matches) || preg_match('#^/amp/b
 
 if (preg_match('#^/amp/(.+)$#', $path, $matches) || preg_match('#^(.+)/amp$#', $path, $matches)) {
     $rawSlug = '/' . ltrim($matches[1], '/');
-    $canonical = base_url($rawSlug);
-    $controller->renderAmp('amp-page', [
-        'title' => ucwords(trim($rawSlug, '/')),
-        'canonicalUrl' => $canonical,
-    ]);
+    $controller->ampPage($rawSlug);
     return;
 }
 

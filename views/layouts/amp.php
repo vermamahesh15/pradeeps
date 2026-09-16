@@ -204,14 +204,17 @@ $siteName = app_config('name', 'Pradeep Sarang');
     </header>
 
     <!-- AMP Navigation -->
+    <?php
+    $cp = current_path();
+    ?>
     <nav class="amp-nav">
-        <a href="<?= e(base_url('/amp')) ?>">होम</a>
-        <a href="<?= e(base_url('/about/amp')) ?>">परिचय</a>
-        <a href="<?= e(base_url('/campaigns/amp')) ?>">अभियान</a>
-        <a href="<?= e(base_url('/green-gang/amp')) ?>">ग्रीन गैंग</a>
-        <a href="<?= e(base_url('/events/amp')) ?>">कार्यक्रम</a>
-        <a href="<?= e(base_url('/blog/amp')) ?>">साहित्य व विचार</a>
-        <a href="<?= e(base_url('/contact/amp')) ?>">संपर्क</a>
+        <a href="<?= e(base_url('/amp')) ?>" class="<?= ($cp === '/amp' || $cp === '/amp/') ? 'active' : '' ?>">होम</a>
+        <a href="<?= e(base_url('/about/amp')) ?>" class="<?= str_contains($cp, '/about') ? 'active' : '' ?>">परिचय</a>
+        <a href="<?= e(base_url('/campaigns/amp')) ?>" class="<?= str_contains($cp, '/campaigns') ? 'active' : '' ?>">अभियान</a>
+        <a href="<?= e(base_url('/green-gang/amp')) ?>" class="<?= str_contains($cp, '/green-gang') ? 'active' : '' ?>">ग्रीन गैंग</a>
+        <a href="<?= e(base_url('/events/amp')) ?>" class="<?= str_contains($cp, '/events') ? 'active' : '' ?>">कार्यक्रम</a>
+        <a href="<?= e(base_url('/blog/amp')) ?>" class="<?= str_contains($cp, '/blog') ? 'active' : '' ?>">साहित्य व विचार</a>
+        <a href="<?= e(base_url('/contact/amp')) ?>" class="<?= str_contains($cp, '/contact') ? 'active' : '' ?>">संपर्क</a>
     </nav>
 
     <!-- AMP Content Container -->
