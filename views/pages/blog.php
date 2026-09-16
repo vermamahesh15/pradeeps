@@ -119,61 +119,6 @@ $categories = $categories ?? [];
   </div>
 </section>
 
-<!-- Featured Editorial Spotlight -->
-<section class="max-w-container-max mx-auto px-4 sm:px-8 py-12 bg-cream-canvas">
-  <div class="flex items-center justify-between mb-6">
-    <div class="flex items-center gap-2.5">
-      <span class="w-2.5 h-6 bg-secondary rounded-full"></span>
-      <h2 class="font-headline-md text-headline-md text-deep-forest font-bold"><?= e(ps_text('मुख्य संपादकीय आलेख (Featured Editorial)', 'Featured Editorial Essay')) ?></h2>
-    </div>
-    <span class="font-label-sm text-label-sm text-text-muted hidden sm:inline-flex items-center gap-1">
-      <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
-      <span><?= e(ps_text('संपादक की विशेष अनुशंसा', 'Editor\'s Pick')) ?></span>
-    </span>
-  </div>
-
-  <div class="bg-pure-white rounded-2xl p-6 lg:p-10 shadow-md border border-border-warm transition-all hover:shadow-xl relative overflow-hidden">
-    <div class="flex flex-col space-y-4">
-      <div class="flex flex-wrap items-center gap-2.5">
-        <span class="bg-soft-meadow text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-semibold border border-border-warm">
-          <?= e(ps_text('पर्यावरण एवं समाज', 'Environment & Society')) ?>
-        </span>
-        <span class="text-text-muted text-label-sm flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">schedule</span> 12 <?= e(ps_text('मिनट पठन', 'min read')) ?>
-        </span>
-        <span class="text-text-muted text-label-sm flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">person</span> <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?>
-        </span>
-        <span class="text-text-muted text-label-sm flex items-center gap-1">
-          <span class="material-symbols-outlined text-[16px]">calendar_month</span> 14 <?= e(ps_text('जनवरी 2026', 'Jan 2026')) ?>
-        </span>
-      </div>
-
-      <h3 class="font-headline-lg text-headline-sm lg:text-headline-md text-deep-forest leading-snug font-bold">
-        <a href="<?= !empty($items[0]['slug']) ? e(base_url('/blog/' . $items[0]['slug'])) : e(base_url('/blog/green-morning')) ?>" class="hover:text-primary transition-colors">
-          <?= e(ps_text('कमरावां से उठी \'ग्रीन मॉर्निंग\' की गूँज — जब एक गाँव ने बदला सुबह का अभिवादन', 'The Echo of Green Morning from Kamrawan — When a Village Transformed Morning Greetings')) ?>
-        </a>
-      </h3>
-
-      <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-        <?= e(ps_text('गाँव की चौपाल पर जब सुबह-सवेरे \'नमस्ते\' या विदेशी औपचारिकता की जगह \'ग्रीन मॉर्निंग\' (हरित प्रभात) का घोष गूंजता है, तो यह केवल शब्दों का फेरबदल नहीं होता। यह प्रकृति के प्रति हमारी जिम्मेदारी और धरती माँ के प्रति कृतज्ञता का सहज स्वीकार है। 1980 के दशक से शुरू हुई यह पहल आज बाराबंकी के दर्जनों गाँवों में जन-आंदोलन का रूप ले चुकी है...', 'When village chaupals echo with Green Morning instead of foreign formalities, it is a conscious acceptance of responsibility toward nature...')) ?>
-      </p>
-
-      <div class="bg-soft-meadow p-4 rounded-xl border border-border-warm">
-        <p class="font-quote-editorial text-body-lg text-deep-forest italic">
-          <?= ps_text('"हरियाली कोई सरकारी योजना नहीं, हमारे संस्कारों की साँस है। जब तक हर सुबह पेड़-पौधों के नाम नहीं होगी, दिन की शुरुआत अधूरी है।"' , '"Greenery is not a government scheme, but the breath of our values. Every morning belongs to mother nature."') ?>
-        </p>
-      </div>
-
-      <div class="pt-2 flex flex-wrap items-center gap-4">
-        <a href="<?= !empty($items[0]['slug']) ? e(base_url('/blog/' . $items[0]['slug'])) : e(base_url('/blog/green-morning')) ?>" class="bg-primary-container hover:bg-deep-forest text-on-primary px-6 py-3 rounded-xl font-label-md text-label-md flex items-center gap-2 transition-all shadow-sm">
-          <span><?= e(ps_text('पूरा आलेख पढ़ें (Read Full Essay)', 'Read Full Essay')) ?></span>
-          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Category Filter Tabs with Item Counts -->
 <section class="max-w-container-max mx-auto px-4 sm:px-8 pt-6 pb-4 bg-cream-canvas">
