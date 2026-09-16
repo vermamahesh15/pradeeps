@@ -136,6 +136,9 @@ if (!isset($nav) || !is_array($nav)) {
                 <?php 
                     else: 
                         [$url, $label] = $navItem;
+                        if ($url === '/donation') {
+                            continue; // Prominent Donate CTA is already in the header bar
+                        }
                         $isActive = is_nav_item_active($url, $currPath);
                         $isBlog = ($url === '/blog');
                 ?>
@@ -158,10 +161,10 @@ if (!isset($nav) || !is_array($nav)) {
             </nav>
 
             <!-- Actions: CTA, Admin, Mobile Toggle -->
-            <div class="flex items-center gap-2.5 sm:gap-3.5">
+            <div class="flex items-center gap-2 sm:gap-3.5">
 
-                <a class="hidden sm:inline-flex items-center justify-center gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-3.5 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
-                    <span class="material-symbols-outlined text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                <a class="inline-flex items-center justify-center gap-1 sm:gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-label-md font-semibold transition-colors whitespace-nowrap shadow-sm cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
+                    <span class="material-symbols-outlined text-[16px] sm:text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
                     <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें', 'Donate Now')) ?></span>
                 </a>
 
@@ -203,7 +206,7 @@ if (!isset($nav) || !is_array($nav)) {
                         <?php foreach ($children as [$subUrl, $subLabel]): 
                             $isSubActive = is_nav_item_active($subUrl, $currPath);
                         ?>
-                            <a href="<?= e(base_url($subUrl)) ?>"
+                            <a href="<?= e(base_url($subUrl)) ?>" 
                                onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
                                class="block py-1.5 px-3 rounded-lg text-sm transition-colors <?= $isSubActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : 'text-on-surface-variant hover:text-primary' ?>">
                                 <?= e($subLabel) ?>
@@ -216,12 +219,15 @@ if (!isset($nav) || !is_array($nav)) {
                     [$url, $label] = $navItem;
                     $isActive = is_nav_item_active($url, $currPath);
                     $isBlog = ($url === '/blog');
+                    $isDonation = ($url === '/donation');
             ?>
                     <a href="<?= e(base_url($url)) ?>" 
                        onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
-                       class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : 'text-on-surface hover:text-primary' ?>">
+                       class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : ($isDonation ? 'text-[#14532D] font-bold hover:bg-emerald-50' : 'text-on-surface hover:text-primary') ?>">
                         <?php if ($isBlog): ?>
                             <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-primary' ?>">menu_book</span>
+                        <?php elseif ($isDonation): ?>
+                            <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-[#14532D]' ?>">volunteer_activism</span>
                         <?php endif; ?>
                         <span><?= e($label) ?></span>
                     </a>
@@ -230,8 +236,13 @@ if (!isset($nav) || !is_array($nav)) {
             endforeach; 
             ?>
             <div class="pt-3 border-t border-border-warm flex flex-col gap-2.5">
-                <a class="inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center cursor-pointer" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
-                    <?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?>
+                <a class="inline-flex items-center justify-center gap-2 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden');">
+                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें (दान)', 'Donate Now')) ?></span>
+                </a>
+                <a class="inline-flex items-center justify-center gap-2 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
+                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">handshake</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
                 </a>
             </div>
         </div>
