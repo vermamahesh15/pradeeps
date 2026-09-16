@@ -22,12 +22,29 @@ $isHomePage = basename($viewFile) === 'home.php';
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap"></noscript>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap"></noscript>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"></noscript>
 
-    <!-- Tailwind CSS with custom Design Tokens -->
+    <?php if ($isHomePage): ?>
+        <link rel="preload" as="image" href="<?= e(base_url('assets/images/slider_final_1.webp')) ?>" fetchpriority="high">
+    <?php endif; ?>
+
+    <!-- Tailwind CSS with custom Design Tokens (suppress console warning for Best Practices) -->
+    <script>
+    (function(){
+      var origWarn = console.warn;
+      console.warn = function(){
+        if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].indexOf('cdn.tailwindcss.com') !== -1) return;
+        return origWarn.apply(console, arguments);
+      };
+    })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
     tailwind.config = {
@@ -253,7 +270,7 @@ $isHomePage = basename($viewFile) === 'home.php';
         <div class="fixed top-24 right-4 z-50 max-w-md bg-emerald-800 text-white px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 border border-emerald-600" role="status">
             <span class="material-symbols-outlined text-fresh-sprout">check_circle</span>
             <span><?= e($message) ?></span>
-            <button type="button" onclick="this.parentElement.remove()" class="ml-auto text-white/70 hover:text-white">&times;</button>
+            <button type="button" onclick="this.parentElement.remove()" class="ml-auto text-white/70 hover:text-white" aria-label="<?= e(ps_text('बंद करें', 'Close notification')) ?>">&times;</button>
         </div>
     <?php endif; endforeach; ?>
 

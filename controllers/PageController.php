@@ -398,6 +398,263 @@ class PageController
         ]);
     }
 
+    public function ampPage(string $slug): void
+    {
+        $cleanSlug = '/' . trim(preg_replace('#(^/amp/|/amp$)#i', '', '/' . ltrim($slug, '/')), '/');
+        $canonical = base_url($cleanSlug);
+
+        // 1. About
+        if ($cleanSlug === '/about' || $cleanSlug === '/parichay') {
+            $this->renderAmp('amp-page', [
+                'title' => 'परिचय (About Shri Pradeep Sarang)',
+                'subtitle' => 'पर्यावरणविद् • लोकसेवक • अवधी साहित्यकार',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p>श्री प्रदीप सारंग उत्तर प्रदेश के एक प्रतिष्ठित पर्यावरणविद्, सामाजिक कार्यकर्ता एवं अवधी भाषा व संस्कृति के समर्पित साधक हैं। इन्होंने प्रकृति संरक्षण, ग्रामीण सशक्तिकरण और अवधी साहित्य के पुनरुद्धार में अपना जीवन समर्पित किया है।</p>
+                    <h2>हरियाली और पर्यावरण संरक्षण</h2>
+                    <p>\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\' अभियानों के माध्यम से 50,000 से अधिक फलदार व छायादार वृक्षों का रोपण तथा जन-जागरूकता कार्यक्रमों का संचालन किया गया है।</p>
+                    <h2>अवधी साहित्य एवं सांस्कृतिक अवदान</h2>
+                    <p>अवधी लोकभाषा, लोकगीतों, मुहावरों और ग्रामीण जनजीवन की अमूल्य स्मृतियों को लिपिबद्ध कर आधुनिक पीढ़ी तक पहुँचाने का अविस्मरणीय कार्य कर रहे हैं। \'झरिहख\' और \'सुघरी\' जैसी भावपूर्ण रचनाएं साहित्य जगत में विशेष स्थान रखती हैं।</p>
+                ',
+                'items' => [
+                    [
+                        'title' => '50,000+ वृक्षारोपण अभियान',
+                        'description' => 'ग्रामीण क्षेत्रों एवं विद्यालयों में छायादार व फलदार पौधों का रोपण व संरक्षण।',
+                        'image' => 'assets/images/about/photo-1.jpg',
+                    ],
+                    [
+                        'title' => 'अवधी भाषा व साहित्य सेवा',
+                        'description' => 'विलुप्त होते अवधी शब्दों, लोककथाओं और ग्रामीण संवेदनाओं का प्रामाणिक दस्तावेजीकरण।',
+                        'image' => 'assets/images/about/photo-2.jpg',
+                    ]
+                ]
+            ]);
+            return;
+        }
+
+        // 2. Campaigns
+        if ($cleanSlug === '/campaigns' || $cleanSlug === '/causes') {
+            $campaigns = $this->content->all('campaigns');
+            $items = array_map(function ($c) {
+                return [
+                    'title' => $c['title'] ?? '',
+                    'description' => $c['short_description'] ?? $c['description'] ?? '',
+                    'image' => $c['banner_image'] ?? $c['image'] ?? '',
+                    'url' => base_url('/campaigns/' . ($c['slug'] ?? '') . '/amp'),
+                ];
+            }, $campaigns);
+
+            $this->renderAmp('amp-page', [
+                'title' => 'प्रमुख जन-अभियान (Key Campaigns)',
+                'subtitle' => 'प्रकृति संरक्षण, सामाजिक सुधार एवं जनचेतना की मुहिम',
+                'canonicalUrl' => $canonical,
+                'content' => '<p>श्री प्रदीप सारंग के नेतृत्व में समाज के सर्वांगीण विकास, प्रकृति संतुलन और मानवीय संवेदनाओं के विस्तार हेतु चलाए जा रहे प्रमुख अभियान:</p>',
+                'items' => $items,
+            ]);
+            return;
+        }
+
+        // 3. Green Gang
+        if ($cleanSlug === '/green-gang' || $cleanSlug === '/greengang') {
+            $campaigns = $this->content->all('campaigns');
+            $this->renderAmp('amp-page', [
+                'title' => 'ग्रीन गैंग आंदोलन (Green Gang Movement)',
+                'subtitle' => 'हरियाली, प्रकृति प्रेम और जन-भागीदारी का महा-अभियान',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p><strong>ग्रीन गैंग</strong> समाज के उत्साही युवाओं, महिलाओं और नागरिकों का एक संगठित स्वयंसेवी समूह है, जिसका मुख्य उद्देश्य पर्यावरण की रक्षा, सघन पौधरोपण और प्रकृति संवर्धन है।</p>
+                    <h2>मुख्य उपलब्धियां एवं उद्देश्य:</h2>
+                    <p>• <strong>50,000+ वृक्षारोपण:</strong> सड़क किनारों, विद्यालयों, ग्राम पंचायतों एवं सार्वजनिक स्थलों पर बड़े पैमाने पर पौधरोपण व संरक्षण।</p>
+                    <p>• <strong>ग्रीन मॉर्निंग मुहिम:</strong> प्रातःकालीन भ्रमण के साथ पर्यावरण संरक्षण, स्वच्छता और स्वास्थ्य जागरूकता का संदेश।</p>
+                    <p>• <strong>जल संरक्षण एवं प्लास्टिक मुक्ति:</strong> स्थानीय स्तर पर जल स्रोतों की स्वच्छता और एकल-उपयोग प्लास्टिक पर रोकथाम हेतु जनजागरण।</p>
+                    <p>यदि आप भी इस हरित क्रांति का हिस्सा बनना चाहते हैं, तो स्वयंसेवक के रूप में हमसे जुड़ें।</p>
+                ',
+                'items' => array_map(function ($c) {
+                    return [
+                        'title' => $c['title'] ?? '',
+                        'description' => $c['short_description'] ?? $c['description'] ?? '',
+                        'image' => $c['banner_image'] ?? $c['image'] ?? '',
+                        'url' => base_url('/campaigns/' . ($c['slug'] ?? '') . '/amp'),
+                    ];
+                }, $campaigns),
+            ]);
+            return;
+        }
+
+        // 4. Events
+        if ($cleanSlug === '/events') {
+            $events = $this->content->all('events');
+            $items = array_map(function ($ev) {
+                return [
+                    'title' => $ev['title'] ?? '',
+                    'date' => !empty($ev['event_date']) ? 'आयोजन तिथि: ' . date('d M Y', strtotime($ev['event_date'])) : '',
+                    'description' => $ev['short_description'] ?? $ev['description'] ?? '',
+                    'image' => $ev['banner_image'] ?? $ev['image'] ?? '',
+                    'url' => base_url('/events/' . ($ev['slug'] ?? '') . '/amp'),
+                ];
+            }, $events);
+
+            $this->renderAmp('amp-page', [
+                'title' => 'कार्यक्रम व गतिविधियाँ (Events & Activities)',
+                'subtitle' => 'जनसंपर्क, पर्यावरण संगोष्ठी एवं सामाजिक सम्मेलन',
+                'canonicalUrl' => $canonical,
+                'content' => '<p>पर्यावरण संरक्षण, अवधी विचार गोष्ठियों और सामाजिक कल्याण से जुड़े सार्वजनिक आयोजनों की सूची:</p>',
+                'items' => $items,
+            ]);
+            return;
+        }
+
+        // 5. Blog / Thoughts
+        if ($cleanSlug === '/blog' || $cleanSlug === '/blog-and-thoughts') {
+            $blogs = $this->blogModel->allPublished(25);
+            $items = array_map(function ($b) {
+                return [
+                    'title' => $b['title'] ?? '',
+                    'date' => 'लेखक: ' . ($b['author'] ?: 'श्री प्रदीप सारंग') . ' • ' . (!empty($b['published_at']) ? date('d M Y', strtotime($b['published_at'])) : ''),
+                    'description' => $b['excerpt'] ?: ps_excerpt($b['content'] ?? '', 140),
+                    'image' => $b['featured_image'] ?? $b['banner_image'] ?? $b['image'] ?? '',
+                    'url' => base_url('/blog/' . ($b['slug'] ?? '') . '/amp'),
+                ];
+            }, $blogs);
+
+            $this->renderAmp('amp-page', [
+                'title' => 'साहित्य व विचार (Literature & Thoughts)',
+                'subtitle' => 'अवधी रचनाएं, पर्यावरण विचार एवं सामाजिक दृष्टिकोण',
+                'canonicalUrl' => $canonical,
+                'content' => '<p>श्री प्रदीप सारंग एवं अन्य प्रबुद्ध विचारकों द्वारा लिखित उत्कृष्ट आलेख, संस्मरण और विचार:</p>',
+                'items' => $items,
+            ]);
+            return;
+        }
+
+        // 6. Contact
+        if ($cleanSlug === '/contact') {
+            $this->renderAmp('amp-page', [
+                'title' => 'संपर्क करें (Contact Shri Pradeep Sarang)',
+                'subtitle' => 'कार्यालय, संवाद एवं स्वयंसेवक सहयोग',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p>पर्यावरण संरक्षण मुहिम, अवधी साहित्य परिचर्चा अथवा सामाजिक कार्यों में सहभागिता के लिए संपर्क करें:</p>
+                    <h2>कार्यालय पता (Office Address):</h2>
+                    <p>ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत</p>
+                    <h2>फोन व संवाद (Phone & Inquiries):</h2>
+                    <p><a href="tel:+919919007190" style="color:var(--primary); font-weight:bold;">+91 9919007190</a></p>
+                    <h2>ईमेल (Email):</h2>
+                    <p><a href="mailto:contact@pradeepsarang.in" style="color:var(--primary); font-weight:bold;">contact@pradeepsarang.in</a></p>
+                    <h2>सोशल मीडिया व संदेश:</h2>
+                    <p>फेसबुक, यूट्यूब एवं डिजिटल माध्यमों पर हमारे साथ जुड़ें और हरित संदेश को जन-जन तक पहुँचाएँ।</p>
+                ',
+            ]);
+            return;
+        }
+
+        // 7. Privacy Policy
+        if ($cleanSlug === '/privacy-policy' || $cleanSlug === '/privacy') {
+            $this->renderAmp('amp-page', [
+                'title' => 'गोपनीयता नीति (Privacy Policy)',
+                'subtitle' => 'डेटा सुरक्षा एवं निजता अधिकार',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p>हम आपकी निजता का पूर्ण सम्मान करते हैं। यह नीति स्पष्ट करती है कि वेबसाइट पर पाठकों, लेखकों, स्वयंसेवकों और उपयोगकर्ताओं के व्यक्तिगत विवरण का संग्रहण, उपयोग और सुरक्षा किस प्रकार की जाती है।</p>
+                    <h2>1. एकत्र की जाने वाली जानकारी</h2>
+                    <p>जब आप संपर्क फॉर्म या स्वयंसेवक पंजीकरण भरते हैं, तो हम आपका नाम, ईमेल, फोन नंबर और संदेश सुरक्षित रूप से प्राप्त करते हैं।</p>
+                    <h2>2. सूचना का उपयोग</h2>
+                    <p>आपकी जानकारी का उपयोग केवल आपके प्रश्नों के उत्तर देने, अभियानों की सूचना देने और वेबसाइट अनुभव को बेहतर बनाने हेतु किया जाता है। हम किसी भी तीसरे पक्ष को आपकी व्यक्तिगत जानकारी विक्रय नहीं करते।</p>
+                    <h2>3. संपर्क सूत्र</h2>
+                    <p>निजता संबंधी किसी भी प्रश्न के लिए <strong>contact@pradeepsarang.in</strong> पर संपर्क कर सकते हैं।</p>
+                ',
+            ]);
+            return;
+        }
+
+        // 8. Terms and Conditions
+        if ($cleanSlug === '/terms-and-conditions' || $cleanSlug === '/terms' || $cleanSlug === '/terms-of-service') {
+            $this->renderAmp('amp-page', [
+                'title' => 'नियम एवं शर्तें (Terms & Conditions)',
+                'subtitle' => 'वेबसाइट उपयोग की शर्तें',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p>प्रदीप सारंग की आधिकारिक वेबसाइट का उपयोग करने पर आप इन शर्तों के प्रति अपनी सहमति व्यक्त करते हैं।</p>
+                    <h2>1. बौद्धिक संपदा अधिकार</h2>
+                    <p>इस वेबसाइट पर प्रकाशित समस्त सामग्री, साहित्य, आलेख, फोटोग्राफ एवं डिजाइन सुरक्षित हैं। उचित श्रेय के बिना इनका व्यावसायिक उपयोग वर्जित है।</p>
+                    <h2>2. वेबसाइट का उपयोग</h2>
+                    <p>उपयोगकर्ता वेबसाइट का उपयोग केवल वैध, सकारात्मक और रचनात्मक उद्देश्यों के लिए करेंगे।</p>
+                ',
+            ]);
+            return;
+        }
+
+        // 9. Disclaimer
+        if ($cleanSlug === '/disclaimer') {
+            $this->renderAmp('amp-page', [
+                'title' => 'अस्वीकरण (Disclaimer)',
+                'subtitle' => 'सामान्य सूचना एवं विचार अभिव्यक्ति',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p>इस वेबसाइट पर प्रस्तुत सभी विचार, आलेख और सूचनाएं जनकल्याण, पर्यावरण चेतना और अवधी साहित्य के संवर्धन के उद्देश्य से साझा की गई हैं।</p>
+                    <p>यद्यपि समस्त जानकारी की शुद्धता बनाए रखने का पूरा प्रयास किया गया है, तथापि पाठकों से अनुरोध है कि किसी भी व्यावहारिक क्रियान्वयन से पूर्व स्वतंत्र रूप से पुष्टि कर लें।</p>
+                ',
+            ]);
+            return;
+        }
+
+        // 10. Single Campaign detail AMP (/campaigns/{slug}/amp)
+        if (preg_match('#^/campaigns/(.+)$#', $cleanSlug, $m)) {
+            $cSlug = $m[1];
+            $item = $this->content->findBySlug('campaigns', $cSlug);
+            if ($item !== null) {
+                $this->renderAmp('amp-page', [
+                    'title' => $item['title'] ?? 'अभियान',
+                    'subtitle' => 'जन-अभियान विवरण',
+                    'canonicalUrl' => $canonical,
+                    'content' => '
+                        ' . (!empty($item['banner_image']) ? '<img src="' . htmlspecialchars($item['banner_image']) . '" width="800" height="450" alt="' . htmlspecialchars($item['title'] ?? '') . '">' : '') . '
+                        <p>' . nl2br(htmlspecialchars($item['short_description'] ?? '')) . '</p>
+                        ' . ($item['content'] ?? $item['description'] ?? '') . '
+                    ',
+                ]);
+                return;
+            }
+        }
+
+        // 11. Single Event detail AMP (/events/{slug}/amp)
+        if (preg_match('#^/events/(.+)$#', $cleanSlug, $m)) {
+            $eSlug = $m[1];
+            $item = $this->content->findBySlug('events', $eSlug);
+            if ($item !== null) {
+                $this->renderAmp('amp-page', [
+                    'title' => $item['title'] ?? 'कार्यक्रम',
+                    'subtitle' => !empty($item['event_date']) ? 'दिनांक: ' . date('d M Y', strtotime($item['event_date'])) : '',
+                    'canonicalUrl' => $canonical,
+                    'content' => '
+                        ' . (!empty($item['banner_image']) ? '<img src="' . htmlspecialchars($item['banner_image']) . '" width="800" height="450" alt="' . htmlspecialchars($item['title'] ?? '') . '">' : '') . '
+                        <p>' . nl2br(htmlspecialchars($item['short_description'] ?? '')) . '</p>
+                        ' . ($item['content'] ?? $item['description'] ?? '') . '
+                    ',
+                ]);
+                return;
+            }
+        }
+
+        // 12. Check dynamic pages in DB
+        $dbSlug = ltrim($cleanSlug, '/');
+        $page = $this->content->findPageBySlug($dbSlug);
+        if ($page) {
+            $this->renderAmp('amp-page', [
+                'title' => $page['title'],
+                'canonicalUrl' => $canonical,
+                'content' => $page['content'] ?? '',
+            ]);
+            return;
+        }
+
+        // 13. Fallback generic AMP page
+        $this->renderAmp('amp-page', [
+            'title' => ucwords(trim(str_replace('-', ' ', $cleanSlug), '/')),
+            'canonicalUrl' => $canonical,
+        ]);
+    }
+
     public function campaignDetail(string $slug): void
     {
         $slugLower = strtolower($slug);

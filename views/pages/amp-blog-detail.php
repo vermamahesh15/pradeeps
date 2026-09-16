@@ -10,7 +10,7 @@ $postDate = !empty($post['published_at']) ? date('d M Y', strtotime($post['publi
 $rawImg = !empty($post['featured_image']) ? $post['featured_image'] : (!empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['image']) ? $post['image'] : (!empty($post['image_url']) ? $post['image_url'] : '')));
 $bannerImage = $rawImg ? (preg_match('#^https?://#i', $rawImg) ? $rawImg : base_url($rawImg)) : null;
 
-$contentAmp = ps_amp_content($post['content'] ?? $post['excerpt'] ?? '');
+$contentAmp = function_exists('ps_amp_content') ? ps_amp_content($post['content'] ?? $post['excerpt'] ?? '') : ($post['content'] ?? $post['excerpt'] ?? '');
 ?>
 
 <article class="amp-card">

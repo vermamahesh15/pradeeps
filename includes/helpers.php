@@ -318,6 +318,18 @@ if (!function_exists('ps_responsive_img')) {
         $pictureClass = !empty($class) ? ' class="' . e($class) . '"' : '';
         $html = '<picture' . $pictureClass . ' style="display: inline-flex; align-items: center; max-width: 100%;">';
         
+        $dimAttr = '';
+        if (!isset($extraAttributes['width']) && !isset($extraAttributes['height'])) {
+            $localFile = $root . '/' . ltrim($cleanPath, '/');
+            if (file_exists($localFile)) {
+                $imgInfo = @getimagesize($localFile);
+                if ($imgInfo && !empty($imgInfo[0]) && !empty($imgInfo[1])) {
+                    $dimAttr = sprintf(' width="%d" height="%d"', $imgInfo[0], $imgInfo[1]);
+                }
+            }
+        }
+        $priorityAttr = ($loading === 'eager') ? ' fetchpriority="high"' : '';
+
         // If webp version exists on disk, add WebP <source>
         if ($webpPath !== $cleanPath && file_exists($root . '/' . ltrim($webpPath, '/'))) {
             $html .= sprintf(
@@ -328,12 +340,14 @@ if (!function_exists('ps_responsive_img')) {
         }
 
         $html .= sprintf(
-            '<img src="%s" alt="%s"%s%s%s%s>',
+            '<img src="%s" alt="%s"%s%s%s%s%s%s>',
             e($resolved),
             $altAttr,
             $classAttr,
             $sizesAttr,
             $loadingAttr . $decodingAttr,
+            $priorityAttr,
+            $dimAttr,
             $extraStr
         );
 
@@ -746,4 +760,116 @@ if (!function_exists('to_hindi_num')) {
         ]);
     }
 }
+
+if (!function_exists('ps_amp_content')) {
+    /**
+     * Converts HTML / rich-text content into valid, clean AMP HTML:
+     * - Strips forbidden tags (<script>, <style>, <form>, <svg>, <canvas>, <frame>, <object>, <embed>)
+     * - Strips inline event handlers (onclick, onload, onerror, etc.)
+     * - Strips inline style attributes forbidden in AMP
+     * - Strips prohibited attributes and javascript: URIs
+     * - Converts <img> tags into responsive <amp-img> components
+     * - Converts <iframe> tags into responsive <amp-iframe> components
+     * - Preserves valid typography, paragraphs, headings, blockquotes, lists, links
+     */
+    function ps_amp_content(?string $html): string
+    {
+        if ($html === null || trim($html) === '') {
+            return '';
+        }
+
+        $html = (string) $html;
+
+        // If string has no HTML tags, auto-convert newlines to paragraphs / breaks
+        if (!str_contains($html, '<') && !str_contains($html, '>')) {
+            return '<p>' . nl2br(htmlspecialchars($html, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8')) . '</p>';
+        }
+
+        // 1. Remove dangerous or forbidden container tags and their contents
+        $html = preg_replace('#<(script|style|form|svg|canvas|frame|frameset|object|embed|applet)[^>]*>.*?</\1>#is', '', $html);
+        $html = preg_replace('#<(script|style|form|svg|canvas|frame|frameset|object|embed|applet)[^>]*\/?>#is', '', $html);
+
+        // 2. Remove inline event handlers (onclick, onload, onerror, etc.)
+        $html = preg_replace('/\s+on[a-zA-Z]+\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $html);
+
+        // 3. Remove javascript: links
+        $html = preg_replace('/\s+href\s*=\s*["\']\s*javascript:[^"\']*["\']/i', ' href="#"', $html);
+
+        // 4. Remove inline style attributes (AMP disallows inline style attributes on HTML tags)
+        $html = preg_replace('/\s+style\s*=\s*("[^"]*"|\'[^\']*\'|[^\s>]+)/i', '', $html);
+
+        // 5. Convert <img> tags to <amp-img>
+        $html = preg_replace_callback('/<img\b([^>]*?)\/?>/is', function ($matches) {
+            $attrs = $matches[1];
+
+            // Extract src
+            if (!preg_match('/src\s*=\s*["\']([^"\']+)["\']/i', $attrs, $sm)) {
+                return '';
+            }
+            $src = trim($sm[1]);
+            if ($src === '') {
+                return '';
+            }
+            if (!preg_match('#^https?://#i', $src) && !str_starts_with($src, '//')) {
+                $src = base_url($src);
+            }
+
+            // Extract width & height (AMP requires width & height)
+            $width = 800;
+            $height = 480;
+            if (preg_match('/width\s*=\s*["\']?(\d+)/i', $attrs, $wm)) {
+                $width = max(10, (int) $wm[1]);
+            }
+            if (preg_match('/height\s*=\s*["\']?(\d+)/i', $attrs, $hm)) {
+                $height = max(10, (int) $hm[1]);
+            }
+
+            // Extract alt
+            $alt = '';
+            if (preg_match('/alt\s*=\s*["\']([^"\']*)["\']/i', $attrs, $am)) {
+                $alt = htmlspecialchars($am[1], ENT_QUOTES, 'UTF-8');
+            }
+
+            return sprintf(
+                '<amp-img src="%s" width="%d" height="%d" layout="responsive" alt="%s"></amp-img>',
+                htmlspecialchars($src, ENT_QUOTES, 'UTF-8'),
+                $width,
+                $height,
+                $alt
+            );
+        }, $html);
+
+        // 6. Convert <iframe> to <amp-iframe>
+        $html = preg_replace_callback('/<iframe\b([^>]*?)>(.*?)<\/iframe>/is', function ($matches) {
+            $attrs = $matches[1];
+            if (!preg_match('/src\s*=\s*["\']([^"\']+)["\']/i', $attrs, $sm)) {
+                return '';
+            }
+            $src = trim($sm[1]);
+            // AMP requires HTTPS for iframes
+            if (str_starts_with($src, 'http://')) {
+                $src = 'https://' . substr($src, 7);
+            }
+
+            $width = 600;
+            $height = 340;
+            if (preg_match('/width\s*=\s*["\']?(\d+)/i', $attrs, $wm)) {
+                $width = max(10, (int) $wm[1]);
+            }
+            if (preg_match('/height\s*=\s*["\']?(\d+)/i', $attrs, $hm)) {
+                $height = max(10, (int) $hm[1]);
+            }
+
+            return sprintf(
+                '<amp-iframe src="%s" width="%d" height="%d" layout="responsive" sandbox="allow-scripts allow-same-origin"></amp-iframe>',
+                htmlspecialchars($src, ENT_QUOTES, 'UTF-8'),
+                $width,
+                $height
+            );
+        }, $html);
+
+        return trim($html);
+    }
+}
+
 

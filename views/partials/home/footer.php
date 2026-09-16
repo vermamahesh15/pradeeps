@@ -145,7 +145,8 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <form method="post" action="<?= e(base_url('/')) ?>" class="flex flex-col space-y-2.5">
                     <?= csrf_field() ?>
                     <input type="hidden" name="form_type" value="newsletter">
-                    <input class="w-full px-3.5 py-2.5 rounded-lg bg-white/10 text-white placeholder-gray-400 border border-white/10 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#F0B45C]" name="email" type="email" required/>
+                    <label for="footer-newsletter-email" class="sr-only"><?= e(ps_text('ईमेल पता दर्ज करें', 'Enter email address')) ?></label>
+                    <input id="footer-newsletter-email" class="w-full px-3.5 py-2.5 rounded-lg bg-white/10 text-white placeholder-gray-300 border border-white/10 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#F0B45C]" name="email" type="email" aria-label="<?= e(ps_text('ईमेल पता दर्ज करें', 'Enter email address')) ?>" required/>
                     <button class="w-full bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 shadow font-bold" type="submit">
                         <span class="material-symbols-outlined text-[16px]">send</span>
                         <span><?= e(ps_text('हरियाली व सामाजिक अपडेट्स पाएं', 'Get Green & Social Updates')) ?></span>
@@ -182,7 +183,7 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <a class="hover:text-[#F0B45C] transition-colors" href="<?= e(base_url('/contact')) ?>"><?= e(ps_text('संपर्क (Contact)', 'Contact')) ?></a>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#94A3B8]">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#CBD5E1]">
                 <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/privacy-policy')) ?>"><?= e(ps_text('गोपनीयता नीति (Privacy Policy)', 'Privacy Policy')) ?></a>
                 <span class="opacity-30">•</span>
                 <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/cookie-policy')) ?>"><?= e(ps_text('कुकी नीति (Cookie Policy)', 'Cookie Policy')) ?></a>
@@ -192,7 +193,7 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/disclaimer')) ?>"><?= e(ps_text('अस्वीकरण (Disclaimer)', 'Disclaimer')) ?></a>
             </div>
 
-            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#94A3B8]">
+            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-xs text-[#CBD5E1]">
                 <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/editorial-policy')) ?>"><?= e(ps_text('संपादकीय नीति (Editorial Policy)', 'Editorial Policy')) ?></a>
                 <span class="opacity-30">•</span>
                 <a class="hover:text-[#F0B45C] transition-colors font-medium" href="<?= e(base_url('/author-guidelines')) ?>"><?= e(ps_text('लेखक दिशा-निर्देश (Author Guidelines)', 'Author Guidelines')) ?></a>

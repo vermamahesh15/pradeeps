@@ -42,17 +42,37 @@ if (!isset($nav) || !is_array($nav)) {
     ];
 }
 ?>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F"></script>
+<!-- Defer Analytics & AdSense to post-load/idle to eliminate render-blocking and third-party overhead -->
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+window.addEventListener('load', function() {
+    function loadMarketingScripts() {
+        if (window.__marketingLoaded) return;
+        window.__marketingLoaded = true;
+        
+        var gtagScript = document.createElement('script');
+        gtagScript.async = true;
+        gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-0YJRF6JN7F';
+        document.head.appendChild(gtagScript);
 
-  gtag('config', 'G-0YJRF6JN7F');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-0YJRF6JN7F');
+
+        var adsScript = document.createElement('script');
+        adsScript.async = true;
+        adsScript.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796';
+        adsScript.crossOrigin = 'anonymous';
+        document.head.appendChild(adsScript);
+    }
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadMarketingScripts, { timeout: 3000 });
+    } else {
+        setTimeout(loadMarketingScripts, 2000);
+    }
+});
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5149941446062796"
-     crossorigin="anonymous"></script>
 <header class="fixed top-0 left-0 w-full z-[9999] shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
     <!-- Top Utility Bar -->
     <div class="w-full bg-[#172033] text-[#FFFFFF] py-1.5 px-4 sm:px-8">
@@ -115,6 +135,8 @@ if (!isset($nav) || !is_array($nav)) {
                 ?>
                     <div class="relative group">
                         <button type="button" 
+                                aria-haspopup="true"
+                                aria-expanded="false"
                                 class="px-2.5 py-1.5 rounded-lg whitespace-nowrap transition-all text-[13.5px] flex items-center gap-1 cursor-pointer <?= $isParentActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-[#344054] hover:text-[#14532D] hover:bg-[#F3F5F1]' ?>">
                             <span><?= e($dropdownLabel) ?></span>
                             <span class="material-symbols-outlined text-[16px] text-[#667085] transition-transform duration-200 group-hover:rotate-180">expand_more</span>
@@ -136,6 +158,9 @@ if (!isset($nav) || !is_array($nav)) {
                 <?php 
                     else: 
                         [$url, $label] = $navItem;
+                        if ($url === '/donation') {
+                            continue; // Prominent Donate CTA is already in the header bar
+                        }
                         $isActive = is_nav_item_active($url, $currPath);
                         $isBlog = ($url === '/blog');
                 ?>
@@ -158,10 +183,10 @@ if (!isset($nav) || !is_array($nav)) {
             </nav>
 
             <!-- Actions: CTA, Admin, Mobile Toggle -->
-            <div class="flex items-center gap-2.5 sm:gap-3.5">
+            <div class="flex items-center gap-2 sm:gap-3.5">
 
-                <a class="hidden sm:inline-flex items-center justify-center gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-3.5 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
-                    <span class="material-symbols-outlined text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                <a class="inline-flex items-center justify-center gap-1 sm:gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-label-md font-semibold transition-colors whitespace-nowrap shadow-sm cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
+                    <span class="material-symbols-outlined text-[16px] sm:text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
                     <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें', 'Donate Now')) ?></span>
                 </a>
 
@@ -172,7 +197,7 @@ if (!isset($nav) || !is_array($nav)) {
 
                 <!-- CTA Buttons & Mobile Toggle -->
 
-                <button id="ps-mobile-toggle" class="xl:hidden p-1.5 text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
+                <button id="ps-mobile-toggle" class="xl:hidden w-11 h-11 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
@@ -203,7 +228,7 @@ if (!isset($nav) || !is_array($nav)) {
                         <?php foreach ($children as [$subUrl, $subLabel]): 
                             $isSubActive = is_nav_item_active($subUrl, $currPath);
                         ?>
-                            <a href="<?= e(base_url($subUrl)) ?>"
+                            <a href="<?= e(base_url($subUrl)) ?>" 
                                onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
                                class="block py-1.5 px-3 rounded-lg text-sm transition-colors <?= $isSubActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : 'text-on-surface-variant hover:text-primary' ?>">
                                 <?= e($subLabel) ?>
@@ -216,12 +241,15 @@ if (!isset($nav) || !is_array($nav)) {
                     [$url, $label] = $navItem;
                     $isActive = is_nav_item_active($url, $currPath);
                     $isBlog = ($url === '/blog');
+                    $isDonation = ($url === '/donation');
             ?>
                     <a href="<?= e(base_url($url)) ?>" 
                        onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
-                       class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : 'text-on-surface hover:text-primary' ?>">
+                       class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : ($isDonation ? 'text-[#14532D] font-bold hover:bg-emerald-50' : 'text-on-surface hover:text-primary') ?>">
                         <?php if ($isBlog): ?>
                             <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-primary' ?>">menu_book</span>
+                        <?php elseif ($isDonation): ?>
+                            <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-[#14532D]' ?>">volunteer_activism</span>
                         <?php endif; ?>
                         <span><?= e($label) ?></span>
                     </a>
@@ -230,8 +258,13 @@ if (!isset($nav) || !is_array($nav)) {
             endforeach; 
             ?>
             <div class="pt-3 border-t border-border-warm flex flex-col gap-2.5">
-                <a class="inline-flex items-center justify-center bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center cursor-pointer" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
-                    <?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?>
+                <a class="inline-flex items-center justify-center gap-2 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden');">
+                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें (दान)', 'Donate Now')) ?></span>
+                </a>
+                <a class="inline-flex items-center justify-center gap-2 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
+                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">handshake</span>
+                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
                 </a>
             </div>
         </div>

@@ -231,19 +231,22 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
 
     <!-- Events Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-      <?php if (!empty($upcoming)): foreach ($upcoming as $idx => $ev): ?>
-        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+      <?php if (!empty($upcoming)): foreach ($upcoming as $idx => $ev): 
+        $evImg = ps_resolve_img($ev['image'] ?? '', 'assets/images/slider_final_1.webp');
+      ?>
+        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
           <div>
-            <div class="relative h-48 w-full overflow-hidden bg-surface-container">
-              <img src="<?= e(ps_resolve_img($ev['image'] ?? '', 'assets/images/slider_final_1.webp')) ?>" alt="<?= e($ev['title']) ?>" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-              <div class="absolute top-3 left-3 bg-secondary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold">
+            <a href="<?= e(base_url('/events/' . $ev['slug'])) ?>" class="block relative w-full aspect-[16/10] overflow-hidden bg-surface-container flex items-center justify-center">
+              <img src="<?= e($evImg) ?>" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img src="<?= e($evImg) ?>" alt="<?= e($ev['title']) ?>" class="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]">
+              <div class="absolute top-3 left-3 z-20 bg-secondary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold shadow-sm">
                 <?= e(ps_text('आगामी आयोजन', 'Upcoming Event')) ?>
               </div>
-              <div class="absolute bottom-3 right-3 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm">
+              <div class="absolute bottom-3 right-3 z-20 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm shadow-sm">
                 <span class="material-symbols-outlined text-[14px]">event</span>
                 <span><?= e(date('d M Y', strtotime($ev['event_date']))) ?></span>
               </div>
-            </div>
+            </a>
             <div class="p-6">
               <div class="flex items-center gap-2 text-text-muted font-label-sm text-label-sm mb-2.5">
                 <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
@@ -268,14 +271,15 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         </div>
       <?php endforeach; else: ?>
         <!-- Curated Fallback Event 1 -->
-        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
           <div>
-            <div class="relative h-48 w-full overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJza7S46WFFJSwNs0D5xs_ecbeULhv-3IjFXCftYNpanTdkVmilHSu2T3axctN7k1ZsUHMl6s56TDlC9IxIsEKx_KkKqa1Y1s_z6i1nznKifKUeXptt2aFbTg5RGE608Dn7YB4z_qrcOtufJvoCLCRmIu6KC96mDSfYw-dsjHHnNt5stQZVNG-eCAjJpkJgBwjJODXq5y-VyrglqJbW2iYk0k5X-7FTGXxSknDn3Fnan23REwhkvhE" alt="Kavya Manjari Meet" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-              <div class="absolute top-3 left-3 bg-secondary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold">
+            <div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container flex items-center justify-center">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJza7S46WFFJSwNs0D5xs_ecbeULhv-3IjFXCftYNpanTdkVmilHSu2T3axctN7k1ZsUHMl6s56TDlC9IxIsEKx_KkKqa1Y1s_z6i1nznKifKUeXptt2aFbTg5RGE608Dn7YB4z_qrcOtufJvoCLCRmIu6KC96mDSfYw-dsjHHnNt5stQZVNG-eCAjJpkJgBwjJODXq5y-VyrglqJbW2iYk0k5X-7FTGXxSknDn3Fnan23REwhkvhE" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJza7S46WFFJSwNs0D5xs_ecbeULhv-3IjFXCftYNpanTdkVmilHSu2T3axctN7k1ZsUHMl6s56TDlC9IxIsEKx_KkKqa1Y1s_z6i1nznKifKUeXptt2aFbTg5RGE608Dn7YB4z_qrcOtufJvoCLCRmIu6KC96mDSfYw-dsjHHnNt5stQZVNG-eCAjJpkJgBwjJODXq5y-VyrglqJbW2iYk0k5X-7FTGXxSknDn3Fnan23REwhkvhE" alt="Kavya Manjari Meet" class="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]">
+              <div class="absolute top-3 left-3 z-20 bg-secondary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold shadow-sm">
                 <?= e(ps_text('साहित्य व विमर्श', 'Literature Meet')) ?>
               </div>
-              <div class="absolute bottom-3 right-3 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm">
+              <div class="absolute bottom-3 right-3 z-20 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm shadow-sm">
                 <span class="material-symbols-outlined text-[14px]">event</span>
                 <span>05 Jul 2026</span>
               </div>
@@ -302,14 +306,15 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         </div>
 
         <!-- Curated Fallback Event 2 -->
-        <div class="event-card environment bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="event-card environment bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
           <div>
-            <div class="relative h-48 w-full overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA-BKsZLzuyc5-y4hcmmvOzTbj55RfalZmkO3OgoI4DwJMMmZ6beQztXQXRoj7FSX-RtaUwGHAI1CzvhUZeJcsJ6rNRXIiFfjbtjfpp8yyZam87Krr_kbtwJSv1toH1PvLAXHGqxU64sUiZVlOn-uyVjnbeUtZPrzO9U0n9O0NMepCah9RKA0oj5NdIjd7eBc9d1Rkc9LcKPreLQCekxLcprgNs60gkMM6V9iw4Q0WFK0-SzgtW41I" alt="Tree Plantation Drive" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-              <div class="absolute top-3 left-3 bg-primary-container text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold">
+            <div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container flex items-center justify-center">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA-BKsZLzuyc5-y4hcmmvOzTbj55RfalZmkO3OgoI4DwJMMmZ6beQztXQXRoj7FSX-RtaUwGHAI1CzvhUZeJcsJ6rNRXIiFfjbtjfpp8yyZam87Krr_kbtwJSv1toH1PvLAXHGqxU64sUiZVlOn-uyVjnbeUtZPrzO9U0n9O0NMepCah9RKA0oj5NdIjd7eBc9d1Rkc9LcKPreLQCekxLcprgNs60gkMM6V9iw4Q0WFK0-SzgtW41I" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA-BKsZLzuyc5-y4hcmmvOzTbj55RfalZmkO3OgoI4DwJMMmZ6beQztXQXRoj7FSX-RtaUwGHAI1CzvhUZeJcsJ6rNRXIiFfjbtjfpp8yyZam87Krr_kbtwJSv1toH1PvLAXHGqxU64sUiZVlOn-uyVjnbeUtZPrzO9U0n9O0NMepCah9RKA0oj5NdIjd7eBc9d1Rkc9LcKPreLQCekxLcprgNs60gkMM6V9iw4Q0WFK0-SzgtW41I" alt="Tree Plantation Drive" class="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]">
+              <div class="absolute top-3 left-3 z-20 bg-primary-container text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold shadow-sm">
                 <?= e(ps_text('पर्यावरण व जनसेवा', 'Environment Drive')) ?>
               </div>
-              <div class="absolute bottom-3 right-3 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm">
+              <div class="absolute bottom-3 right-3 z-20 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm shadow-sm">
                 <span class="material-symbols-outlined text-[14px]">event</span>
                 <span>15 Jul 2026</span>
               </div>
@@ -336,14 +341,15 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         </div>
 
         <!-- Curated Fallback Event 3 -->
-        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="event-card literature bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
           <div>
-            <div class="relative h-48 w-full overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUYU8_Q80ikOHIfn6kPw-jcptH9jriRA6pp1pNfI_0o7S5jvKXzRsFDrYRPNP_6bVGZsJmPhnY0ZN8bz_kzhCAUuu6jT7qL59mHf0Avf5hM85iDsDOpY1TykHzpvcwnBAQfUOI9r2hnEciOgZjQXYJRAIpt35IdunY4NWCf0wsyXc6ogpopKDkQMIppkQ9jEFNCc2ZcJxAu2nUfK4R4TfFReePr7Osko-p5QyGcB8jREUixlLQ0gyy" alt="Tulsi Jayanti Fortnight" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105">
-              <div class="absolute top-3 left-3 bg-tertiary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold">
+            <div class="relative w-full aspect-[16/10] overflow-hidden bg-surface-container flex items-center justify-center">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUYU8_Q80ikOHIfn6kPw-jcptH9jriRA6pp1pNfI_0o7S5jvKXzRsFDrYRPNP_6bVGZsJmPhnY0ZN8bz_kzhCAUuu6jT7qL59mHf0Avf5hM85iDsDOpY1TykHzpvcwnBAQfUOI9r2hnEciOgZjQXYJRAIpt35IdunY4NWCf0wsyXc6ogpopKDkQMIppkQ9jEFNCc2ZcJxAu2nUfK4R4TfFReePr7Osko-p5QyGcB8jREUixlLQ0gyy" alt="" aria-hidden="true" class="absolute inset-0 w-full h-full object-cover blur-md scale-110 opacity-30 pointer-events-none">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUYU8_Q80ikOHIfn6kPw-jcptH9jriRA6pp1pNfI_0o7S5jvKXzRsFDrYRPNP_6bVGZsJmPhnY0ZN8bz_kzhCAUuu6jT7qL59mHf0Avf5hM85iDsDOpY1TykHzpvcwnBAQfUOI9r2hnEciOgZjQXYJRAIpt35IdunY4NWCf0wsyXc6ogpopKDkQMIppkQ9jEFNCc2ZcJxAu2nUfK4R4TfFReePr7Osko-p5QyGcB8jREUixlLQ0gyy" alt="Tulsi Jayanti Fortnight" class="relative z-10 w-full h-full object-contain transition-transform duration-500 group-hover:scale-[1.02]">
+              <div class="absolute top-3 left-3 z-20 bg-tertiary text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm font-semibold shadow-sm">
                 <?= e(ps_text('संस्कृति व बाल-चेतना', 'Culture & Students')) ?>
               </div>
-              <div class="absolute bottom-3 right-3 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm">
+              <div class="absolute bottom-3 right-3 z-20 bg-deep-forest/90 text-pure-white px-2.5 py-1 rounded font-label-sm text-label-sm flex items-center gap-1 backdrop-blur-sm shadow-sm">
                 <span class="material-symbols-outlined text-[14px]">event</span>
                 <span>16 - 31 Aug 2026</span>
               </div>

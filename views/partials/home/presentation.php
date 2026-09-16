@@ -165,6 +165,7 @@ $nav = [
     ['/salahkaar', ps_text('सलाहकार', 'Counsellor')],
     ['/events', ps_text('कार्यक्रम','Events')],
     ['/blog', ps_text('साहित्य व विचार', 'Literature & Writings')],
+    ['/donation', ps_text('सहयोग करें', 'Donate Now')],
     ['/contact', ps_text('संपर्क','Contact')]
 ];
 
