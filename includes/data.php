@@ -58,10 +58,203 @@ return [
 https://picsum.photos/seed/event-three/900/700', 'excerpt' => 'An interactive orientation for new volunteers to learn about our work and impact.'],
     ],
     'blogs' => [
-        ['id' => 1, 'title' => 'पत्रकार कैसे बनें: मुख्य बातें जो आपको जाननी चाहिए', 'slug' => 'how-to-become-a-journalist-key-things-you-should-know', 'category' => 'पत्रकारिता एवं मीडिया', 'category_name' => 'पत्रकारिता एवं मीडिया', 'author' => 'श्री प्रदीप सारंग', 'date' => '2026-05-20', 'published_at' => '2026-05-20', 'image' => 'assets/images/slider_final_1.webp', 'featured_image' => 'assets/images/slider_final_1.webp', 'excerpt' => 'पत्रकारिता लोकतंत्र का चौथा स्तंभ है। यदि आप एक सफल, निष्पक्ष और प्रभावकारी पत्रकार बनना चाहते हैं, तो इन महत्वपूर्ण बातों, शैक्षणिक योग्यता और नैतिक सिद्धांतों को जानना आपके लिए अत्यंत आवश्यक है।', 'content' => ''],
-        ['id' => 2, 'title' => 'How volunteer-led programs reshape local trust', 'slug' => 'how-volunteer-led-programs-reshape-local-trust', 'category' => 'Insights', 'author' => 'Admin', 'date' => '2026-04-14', 'image' => 'https://picsum.photos/seed/blog-one/1200/800', 'excerpt' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent semper sem id pharetra faucibus.', 'content' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate, velit quis rhoncus venenatis, lorem sem volutpat nisi, in faucibus quam leo a urna.</p><p>Curabitur et sapien nec erat feugiat luctus. Donec sit amet nibh sit amet quam lacinia finibus. Nunc rhoncus tortor ut mauris gravida, in facilisis purus cursus.</p>'],
-        ['id' => 3, 'title' => 'Field notes from our nutrition campaign', 'slug' => 'field-notes-from-our-nutrition-campaign', 'category' => 'News', 'author' => 'Admin', 'date' => '2026-04-02', 'image' => 'https://picsum.photos/seed/blog-two/1200/800', 'excerpt' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.', 'content' => '<p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p><p>Nam a cursus velit. Integer pharetra fermentum justo, et consequat arcu commodo ac.</p>'],
-        ['id' => 4, 'title' => '5 ways CSR partners can create longer-term impact', 'slug' => '5-ways-csr-partners-can-create-longer-term-impact', 'category' => 'Strategy', 'author' => 'Admin', 'date' => '2026-03-25', 'image' => 'https://picsum.photos/seed/blog-three/1200/800', 'excerpt' => 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.', 'content' => '<p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur.</p><p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.</p>'],
+        [
+            'id' => 1,
+            'title' => 'कैसे बनें पत्रकार, जानें कुछ जरूरी बातें',
+            'slug' => 'how-to-become-a-journalist-key-things-you-should-know',
+            'category' => 'पत्रकारिता एवं मीडिया',
+            'category_name' => 'पत्रकारिता एवं मीडिया',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-05-20',
+            'published_at' => '2026-05-20',
+            'reading_time' => '12 min read',
+            'image' => 'uploads/blogs/6aa849c8cc199_media.webp',
+            'featured_image' => 'uploads/blogs/6aa849c8cc199_media.webp',
+            'excerpt' => 'भारत में शिक्षा, रोजगार, कृषि, स्वास्थ्य, राजनीति और सामाजिक मुद्दे पत्रकारिता के प्रमुख विषय हैं। पत्रकार समाज तक सटीक और निष्पक्ष जानकारी पहुँचाने में महत्वपूर्ण भूमिका निभाता है। अंशकालिक और पूर्णकालिक पत्रकारों की जिम्मेदारियाँ समान होती हैं, लेकिन सुविधाओं में भिन्नता होती है।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-secondary mr-3 mt-1 pb-1">भा</span>रत में शिक्षा, रोजगार, कृषि, स्वास्थ्य, राजनीति और सामाजिक मुद्दे पत्रकारिता के प्रमुख विषय हैं। पत्रकार समाज तक सटीक और निष्पक्ष जानकारी पहुँचाने में महत्वपूर्ण भूमिका निभाता है। अंशकालिक और पूर्णकालिक पत्रकारों की जिम्मेदारियाँ समान होती हैं, लेकिन सुविधाओं में भिन्नता होती है। यदि आप पत्रकारिता के क्षेत्र में प्रवेश करना चाहते हैं, तो यह केवल एक पेशा नहीं बल्कि समाज के प्रति गहरी जवाबदेही और नैतिक संकल्प है।</p>
+<div class="my-5 p-4 rounded-xl bg-[#f5efe4] border-l-4 border-secondary shadow-inner">
+  <p class="font-quote-editorial italic text-secondary text-[18px] leading-relaxed text-center">"पत्रकारिता लोकतंत्र की धड़कन है; निष्पक्ष कलम और सत्य के पक्ष में खड़े होने का साहस ही एक सच्चे पत्रकार की असली पूँजी है।"</p>
+</div>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">१. पत्रकारिता में शैक्षणिक योग्यता एवं भाषा पर अधिकार</h3>
+<p>पत्रकार बनने के लिए किसी भी विषय में स्नातक (Graduation) होना प्राथमिक आवश्यकता है। इसके उपरांत पत्रकारिता एवं जनसंचार (Journalism and Mass Communication - BJMC, MJMC या PG Diploma) का पाठ्यक्रम आपकी वैचारिक नींव को मजबूत करता है। भाषा पर मजबूत पकड़, व्याकरणिक शुद्धता और संक्षिप्त किंतु प्रभावशाली लेखन शैली एक पत्रकार के प्राथमिक अस्त्र हैं।</p>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">२. जमीनी रिपोर्टिंग और खोजी दृष्टि</h3>
+<p>समाचार केवल प्रेस विज्ञप्तियों या वातानुकूलित कमरों से नहीं निकलते। सच्चा पत्रकार गाँव की चौपालों, पगडंडियों, किसानों की पीड़ा, श्रमिकों के पसीने और आम जनमानस की समस्याओं के बीच जाकर रिपोर्टिंग करता है। श्री प्रदीप सारंग जी ने चार दशकों तक बाराबंकी और अवध के ग्रामीण अंचलों में यही पत्रकारिता जी है।</p>
+<div class="my-5 p-4 rounded-xl bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"अखबार की स्याही और पत्रकार का जमीर जब तक साफ है, तब तक आम नागरिक की आवाज को कोई दबा नहीं सकता।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग (सह-संपादक: सन्दौली टाइम्स)</span>
+</div>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">३. निष्पक्षता और आचार संहिता</h3>
+<p>पत्रकारिता में किसी भी दल, विचारधारा या प्रलोभन से मुक्त रहकर तथ्यात्मक सत्य पर अडिग रहना सबसे बड़ी परीक्षा है। हर खबर की पुष्टि (Fact-checking) दोहरे स्रोतों से करना, पीड़ित पक्ष की बात को प्रमुखता देना और जन-सरोकार को शीर्ष पर रखना अनिवार्य नियम है।</p>'
+        ],
+        [
+            'id' => 2,
+            'title' => 'झरिहख',
+            'slug' => 'jharihakh',
+            'category' => 'अवधी संस्मरण',
+            'category_name' => 'अवधी संस्मरण',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-05-19',
+            'published_at' => '2026-05-19',
+            'reading_time' => '14 min read',
+            'image' => 'uploads/blogs/6aa7bc6009f69_e0af32ae-86f5-4f13-8324-618c5a98b086.webp',
+            'featured_image' => 'uploads/blogs/6aa7bc6009f69_e0af32ae-86f5-4f13-8324-618c5a98b086.webp',
+            'excerpt' => 'वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण — जब छत पर टपकती बूँदें और टीनसेट पर झमझम आवाज नींद उड़ा देती थी।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-secondary mr-3 mt-1 pb-1">आ</span>जु जब हम सोय कै जागेन, तौ झमाझम बारिस होत रही। झमाझम मतलब वाकई झम-झम, झम-झम कै आवाज कानन मा सुनाय परत रही। ईका येकु कारन इहौ रहा कि हम घर की छत पर बने सीमेंटेड-टीन सेट के नीचे सोइत है। पानी की बड़ी बड़ी बूँदन के टीनसेट पर गिरै से यही तिना केर, झमझम-झमझम आवाज निकरत रही। आजु कुछ अलग तिना केरी आवाज से कुछ अटपट लाग और जल्दिन खुमारी भागिगै। हमका लाग कि आजु जानौ झरिहख परि जाई।</p>
+<p>हमरी घरैतिन रोजै छत पर याक बरतन मा पानी भरि देती हैं अउर राति केर बची बासी चावल, रोटी रखि दियत हैं। जेहिका चुगै मेर-मेर की चिरई अउती हैं। नाश्ता भोजन करती हैं अउर जलपान करती हैं। दाना चुगै मा लगातार चह-चहावा करती हैं।</p>
+<div class="my-5 p-4 rounded-xl bg-[#f3ede1] border-l-4 border-secondary shadow-inner">
+  <p class="font-quote-editorial italic text-secondary text-[18px] leading-relaxed text-center">"याक बात अउर कि अगर कोऊ के घर मा कौनिव व्याधि आई तौ लोगन का पता रहत रहा कि कहाँ कहाँ कीके द्वारे लोग इकट्ठा रहत हैं... तुरन्ते दस-पंद्रह लोग मदद तईं चलि परैं।"</p>
+</div>
+<p>गाँव से न जुड़े रहै वाले अउर अवधी न बोलै समझै वाले लोगन तईं झरिहख नवा शब्द आही। झरिहख मतलब न पानी बन्द हुवै न बरसबै करै। हल्की हल्की फुहार परा करै। जब ई तिना कै बारिस चारि छः घण्टा होत रहत है तब ई तिना की हल्की बारिस का झरिहख कहा जात है।</p>
+<div class="my-4 p-4 rounded-xl bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"झरिहख मा अतना पानी गिरत रहा कि बाढ़ जइस हालात बनि जात रहे। का मनई का जानवर ई झरिहख से सबै ऊबि जाँय। गरीबन केर तौ दुश्मनै आही झरिहखु।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग</span>
+</div>'
+        ],
+        [
+            'id' => 3,
+            'title' => 'सुघरी',
+            'slug' => 'sughagri',
+            'category' => 'अवधी लोक-गद्य कथा',
+            'category_name' => 'अवधी लोक-गद्य कथा',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-05-14',
+            'published_at' => '2026-05-14',
+            'reading_time' => '10 min read',
+            'image' => 'uploads/blogs/6aa7bcfb1d48c_mela.webp',
+            'featured_image' => 'uploads/blogs/6aa7bcfb1d48c_mela.webp',
+            'excerpt' => 'मेला जाय की खुशी मा, गोबर की खेप लइकै जाय रही \'सुघरी\' के कदमन की चाल आजु अपने आपै कुछ बढ़ी हुई है।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-primary mr-3 mt-1 pb-1">मे</span>ला जाय की खुशी मा, गोबर की खेप लइकै जाय रही \'सुघरी\' के कदमन की चाल आजु अपने आपै कुछ बढ़ी हुई है। गाँव के बथान से लेके घर तक वह बार-बार आपन फराक सम्हारति है। आजु गाँव के मैदान मा दंगल अउर मेला लाग है। लाल-पीली टिकुली, चटक रंगीन फीता अउर मीठी जलेबी की महक सुघरी के मन मा सवेरे से हिलोरे मारि रही है।</p>
+<div class="my-5 p-4 rounded-xl bg-[#e8f5e9] border-l-4 border-primary shadow-inner">
+  <p class="font-quote-editorial italic text-primary text-[18px] leading-relaxed text-center">"मेला केवल बाजार नाहिं, ई देहाती मन के उमंग, मिलन अउर लोक-संस्कृति का सबसे बड़वार उत्सव आही।"</p>
+</div>
+<p>सुघरी तसला मा गोबर उठाइस, अउर कंडे पाथै वाली जगह पर रखिकै जल्दी-जल्दी हाथ धोइस। ओकरे मन मा बार-बार इहै बात घूमति रही कि कबहूँ बाबू जी खेत से लौटि कै अउवैं अउर मेला चलै का हुकुम देवैं। देहाती बचपन की यह मासूमियत आजु के चमक-धमक वाले दौर मा दुर्लभ भइ चुकी है।</p>
+<div class="my-4 p-4 rounded-lg bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"सुघरी सिरफ याक लरिकी नाहिं, ई समूचे भारतवर्ष के उस हर देहाती बचपन केर प्रतीक आही जौन सीमित साधन मा भी असीम प्रसन्नता खोजि लेत है।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग</span>
+</div>'
+        ],
+        [
+            'id' => 4,
+            'title' => 'सारंग-कुण्डलियाँ व संकल्प-गीत',
+            'slug' => 'sarang-kundaliyan',
+            'category' => 'अवधी काव्य-चिन्तन',
+            'category_name' => 'अवधी काव्य-चिन्तन',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-05-02',
+            'published_at' => '2026-05-02',
+            'reading_time' => '8 min read',
+            'image' => 'assets/images/slider_final_1.webp',
+            'featured_image' => 'assets/images/slider_final_1.webp',
+            'excerpt' => '"पेड़, पखेरू, नदियाँ और मनुष्य की अस्मिता" — अवधी के प्राण-छंद कुण्डलियाँ में रचित लोक-चेतना और पर्यावरण के अमर स्वर।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-secondary mr-3 mt-1 pb-1">कु</span>ण्डलिया अवध का प्राण-छंद है, जहाँ प्रथम दोहे का अंतिम चरण रोला का प्रथम चरण बनकर लोक-कंठ का स्वर बन जाता है। पर्यावरण के विनाश, कटते वृक्षों और विलुप्त होते परिंदों की पीड़ा को व्यक्त करती ये कुण्डलियाँ जन-आंदोलन का आह्वान हैं।</p>
+<div class="p-4 rounded-xl bg-[#fdfbf6] border border-[#e5dccf] shadow-xs my-5">
+  <p class="font-serif font-semibold text-deep-forest text-center leading-relaxed text-lg">
+    रूख-बिरिछ सब काटिके, बनल शहर महान।<br/>
+    पखेरू ढूँढत घोंसला, रोवत आजु विहान॥<br/>
+    रोवत आजु विहान, कहाँ अब सुआ बसेरा?<br/>
+    सीमेंट के जंगलन मा, भवा साँझि-सवेरा॥<br/>
+    कह सारंग कविराय, सुनो ओ बुद्धि निधाना।<br/>
+    बिना रूख के सांसु का, मोल न कबहूँ जाना॥
+  </p>
+</div>
+<div class="p-4 rounded-xl bg-[#fdfbf6] border border-[#e5dccf] shadow-xs my-5">
+  <p class="font-serif font-semibold text-secondary text-center leading-relaxed text-lg">
+    ताल-तलइया पाटिके, रच्यो भवन चौताल।<br/>
+    बूँद-बूँद तरसत धरा, बिगड़ि गवा सब हाल॥<br/>
+    बिगड़ि गवा सब हाल, नदी कल्याणी सूखै।<br/>
+    मछरी जल बिन तड़पै, तृष्णा जग मा भूखै॥<br/>
+    जागौ नवयुवकन सब, माटी धरम निबाहौ।<br/>
+    गाँव-गाँव मा हरियर, अमराई महकाहौ॥
+  </p>
+</div>
+<div class="p-5 rounded-2xl bg-[#0d3b1f] text-[#f0fdf1] shadow-md border border-[#1e6138] text-center my-6">
+  <span class="block font-label-sm text-fresh-sprout uppercase tracking-widest font-bold mb-2">— सारंग जी का संकल्प-गीत —</span>
+  <blockquote class="font-serif text-[20px] sm:text-[22px] leading-relaxed italic">
+    “हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>
+    जुगनुओं का संग है, इंसानियत का मीत हूँ।”
+  </blockquote>
+  <span class="block text-xs text-primary-fixed mt-3">अवधी व जन-संघर्ष के चार दशक (1986 - 2026)</span>
+</div>'
+        ],
+        [
+            'id' => 5,
+            'title' => 'ग्रीन गैंग अभियान: \'गुड मॉर्निंग\' की जगह \'ग्रीन मॉर्निंग\'',
+            'slug' => 'green-morning-revolution',
+            'category' => 'पर्यावरण संरक्षण',
+            'category_name' => 'पर्यावरण संरक्षण',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-04-22',
+            'published_at' => '2026-04-22',
+            'reading_time' => '11 min read',
+            'image' => 'uploads/events/6aa7cfb5cd326_hariyali_abhiyan.webp',
+            'featured_image' => 'uploads/events/6aa7cfb5cd326_hariyali_abhiyan.webp',
+            'excerpt' => 'बाराबंकी के गाँवों से उठी वह हरित क्रांति, जिसने युवाओं को पेड़ लगाने और अभिवादन में \'ग्रीन मॉर्निंग\' बोलने का नया संस्कार सिखाया।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-emerald-800 mr-3 mt-1 pb-1">प</span>र्यावरण संरक्षण जब तक केवल सम्मेलनों और भाषणों तक सीमित रहेगा, तब तक धरती हरी-भरी नहीं हो सकती। 2019 में बाराबंकी के सतरिख और कमरावां अंचल में जब युवाओं की टोली \'ग्रीन गैंग\' के रूप में संगठित हुई, तो संकल्प लिया गया कि प्रकृति की रक्षा हमारी दिनचर्या का हिस्सा बनेगी।</p>
+<div class="my-5 p-4 rounded-xl bg-[#e8f5e9] border-l-4 border-emerald-700 shadow-inner">
+  <p class="font-quote-editorial italic text-emerald-900 text-[18px] leading-relaxed text-center">"हमने कहा कि सुबह उठकर केवल गुड मॉर्निंग कहने से दिन अच्छा नहीं होगा, जब तक हाथ में एक पौधा लेकर \'ग्रीन मॉर्निंग\' न कहें!"</p>
+</div>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">५०,०००+ वृक्षों का सुरक्षा कवच</h3>
+<p>ग्रीन गैंग के सदस्यों ने न केवल पौधरोपण किया, बल्कि प्रत्येक पौधे को वृक्ष बनने तक गोद लिया। गाँव की बंजर जमीनों, पगडंडियों और स्कूलों में नीम, पीपल, बरगद, जामुन और महुआ जैसे पारंपरिक छायादार व फलदार पेड़ लगाए गए। आज बाराबंकी की सड़कों के किनारे लहलहाती अमराई इस जन-आंदोलन की साक्षी है।</p>
+<div class="my-4 p-4 rounded-xl bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"धरती को हरा-भरा रखना किसी सरकार का नहीं, हर उस मनुष्य का प्राथमिक धर्म है जो इस मिट्टी का अन्न खाता है और इस हवा में साँस लेता है।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग (ग्रीन गैंग संस्थापक)</span>
+</div>'
+        ],
+        [
+            'id' => 6,
+            'title' => 'परिंदा-संरक्षण: मिट्टी के सकोरे और बेजुबान पक्षियों की प्यास',
+            'slug' => 'parinda-sanrakshan-sakore',
+            'category' => 'जीव-दया एवं प्रकृति',
+            'category_name' => 'जीव-दया एवं प्रकृति',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-04-10',
+            'published_at' => '2026-04-10',
+            'reading_time' => '9 min read',
+            'image' => 'uploads/events/6aa7b6982b577_parinda.webp',
+            'featured_image' => 'uploads/events/6aa7b6982b577_parinda.webp',
+            'excerpt' => 'भीषण ग्रीष्मकाल में जब नदियाँ और तालाब सूख जाते हैं, तब छतों और पेड़ों पर रखे 10,000+ मिट्टी के सकोरे हज़ारों परिंदों के लिए जीवनदायिनी संजीवनी बनते हैं।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-amber-800 mr-3 mt-1 pb-1">ग</span>र्मियों के दिनों में जब सूरज आग उगलता है और गाँव के तालाब सूख जाते हैं, तब सबसे ज्यादा संकट उन बेजुबान परिंदों पर आता है जिनकी आवाज से हमारी सुबह शुरू होती है। गौरैया, तोता, मैना, कबूतर और फाख्ता पानी की एक-एक बूँद के लिए तड़पते हैं।</p>
+<div class="my-5 p-4 rounded-xl bg-[#fff8e1] border-l-4 border-amber-600 shadow-inner">
+  <p class="font-quote-editorial italic text-amber-900 text-[18px] leading-relaxed text-center">"मिट्टी का एक सकोरा और थोड़ा सा दाना—यह केवल पक्षी सेवा नहीं, हमारी मानवीय चेतना की परीक्षा है।"</p>
+</div>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">१०,०००+ सकोरा वितरण महा-अभियान</h3>
+<p>श्री प्रदीप सारंग जी के नेतृत्व में प्रत्येक वर्ष ग्रीष्मकाल से पूर्व कुम्हारों से हजारों मिट्टी के सकोरे बनवाकर निःशुल्क वितरित किए जाते हैं। घरों की मुँडेरों, दुकानों की छतों और वृक्षों की डालियों पर पानी भरकर लटकाया जाता है। इस अभियान से प्रेरित होकर जनपद के सैकड़ों स्कूलों के बच्चों ने अपने घरों में पक्षियों के लिए जल-पात्र रखना शुरू किया है।</p>
+<div class="my-4 p-4 rounded-xl bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"अगर सुबह चिड़ियों की चहचहाहट बंद हो जाएगी, तो समझ लेना कि मनुष्य का अस्तित्व भी खतरे में पड़ चुका है।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— प्रदीप सारंग</span>
+</div>'
+        ],
+        [
+            'id' => 7,
+            'title' => 'अवधी साहित्य और ग्रामीण पत्रकारिता के चार दशक: एक सिंहावलोकन',
+            'slug' => 'four-decades-of-awadhi-journalism',
+            'category' => 'साहित्यिक आलेख',
+            'category_name' => 'साहित्यिक आलेख',
+            'author' => 'श्री प्रदीप सारंग',
+            'author_name' => 'श्री प्रदीप सारंग',
+            'date' => '2026-03-28',
+            'published_at' => '2026-03-28',
+            'reading_time' => '15 min read',
+            'image' => 'uploads/blogs/6aaa220ea2c2d_pradeep-saarang.webp',
+            'featured_image' => 'uploads/blogs/6aaa220ea2c2d_pradeep-saarang.webp',
+            'excerpt' => '1986 से 2026 तक: गाँव की चौपालों से लेकर दैनिक समाचार पत्र \'सन्दौली टाइम्स\' के संपादन तक, अवधी लोक-भाषा और जमीनी पत्रकारिता का 40 वर्षों का अविस्मरणीय सफर।',
+            'content' => '<p><span class="float-left text-5xl leading-[42px] font-headline-lg font-bold text-deep-forest mr-3 mt-1 pb-1">चा</span>लीस वर्ष पूर्व जब हमने राष्ट्रीय सेवा योजना (NSS) के संस्कारों के साथ समाजसेवा और पत्रकारिता में पहला कदम रखा था, तब साधन सीमित थे किंतु संकल्प हिमालय जितना अडिग था। गाँव के शोषित, वंचित और उपेक्षित लोगों की समस्याओं को कलम की ताकत देना ही जीवन का ध्येय बन गया।</p>
+<div class="my-5 p-4 rounded-xl bg-[#f5efe4] border-l-4 border-deep-forest shadow-inner">
+  <p class="font-quote-editorial italic text-deep-forest text-[18px] leading-relaxed text-center">"मातृभाषा अवधी में जो मिठास और हृदय को छूने की शक्ति है, वह किसी अन्य भाषा में संभव नहीं। अवधी लोक-साहित्य का संरक्षण ही हमारी सांस्कृतिक पहचान है।"</p>
+</div>
+<h3 class="font-headline-sm text-xl text-deep-forest font-bold mt-6 mb-2">सन्दौली टाइम्स और निडर सम्पादकीय दृष्टि</h3>
+<p>हिंदी दैनिक \'सन्दौली टाइम्स\' में सह-संपादक के रूप में कार्य करते हुए रात के 1 बजे तक प्रूफ देखना, खबरों की सत्यता जाँचना और जन-हितैषी सम्पादकीय लिखना हमारी नित्य साधना रही। इस यात्रा में राष्ट्रीय व राज्य स्तर के अनेक सम्मान प्राप्त हुए, परंतु आम जनमानस का स्नेह और ग्रामीण किसानों की आँखों का संतोष ही सबसे बड़ा पुरस्कार रहा।</p>
+<div class="my-4 p-4 rounded-xl bg-[#efe7d8] border border-[#decbb4]">
+  <p class="font-bold text-deep-forest text-[16px] leading-relaxed">"कलम जब तक सच्चाई के हक में चलती रहेगी, तब तक किसी भी अंधकार की औकात नहीं कि वह रोशनी को हरा सके।"</p>
+  <span class="block text-right font-serif italic text-secondary text-sm font-semibold mt-1">— श्री प्रदीप सारंग (अवध रत्न, गंगा साहित्य रत्न)</span>
+</div>'
+        ],
     ],
     'testimonials' => [
         ['name' => 'Neha Sharma', 'role' => 'Volunteer', 'quote' => 'The platform feels professional and the programs feel human. It helped me move from interest to real contribution.'],
