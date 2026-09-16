@@ -447,11 +447,13 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
         </span>
       </div>
 
-      <!-- Vocabulary Grid: Dynamically Scanned & Generated for Article -->
-      <?php 
-      $lexiconItems = get_awadhi_lexicon_for_post($postTitle, $postContent);
+      <!-- Vocabulary Grid: Dynamically Scanned & Generated for Each Approved Article -->
+      <?php foreach ($allArticles as $lexSpreadIdx => $lexArt): 
+        $lTitle = $lexArt['title'] ?? '';
+        $lContent = $lexArt['content'] ?? ($lexArt['excerpt'] ?? '');
+        $lexiconItems = get_awadhi_lexicon_for_post($lTitle, $lContent);
       ?>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+      <div class="lexicon-deck <?= $lexSpreadIdx === $currentIndex ? 'grid' : 'hidden' ?> grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5" data-lex-spread="<?= $lexSpreadIdx ?>">
         <?php foreach ($lexiconItems as $idx => $lexItem): ?>
         <div class="p-4 bg-pure-white rounded-xl shadow-xs border border-border-warm hover:shadow-md transition-shadow">
           <span class="<?= $idx % 2 === 0 ? 'text-secondary' : 'text-deep-forest' ?> font-bold font-headline-sm text-title-md"><?= e($lexItem['word']) ?></span>
@@ -462,6 +464,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
         </div>
         <?php endforeach; ?>
       </div>
+      <?php endforeach; ?>
     </div>
   </section>
 
@@ -648,106 +651,78 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
     </div>
   </section>
 
-  <!-- 4D. Related Literary Posts -->
+  <!-- 4D. Related Literary Posts (Admin-Approved Articles Only) -->
+  <?php if (!empty($related)): ?>
   <section class="w-full bg-soft-meadow py-space-3xl border-t border-b border-border-warm">
     <div class="max-w-container-max mx-auto px-4 sm:px-8 space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
           <span class="font-label-sm text-label-sm text-secondary uppercase font-bold tracking-wider"><?= e(ps_text('साहित्य संचयन', 'Literary Collection')) ?></span>
           <h2 class="font-headline-md text-headline-sm sm:text-headline-md text-deep-forest font-bold mt-1">
-            <?= e(ps_text('संबंधित अवधी कृतियाँ व अन्य आलेख', 'Related Awadhi Works & Articles')) ?>
+            <?= e(ps_text('स्वीकृत अवधी कृतियाँ व अन्य आलेख', 'Approved Literary Works & Other Articles')) ?>
           </h2>
         </div>
         <a href="<?= e(base_url('/blog')) ?>" data-path="blog-and-thoughts" class="inline-flex items-center gap-1 text-primary font-title-md text-body-sm hover:underline font-semibold">
-          <span><?= e(ps_text('सभी आलेख देखें', 'View All Articles')) ?></span>
+          <span><?= e(ps_text('सभी स्वीकृत आलेख देखें', 'View All Approved Articles')) ?></span>
           <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
         </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Card 1: Sughari -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($related as $relIdx => $relArt): 
+          $rawImg = !empty($relArt['banner_image']) ? $relArt['banner_image'] : (!empty($relArt['featured_image']) ? $relArt['featured_image'] : ($relArt['image'] ?? ''));
+          $relImg = ps_resolve_img($rawImg, 'assets/images/slider_final_1.webp');
+          $relTitle = html_entity_decode((string)($relArt['title'] ?? ''), ENT_QUOTES, 'UTF-8');
+          $relExcerpt = html_entity_decode((string)(!empty($relArt['excerpt']) ? $relArt['excerpt'] : ps_excerpt($relArt['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
+          
+          // Find spread index for this related approved article
+          $relSpreadIdx = -1;
+          foreach ($allArticles as $sIdx => $sArt) {
+              if (($sArt['slug'] ?? '') === ($relArt['slug'] ?? '')) {
+                  $relSpreadIdx = $sIdx;
+                  break;
+              }
+          }
+        ?>
         <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
           <div>
             <div class="relative h-48 overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrKtLSe64AU488fJTZBuM65tcMgcT9hnPZL_iAs2EWbWOp3JQDyCSCxGdBw40e3KQzfN6d1CVDlPEsGuW11Dl-4zXnoHuthTcsWKAZnvSy1a1vn4ZwNYLQXSZjkahLGPolIV3eJXioN7Sdz2ziNY7egXAbvfvgCACNNSB-HUKL0wAqsgajWeTU2ZAr99tBSTxlzwGA2ueC6GiiJ09c2jjjcwCWGXU2wFLxWRe6795Pg3ox4uCQZLSt" alt="Sughari Story" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+              <img src="<?= e($relImg) ?>" alt="<?= e($relTitle) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
               <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-deep-forest/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
-                <?= e(ps_text('अवधी लोक-गद्य कथा', 'Folk Story')) ?>
+                <?= e($relArt['category_name'] ?? ps_text('अवधी आलेख', 'Awadhi Article')) ?>
               </span>
             </div>
             <div class="p-5 space-y-2">
-              <span class="font-label-sm text-label-sm text-text-muted">14 April 2026 • 8 min read</span>
+              <span class="font-label-sm text-label-sm text-text-muted">
+                <?= !empty($relArt['published_at']) ? date('d M Y', strtotime($relArt['published_at'])) : date('d M Y') ?> • <?= e($relArt['reading_time'] ?? '8 min read') ?>
+              </span>
               <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
-                <?= e(ps_text('सुघरी: मेले जाने की खुशी और गोबर की खेप', 'Sughari: Fair Day & Cowdung Duty')) ?>
+                <?= e($relTitle) ?>
               </h3>
               <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                <?= e(ps_text('गाँव की नन्ही बालिका सुघरी का मेला देखने का सहज उल्लास और ग्रामीण परिवार की आर्थिक जद्दोजहद की मर्मस्पर्शी दास्तान।', 'A touching tale of young Sughari\'s innocent excitement for the village fair despite rural poverty.')) ?>
+                <?= e($relExcerpt) ?>
               </p>
             </div>
           </div>
           <div class="p-5 pt-0">
-            <button type="button" data-jump="1" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold quick-spread-jump cursor-pointer">
-              <span><?= e(ps_text('यह कथा अभी पढ़ें (पृष्ठ ३६)', 'Read Story (Page 36)')) ?></span>
+            <?php if ($relSpreadIdx !== -1): ?>
+            <button type="button" data-jump="<?= $relSpreadIdx ?>" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold quick-spread-jump cursor-pointer">
+              <span><?= e(ps_text('यह आलेख अभी पढ़ें (पृष्ठ ' . to_hindi_num($relSpreadIdx + 1) . ')', 'Read Story (Page ' . ($relSpreadIdx + 1) . ')')) ?></span>
               <span class="material-symbols-outlined text-[16px]">auto_stories</span>
             </button>
-          </div>
-        </article>
-
-        <!-- Card 2: Sarang Kundaliyan -->
-        <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-          <div>
-            <div class="relative h-48 overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL8aKhU1T9o4laEJQkm-Vy4ETDmuC7wsFdZu7NniuUZZAvdmRhc4w_waeferG7LsBy8pSLnoDcmmJYbpxxdNvcC1E01DyqhzpymAjhPL4xQnivsS_7mcBhsPbzfnI_kbhO8E2-LbQx3A78S8uWBhIq2-RnCZtYuMJ1j3y6lF5kIF4rmiSBMgzak9LduBrj4XcaLANgA6RJejL9gjGlNPpY_XdovtTLY5uvL1k8fvLlEC225PeC8fmV" alt="Sarang Kundaliyan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-secondary/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
-                <?= e(ps_text('सारंग-कुण्डलियाँ', 'Kundaliyan')) ?>
-              </span>
-            </div>
-            <div class="p-5 space-y-2">
-              <span class="font-label-sm text-label-sm text-text-muted">02 May 2026 • 15 min read</span>
-              <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
-                <?= e(ps_text('सारंग-कुण्डलियों की रचना यात्रा', 'Sarang Kundaliyan Composition')) ?>
-              </h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                <?= e(ps_text('अवधी छंदशास्त्र की कुण्डलिया विधा में जन-आंदोलन, पर्यावरण चेतना और सामाजिक विसंगतियों पर सारंग जी की मौलिक सर्जना।', 'Sarang Ji\'s original Kundaliyan poetic verses on environmental protection and Awadhi heritage.')) ?>
-              </p>
-            </div>
-          </div>
-          <div class="p-5 pt-0">
-            <button type="button" data-jump="2" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold quick-spread-jump cursor-pointer">
-              <span><?= e(ps_text('यह कुण्डलियाँ पढ़ें (पृष्ठ ३८)', 'Read Verses (Page 38)')) ?></span>
+            <?php else: ?>
+            <a href="<?= e(base_url('/blog/' . $relArt['slug'])) ?>" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold">
+              <span><?= e(ps_text('यह आलेख पढ़ें', 'Read Story')) ?></span>
               <span class="material-symbols-outlined text-[16px]">auto_stories</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- Card 3: Paryavaran -->
-        <article class="bg-pure-white border border-border-warm rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group">
-          <div>
-            <div class="relative h-48 overflow-hidden bg-surface-container">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxhfUdnkye5LYd0dWYqemLO-3XrnY5wk_cajgF7G0aq3jUl_vLXXcqX9lHUVBtcX6FqNDUKh-OhvAPL1TtrtIx-WbyJeJFWlONFde93aKzqWWYgfhsCaYBMuB06PM4dddy5rDZFH7a0tdTM-vWFWezWdJo1aRIDiVmJNTHonikM2b2SkrWQ9tbzhKnA1kUK9k_nPcnIdu1E8CrO_u3NAaZ0RSsK9wbf6Cw0HWdN0tMReGUZidzVt9K" alt="Paryavaran" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-3 left-3 px-2.5 py-1 rounded bg-[#b45309]/90 text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
-                <?= e(ps_text('पर्यावरण एवं नदियाँ', 'Environment & Rivers')) ?>
-              </span>
-            </div>
-            <div class="p-5 space-y-2">
-              <span class="font-label-sm text-label-sm text-text-muted">28 April 2026 • 10 min read</span>
-              <h3 class="font-headline-sm text-title-md text-on-surface group-hover:text-deep-forest transition-colors font-bold">
-                <?= e(ps_text('सूखते ताल और बेजुबान परिंदों की पुकार', 'Drying Ponds & Plight of Birds')) ?>
-              </h3>
-              <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
-                <?= e(ps_text('बाराबंकी के ऐतिहासिक वेटलैंड्स, कल्याणी नदी के जल-प्रवाह और सिमटते जलीय पारितंत्र के पुनर्जीवन की जमीनी पड़ताल।', 'A ground investigation into Barabanki wetlands and Kalyani river revival.')) ?>
-              </p>
-            </div>
-          </div>
-          <div class="p-5 pt-0">
-            <a href="<?= e(base_url('/campaigns')) ?>" class="inline-flex items-center gap-1 font-title-md text-body-sm text-primary group-hover:text-deep-forest font-semibold">
-              <span><?= e(ps_text('जाँच रिपोर्ट पढ़ें', 'Read Field Report')) ?></span>
-              <span class="material-symbols-outlined text-[16px]">arrow_right_alt</span>
             </a>
+            <?php endif; ?>
           </div>
         </article>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
   <!-- 4E. Community Comments & Reflections Section -->
   <section class="max-w-container-editorial mx-auto px-4 sm:px-6 w-full py-space-3xl">
@@ -758,7 +733,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
             <?= e(ps_text('पाठक प्रतिक्रिया व संस्मरण (Comments)', 'Reader Reflections & Comments')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted">
-            <?= e(ps_text('झरिहख और अपने गाँव के बचपन की बारिश की स्मृतियाँ साझा करें', 'Share your memories of village rain and Awadhi heritage')) ?>
+            <span id="comment-story-prompt"><?= e($postTitle) ?></span> <?= e(ps_text('एवं अवधी साहित्य पर अपने विचार साझा करें', 'and your reflections on Awadhi literature')) ?>
           </p>
         </div>
         <span class="px-3 py-1 rounded-full bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-bold border border-border-warm">
@@ -898,14 +873,53 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
       if (footerTitle) footerTitle.textContent = meta.footerDesc;
       if (readingBadge) readingBadge.textContent = meta.readingTime;
 
+      // Update document title
+      if (meta.crumbTitle) {
+        document.title = meta.crumbTitle + ' | <?= e(app_config('name')) ?>';
+      }
+
+      // Update comment prompt
+      const commentStoryPrompt = document.getElementById('comment-story-prompt');
+      if (commentStoryPrompt && meta.crumbTitle) {
+        commentStoryPrompt.textContent = meta.crumbTitle;
+      }
+
+      // Update active lexicon deck
+      document.querySelectorAll('[data-lex-spread]').forEach(deck => {
+        const sIdx = parseInt(deck.getAttribute('data-lex-spread'), 10);
+        if (sIdx === currentSpreadIndex) {
+          deck.classList.remove('hidden');
+          deck.classList.add('grid');
+        } else {
+          deck.classList.remove('grid');
+          deck.classList.add('hidden');
+        }
+      });
+
       // update reading progress
       const percent = Math.round(((currentSpreadIndex + 1) / totalSpreads) * 100);
       if (progressBar) progressBar.style.width = percent + '%';
 
-      // Update URL without reloading page
-      if (meta.slug && window.history.replaceState) {
-        const newUrl = '<?= base_url('/blog/') ?>' + meta.slug;
-        window.history.replaceState({ spread: currentSpreadIndex }, meta.crumbTitle, newUrl);
+      // Update URL and social share URLs without reloading page
+      if (meta.slug) {
+        const baseBlogUrl = '<?= base_url('/blog/') ?>';
+        const newUrl = baseBlogUrl + meta.slug;
+        if (window.history.replaceState) {
+          window.history.replaceState({ spread: currentSpreadIndex }, meta.crumbTitle, newUrl);
+        }
+
+        const shareText = encodeURIComponent(meta.crumbTitle + ' - श्री प्रदीप सारंग संस्मरण\n\n' + newUrl);
+        const waBtn = document.querySelector('a[href*="whatsapp.com"]');
+        if (waBtn) waBtn.href = 'https://api.whatsapp.com/send?text=' + shareText;
+
+        const fbBtn = document.querySelector('a[href*="facebook.com/sharer"]');
+        if (fbBtn) fbBtn.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(newUrl);
+
+        const twBtn = document.querySelector('a[href*="twitter.com/intent/tweet"]');
+        if (twBtn) twBtn.href = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(meta.crumbTitle) + '&url=' + encodeURIComponent(newUrl) + '&hashtags=PradeepSarang,AwadhiLiterature';
+
+        const inBtn = document.querySelector('a[href*="linkedin.com/sharing"]');
+        if (inBtn) inBtn.href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(newUrl);
       }
     }
 
@@ -1003,9 +1017,9 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
       });
     }
 
-    // Quick jumps from TOC cards
-    const tocItems = document.querySelectorAll('.toc-item');
-    tocItems.forEach(btn => {
+    // Quick jumps from TOC cards & Related Story Cards
+    const jumpButtons = document.querySelectorAll('.toc-item, .quick-spread-jump');
+    jumpButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         const target = parseInt(btn.getAttribute('data-jump'), 10);
         if (!isNaN(target)) {

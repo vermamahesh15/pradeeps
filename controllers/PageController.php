@@ -140,25 +140,7 @@ class PageController
         }
 
         if ($slug === '/blog' || $slug === '/blog-and-thoughts') {
-            $dbBlogs = $this->blogModel->allPublished(500);
-            $demoData = require __DIR__ . '/../includes/data.php';
-            $demoBlogs = $demoData['blogs'] ?? [];
-            $articlesBySlug = [];
-            foreach ($demoBlogs as $b) {
-                $s = trim($b['slug'] ?? '');
-                if ($s !== '') $articlesBySlug[$s] = $b;
-            }
-            foreach ($dbBlogs as $b) {
-                $s = trim($b['slug'] ?? '');
-                if ($s !== '') {
-                    if (isset($articlesBySlug[$s])) {
-                        $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
-                    } else {
-                        $articlesBySlug[$s] = $b;
-                    }
-                }
-            }
-            $items = array_values($articlesBySlug);
+            $items = $this->blogModel->allPublished(500);
 
             $this->render('blog', [
                 'title' => 'Blog',
@@ -297,34 +279,10 @@ class PageController
 
     public function blogDetail(string $slug): void
     {
-        // 1. Gather all published articles from database
-        $dbBlogs = $this->blogModel->allPublished(500);
+        // 1. Gather all approved published articles from database
+        $allArticles = $this->blogModel->allPublished(500);
 
-        // 2. Gather curated articles from data.php
-        $demoData = require __DIR__ . '/../includes/data.php';
-        $demoBlogs = $demoData['blogs'] ?? [];
-
-        // 3. Merge them cleanly by slug
-        $articlesBySlug = [];
-        foreach ($demoBlogs as $b) {
-            $s = trim($b['slug'] ?? '');
-            if ($s !== '') {
-                $articlesBySlug[$s] = $b;
-            }
-        }
-        foreach ($dbBlogs as $b) {
-            $s = trim($b['slug'] ?? '');
-            if ($s !== '') {
-                if (isset($articlesBySlug[$s])) {
-                    $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
-                } else {
-                    $articlesBySlug[$s] = $b;
-                }
-            }
-        }
-        $allArticles = array_values($articlesBySlug);
-
-        // 4. Resolve current requested article
+        // 2. Resolve current requested article
         $slugClean = trim(strtolower($slug));
         $currentIndex = -1;
 
@@ -339,15 +297,8 @@ class PageController
         // Aliases match if not found
         if ($currentIndex === -1) {
             $aliasMap = [
-                'how-to-become-a-journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
-                'journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
-                'पत्रकार' => 'how-to-become-a-journalist-key-things-you-should-know',
-                'blog-detail' => 'jharihakh',
-                'sample' => 'jharihakh',
                 'sughari' => 'sughagri',
-                'kundaliyan' => 'sarang-kundaliyan',
-                'green-gang' => 'green-morning-revolution',
-                'sakore' => 'parinda-sanrakshan-sakore',
+                'jharihakh' => 'jharihakh',
             ];
             $targetSlug = $aliasMap[$slugClean] ?? '';
             if ($targetSlug !== '') {
@@ -360,9 +311,9 @@ class PageController
             }
         }
 
-        // Check if individual DB post exists
+        // Check if individual published DB post exists
         if ($currentIndex === -1) {
-            $individualPost = $this->blogModel->findBySlug($slug);
+            $individualPost = $this->blogModel->findBySlug($slug, true);
             if ($individualPost !== null) {
                 array_unshift($allArticles, $individualPost);
                 $currentIndex = 0;
@@ -395,26 +346,7 @@ class PageController
 
     public function ampBlogDetail(string $slug): void
     {
-        $dbBlogs = $this->blogModel->allPublished(500);
-        $demoData = require __DIR__ . '/../includes/data.php';
-        $demoBlogs = $demoData['blogs'] ?? [];
-
-        $articlesBySlug = [];
-        foreach ($demoBlogs as $b) {
-            $s = trim($b['slug'] ?? '');
-            if ($s !== '') $articlesBySlug[$s] = $b;
-        }
-        foreach ($dbBlogs as $b) {
-            $s = trim($b['slug'] ?? '');
-            if ($s !== '') {
-                if (isset($articlesBySlug[$s])) {
-                    $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
-                } else {
-                    $articlesBySlug[$s] = $b;
-                }
-            }
-        }
-        $allArticles = array_values($articlesBySlug);
+        $allArticles = $this->blogModel->allPublished(500);
 
         $slugClean = trim(strtolower($slug));
         $currentIndex = -1;
@@ -427,12 +359,8 @@ class PageController
 
         if ($currentIndex === -1) {
             $aliasMap = [
-                'how-to-become-a-journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
-                'journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
-                'blog-detail' => 'jharihakh',
-                'sample' => 'jharihakh',
                 'sughari' => 'sughagri',
-                'kundaliyan' => 'sarang-kundaliyan',
+                'jharihakh' => 'jharihakh',
             ];
             $targetSlug = $aliasMap[$slugClean] ?? '';
             if ($targetSlug !== '') {
@@ -442,6 +370,14 @@ class PageController
                         break;
                     }
                 }
+            }
+        }
+
+        if ($currentIndex === -1) {
+            $individualPost = $this->blogModel->findBySlug($slug, true);
+            if ($individualPost !== null) {
+                array_unshift($allArticles, $individualPost);
+                $currentIndex = 0;
             }
         }
 
