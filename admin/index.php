@@ -116,6 +116,18 @@ if (is_post()) {
         redirect('/admin/index.php?module=settings');
     }
 
+    // Delete Contact Action
+    if ($loggedIn && ($_POST['action'] ?? '') === 'delete_contact') {
+        verify_csrf();
+        $id = (int)($_POST['id'] ?? 0);
+        if ($id > 0 && $content->deleteContact($id)) {
+            flash('admin_success', 'Contact inquiry deleted successfully.');
+        } else {
+            flash('admin_error', 'Failed to delete contact inquiry.');
+        }
+        redirect('/admin/index.php?module=contacts');
+    }
+
     // Video Management Actions (Admin & Super Admin)
     if ($loggedIn && (($_POST['action'] ?? '') === 'save_video' || ($_POST['action'] ?? '') === 'delete_video')) {
         verify_csrf();

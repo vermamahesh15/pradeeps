@@ -728,36 +728,74 @@ class ContentModel extends BaseModel
 
     public function metrics(): array
     {
+        $blogsCount = 0;
         $timelineCount = 0;
+        $volunteersCount = 0;
+        $contactsCount = 0;
+        $campaignsCount = 0;
+        $eventsCount = 0;
         $galleryCount = 0;
         $pagesCount = 0;
         $newspaperCount = 0;
         $donationCount = 0;
         $aboutPhotosCount = 0;
+
         if ($this->db) {
             try {
-            $timelineCount = (int)$this->db->query('SELECT COUNT(*) FROM timeline')->fetchColumn();
-            $galleryCount = (int)$this->db->query('SELECT COUNT(*) FROM gallery')->fetchColumn();
-            $donationCount = (int)$this->db->query('SELECT COUNT(*) FROM donations')->fetchColumn();
-            $newspaperCount = (int)$this->db->query('SELECT COUNT(*) FROM newspaper_cuttings')->fetchColumn();
-            $pagesCount = (int)$this->db->query('SELECT COUNT(*) FROM pages')->fetchColumn();
-            $aboutPhotosCount = (int)$this->db->query('SELECT COUNT(*) FROM about_personal_photos')->fetchColumn();
+                $blogsCount = (int)$this->db->query('SELECT COUNT(*) FROM blogs')->fetchColumn();
             } catch (Throwable $e) {}
+            try {
+                $timelineCount = (int)$this->db->query('SELECT COUNT(*) FROM timeline')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $volunteersCount = (int)$this->db->query('SELECT COUNT(*) FROM volunteers')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $contactsCount = (int)$this->db->query('SELECT COUNT(*) FROM contacts')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $campaignsCount = (int)$this->db->query('SELECT COUNT(*) FROM campaigns')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $eventsCount = (int)$this->db->query('SELECT COUNT(*) FROM events')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $galleryCount = (int)$this->db->query('SELECT COUNT(*) FROM gallery')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $pagesCount = (int)$this->db->query('SELECT COUNT(*) FROM pages')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $newspaperCount = (int)$this->db->query('SELECT COUNT(*) FROM newspaper_cuttings')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $donationCount = (int)$this->db->query('SELECT COUNT(*) FROM donations')->fetchColumn();
+            } catch (Throwable $e) {}
+            try {
+                $aboutPhotosCount = (int)$this->db->query('SELECT COUNT(*) FROM about_personal_photos')->fetchColumn();
+            } catch (Throwable $e) {}
+        } else {
+            $blogsCount = count($this->allFromDemo('blogs'));
+            $eventsCount = count($this->allFromDemo('events'));
+            $campaignsCount = count($this->allFromDemo('campaigns'));
         }
 
+        $vStats = $this->getVisitorStats();
+        $visitorsCount = $vStats['total'] ?? 0;
+
         return [
-            'blogs' => count($this->allFromDemo('blogs')),
+            'blogs' => $blogsCount,
             'timeline' => $timelineCount,
-            'volunteers' => 128,
-            'contacts' => 42,
-            'campaigns' => count($this->all('campaigns')),
-            'events' => count($this->allFromDemo('events')),
+            'volunteers' => $volunteersCount,
+            'contacts' => $contactsCount,
+            'campaigns' => $campaignsCount,
+            'events' => $eventsCount,
             'gallery' => $galleryCount,
             'pages' => $pagesCount,
             'newspaper' => $newspaperCount,
             'donations' => $donationCount,
             'about_photos' => $aboutPhotosCount,
-            'visitors' => 8421,
+            'visitors' => $visitorsCount,
         ];
     }
 
@@ -894,14 +932,75 @@ class ContentModel extends BaseModel
 
     public function saveContact(array $data): bool
     {
-        $_SESSION['_demo_contacts'][] = $data;
-        return true;
+        if (!$this->db) {
+            $_SESSION['_demo_contacts'][] = $data;
+            return true;
+        }
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS contacts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                name VARCHAR(150) NOT NULL,
+                email VARCHAR(190) NOT NULL,
+                phone VARCHAR(50) NULL,
+                subject VARCHAR(190) NULL,
+                message TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+
+            $stmt = $this->db->prepare("INSERT INTO contacts (name, email, phone, subject, message) VALUES (:name, :email, :phone, :subject, :message)");
+            return $stmt->execute([
+                ':name' => $data['name'] ?? '',
+                ':email' => $data['email'] ?? '',
+                ':phone' => $data['phone'] ?? null,
+                ':subject' => $data['subject'] ?? null,
+                ':message' => $data['message'] ?? '',
+            ]);
+        } catch (Throwable $e) {
+            return false;
+        }
+    }
+
+    public function allContacts(): array
+    {
+        if (!$this->db) return $_SESSION['_demo_contacts'] ?? [];
+        try {
+            return $this->db->query("SELECT * FROM contacts ORDER BY created_at DESC")->fetchAll();
+        } catch (Throwable $e) {
+            return [];
+        }
+    }
+
+    public function deleteContact(int $id): bool
+    {
+        if (!$this->db) return false;
+        try {
+            $stmt = $this->db->prepare("DELETE FROM contacts WHERE id = :id");
+            return $stmt->execute([':id' => $id]);
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 
     public function saveSubscriber(array $data): bool
     {
-        $_SESSION['_demo_subscribers'][] = $data;
-        return true;
+        if (!$this->db) {
+            $_SESSION['_demo_subscribers'][] = $data;
+            return true;
+        }
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS subscribers (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(190) NOT NULL UNIQUE,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+
+            $stmt = $this->db->prepare("INSERT IGNORE INTO subscribers (email) VALUES (:email)");
+            return $stmt->execute([
+                ':email' => $data['email'] ?? '',
+            ]);
+        } catch (Throwable $e) {
+            return false;
+        }
     }
 
     public function ensureSettingsTable(): void
