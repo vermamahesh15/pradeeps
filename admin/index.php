@@ -1393,6 +1393,7 @@ $metrics = $content->metrics();
                     <a href="?module=about_photos" class="<?= $module === 'about_photos' ? 'active' : '' ?>"><i class="fa-solid fa-camera-retro text-warning me-1"></i> About: Personal Photos</a>
                     <a href="?module=videos" class="<?= $module === 'videos' ? 'active' : '' ?>"><i class="fa-solid fa-play-circle text-danger me-1"></i> YouTube Videos</a>
                     <a href="?module=volunteers" class="<?= $module === 'volunteers' ? 'active' : '' ?>">Volunteers</a>
+                    <a href="?module=contacts" class="<?= $module === 'contacts' ? 'active' : '' ?>"><i class="fa-solid fa-envelope me-1"></i> Contact Inquiries</a>
                     <a href="?module=authors" class="<?= $module === 'authors' ? 'active' : '' ?>"><i class="fa-solid fa-users-gear me-1"></i> Manage Users / Roles</a>
                     <?php if (is_role('super_admin')): ?>
                         <a href="?module=role_access" class="<?= $module === 'role_access' ? 'active' : '' ?>"><i class="fa-solid fa-user-shield me-1"></i> Role Access Control</a>
@@ -1572,10 +1573,10 @@ $metrics = $content->metrics();
                     <div class="row g-4 mb-4">
                         <?php foreach ($metrics as $label => $value): ?>
                             <div class="col-md-4 col-xl-2">
-                                <a href="?module=<?= e($label) ?>" class="text-decoration-none">
+                                <a href="<?= $label === 'visitors' ? '#visitor-analytics' : '?module=' . e($label) ?>" class="text-decoration-none">
                                     <div class="metric-card">
-                                    <strong><?= e((string) $value) ?></strong>
-                                    <span><?= e(ucfirst($label)) ?></span>
+                                    <strong><?= is_numeric($value) ? number_format((int)$value) : e((string) $value) ?></strong>
+                                    <span><?= e(ucwords(str_replace('_', ' ', $label))) ?></span>
                                     </div>
                                 </a>
                             </div>
@@ -1597,8 +1598,8 @@ $metrics = $content->metrics();
                     </div>
 
                     <!-- Super Admin Visitor Analytics & Archiving Card -->
-                    <?php if (is_role('super_admin')): ?>
-                    <div class="admin-card mt-4 border-start border-4 border-success">
+                    <?php if (is_role('super_admin', 'admin')): ?>
+                    <div class="admin-card mt-4 border-start border-4 border-success" id="visitor-analytics">
                         <?php $vStats = $content->getVisitorStats(); ?>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h3 class="text-success mb-0"><i class="fa-solid fa-chart-pie me-2"></i>Visitor Analytics & Monthly Database Archival</h3>
@@ -3766,10 +3767,77 @@ $metrics = $content->metrics();
                 </div>
             <?php elseif ($module === 'volunteers'): ?>
                 <?php include __DIR__ . '/volunteers.php'; ?> 
-                <?php elseif ($module === 'contacts'): ?>
+            <?php elseif ($module === 'contacts'): ?>
+                <?php
+                $contactsList = $content->allContacts();
+                $success = flash('admin_success');
+                ?>
                 <div class="admin-card">
-                    <h2 class="mb-0">Contacts</h2>
-                    <p class="mt-3">Contact messages and inquiries from the website will appear here.</p>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="mb-0">Contact Inquiries</h2>
+                            <p class="text-muted small mb-0 mt-1">Direct inquiries and messages received from website visitors.</p>
+                        </div>
+                        <span class="badge bg-primary fs-6 px-3 py-2"><?= count($contactsList) ?> Total Messages</span>
+                    </div>
+
+                    <?php if ($success): ?><div class="alert alert-success"><?= e($success) ?></div><?php endif; ?>
+                    <?php if ($error): ?><div class="alert alert-danger"><?= e($error) ?></div><?php endif; ?>
+
+                    <?php if (empty($contactsList)): ?>
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa-regular fa-envelope-open fa-3x mb-3 text-secondary"></i>
+                            <p class="mb-0 fs-5">No contact inquiries found yet.</p>
+                            <small>New submissions via the website contact form will appear here automatically.</small>
+                        </div>
+                    <?php else: ?>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Sender</th>
+                                        <th>Contact Details</th>
+                                        <th>Subject</th>
+                                        <th>Message</th>
+                                        <th>Date</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($contactsList as $idx => $item): ?>
+                                        <tr>
+                                            <td><?= $idx + 1 ?></td>
+                                            <td class="fw-bold"><?= e($item['name'] ?? 'Anonymous') ?></td>
+                                            <td>
+                                                <div><i class="fa-regular fa-envelope me-1 text-muted"></i><a href="mailto:<?= e($item['email'] ?? '') ?>"><?= e($item['email'] ?? '') ?></a></div>
+                                                <?php if (!empty($item['phone'])): ?>
+                                                    <small class="text-muted"><i class="fa-solid fa-phone me-1"></i><a href="tel:<?= e($item['phone']) ?>"><?= e($item['phone']) ?></a></small>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td><span class="badge bg-light text-dark border"><?= e($item['subject'] ?? 'General') ?></span></td>
+                                            <td style="max-width: 320px;">
+                                                <div title="<?= e($item['message'] ?? '') ?>" style="white-space: pre-wrap; max-height: 80px; overflow-y: auto; font-size: 13px;">
+                                                    <?= nl2br(e($item['message'] ?? '')) ?>
+                                                </div>
+                                            </td>
+                                            <td><small class="text-muted"><?= !empty($item['created_at']) ? date('d M Y, h:i A', strtotime($item['created_at'])) : 'N/A' ?></small></td>
+                                            <td class="text-end">
+                                                <form method="post" class="d-inline" onsubmit="return confirm('Delete this contact inquiry?');">
+                                                    <?= csrf_field() ?>
+                                                    <input type="hidden" name="action" value="delete_contact">
+                                                    <input type="hidden" name="id" value="<?= (int)$item['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    <?php endif; ?>
                 </div>
             <?php elseif ($module === 'donations'): ?>
                 <?php
