@@ -155,9 +155,10 @@ $categories = $categories ?? [];
   <!-- Curated Articles Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="articles-grid">
     <?php if (!empty($items)): foreach ($items as $idx => $post): 
-      $img = ps_resolve_img($post['banner_image'] ?: ($post['featured_image'] ?? ''), 'assets/images/slider_final_1.webp');
-      $cleanTitle = html_entity_decode((string)$post['title'], ENT_QUOTES, 'UTF-8');
-      $cleanExcerpt = html_entity_decode((string)($post['excerpt'] ?: ps_excerpt($post['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
+      $rawImg = !empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['featured_image']) ? $post['featured_image'] : ($post['image'] ?? ''));
+      $img = ps_resolve_img($rawImg, 'assets/images/slider_final_1.webp');
+      $cleanTitle = html_entity_decode((string)($post['title'] ?? ''), ENT_QUOTES, 'UTF-8');
+      $cleanExcerpt = html_entity_decode((string)(!empty($post['excerpt']) ? $post['excerpt'] : ps_excerpt($post['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
     ?>
       <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="<?= e((string)($post['category_id'] ?? 'all')) ?>">
         <!-- Card Cover Image Container -->

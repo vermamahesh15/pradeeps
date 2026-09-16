@@ -140,9 +140,29 @@ class PageController
         }
 
         if ($slug === '/blog' || $slug === '/blog-and-thoughts') {
+            $dbBlogs = $this->blogModel->allPublished(500);
+            $demoData = require __DIR__ . '/../includes/data.php';
+            $demoBlogs = $demoData['blogs'] ?? [];
+            $articlesBySlug = [];
+            foreach ($demoBlogs as $b) {
+                $s = trim($b['slug'] ?? '');
+                if ($s !== '') $articlesBySlug[$s] = $b;
+            }
+            foreach ($dbBlogs as $b) {
+                $s = trim($b['slug'] ?? '');
+                if ($s !== '') {
+                    if (isset($articlesBySlug[$s])) {
+                        $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
+                    } else {
+                        $articlesBySlug[$s] = $b;
+                    }
+                }
+            }
+            $items = array_values($articlesBySlug);
+
             $this->render('blog', [
                 'title' => 'Blog',
-                'items' => $this->blogModel->allPublished(12, 0),
+                'items' => $items,
                 'categories' => $this->categoryModel->all(),
             ]);
             return;
@@ -277,88 +297,168 @@ class PageController
 
     public function blogDetail(string $slug): void
     {
-        $post = $this->blogModel->findBySlug($slug);
-        if ($post === null) {
-            if ($slug === 'how-to-become-a-journalist-key-things-you-should-know' || $slug === 'how-to-become-a-journalist' || $slug === 'journalist') {
-                $post = [
-                    'id' => 99,
-                    'title' => 'पत्रकार कैसे बनें: मुख्य बातें जो आपको जाननी चाहिए',
-                    'slug' => 'how-to-become-a-journalist-key-things-you-should-know',
-                    'category_name' => 'पत्रकारिता एवं मीडिया',
-                    'author' => 'श्री प्रदीप सारंग',
-                    'author_name' => 'श्री प्रदीप सारंग',
-                    'published_at' => '2026-05-20',
-                    'excerpt' => 'पत्रकारिता लोकतंत्र का चौथा स्तंभ है। यदि आप एक सफल, निष्पक्ष और प्रभावकारी पत्रकार बनना चाहते हैं, तो इन महत्वपूर्ण बातों, शैक्षणिक योग्यता और नैतिक सिद्धांतों को जानना आपके लिए अत्यंत आवश्यक है।',
-                    'featured_image' => 'assets/images/slider_final_1.webp',
-                    'content' => '',
-                ];
-            } else if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
-                $post = [
-                    'title' => 'झरिहख',
-                    'slug' => 'jharihakh',
-                    'category_name' => 'अवधी संस्मरण',
-                    'author_name' => 'श्री प्रदीप सारंग',
-                    'published_at' => '2026-05-19',
-                    'excerpt' => 'वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण',
-                    'content' => '',
-                ];
-            } else {
-                $this->render('404');
-                return;
+        // 1. Gather all published articles from database
+        $dbBlogs = $this->blogModel->allPublished(500);
+
+        // 2. Gather curated articles from data.php
+        $demoData = require __DIR__ . '/../includes/data.php';
+        $demoBlogs = $demoData['blogs'] ?? [];
+
+        // 3. Merge them cleanly by slug
+        $articlesBySlug = [];
+        foreach ($demoBlogs as $b) {
+            $s = trim($b['slug'] ?? '');
+            if ($s !== '') {
+                $articlesBySlug[$s] = $b;
+            }
+        }
+        foreach ($dbBlogs as $b) {
+            $s = trim($b['slug'] ?? '');
+            if ($s !== '') {
+                if (isset($articlesBySlug[$s])) {
+                    $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
+                } else {
+                    $articlesBySlug[$s] = $b;
+                }
+            }
+        }
+        $allArticles = array_values($articlesBySlug);
+
+        // 4. Resolve current requested article
+        $slugClean = trim(strtolower($slug));
+        $currentIndex = -1;
+
+        // Direct slug match
+        foreach ($allArticles as $idx => $art) {
+            if (strtolower(trim($art['slug'] ?? '')) === $slugClean) {
+                $currentIndex = $idx;
+                break;
             }
         }
 
-        $related = $this->blogModel->allPublished(3, 0, '', null);
-        $related = array_filter($related, fn ($blog) => ($blog['slug'] ?? '') !== $slug);
+        // Aliases match if not found
+        if ($currentIndex === -1) {
+            $aliasMap = [
+                'how-to-become-a-journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
+                'journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
+                'पत्रकार' => 'how-to-become-a-journalist-key-things-you-should-know',
+                'blog-detail' => 'jharihakh',
+                'sample' => 'jharihakh',
+                'sughari' => 'sughagri',
+                'kundaliyan' => 'sarang-kundaliyan',
+                'green-gang' => 'green-morning-revolution',
+                'sakore' => 'parinda-sanrakshan-sakore',
+            ];
+            $targetSlug = $aliasMap[$slugClean] ?? '';
+            if ($targetSlug !== '') {
+                foreach ($allArticles as $idx => $art) {
+                    if (strtolower(trim($art['slug'] ?? '')) === $targetSlug) {
+                        $currentIndex = $idx;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Check if individual DB post exists
+        if ($currentIndex === -1) {
+            $individualPost = $this->blogModel->findBySlug($slug);
+            if ($individualPost !== null) {
+                array_unshift($allArticles, $individualPost);
+                $currentIndex = 0;
+            }
+        }
+
+        if ($currentIndex === -1) {
+            $this->render('404');
+            return;
+        }
+
+        $post = $allArticles[$currentIndex];
+        $totalArticles = count($allArticles);
+        $prevArticle = $currentIndex > 0 ? $allArticles[$currentIndex - 1] : null;
+        $nextArticle = $currentIndex < $totalArticles - 1 ? $allArticles[$currentIndex + 1] : null;
+
+        $related = array_values(array_filter($allArticles, fn ($blog) => ($blog['slug'] ?? '') !== ($post['slug'] ?? '')));
 
         $this->render('blog-detail', [
             'title' => $post['title'],
             'post' => $post,
-            'related' => array_slice(array_values($related), 0, 3),
+            'allArticles' => $allArticles,
+            'currentIndex' => $currentIndex,
+            'totalArticles' => $totalArticles,
+            'prevArticle' => $prevArticle,
+            'nextArticle' => $nextArticle,
+            'related' => array_slice($related, 0, 3),
         ]);
     }
 
     public function ampBlogDetail(string $slug): void
     {
-        $post = $this->blogModel->findBySlug($slug);
-        if ($post === null) {
-            if ($slug === 'how-to-become-a-journalist-key-things-you-should-know' || $slug === 'how-to-become-a-journalist' || $slug === 'journalist') {
-                $post = [
-                    'id' => 99,
-                    'title' => 'पत्रकार कैसे बनें: मुख्य बातें जो आपको जाननी चाहिए',
-                    'slug' => 'how-to-become-a-journalist-key-things-you-should-know',
-                    'category_name' => 'पत्रकारिता एवं मीडिया',
-                    'author' => 'श्री प्रदीप सारंग',
-                    'author_name' => 'श्री प्रदीप सारंग',
-                    'published_at' => '2026-05-20',
-                    'excerpt' => 'पत्रकारिता लोकतंत्र का चौथा स्तंभ है। यदि आप एक सफल, निष्पक्ष और प्रभावकारी पत्रकार बनना चाहते हैं, तो इन महत्वपूर्ण बातों, शैक्षणिक योग्यता और नैतिक सिद्धांतों को जानना आपके लिए अत्यंत आवश्यक है।',
-                    'featured_image' => 'assets/images/slider_final_1.webp',
-                    'content' => '',
-                ];
-            } else if ($slug === 'jharihakh' || $slug === 'blog-detail' || $slug === 'sample') {
-                $post = [
-                    'title' => 'झरिहख',
-                    'slug' => 'jharihakh',
-                    'category_name' => 'अवधी संस्मरण',
-                    'author_name' => 'श्री प्रदीप सारंग',
-                    'published_at' => '2026-05-19',
-                    'excerpt' => 'वर्षा, बचपन और गाँव की चौपाल के सजीव संस्मरण',
-                    'content' => '',
-                ];
-            } else {
-                $this->renderAmp('amp-page', ['title' => 'Article Not Found', 'canonicalUrl' => base_url('/blog/' . $slug)]);
-                return;
+        $dbBlogs = $this->blogModel->allPublished(500);
+        $demoData = require __DIR__ . '/../includes/data.php';
+        $demoBlogs = $demoData['blogs'] ?? [];
+
+        $articlesBySlug = [];
+        foreach ($demoBlogs as $b) {
+            $s = trim($b['slug'] ?? '');
+            if ($s !== '') $articlesBySlug[$s] = $b;
+        }
+        foreach ($dbBlogs as $b) {
+            $s = trim($b['slug'] ?? '');
+            if ($s !== '') {
+                if (isset($articlesBySlug[$s])) {
+                    $articlesBySlug[$s] = array_merge($articlesBySlug[$s], array_filter($b, fn($v) => $v !== null && $v !== ''));
+                } else {
+                    $articlesBySlug[$s] = $b;
+                }
+            }
+        }
+        $allArticles = array_values($articlesBySlug);
+
+        $slugClean = trim(strtolower($slug));
+        $currentIndex = -1;
+        foreach ($allArticles as $idx => $art) {
+            if (strtolower(trim($art['slug'] ?? '')) === $slugClean) {
+                $currentIndex = $idx;
+                break;
             }
         }
 
-        $related = $this->blogModel->allPublished(3, 0, '', null);
-        $related = array_filter($related, fn ($blog) => ($blog['slug'] ?? '') !== $slug);
+        if ($currentIndex === -1) {
+            $aliasMap = [
+                'how-to-become-a-journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
+                'journalist' => 'how-to-become-a-journalist-key-things-you-should-know',
+                'blog-detail' => 'jharihakh',
+                'sample' => 'jharihakh',
+                'sughari' => 'sughagri',
+                'kundaliyan' => 'sarang-kundaliyan',
+            ];
+            $targetSlug = $aliasMap[$slugClean] ?? '';
+            if ($targetSlug !== '') {
+                foreach ($allArticles as $idx => $art) {
+                    if (strtolower(trim($art['slug'] ?? '')) === $targetSlug) {
+                        $currentIndex = $idx;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ($currentIndex === -1) {
+            $this->renderAmp('amp-page', ['title' => 'Article Not Found', 'canonicalUrl' => base_url('/blog/' . $slug)]);
+            return;
+        }
+
+        $post = $allArticles[$currentIndex];
+        $totalArticles = count($allArticles);
+        $related = array_values(array_filter($allArticles, fn ($blog) => ($blog['slug'] ?? '') !== ($post['slug'] ?? '')));
 
         $this->renderAmp('amp-blog-detail', [
             'title' => $post['title'],
             'post' => $post,
             'canonicalUrl' => base_url('/blog/' . $post['slug']),
-            'related' => array_slice(array_values($related), 0, 3),
+            'related' => array_slice($related, 0, 3),
         ]);
     }
 

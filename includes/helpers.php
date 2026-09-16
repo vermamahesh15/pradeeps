@@ -563,12 +563,14 @@ if (!function_exists('get_awadhi_master_dictionary')) {
 }
 
 if (!function_exists('get_awadhi_lexicon_for_post')) {
-    function get_awadhi_lexicon_for_post(string $title, string $content, array $customLexicon = []): array
+    function get_awadhi_lexicon_for_post(?string $title = '', ?string $content = '', array $customLexicon = []): array
     {
         if (!empty($customLexicon)) {
             return array_slice($customLexicon, 0, 6);
         }
 
+        $title = (string)($title ?? '');
+        $content = (string)($content ?? '');
         $master = get_awadhi_master_dictionary();
         $textToScan = mb_strtolower($title . ' ' . strip_tags($content));
 
@@ -732,7 +734,16 @@ if (!function_exists('clean_plain_text')) {
     }
 }
 
-
-
-
+if (!function_exists('to_hindi_num')) {
+    /**
+     * Converts any integer or numeric string to Hindi Devanagari numerals.
+     */
+    function to_hindi_num($n): string
+    {
+        return strtr((string)$n, [
+            '0' => '०', '1' => '१', '2' => '२', '3' => '३', '4' => '४',
+            '5' => '५', '6' => '६', '7' => '७', '8' => '८', '9' => '९',
+        ]);
+    }
+}
 
