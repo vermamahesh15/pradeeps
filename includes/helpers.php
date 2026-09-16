@@ -707,6 +707,31 @@ if (!function_exists('transliterate_devanagari')) {
     }
 }
 
+if (!function_exists('clean_plain_text')) {
+    /**
+     * Completely strips HTML tags, script/style content, decodes entities,
+     * and collapses whitespaces into a clean, human-readable plain text string.
+     */
+    function clean_plain_text(?string $text): string
+    {
+        if ($text === null || $text === '') {
+            return '';
+        }
+        // Remove style and script blocks completely
+        $clean = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $text);
+        $clean = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', '', $clean);
+        // Strip tags
+        $clean = strip_tags($clean);
+        // Decode entities
+        $clean = html_entity_decode($clean, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        // Double pass in case encoded tags were revealed
+        $clean = strip_tags($clean);
+        // Collapse multiple spaces and newlines
+        $clean = preg_replace('/\s+/', ' ', $clean);
+        return trim($clean);
+    }
+}
+
 
 
 

@@ -386,11 +386,13 @@ class Blog extends BaseModel
             $blogData['seo_title'] = $rawTitle . ' | ' . app_config('name');
         }
 
-        // 2. Auto Meta Description
+        // 2. Auto Meta Description (Always clean of all HTML tags and entities)
         if (empty($blogData['meta_description'])) {
             $sourceText = !empty($rawExcerpt) ? $rawExcerpt : $rawContent;
-            $cleanDesc = trim(preg_replace('/\s+/', ' ', html_entity_decode($sourceText, ENT_QUOTES, 'UTF-8')));
+            $cleanDesc = clean_plain_text($sourceText);
             $blogData['meta_description'] = mb_strlen($cleanDesc) > 160 ? mb_substr($cleanDesc, 0, 157) . '...' : $cleanDesc;
+        } else {
+            $blogData['meta_description'] = clean_plain_text((string)$blogData['meta_description']);
         }
 
         // 3. Auto Meta Keywords

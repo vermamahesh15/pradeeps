@@ -196,13 +196,13 @@ if (is_post()) {
         $blogData = [
             'title' => trim($_POST['title'] ?? ''),
             'category_id' => $catId,
-            'excerpt' => trim($_POST['excerpt'] ?? ''),
+            'excerpt' => clean_plain_text($_POST['excerpt'] ?? ''),
             'en_title' => trim($_POST['en_title'] ?? ''),
             'content' => $_POST['content'] ?? '',
             'author' => trim($_POST['author'] ?? $_SESSION['user_name']),
-            'seo_title' => trim($_POST['seo_title'] ?? ''),
-            'meta_description' => trim($_POST['meta_description'] ?? ''),
-            'meta_keywords' => trim($_POST['meta_keywords'] ?? ''),
+            'seo_title' => clean_plain_text($_POST['seo_title'] ?? ''),
+            'meta_description' => clean_plain_text($_POST['meta_description'] ?? ''),
+            'meta_keywords' => clean_plain_text($_POST['meta_keywords'] ?? ''),
             'canonical_url' => trim($_POST['canonical_url'] ?? ''),
         ];
 
@@ -2033,7 +2033,7 @@ $metrics = $content->metrics();
                                                 <?= e($editBlog['canonical_url'] ?? base_url('/blog/' . ($editBlog['slug'] ?? 'post-slug'))) ?>
                                             </div>
                                             <div class="text-muted small" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;" id="pvMetaDesc">
-                                                <?= e($editBlog['meta_description'] ?? ($editBlog['excerpt'] ?? 'Brief search engine snippet preview will appear here as you write your post content.')) ?>
+                                                <?= e(clean_plain_text($editBlog['meta_description'] ?? ($editBlog['excerpt'] ?? 'Brief search engine snippet preview will appear here as you write your post content.'))) ?>
                                             </div>
                                         </div>
 
@@ -2381,6 +2381,27 @@ $metrics = $content->metrics();
                 <?php endif; ?>
                 
                 <script>
+                /**
+                 * Thoroughly strips HTML tags, script/style blocks, and decodes HTML entities
+                 * to extract pure human-readable plain text for SEO titles, descriptions, and excerpts.
+                 */
+                function stripHtmlToCleanText(html) {
+                    if (!html) return '';
+                    try {
+                        const tmp = document.createElement('div');
+                        tmp.innerHTML = html;
+                        // Remove script and style elements
+                        const scripts = tmp.querySelectorAll('script, style');
+                        scripts.forEach(el => el.remove());
+                        let text = tmp.textContent || tmp.innerText || '';
+                        // Additional regex cleanup for any nested/malformed HTML tags
+                        text = text.replace(/<[^>]*>/g, ' ');
+                        return text.replace(/\s+/g, ' ').trim();
+                    } catch (e) {
+                        return html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+                    }
+                }
+
                 function autoGenerateSEOMetaFields() {
                     const form = document.querySelector('#createBlogForm');
                     if (!form) return;
@@ -2396,14 +2417,21 @@ $metrics = $content->metrics();
                     const metaKwElem = form.querySelector('input[name="meta_keywords"]');
                     const metaDescElem = form.querySelector('textarea[name="meta_description"]');
 
-                    const titleVal = titleElem ? titleElem.value.trim() : '';
-                    const excerptVal = excerptElem ? excerptElem.value.trim() : '';
-                    const contentVal = contentElem ? contentElem.value.replace(/<[^>]*>?/gm, '').trim() : '';
+                    const titleVal = titleElem ? stripHtmlToCleanText(titleElem.value) : '';
+                    const excerptVal = excerptElem ? stripHtmlToCleanText(excerptElem.value) : '';
+                    
+                    let contentVal = '';
+                    if (typeof tinymce !== 'undefined' && tinymce.get('blogContentEditor')) {
+                        contentVal = stripHtmlToCleanText(tinymce.get('blogContentEditor').getContent());
+                    } else if (contentElem) {
+                        contentVal = stripHtmlToCleanText(contentElem.value);
+                    }
+
                     const catText = categoryElem && categoryElem.selectedIndex >= 0 ? categoryElem.options[categoryElem.selectedIndex].text : '';
                     const slugVal = slugElem ? slugElem.value.trim() : '';
 
                     if (titleVal) {
-                        if (!seoTitleElem.value || seoTitleElem.dataset.auto === 'true') {
+                        if (!seoTitleElem.value || seoTitleElem.dataset.auto === 'true' || /<[^>]+>/.test(seoTitleElem.value)) {
                             seoTitleElem.value = titleVal + ' | <?= e(app_config("name")) ?>';
                             seoTitleElem.dataset.auto = 'true';
                         }
@@ -2424,10 +2452,15 @@ $metrics = $content->metrics();
                     }
 
                     const descSource = excerptVal || contentVal;
-                    if (descSource && (!metaDescElem.value || metaDescElem.dataset.auto === 'true')) {
+                    if (descSource && (!metaDescElem.value || metaDescElem.dataset.auto === 'true' || /<[^>]+>/.test(metaDescElem.value))) {
                         const clean = descSource.replace(/\s+/g, ' ').trim();
                         metaDescElem.value = clean.length > 160 ? clean.substring(0, 157) + '...' : clean;
                         metaDescElem.dataset.auto = 'true';
+                    }
+
+                    // Also sanitize excerpt field if it had pasted HTML
+                    if (excerptElem && /<[^>]+>/.test(excerptElem.value)) {
+                        excerptElem.value = excerptVal;
                     }
 
                     updateLiveSEOPreview();
@@ -2437,12 +2470,12 @@ $metrics = $content->metrics();
                     const form = document.querySelector('#createBlogForm');
                     if (!form) return;
                     
-                    const titleVal = form.querySelector('input[name="title"]')?.value.trim() || 'Article Title';
-                    const seoTitleVal = form.querySelector('input[name="seo_title"]')?.value.trim();
+                    const titleVal = stripHtmlToCleanText(form.querySelector('input[name="title"]')?.value || '') || 'Article Title';
+                    const seoTitleVal = stripHtmlToCleanText(form.querySelector('input[name="seo_title"]')?.value || '');
                     const slugVal = form.querySelector('input[name="slug"]')?.value.trim();
                     const canonicalVal = form.querySelector('input[name="canonical_url"]')?.value.trim();
-                    const excerptVal = form.querySelector('textarea[name="excerpt"]')?.value.trim();
-                    const metaDescVal = form.querySelector('textarea[name="meta_description"]')?.value.trim();
+                    const excerptVal = stripHtmlToCleanText(form.querySelector('textarea[name="excerpt"]')?.value || '');
+                    const metaDescVal = stripHtmlToCleanText(form.querySelector('textarea[name="meta_description"]')?.value || '');
 
                     const pvTitle = document.getElementById('pvSeoTitle');
                     const pvUrl = document.getElementById('pvCanonical');
@@ -2584,6 +2617,45 @@ $metrics = $content->metrics();
                             form.submit();
                         }
                     });
+                // Auto-clean any HTML tags pasted into Excerpt or Meta Description
+                document.addEventListener('DOMContentLoaded', function() {
+                    const form = document.querySelector('#createBlogForm');
+                    if (!form) return;
+
+                    const excerptElem = form.querySelector('textarea[name="excerpt"]');
+                    const metaDescElem = form.querySelector('textarea[name="meta_description"]');
+
+                    if (excerptElem) {
+                        ['blur', 'change'].forEach(evt => {
+                            excerptElem.addEventListener(evt, function() {
+                                if (/<[a-z][\s\S]*>/i.test(this.value)) {
+                                    this.value = stripHtmlToCleanText(this.value);
+                                }
+                                updateLiveSEOPreview();
+                            });
+                        });
+                    }
+
+                    if (metaDescElem) {
+                        ['blur', 'change'].forEach(evt => {
+                            metaDescElem.addEventListener(evt, function() {
+                                if (/<[a-z][\s\S]*>/i.test(this.value)) {
+                                    this.value = stripHtmlToCleanText(this.value);
+                                }
+                                updateLiveSEOPreview();
+                            });
+                        });
+                    }
+
+                    // Sanitize immediately on load in case pre-filled values have raw HTML tags
+                    if (excerptElem && /<[a-z][\s\S]*>/i.test(excerptElem.value)) {
+                        excerptElem.value = stripHtmlToCleanText(excerptElem.value);
+                    }
+                    if (metaDescElem && /<[a-z][\s\S]*>/i.test(metaDescElem.value)) {
+                        metaDescElem.value = stripHtmlToCleanText(metaDescElem.value);
+                    }
+                    updateLiveSEOPreview();
+                });
                 }
                 </script>
             <?php elseif ($module === 'categories'): ?>
