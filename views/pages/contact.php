@@ -49,7 +49,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
           </p>
           <div class="flex items-center justify-between pt-2 border-t border-border-warm font-label-md text-label-md">
             <span class="text-deep-forest font-semibold"><?= e(ps_text('— प्रदीप सारंग', '— Pradeep Sarang')) ?></span>
-            <span class="text-text-muted text-label-sm"><?= e(ps_text('कमरावां (सतरिख), बाराबंकी', 'Kamrawan (Satrikh), Barabanki')) ?></span>
+            <span class="text-text-muted text-label-sm"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
         <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Kamrawan Center" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
         <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
           <span class="font-label-sm text-label-sm uppercase tracking-wider text-fresh-sprout font-bold"><?= e(ps_text('सेवा केंद्र कमरावां', 'Kamrawan Service Center')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('ग्राम कमरावां सतरिख मुख्यालय (बाराबंकी)', 'Kamrawan Field Headquarters, Barabanki')) ?></p>
+          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></p>
         </div>
       </div>
       <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
@@ -433,13 +433,13 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
               <label for="user-name" class="block font-label-md text-label-md text-deep-forest font-semibold">
                 <?= e(ps_text('पूरा नाम (Full Name)', 'Full Name')) ?> <span class="text-error">*</span>
               </label>
-              <input type="text" id="user-name" name="name" required placeholder="<?= e(ps_text('उदा. रमेश कुमार सिंह', 'e.g. Ramesh Kumar')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
+              <input type="text" id="user-name" name="name" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
             </div>
             <div class="space-y-1.5">
               <label for="user-phone" class="block font-label-md text-label-md text-deep-forest font-semibold">
                 <?= e(ps_text('मोबाइल / WhatsApp नंबर', 'Mobile / WhatsApp Number')) ?> <span class="text-error">*</span>
               </label>
-              <input type="tel" id="user-phone" name="phone" required placeholder="<?= e(ps_text('10 अंकों का मोबाइल नंबर', '10 digit mobile number')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
+              <input type="tel" id="user-phone" name="phone" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
             </div>
           </div>
 
@@ -449,7 +449,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
               <label for="user-email" class="block font-label-md text-label-md text-deep-forest font-semibold">
                 <?= e(ps_text('ईमेल पता (Email Address)', 'Email Address')) ?> <span class="text-text-muted font-normal text-label-sm">(<?= e(ps_text('ऐच्छिक', 'Optional')) ?>)</span>
               </label>
-              <input type="email" id="user-email" name="email" placeholder="name@example.com" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
+              <input type="email" id="user-email" name="email" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
             </div>
             <div class="space-y-1.5">
               <label for="user-district" class="block font-label-md text-label-md text-deep-forest font-semibold">
@@ -465,7 +465,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
               <label for="user-village" class="block font-label-md text-label-md text-deep-forest font-semibold">
                 <?= e(ps_text('गाँव / कस्बा / मोहल्ला (Village/Town)', 'Village / Town / Locality')) ?>
               </label>
-              <input type="text" id="user-village" name="villageTown" placeholder="<?= e(ps_text('उदा. ग्राम कमरावां / छाया चौराहा', 'e.g. Gram Kamrawan')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
+              <input type="text" id="user-village" name="villageTown" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted">
             </div>
             <div class="space-y-1.5">
               <label for="subject-category" class="block font-label-md text-label-md text-deep-forest font-semibold">
@@ -490,7 +490,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
             <label for="user-message" class="block font-label-md text-label-md text-deep-forest font-semibold">
               <?= e(ps_text('विस्तृत संदेश या विचार (Detailed Message)', 'Detailed Message')) ?> <span class="text-error">*</span>
             </label>
-            <textarea id="user-message" name="message" rows="4" required placeholder="<?= e(ps_text('अपने विचार, कार्यक्रम की तिथि, स्थान या समस्या का विवरण यहाँ लिखें...', 'Write your message, event date, venue or details here...')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted"></textarea>
+            <textarea id="user-message" name="message" rows="4" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all placeholder:text-text-muted"></textarea>
           </div>
 
           <!-- Agreement Checkbox -->
@@ -536,7 +536,7 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
         <div class="p-4 bg-cream-canvas border-b border-border-warm flex items-center justify-between">
           <div class="flex items-center gap-2 font-label-md text-label-md text-deep-forest font-semibold">
             <span class="material-symbols-outlined text-[20px] text-primary-container">pin_drop</span>
-            <span><?= e(ps_text('ग्राम कमरावां, सतरिख, बाराबंकी', 'Gram Kamrawan, Satrikh, Barabanki')) ?></span>
+            <span><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
           </div>
           <span class="bg-primary-fixed/40 text-deep-forest font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-medium"><?= e(ps_text('लाइव नेविगेशन', 'Live Navigation')) ?></span>
         </div>

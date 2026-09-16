@@ -49,7 +49,7 @@
                 image.src = link.href;
                 image.alt = link.dataset.caption || link.querySelector('img')?.alt || '';
                 caption.textContent = image.alt;
-                original.href = link.href;
+                if (original) original.href = link.href;
                 dialog.showModal();
                 document.body.classList.add('ps-modal-open');
             });

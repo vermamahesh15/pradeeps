@@ -69,7 +69,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
 
         <h1 class="font-display-hero text-headline-lg lg:text-display-hero text-[#14532D] font-bold tracking-tight">
-          <?= e(ps_text('समाज, संस्कृति और प्रकृति के लिए समर्पित एक जीवन', 'A Life Dedicated to Society, Culture and Nature')) ?>
+          <?= e(ps_text('समाज, संस्कृति और प्रकृति के लिए समर्पित एक जीवन... प्रदीप सारंग', 'A Life Dedicated to Society, Culture and Nature... Pradeep Sarang')) ?>
         </h1>
 
         <p class="font-body-lg text-body-lg text-[#52606D] leading-relaxed">
@@ -206,7 +206,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <span class="material-symbols-outlined text-secondary text-[24px]">location_home</span>
           <div class="flex flex-col">
             <span class="font-label-sm text-label-sm uppercase text-text-muted font-bold"><?= e(ps_text('जन्म स्थान एवं कर्मभूमि', 'Birthplace & Roots')) ?></span>
-            <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('20 अक्टूबर 1969 • कमरावां, बाराबंकी', '20 October 1969 • Kamrawan, Barabanki')) ?></span>
+            <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('20 अक्टूबर 1969 • ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', '20 October 1969 • Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
           </div>
         </div>
       </div>
@@ -1009,7 +1009,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                     'title' => ps_text('सरदार पटेल स्मृति चेतना यात्रा व जन-चौपाल', 'Sardar Patel Chetna Yatra & Chaupal'),
                     'event_date' => '2026-10-31',
                     'excerpt' => ps_text('राष्ट्रनायक सरदार वल्लभभाई पटेल जयंती के अवसर पर ग्रामीण स्वावलंबन, किसान सम्मान एवं सामाजिक सद्भाव महारैली।', 'Rally & village dialogue celebrating Sardar Patel Jayanti.'),
-                    'location' => ps_text('कमरावां, बाराबंकी (उ.प्र.)', 'Kamrawan, Barabanki (U.P.)'),
+                    'location' => ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India'),
                     'image' => 'assets/images/slider_final_1.jpg',
                     'slug' => 'sardar-patel-chetna-yatra-2026'
                 ],
@@ -1377,7 +1377,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="rounded-2xl overflow-hidden shadow-sm bg-pure-white p-4 border border-border-warm">
           <div class="w-full h-32 rounded-xl bg-cover bg-center flex items-center justify-center bg-surface-container" 
                style="background-image: linear-gradient(rgba(20,83,45,0.45), rgba(20,83,45,0.45)), url('<?= e(base_url('assets/images/slider_final_1.jpg')) ?>');">
-            <span class="text-pure-white font-title-lg text-title-lg font-bold drop-shadow">कमरावां • सतरिख • बाराबंकी</span>
+            <span class="text-pure-white font-title-lg text-title-lg font-bold drop-shadow text-center px-2">ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत</span>
           </div>
           <div class="p-2 flex items-center justify-between text-text-muted font-label-sm text-label-sm mt-1">
             <span><?= e(ps_text('बाराबंकी जनपद (अवध अंचल)', 'Barabanki District, Awadh Region')) ?></span>
@@ -1407,14 +1407,12 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                 <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('आपका पूरा नाम *', 'Your Full Name *')) ?></label>
                 <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="name" 
-                       placeholder="<?= e(ps_text('उदा. रमेश कुमार वर्मा', 'e.g. Ramesh Kumar Verma')) ?>" 
                        required type="text"/>
               </div>
               <div class="flex flex-col space-y-1">
                 <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('मोबाइल नंबर *', 'Mobile Number *')) ?></label>
                 <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="phone" 
-                       placeholder="<?= e(ps_text('+91 XXXXX XXXXX', '+91 XXXXX XXXXX')) ?>" 
                        required type="tel"/>
               </div>
             </div>
@@ -1424,7 +1422,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                 <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('ईमेल पता', 'Email Address')) ?></label>
                 <input class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                        name="email" 
-                       placeholder="<?= e(ps_text('aapka-email@example.com', 'your-email@example.com')) ?>" 
                        type="email"/>
               </div>
               <div class="flex flex-col space-y-1">
@@ -1446,7 +1443,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
               <label class="font-label-md text-label-md text-deep-forest font-semibold"><?= e(ps_text('संदेश अथवा प्रस्ताव विवरण *', 'Message or Proposal Details *')) ?></label>
               <textarea class="w-full bg-soft-meadow border border-border-warm rounded-lg p-3 text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container" 
                         name="message" 
-                        placeholder="<?= e(ps_text('कृपया अपना संदेश, आयोजन का स्थल अथवा अपने विचार यहाँ लिखें...', 'Please write your message, venue of event or thoughts here...')) ?>" 
                         required rows="4"></textarea>
             </div>
 

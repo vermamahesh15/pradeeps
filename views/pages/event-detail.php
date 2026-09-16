@@ -314,15 +314,15 @@ $contentHtml = !empty($item['content']) ? ps_rich_text($item['content']) : null;
                 <input type="hidden" name="subject" value="Event RSVP: <?= e($title) ?>">
 
                 <div>
-                  <input type="text" name="name" placeholder="<?= e(ps_text('आपका नाम *', 'Your Name *')) ?>" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary">
+                  <input type="text" name="name" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary">
                 </div>
 
                 <div>
-                  <input type="tel" name="phone" placeholder="<?= e(ps_text('मोबाइल नंबर *', 'Mobile Number *')) ?>" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary">
+                  <input type="tel" name="phone" required class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary">
                 </div>
 
                 <div>
-                  <textarea name="message" rows="2" placeholder="<?= e(ps_text('कोई संदेश / प्रश्न (ऐच्छिक)', 'Message / Query (Optional)')) ?>" class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary"></textarea>
+                  <textarea name="message" rows="2" class="w-full px-3.5 py-2 text-xs rounded-xl border border-border-warm bg-white focus:outline-none focus:border-primary"></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-primary hover:bg-deep-forest text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">

@@ -297,7 +297,7 @@ if (empty($sughariImg)) {
                         </div>
                         <div class="flex items-center gap-1.5">
                           <span class="material-symbols-outlined text-deep-forest text-[17px]">pin_drop</span>
-                          <span><?= e(ps_text('ग्राम कमरावां, सतरिख (बाराबंकी)', 'Village Kamrawan, Satrikh (Barabanki)')) ?></span>
+                          <span><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
                         </div>
                       </div>
                     </div>
@@ -331,7 +331,7 @@ if (empty($sughariImg)) {
                     </div>
                     <div class="flex items-center gap-1.5">
                       <span class="material-symbols-outlined text-deep-forest text-[17px]">pin_drop</span>
-                      <span><?= e(ps_text('ग्राम कमरावां, सतरिख (बाराबंकी)', 'Village Kamrawan, Satrikh (Barabanki)')) ?></span>
+                      <span><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
                     </div>
                   </div>
                   <?php endif; ?>
@@ -783,7 +783,7 @@ if (empty($sughariImg)) {
   <?php 
   $authorNameVal = !empty($settings['author_name']) ? $settings['author_name'] : $postAuthor;
   $authorRoleVal = !empty($settings['author_role']) ? $settings['author_role'] : ps_text('वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता', 'Senior Awadhi Author & Environmentalist');
-  $authorLocVal = !empty($settings['author_location']) ? $settings['author_location'] : ps_text('कमरावां, सतरिख, बाराबंकी (उ० प्र०)', 'Kamrawan, Satrikh, Barabanki (U.P.)');
+  $authorLocVal = !empty($settings['author_location']) ? $settings['author_location'] : ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India');
   $authorBadgeVal = !empty($settings['author_badge']) ? $settings['author_badge'] : ps_text('साहित्यिक व जमीनी सरोकार', 'Literary & Social Legacy');
   $authorBioVal = !empty($settings['author_bio']) ? $settings['author_bio'] : ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Shri Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.');
   $authorQuoteVal = !empty($settings['author_quote']) ? $settings['author_quote'] : ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.');
@@ -1048,16 +1048,16 @@ if (empty($sughariImg)) {
             <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold">
               <?= e(ps_text('आपकी टिप्पणी अथवा बचपन का अवधी संस्मरण:', 'Your Reflection or Childhood Memoir:')) ?>
             </label>
-            <textarea rows="4" required placeholder="<?= e(ps_text('झरिहख पढ़कर आपको अपने गाँव या बचपन की कौन सी बात याद आई? यहाँ लिखें...', 'Write your reflections or village memories here...')) ?>" class="w-full px-4 py-3 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"></textarea>
+            <textarea rows="4" required class="w-full px-4 py-3 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"></textarea>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold"><?= e(ps_text('आपका शुभ नाम:', 'Your Full Name:')) ?></label>
-              <input type="text" required placeholder="<?= e(ps_text('उदा. रामनारायण वर्मा', 'e.g. Ramnarayan Verma')) ?>" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
+              <input type="text" required class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
             </div>
             <div>
               <label class="block font-label-md text-label-md text-deep-forest mb-1 font-semibold"><?= e(ps_text('ईमेल पता (अप्रकाशित रहेगा):', 'Email Address (Kept Private):')) ?></label>
-              <input type="email" required placeholder="name@domain.com" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
+              <input type="email" required class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary shadow-xs">
             </div>
           </div>
           <div class="flex items-center justify-between pt-1">

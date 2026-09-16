@@ -503,26 +503,26 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('आयोजक / संपर्क व्यक्ति का नाम *', 'Organizer Name *')) ?></label>
-                <input type="text" name="name" required placeholder="<?= e(ps_text('उदा. रामेश्वर वर्मा', 'e.g. Rameshwar Verma')) ?>" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
+                <input type="text" name="name" required class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
               </div>
               <div>
                 <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('संस्था / गाँव / विद्यालय का नाम *', 'School / Gram Panchayat *')) ?></label>
-                <input type="text" name="districtState" required placeholder="<?= e(ps_text('उदा. ग्राम पंचायत सतरिख', 'e.g. Gram Panchayat Satrikh')) ?>" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
+                <input type="text" name="districtState" required class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('मोबाइल नंबर *', 'Mobile Number *')) ?></label>
-                <input type="tel" name="phone" required placeholder="+91 XXXXX XXXXX" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
+                <input type="tel" name="phone" required class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
               </div>
               <div>
                 <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('ईमेल पता (यदि उपलब्ध हो)', 'Email Address')) ?></label>
-                <input type="email" name="email" placeholder="aapka-email@domain.com" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
+                <input type="email" name="email" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary">
               </div>
             </div>
             <div>
               <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('कार्यक्रम का विवरण एवं स्थान *', 'Event Details & Venue *')) ?></label>
-              <textarea name="message" rows="3" required placeholder="<?= e(ps_text('कृपया कार्यक्रम का स्वरूप, स्थान तथा अपेक्षित उपस्थिति लिखें...', 'Write event details, venue and expected attendance...')) ?>" class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary"></textarea>
+              <textarea name="message" rows="3" required class="w-full bg-surface-container-lowest border border-border-warm rounded-xl px-4 py-3 font-body-sm text-body-sm text-on-surface focus:outline-none focus:border-primary"></textarea>
             </div>
             <button type="submit" class="w-full bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md font-semibold py-3.5 px-6 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-sm">
               <span class="material-symbols-outlined text-[18px]">send</span>
@@ -553,11 +553,11 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
       <input type="hidden" name="subject" value="RSVP for <?= e($featuredUpcoming['title']) ?>">
       <div>
         <label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold"><?= e(ps_text('आपका पूरा नाम *', 'Full Name *')) ?></label>
-        <input type="text" name="name" required placeholder="<?= e(ps_text('उदा. कुलदीप शुक्ल', 'e.g. Kuldeep Shukla')) ?>" class="w-full border border-border-warm rounded-xl px-4 py-2.5 font-body-sm text-body-sm focus:outline-none focus:border-primary">
+        <input type="text" name="name" required class="w-full border border-border-warm rounded-xl px-4 py-2.5 font-body-sm text-body-sm focus:outline-none focus:border-primary">
       </div>
       <div>
         <label class="block font-label-md text-label-md text-on-surface mb-1 font-semibold"><?= e(ps_text('व्हाट्सएप / मोबाइल नंबर *', 'Mobile Number *')) ?></label>
-        <input type="tel" name="phone" required placeholder="+91 98XXXXXXXX" class="w-full border border-border-warm rounded-xl px-4 py-2.5 font-body-sm text-body-sm focus:outline-none focus:border-primary">
+        <input type="tel" name="phone" required class="w-full border border-border-warm rounded-xl px-4 py-2.5 font-body-sm text-body-sm focus:outline-none focus:border-primary">
       </div>
       <button type="submit" class="w-full bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md font-semibold py-3 rounded-xl transition-colors mt-2">
         <?= e(ps_text('पंजीकरण पूर्ण करें (Confirm RSVP)', 'Confirm RSVP')) ?>

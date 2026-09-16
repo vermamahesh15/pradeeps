@@ -439,13 +439,13 @@ $states = $states ?? [];
             <label for="fullName" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('पूरा नाम (Full Name)', 'Full Name')) ?> <span class="text-error">*</span>
             </label>
-            <input type="text" id="fullName" name="full_name" required placeholder="<?= e(ps_text('उदा. रमेश चंद्र वर्मा', 'e.g. Ramesh Chandra')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="text" id="fullName" name="full_name" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
           <div>
             <label for="whatsappNumber" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('मोबाइल / WhatsApp नंबर', 'Mobile / WhatsApp Number')) ?> <span class="text-error">*</span>
             </label>
-            <input type="tel" id="whatsappNumber" name="phone" required placeholder="<?= e(ps_text('10 अंकों का मोबाइल नंबर', '10 digit mobile number')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="tel" id="whatsappNumber" name="phone" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
         </div>
 
@@ -455,13 +455,13 @@ $states = $states ?? [];
             <label for="fatherName" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('पिता / अभिभावक का नाम', 'Father / Guardian Name')) ?>
             </label>
-            <input type="text" id="fatherName" name="father_name" placeholder="<?= e(ps_text('उदा. श्री रामनाथ वर्मा', 'e.g. Shri Ramnath Verma')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="text" id="fatherName" name="father_name" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
           <div>
             <label for="emailAddress" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('ईमेल पता (Email Address)', 'Email Address')) ?> <span class="text-error">*</span>
             </label>
-            <input type="email" id="emailAddress" name="email" required placeholder="name@domain.com" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="email" id="emailAddress" name="email" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
         </div>
 
@@ -487,7 +487,7 @@ $states = $states ?? [];
             <label for="userOccupation" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('व्यवसाय / पेशा', 'Occupation')) ?>
             </label>
-            <input type="text" id="userOccupation" name="occupation" placeholder="<?= e(ps_text('उदा. विद्यार्थी / किसान / शिक्षक', 'e.g. Student / Farmer / Teacher')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="text" id="userOccupation" name="occupation" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
         </div>
 
@@ -516,7 +516,7 @@ $states = $states ?? [];
             <label for="userPincode" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
               <?= e(ps_text('पिनकोड (PIN Code)', 'PIN Code')) ?>
             </label>
-            <input type="text" id="userPincode" name="pincode" inputmode="numeric" placeholder="225122" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+            <input type="text" id="userPincode" name="pincode" inputmode="numeric" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
           </div>
         </div>
 
@@ -525,7 +525,7 @@ $states = $states ?? [];
           <label class="block font-title-md text-title-md text-deep-forest font-bold mb-3">
             <?= e(ps_text('आप किस अभियान में सहभागिता करना चाहते हैं? (रुचि/कौशल)', 'Which initiatives interest you? (Interests & Skills)')) ?> <span class="text-error">*</span>
           </label>
-          <input type="text" id="userInterests" name="interests" required placeholder="<?= e(ps_text('उदा. हरियाली अभियान, परिंदा संरक्षण, जल-सकोरा वितरण, अवधी साहित्य...', 'e.g. Hariyali Gang, Bird Conservation, Water Bowl Drive, Awadhi Literature...')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+          <input type="text" id="userInterests" name="interests" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
         </div>
 
         <!-- Selection: Time Availability -->
@@ -562,7 +562,7 @@ $states = $states ?? [];
           <label for="userMessage" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
             <?= e(ps_text('आप इस अभियान से क्यों जुड़ना चाहते हैं? (संदेश / विचार)', 'Message / Why do you want to join?')) ?>
           </label>
-          <textarea id="userMessage" name="message" rows="3" placeholder="<?= e(ps_text('अपने विचार, कोई विशेष कौशल या गाँव में अभियान चलाने का सुझाव लिखें...', 'Write your thoughts or skills here...')) ?>" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all"></textarea>
+          <textarea id="userMessage" name="message" rows="3" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all"></textarea>
         </div>
 
         <!-- Pledge Checkbox -->
@@ -577,9 +577,9 @@ $states = $states ?? [];
 
         <!-- Submit Button -->
         <div class="pt-2 flex flex-col sm:flex-row items-center gap-4">
-          <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-primary-container hover:bg-deep-forest text-on-primary font-title-md text-title-md font-bold shadow-md transition-all flex items-center justify-center gap-2">
-            <span><?= e(ps_text('स्वयंसेवक के रूप में पंजीकृत हों (Submit Application)', 'Submit Volunteer Application')) ?></span>
-            <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+          <button type="submit" class="w-full sm:w-auto px-8 py-3.5 rounded-xl font-title-md text-title-md font-bold shadow-md transition-all flex items-center justify-center gap-2 border-0 cursor-pointer" style="background-color: #14532d; color: #ffffff;">
+            <span style="color: #ffffff;"><?= e(ps_text('स्वयंसेवक के रूप में पंजीकृत हों (Submit Application)', 'Submit Volunteer Application')) ?></span>
+            <span class="material-symbols-outlined text-[20px]" style="color: #ffffff;">arrow_forward</span>
           </button>
           <span class="font-label-sm text-label-sm text-text-muted text-center sm:text-left">
             <?= e(ps_text('प्रदीप सारंग जन-अभियान सेल • बाराबंकी, उत्तर प्रदेश', 'Pradeep Sarang Volunteer Cell • Barabanki, UP')) ?>

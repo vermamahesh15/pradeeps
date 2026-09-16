@@ -107,7 +107,8 @@ class PageController
         if ($slug === '/about') {
             $this->render('about', [
                 'title' => 'About Us',
-                'timeline' => $this->content->getTimeline()
+                'timeline' => $this->content->getTimeline(),
+                'personalPhotos' => $this->content->getPublishedPersonalPhotos()
             ]);
             return;
         }
@@ -147,9 +148,9 @@ class PageController
             return;
         }
 
-        if ($slug === '/donation' || $slug === '/donate') {
-            $this->render('donation', [
-                'title' => 'Donate Now',
+        if ($slug === '/donation' || $slug === '/donate' || $slug === '/donate-now') {
+            $this->render('donate-now', [
+                'title' => 'Donate Now - सहयोग करें',
                 'donation_settings' => $this->content->getDonationSettings()
             ]);
             return;

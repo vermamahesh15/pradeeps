@@ -145,7 +145,7 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <form method="post" action="<?= e(base_url('/')) ?>" class="flex flex-col space-y-2.5">
                     <?= csrf_field() ?>
                     <input type="hidden" name="form_type" value="newsletter">
-                    <input class="w-full px-3.5 py-2.5 rounded-lg bg-white/10 text-white placeholder-gray-400 border border-white/10 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#F0B45C]" placeholder="<?= e(ps_text('आपका ईमेल या फोन नंबर', 'Your email address')) ?>" name="email" type="email" required/>
+                    <input class="w-full px-3.5 py-2.5 rounded-lg bg-white/10 text-white placeholder-gray-400 border border-white/10 font-body-sm text-body-sm focus:outline-none focus:ring-2 focus:ring-[#F0B45C]" name="email" type="email" required/>
                     <button class="w-full bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 shadow font-bold" type="submit">
                         <span class="material-symbols-outlined text-[16px]">send</span>
                         <span><?= e(ps_text('हरियाली व सामाजिक अपडेट्स पाएं', 'Get Green & Social Updates')) ?></span>
@@ -215,6 +215,7 @@ $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्�
                 <a class="hover:text-[#F0B45C] text-[#94A3B8] transition-colors flex items-center gap-1" href="<?= e(base_url('/admin')) ?>">
                     <span class="material-symbols-outlined text-[13px]">lock</span>
                     <span><?= e(ps_text('प्रशासनिक लॉगिन', 'Admin Portal')) ?></span>
+                </a>
             </div>
         </div>
     </div>

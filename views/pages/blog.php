@@ -41,7 +41,7 @@ $categories = $categories ?? [];
         <div class="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div class="relative flex-1">
             <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted text-[20px]">search</span>
-            <input type="text" id="article-search" placeholder="<?= e(ps_text('शीर्षक, विषय या अवधी लोक-शब्द खोजें...', 'Search by title, topic or Awadhi words...')) ?>" class="w-full pl-11 pr-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md placeholder-text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container">
+            <input type="text" id="article-search" class="w-full pl-11 pr-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md placeholder-text-muted shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-container">
           </div>
           <div class="flex items-center gap-2">
             <a href="#patrika" class="inline-flex items-center justify-center gap-2 bg-primary-container text-on-primary hover:bg-deep-forest px-5 py-3 rounded-xl font-label-md text-label-md transition-colors shadow-sm">
@@ -492,11 +492,11 @@ $categories = $categories ?? [];
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block font-label-sm text-label-sm text-deep-forest mb-1.5 font-semibold"><?= e(ps_text('आपका नाम *', 'Your Name *')) ?></label>
-              <input type="text" required placeholder="<?= e(ps_text('उदा. रामेश्वर सिंह', 'e.g. Rameshwar Singh')) ?>" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container">
+              <input type="text" required class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container">
             </div>
             <div>
               <label class="block font-label-sm text-label-sm text-deep-forest mb-1.5 font-semibold"><?= e(ps_text('ईमेल या मोबाइल नंबर *', 'Email or Phone *')) ?></label>
-              <input type="text" required placeholder="contact@example.com" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container">
+              <input type="text" required class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container">
             </div>
           </div>
           <div>
@@ -511,7 +511,7 @@ $categories = $categories ?? [];
           </div>
           <div>
             <label class="block font-label-sm text-label-sm text-deep-forest mb-1.5 font-semibold"><?= e(ps_text('आपकी प्रतिक्रिया या ग्रामीण संस्मरण *', 'Your Feedback or Village Memory *')) ?></label>
-            <textarea rows="3" required placeholder="<?= e(ps_text('आलेख पर अपने विचार, अनुभव अथवा अवधी भाषा व गाँव से जुड़ा कोई संस्मरण लिखें...', 'Write your thoughts or village memories...')) ?>" class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container"></textarea>
+            <textarea rows="3" required class="w-full px-4 py-2.5 rounded-xl bg-soft-meadow border border-border-warm text-on-surface font-body-md text-body-md focus:bg-pure-white focus:outline-none focus:ring-2 focus:ring-primary-container"></textarea>
           </div>
           <div class="flex items-center justify-between pt-2">
             <button type="submit" class="bg-primary-container hover:bg-deep-forest text-on-primary px-6 py-2.5 rounded-xl font-label-md text-label-md transition-colors flex items-center gap-2 shadow-sm font-semibold">
@@ -540,7 +540,7 @@ $categories = $categories ?? [];
       <form method="post" action="<?= e(base_url('/')) ?>" class="mt-8 pt-6 border-t border-surface-container-high/20 space-y-3">
         <?= csrf_field() ?>
         <input type="hidden" name="form_type" value="newsletter">
-        <input type="email" name="email" required placeholder="<?= e(ps_text('आपका ईमेल पता या व्हाट्सएप नंबर', 'Your email address or WhatsApp number')) ?>" class="w-full px-4 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-fixed">
+        <input type="email" name="email" required class="w-full px-4 py-3 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-fixed">
         <button type="submit" class="w-full bg-secondary hover:bg-secondary/90 text-pure-white font-label-md text-label-md py-3 rounded-xl transition-colors flex items-center justify-center gap-2 font-semibold shadow-sm">
           <span class="material-symbols-outlined text-[18px]">local_florist</span>
           <span><?= e(ps_text('निःशुल्क सदस्यता लें (Subscribe Free)', 'Subscribe Free')) ?></span>

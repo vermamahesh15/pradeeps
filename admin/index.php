@@ -39,6 +39,7 @@ require_once __DIR__ . '/../models/ContentModel.php';
 require_once __DIR__ . '/../models/Blog.php';
 require_once __DIR__ . '/../models/BlogCategory.php';
 require_once __DIR__ . '/../models/UserModel.php';
+require_once __DIR__ . '/../models/PersonalPhotoModel.php';
 
 session_start();
 
@@ -47,6 +48,7 @@ $content = new ContentModel();
 $blogModel = new Blog();
 $categoryModel = new BlogCategory();
 $userModel = new UserModel();
+$photoModel = new PersonalPhotoModel();
 
 $loggedIn = $_SESSION['admin_logged_in'] ?? false;
 $module = $_GET['module'] ?? 'dashboard';
@@ -763,7 +765,7 @@ if (is_post()) {
             // AUTHOR PROFILE & BIO CARD FIELDS
             'author_name' => trim($_POST['author_name'] ?? 'श्री प्रदीप सारंग'),
             'author_role' => trim($_POST['author_role'] ?? 'वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता'),
-            'author_location' => trim($_POST['author_location'] ?? 'कमरावां, सतरिख, बाराबंकी (उ० प्र०)'),
+            'author_location' => trim($_POST['author_location'] ?? 'ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत'),
             'author_badge' => trim($_POST['author_badge'] ?? 'साहित्यिक व जमीनी सरोकार'),
             'author_bio' => trim($_POST['author_bio'] ?? ''),
             'author_quote' => trim($_POST['author_quote'] ?? ''),
@@ -1144,6 +1146,153 @@ if (is_post()) {
         $content->updateSettings($socialData);
         $userModel->logAudit((int)$_SESSION['user_id'], 'Social Accounts Configured', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
     }
+
+    // --- About Personal Photos Action Handlers ---
+    if ($loggedIn && in_array(($_POST['action'] ?? ''), ['save_personal_photo', 'delete_personal_photo', 'toggle_personal_photo_status', 'reorder_personal_photos'], true)) {
+        if (!is_role('super_admin', 'admin')) {
+            http_response_code(403);
+            if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                json_response(['status' => 'error', 'message' => 'Unauthorized access.'], 403);
+            }
+            flash('admin_error', 'Access Restricted: You do not have permission to manage personal photographs.');
+            redirect('/admin/index.php?module=about_photos');
+        }
+
+        $act = $_POST['action'];
+
+        if ($act === 'save_personal_photo') {
+            $id = (int)($_POST['id'] ?? 0);
+            $isEdit = ($id > 0);
+            $existing = $isEdit ? $photoModel->find($id) : null;
+
+            if ($isEdit && !$existing) {
+                flash('admin_error', 'Photo not found.');
+                redirect('/admin/index.php?module=about_photos');
+            }
+
+            $title = trim($_POST['title'] ?? '');
+            $caption = trim($_POST['caption'] ?? '');
+            $location = trim($_POST['location'] ?? '');
+            $photoDate = trim($_POST['photo_date'] ?? '');
+            $photoYear = trim($_POST['photo_year'] ?? '');
+            if (empty($photoYear) && !empty($photoDate)) {
+                $photoYear = substr($photoDate, 0, 4);
+            }
+            $altText = trim($_POST['alt_text'] ?? '');
+            $displayOrder = isset($_POST['display_order']) && is_numeric($_POST['display_order']) ? (int)$_POST['display_order'] : ($isEdit ? (int)($existing['display_order'] ?? 0) : $photoModel->getNextOrder());
+            $status = in_array($_POST['status'] ?? 'published', ['published', 'hidden'], true) ? $_POST['status'] : 'published';
+
+            $photoPath = $existing['photo_path'] ?? null;
+            $thumbPath = $existing['thumbnail_path'] ?? null;
+
+            if (isset($_FILES['photo']) && $_FILES['photo']['error'] !== UPLOAD_ERR_NO_FILE) {
+                if ($_FILES['photo']['error'] === UPLOAD_ERR_OK) {
+                    $uploadErr = '';
+                    $processed = $photoModel->processUploadedPhoto($_FILES['photo'], $uploadErr);
+                    if ($processed) {
+                        // If replacing an existing photo, delete the previous image files so old files don't linger
+                        if ($isEdit && $existing) {
+                            $photoModel->deletePhysicalFiles($existing['photo_path'] ?? null, $existing['thumbnail_path'] ?? null);
+                        }
+                        $photoPath = $processed['photo_path'];
+                        $thumbPath = $processed['thumbnail_path'];
+                    } else {
+                        flash('admin_error', 'Image processing failed: ' . $uploadErr);
+                        redirect('/admin/index.php?module=about_photos' . ($isEdit ? "&edit_id=$id" : ''));
+                    }
+                } else {
+                    flash('admin_error', 'File upload error code: ' . $_FILES['photo']['error']);
+                    redirect('/admin/index.php?module=about_photos' . ($isEdit ? "&edit_id=$id" : ''));
+                }
+            }
+
+            if (!$isEdit && empty($photoPath)) {
+                flash('admin_error', 'Please select a photo file (JPG, JPEG, PNG, or WebP) to upload.');
+                redirect('/admin/index.php?module=about_photos');
+            }
+
+            $photoData = [
+                'title'          => $title,
+                'caption'        => $caption,
+                'location'       => $location,
+                'photo_date'     => $photoDate ?: null,
+                'photo_year'     => $photoYear ?: null,
+                'alt_text'       => $altText ?: ($title ?: 'Pradeep Sarang Photograph'),
+                'display_order'  => $displayOrder,
+                'status'         => $status,
+                'photo_path'     => $photoPath,
+                'thumbnail_path' => $thumbPath,
+                'uploaded_by'    => (int)$_SESSION['user_id']
+            ];
+
+            if ($isEdit) {
+                $photoModel->update($id, $photoData);
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Updated personal photo #' . $id . ($title ? " ($title)" : ''), $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                flash('admin_success', 'Photograph details updated successfully.');
+            } else {
+                $newId = $photoModel->create($photoData);
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Uploaded personal photo #' . $newId . ($title ? " ($title)" : ''), $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                flash('admin_success', 'Personal photograph uploaded and added to the gallery.');
+            }
+
+            redirect('/admin/index.php?module=about_photos');
+        }
+
+        if ($act === 'delete_personal_photo') {
+            $id = (int)($_POST['id'] ?? 0);
+            $photo = $photoModel->find($id);
+            if ($photo) {
+                $photoModel->delete($id);
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Deleted personal photo #' . $id . (!empty($photo['title']) ? " ({$photo['title']})" : ''), $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                flash('admin_success', 'Photograph permanently deleted.');
+            } else {
+                flash('admin_error', 'Photograph not found.');
+            }
+            redirect('/admin/index.php?module=about_photos');
+        }
+
+        if ($act === 'toggle_personal_photo_status') {
+            $id = (int)($_POST['id'] ?? 0);
+            $newStatus = $photoModel->toggleStatus($id);
+            if ($newStatus) {
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Toggled personal photo #' . $id . ' status to ' . $newStatus, $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    json_response(['status' => 'success', 'new_status' => $newStatus]);
+                }
+                flash('admin_success', 'Photo status changed to ' . ucfirst($newStatus) . '.');
+            } else {
+                if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    json_response(['status' => 'error', 'message' => 'Photo not found.'], 404);
+                }
+                flash('admin_error', 'Photo not found.');
+            }
+            redirect('/admin/index.php?module=about_photos');
+        }
+
+        if ($act === 'reorder_personal_photos') {
+            $orderMap = [];
+            if (!empty($_POST['orders']) && is_array($_POST['orders'])) {
+                $orderMap = $_POST['orders'];
+            } elseif (!empty($_POST['order_data'])) {
+                $decoded = json_decode($_POST['order_data'], true);
+                if (is_array($decoded)) {
+                    $orderMap = $decoded;
+                }
+            }
+
+            if (!empty($orderMap)) {
+                $photoModel->updateOrders($orderMap);
+                $userModel->logAudit((int)$_SESSION['user_id'], 'Reordered personal photos (' . count($orderMap) . ' items)', $_SERVER['REMOTE_ADDR'] ?? 'unknown', $_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+                    json_response(['status' => 'success', 'message' => 'Display orders updated.']);
+                }
+                flash('admin_success', 'Display orders updated successfully.');
+            } else {
+                flash('admin_error', 'No order data received.');
+            }
+            redirect('/admin/index.php?module=about_photos');
+        }
+    }
 }
 
 // Full-page Admin Article Preview Handler
@@ -1224,6 +1373,7 @@ $metrics = $content->metrics();
                     <a href="?module=donation_settings" class="<?= $module === 'donation_settings' ? 'active' : '' ?>">Donation Settings</a>
                     <a href="?module=gallery" class="<?= $module === 'gallery' ? 'active' : '' ?>">Gallery Bank</a>
                     <a href="?module=newspaper" class="<?= $module === 'newspaper' ? 'active' : '' ?>">Newspaper Cuttings</a>
+                    <a href="?module=about_photos" class="<?= $module === 'about_photos' ? 'active' : '' ?>"><i class="fa-solid fa-camera-retro text-warning me-1"></i> About: Personal Photos</a>
                     <a href="?module=videos" class="<?= $module === 'videos' ? 'active' : '' ?>"><i class="fa-solid fa-play-circle text-danger me-1"></i> YouTube Videos</a>
                     <a href="?module=volunteers" class="<?= $module === 'volunteers' ? 'active' : '' ?>">Volunteers</a>
                     <a href="?module=authors" class="<?= $module === 'authors' ? 'active' : '' ?>"><i class="fa-solid fa-users-gear me-1"></i> Manage Users / Roles</a>
@@ -1250,6 +1400,12 @@ $metrics = $content->metrics();
                 <h1 class="h4 mb-0"><?= e(ucfirst(str_replace('_', ' ', $module))) ?></h1>
                 
                 <div class="d-flex align-items-center gap-3">
+                    <!-- Website Home Link -->
+                    <a href="<?= e(base_url('/')) ?>" target="_blank" class="btn btn-outline-success btn-sm d-inline-flex align-items-center gap-1.5 font-semibold shadow-xs" title="View Public Website">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Website Home</span>
+                    </a>
+
                     <!-- Notifications Dropdown -->
                     <?php 
                     $sessUserId = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
@@ -1305,6 +1461,16 @@ $metrics = $content->metrics();
                         ?>
                         <img src="<?= $avatarUrl ?>" class="rounded-circle border" style="width: 36px; height: 36px; object-fit: cover;">
                     </div>
+
+                    <!-- Topbar Logout Button -->
+                    <form method="post" class="d-inline m-0">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="action" value="logout">
+                        <button class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1.5 font-semibold shadow-xs" type="submit" title="Logout from Admin Panel">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -2748,6 +2914,543 @@ $metrics = $content->metrics();
                         <?php endforeach; ?>
                     </div>
                 </div>
+            <?php elseif ($module === 'about_photos'): ?>
+                <?php
+                $statusFilter = $_GET['status'] ?? 'all';
+                $searchQuery = trim($_GET['q'] ?? '');
+                $allPhotos = $photoModel->all($statusFilter, $searchQuery);
+                $totalCount = $photoModel->countAll();
+                $publishedCount = $photoModel->countPublished();
+                $hiddenCount = max(0, $totalCount - $publishedCount);
+                $nextOrder = $photoModel->getNextOrder();
+                $success = flash('admin_success');
+                $adminErr = flash('admin_error');
+                ?>
+                <div class="admin-card">
+                    <?php if ($success): ?><div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa-solid fa-circle-check me-2"></i><?= e($success) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+                    <?php if ($adminErr): ?><div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa-solid fa-circle-exclamation me-2"></i><?= e($adminErr) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+
+                    <!-- Module Header -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-3 border-bottom">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <h2 class="mb-0 fw-bold"><i class="fa-solid fa-camera-retro text-success me-2"></i>About Page: Personal Photographs</h2>
+                                <span class="badge bg-dark rounded-pill"><?= $totalCount ?></span>
+                            </div>
+                            <p class="text-muted small mb-0">Manage photographs of Shri Pradeep Sarang displayed in the "जीवन के कुछ यादगार पल (Personal Moments)" section on the public About page.</p>
+                        </div>
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <a href="<?= e(base_url('/about')) ?>#personal-moments" target="_blank" class="btn btn-outline-secondary btn-sm" title="Preview on public website">
+                                <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View on About Page
+                            </a>
+                            <button class="btn btn-success btn-sm px-3 fw-semibold shadow-xs" type="button" data-bs-toggle="collapse" data-bs-target="#uploadPhotoCollapse" aria-expanded="false" id="uploadPhotoButton">
+                                <i class="fa-solid fa-plus me-1"></i> + Upload Photo
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Metrics Badges Ribbon -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded-3 border d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-muted small fw-semibold">Total Photographs</div>
+                                    <h3 class="mb-0 fw-bold text-dark"><?= $totalCount ?></h3>
+                                </div>
+                                <div class="w-10 h-10 rounded-circle bg-dark text-white d-flex align-items-center justify-center p-2"><i class="fa-solid fa-images fs-5"></i></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded-3 border d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-muted small fw-semibold">Published on Website</div>
+                                    <h3 class="mb-0 fw-bold text-success"><?= $publishedCount ?></h3>
+                                </div>
+                                <div class="w-10 h-10 rounded-circle bg-success text-white d-flex align-items-center justify-center p-2"><i class="fa-solid fa-eye fs-5"></i></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="p-3 bg-light rounded-3 border d-flex align-items-center justify-content-between">
+                                <div>
+                                    <div class="text-muted small fw-semibold">Hidden / Drafts</div>
+                                    <h3 class="mb-0 fw-bold text-secondary"><?= $hiddenCount ?></h3>
+                                </div>
+                                <div class="w-10 h-10 rounded-circle bg-secondary text-white d-flex align-items-center justify-center p-2"><i class="fa-solid fa-eye-slash fs-5"></i></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Form Collapse -->
+                    <div class="collapse mb-4" id="uploadPhotoCollapse">
+                        <div class="card card-body bg-light border-0 shadow-sm rounded-3 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h4 class="mb-0 fw-bold text-success"><i class="fa-solid fa-cloud-arrow-up me-2"></i>Upload New Photograph / नई तस्वीर जोड़ें</h4>
+                                <button type="button" class="btn-close" data-bs-toggle="collapse" data-bs-target="#uploadPhotoCollapse" aria-label="Close"></button>
+                            </div>
+                            <form method="post" enctype="multipart/form-data" id="newPhotoForm">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="save_personal_photo">
+                                <input type="hidden" name="id" value="0">
+
+                                <div class="row g-3">
+                                    <!-- Photo File with Live Preview -->
+                                    <div class="col-md-5">
+                                        <label class="form-label fw-semibold">Select Photograph <span class="text-danger">*</span></label>
+                                        <input type="file" name="photo" id="photoFileInput" class="form-control" accept="image/jpeg,image/png,image/webp,image/jpg" required onchange="previewUploadImage(this, 'uploadPreviewImg', 'uploadPreviewBox')">
+                                        <div class="form-text small">Accepted: PNG, JPG, JPEG, WebP (Max 15MB). <strong>All formats are automatically converted to .webp</strong>, and initial uploaded files are deleted.</div>
+
+                                        <div id="uploadPreviewBox" class="mt-3 p-2 bg-white rounded-3 border text-center" style="display:none;">
+                                            <div class="text-muted small mb-1">Image Preview:</div>
+                                            <img id="uploadPreviewImg" src="" alt="Preview" class="img-fluid rounded object-fit-contain" style="max-height: 200px;">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-7">
+                                        <div class="row g-3">
+                                            <!-- Title -->
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-semibold">Photograph Title / शीर्षक <span class="text-muted small">(Optional)</span></label>
+                                                <input type="text" name="title" class="form-control" placeholder="e.g. स्वामी विवेकानंद युवा पुरस्कार अलंकरण (राजभवन)">
+                                            </div>
+
+                                            <!-- Short Caption -->
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-semibold">Short Caption / संक्षिप्त विवरण <span class="text-muted small">(Optional)</span></label>
+                                                <textarea name="caption" rows="2" class="form-control" placeholder="Brief context or memorable background about this moment..."></textarea>
+                                            </div>
+
+                                            <!-- Year / Date -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Approx. Year (वर्ष) <span class="text-muted small">(Optional)</span></label>
+                                                <input type="text" name="photo_year" class="form-control" placeholder="e.g. 1991 or 2024">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Exact Date (दिनांक) <span class="text-muted small">(Optional)</span></label>
+                                                <input type="date" name="photo_date" class="form-control">
+                                            </div>
+
+                                            <!-- Location & Alt text -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Location / स्थान <span class="text-muted small">(Optional)</span></label>
+                                                <input type="text" name="location" class="form-control" placeholder="e.g. कमरावां, बाराबंकी or लखनऊ">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Accessibility Alt Text <span class="text-muted small">(Optional)</span></label>
+                                                <input type="text" name="alt_text" class="form-control" placeholder="Descriptive label for screen readers">
+                                            </div>
+
+                                            <!-- Display Order & Status -->
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Display Order / क्रम</label>
+                                                <input type="number" name="display_order" class="form-control" value="<?= $nextOrder ?>" min="0">
+                                                <div class="form-text small">Lower numbers appear first on the page (1, 2, 3...).</div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label fw-semibold">Publish Status</label>
+                                                <select name="status" class="form-select">
+                                                    <option value="published" selected>Published (Visible on About page)</option>
+                                                    <option value="hidden">Hidden / Draft (Internal only)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 text-end pt-2 border-top">
+                                        <button type="button" class="btn btn-outline-secondary me-2" data-bs-toggle="collapse" data-bs-target="#uploadPhotoCollapse">Cancel</button>
+                                        <button type="submit" class="btn btn-success px-4 fw-semibold"><i class="fa-solid fa-floppy-disk me-1"></i> Save & Publish Photograph</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Search, Filters, and Bulk Order Bar -->
+                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 bg-light p-2.5 rounded-3 border">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="text-muted small fw-semibold me-1">Filter Status:</span>
+                            <a href="?module=about_photos&status=all<?= $searchQuery ? '&q=' . urlencode($searchQuery) : '' ?>" class="btn btn-sm <?= $statusFilter === 'all' ? 'btn-dark' : 'btn-outline-secondary' ?> rounded-pill px-3">All (<?= $totalCount ?>)</a>
+                            <a href="?module=about_photos&status=published<?= $searchQuery ? '&q=' . urlencode($searchQuery) : '' ?>" class="btn btn-sm <?= $statusFilter === 'published' ? 'btn-success' : 'btn-outline-secondary' ?> rounded-pill px-3">Published (<?= $publishedCount ?>)</a>
+                            <a href="?module=about_photos&status=hidden<?= $searchQuery ? '&q=' . urlencode($searchQuery) : '' ?>" class="btn btn-sm <?= $statusFilter === 'hidden' ? 'btn-secondary' : 'btn-outline-secondary' ?> rounded-pill px-3">Hidden (<?= $hiddenCount ?>)</a>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <form method="get" class="d-flex align-items-center gap-1">
+                                <input type="hidden" name="module" value="about_photos">
+                                <input type="hidden" name="status" value="<?= e($statusFilter) ?>">
+                                <div class="input-group input-group-sm">
+                                    <input type="text" name="q" class="form-control" placeholder="Search title/year/location..." value="<?= e($searchQuery) ?>" style="min-width: 180px;">
+                                    <button class="btn btn-outline-secondary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                                </div>
+                                <?php if ($searchQuery): ?>
+                                    <a href="?module=about_photos&status=<?= e($statusFilter) ?>" class="btn btn-sm btn-outline-danger" title="Clear Search"><i class="fa-solid fa-times"></i></a>
+                                <?php endif; ?>
+                            </form>
+                            <?php if (!empty($allPhotos)): ?>
+                                <button type="button" class="btn btn-sm btn-outline-primary whitespace-nowrap" id="saveAllOrdersBtn" onclick="submitReorderForm()">
+                                    <i class="fa-solid fa-sort me-1"></i> Save Orders
+                                </button>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <?php if (empty($allPhotos)): ?>
+                        <!-- Empty State -->
+                        <div class="text-center py-5 my-4 bg-light rounded-4 border border-dashed">
+                            <div class="w-16 h-16 rounded-circle bg-white text-muted mx-auto mb-3 d-flex align-items-center justify-content-center border shadow-xs" style="width: 70px; height: 70px;">
+                                <i class="fa-solid fa-camera-retro fs-2 text-secondary"></i>
+                            </div>
+                            <h4 class="fw-bold text-dark mb-1">No personal photos have been uploaded yet.</h4>
+                            <p class="text-muted small max-w-md mx-auto mb-4" style="max-width: 460px;">
+                                Upload personal and archival photographs of Shri Pradeep Sarang to feature in the "जीवन के कुछ यादगार पल" gallery on the About page.
+                            </p>
+                            <button class="btn btn-success px-4 py-2 fw-semibold shadow-xs" type="button" data-bs-toggle="collapse" data-bs-target="#uploadPhotoCollapse" onclick="document.getElementById('photoFileInput').focus()">
+                                <i class="fa-solid fa-plus me-1"></i> Upload First Photo
+                            </button>
+                        </div>
+                    <?php else: ?>
+                        <div class="small text-muted mb-2 d-flex align-items-center gap-1">
+                            <i class="fa-solid fa-arrows-up-down-left-right text-primary me-1"></i>
+                            <span>Tip: Drag cards to reorder, or edit order numbers in the inputs below and click <strong>Save Orders</strong>.</span>
+                        </div>
+
+                        <!-- Gallery Cards Grid with Drag-and-Drop -->
+                        <form id="reorderForm" method="post">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="action" value="reorder_personal_photos">
+
+                            <div class="row g-3" id="photoSortableContainer">
+                                <?php foreach ($allPhotos as $p): ?>
+                                    <?php 
+                                    $imgSrc = !empty($p['thumbnail_path']) ? base_url($p['thumbnail_path']) : base_url($p['photo_path']);
+                                    $largeImgSrc = base_url($p['photo_path']);
+                                    $isPublished = ($p['status'] === 'published');
+                                    ?>
+                                    <div class="col-sm-6 col-md-4 col-xl-3 photo-sortable-card" data-id="<?= $p['id'] ?>" draggable="true">
+                                        <div class="card h-100 border shadow-xs hover-shadow rounded-3 overflow-hidden position-relative">
+                                            <!-- Top Status & Drag Handle Bar -->
+                                            <div class="position-absolute top-0 start-0 end-0 p-2 d-flex justify-content-between align-items-center z-2 pointer-events-none" style="background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, transparent 100%);">
+                                                <span class="badge bg-dark bg-opacity-75 text-white border border-light border-opacity-25 rounded-pill px-2 py-1 font-monospace small">
+                                                    <i class="fa-solid fa-grip-vertical me-1 opacity-75"></i>#<?= (int)$p['display_order'] ?>
+                                                </span>
+                                                <span class="badge <?= $isPublished ? 'bg-success' : 'bg-secondary' ?> rounded-pill px-2.5 py-1 shadow-xs">
+                                                    <i class="fa-solid <?= $isPublished ? 'fa-check' : 'fa-eye-slash' ?> me-1"></i><?= ucfirst($p['status']) ?>
+                                                </span>
+                                            </div>
+
+                                            <!-- Thumbnail Image with Click-to-Enlarge Preview -->
+                                            <div class="position-relative overflow-hidden bg-dark" style="height: 190px;">
+                                                <img src="<?= e($imgSrc) ?>" alt="<?= e($p['alt_text'] ?: 'Photo') ?>" class="w-100 h-100 object-fit-cover transition-transform" style="cursor: zoom-in;" onclick="window.open('<?= e($largeImgSrc) ?>', '_blank')">
+                                            </div>
+
+                                            <!-- Card Body with Details -->
+                                            <div class="card-body p-3 d-flex flex-col justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title fw-bold text-dark mb-1 text-truncate" title="<?= e($p['title'] ?: 'Untitled Photo') ?>">
+                                                        <?= e($p['title'] ?: 'Untitled Photograph') ?>
+                                                    </h5>
+                                                    <?php if (!empty($p['caption'])): ?>
+                                                        <p class="card-text text-muted small mb-2 text-truncate-2" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 38px;">
+                                                            <?= e($p['caption']) ?>
+                                                        </p>
+                                                    <?php else: ?>
+                                                        <p class="card-text text-muted small mb-2 fst-italic" style="min-height: 38px;">(No caption provided)</p>
+                                                    <?php endif; ?>
+
+                                                    <!-- Metadata Tags -->
+                                                    <div class="d-flex flex-wrap gap-1 mb-2">
+                                                        <?php if (!empty($p['photo_year'])): ?>
+                                                            <span class="badge bg-light text-dark border"><i class="fa-solid fa-calendar me-1 text-primary"></i><?= e($p['photo_year']) ?></span>
+                                                        <?php elseif (!empty($p['photo_date'])): ?>
+                                                            <span class="badge bg-light text-dark border"><i class="fa-solid fa-calendar me-1 text-primary"></i><?= date('M Y', strtotime($p['photo_date'])) ?></span>
+                                                        <?php endif; ?>
+
+                                                        <?php if (!empty($p['location'])): ?>
+                                                            <span class="badge bg-light text-dark border text-truncate" style="max-width: 140px;" title="<?= e($p['location']) ?>">
+                                                                <i class="fa-solid fa-location-dot me-1 text-danger"></i><?= e($p['location']) ?>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </div>
+
+                                                    <div class="text-muted" style="font-size: 11px;">
+                                                        <span>By: <?= e($p['uploader_name'] ?: 'Admin') ?></span> • 
+                                                        <span><?= date('d M Y', strtotime($p['created_at'])) ?></span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Card Actions Bar -->
+                                                <div class="pt-3 mt-2 border-top d-flex align-items-center justify-content-between gap-1">
+                                                    <!-- Inline Order Input -->
+                                                    <div class="d-flex align-items-center gap-1" style="width: 80px;" title="Set manual display order">
+                                                        <span class="small text-muted">Order:</span>
+                                                        <input type="number" name="orders[<?= $p['id'] ?>]" value="<?= (int)$p['display_order'] ?>" class="form-control form-control-sm text-center px-1 py-0 order-input" min="0" onchange="document.getElementById('saveAllOrdersBtn').classList.add('btn-primary', 'animate-pulse')">
+                                                    </div>
+
+                                                    <div class="d-flex align-items-center gap-1">
+                                                        <!-- Quick Toggle Status -->
+                                                        <form method="post" class="d-inline">
+                                                            <?= csrf_field() ?>
+                                                            <input type="hidden" name="action" value="toggle_personal_photo_status">
+                                                            <input type="hidden" name="id" value="<?= $p['id'] ?>">
+                                                            <button type="submit" class="btn btn-sm <?= $isPublished ? 'btn-outline-secondary' : 'btn-outline-success' ?> p-1" title="<?= $isPublished ? 'Hide from public About page' : 'Publish to public About page' ?>" style="width: 32px; height: 30px;">
+                                                                <i class="fa-solid <?= $isPublished ? 'fa-eye-slash' : 'fa-eye' ?>"></i>
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Edit Button -->
+                                                        <button type="button" class="btn btn-sm btn-outline-primary p-1" title="Edit Photo Details" style="width: 32px; height: 30px;" onclick="openEditModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)">
+                                                            <i class="fa-solid fa-pen"></i>
+                                                        </button>
+
+                                                        <!-- Delete Button -->
+                                                        <button type="button" class="btn btn-sm btn-outline-danger p-1" title="Delete Photo" style="width: 32px; height: 30px;" onclick="confirmDeletePhoto(<?= $p['id'] ?>, '<?= e(addslashes($p['title'] ?: 'Untitled')) ?>', '<?= e($imgSrc) ?>')">
+                                                            <i class="fa-solid fa-trash-can"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </form>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Edit Photograph Modal -->
+                <div class="modal fade" id="editPhotoModal" tabindex="-1" aria-labelledby="editPhotoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg rounded-3">
+                            <form method="post" enctype="multipart/form-data">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="save_personal_photo">
+                                <input type="hidden" name="id" id="editPhotoId" value="0">
+
+                                <div class="modal-header bg-dark text-white">
+                                    <h5 class="modal-title fw-bold" id="editPhotoModalLabel"><i class="fa-solid fa-pen-to-square me-2"></i>Edit Photograph Details</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body p-4">
+                                    <div class="row g-3">
+                                        <!-- Current Image Preview & Replace Input -->
+                                        <div class="col-md-4 text-center border-end">
+                                            <label class="form-label fw-semibold d-block text-start">Current Image</label>
+                                            <div class="p-2 bg-light rounded-3 border mb-3">
+                                                <img id="editCurrentPhotoImg" src="" alt="Photo" class="img-fluid rounded object-fit-contain" style="max-height: 180px;">
+                                            </div>
+                                            <label class="form-label fw-semibold d-block text-start small">Replace Image (Optional):</label>
+                                            <input type="file" name="photo" class="form-control form-control-sm" accept="image/jpeg,image/png,image/webp,image/jpg" onchange="previewUploadImage(this, 'editCurrentPhotoImg')">
+                                            <div class="form-text small text-start">Leave blank to keep existing. Any new image is converted to .webp and previous files are removed.</div>
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold">Title / शीर्षक</label>
+                                                    <input type="text" name="title" id="editPhotoTitle" class="form-control" placeholder="Photograph Title">
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <label class="form-label fw-semibold">Short Caption / विवरण</label>
+                                                    <textarea name="caption" id="editPhotoCaption" rows="2" class="form-control" placeholder="Caption or context..."></textarea>
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Year (वर्ष)</label>
+                                                    <input type="text" name="photo_year" id="editPhotoYear" class="form-control" placeholder="e.g. 1991">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Date (दिनांक)</label>
+                                                    <input type="date" name="photo_date" id="editPhotoDate" class="form-control">
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Location / स्थान</label>
+                                                    <input type="text" name="location" id="editPhotoLocation" class="form-control" placeholder="Location">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Alt Text</label>
+                                                    <input type="text" name="alt_text" id="editPhotoAltText" class="form-control" placeholder="Alt text">
+                                                </div>
+
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Display Order / क्रम</label>
+                                                    <input type="number" name="display_order" id="editPhotoDisplayOrder" class="form-control" min="0">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="form-label fw-semibold">Publish Status</label>
+                                                    <select name="status" id="editPhotoStatus" class="form-select">
+                                                        <option value="published">Published (Visible)</option>
+                                                        <option value="hidden">Hidden / Draft</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer bg-light">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-success px-4 fw-semibold"><i class="fa-solid fa-floppy-disk me-1"></i> Update Photograph</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Confirmation Modal -->
+                <div class="modal fade" id="deletePhotoModal" tabindex="-1" aria-labelledby="deletePhotoModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg rounded-3">
+                            <form method="post">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="delete_personal_photo">
+                                <input type="hidden" name="id" id="deletePhotoId" value="0">
+
+                                <div class="modal-header bg-danger text-white">
+                                    <h5 class="modal-title fw-bold" id="deletePhotoModalLabel"><i class="fa-solid fa-triangle-exclamation me-2"></i>Confirm Photo Deletion</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body p-4 text-center">
+                                    <div class="mb-3">
+                                        <img id="deletePhotoThumb" src="" alt="Photo" class="rounded border shadow-xs" style="max-height: 120px;">
+                                    </div>
+                                    <h5 class="fw-bold text-dark mb-2" id="deletePhotoTitle">Are you sure you want to permanently delete this photo?</h5>
+                                    <p class="text-danger small mb-0">Are you sure you want to permanently delete this photo? This will remove the database record and delete associated files from the server.</p>
+                                </div>
+                                <div class="modal-footer bg-light justify-content-center">
+                                    <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger px-4 fw-semibold"><i class="fa-solid fa-trash me-1"></i> Yes, Permanently Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scripts for Admin Module (Preview, Modals, Drag-and-Drop) -->
+                <script>
+                function previewUploadImage(input, previewImgId, previewBoxId) {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.getElementById(previewImgId);
+                            if (img) img.src = e.target.result;
+                            if (previewBoxId) {
+                                const box = document.getElementById(previewBoxId);
+                                if (box) box.style.display = 'block';
+                            }
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+
+                function openEditModal(photo) {
+                    document.getElementById('editPhotoId').value = photo.id;
+                    document.getElementById('editPhotoTitle').value = photo.title || '';
+                    document.getElementById('editPhotoCaption').value = photo.caption || '';
+                    document.getElementById('editPhotoYear').value = photo.photo_year || '';
+                    document.getElementById('editPhotoDate').value = photo.photo_date || '';
+                    document.getElementById('editPhotoLocation').value = photo.location || '';
+                    document.getElementById('editPhotoAltText').value = photo.alt_text || '';
+                    document.getElementById('editPhotoDisplayOrder').value = photo.display_order || 0;
+                    document.getElementById('editPhotoStatus').value = photo.status || 'published';
+                    
+                    const basePath = '<?= base_url() ?>';
+                    const imgRel = photo.thumbnail_path || photo.photo_path;
+                    document.getElementById('editCurrentPhotoImg').src = basePath + '/' + imgRel.replace(/^\/+/, '');
+
+                    const editModal = new bootstrap.Modal(document.getElementById('editPhotoModal'));
+                    editModal.show();
+                }
+
+                function confirmDeletePhoto(id, title, imgSrc) {
+                    document.getElementById('deletePhotoId').value = id;
+                    document.getElementById('deletePhotoTitle').textContent = title ? ('"' + title + '"') : 'this photograph';
+                    document.getElementById('deletePhotoThumb').src = imgSrc;
+                    const deleteModal = new bootstrap.Modal(document.getElementById('deletePhotoModal'));
+                    deleteModal.show();
+                }
+
+                function submitReorderForm() {
+                    const form = document.getElementById('reorderForm');
+                    if (form) form.submit();
+                }
+
+                // Drag and drop reordering
+                (function initDragAndDrop() {
+                    const container = document.getElementById('photoSortableContainer');
+                    if (!container) return;
+
+                    let draggedItem = null;
+
+                    container.addEventListener('dragstart', (e) => {
+                        const card = e.target.closest('.photo-sortable-card');
+                        if (!card) return;
+                        draggedItem = card;
+                        card.classList.add('opacity-50', 'border-primary');
+                        e.dataTransfer.effectAllowed = 'move';
+                        e.dataTransfer.setData('text/plain', card.dataset.id);
+                    });
+
+                    container.addEventListener('dragend', (e) => {
+                        const card = e.target.closest('.photo-sortable-card');
+                        if (card) card.classList.remove('opacity-50', 'border-primary');
+                        draggedItem = null;
+                    });
+
+                    container.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        e.dataTransfer.dropEffect = 'move';
+                        const targetCard = e.target.closest('.photo-sortable-card');
+                        if (targetCard && targetCard !== draggedItem) {
+                            const rect = targetCard.getBoundingClientRect();
+                            const next = (e.clientX - rect.left) / (rect.right - rect.left) > 0.5;
+                            container.insertBefore(draggedItem, next ? targetCard.nextSibling : targetCard);
+                        }
+                    });
+
+                    container.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        // Recalculate order numbers sequentially
+                        const cards = container.querySelectorAll('.photo-sortable-card');
+                        const orderMap = {};
+                        cards.forEach((card, index) => {
+                            const newOrder = index + 1;
+                            const input = card.querySelector('.order-input');
+                            if (input) input.value = newOrder;
+                            const id = card.dataset.id;
+                            orderMap[id] = newOrder;
+                            const badge = card.querySelector('.font-monospace');
+                            if (badge) badge.innerHTML = '<i class="fa-solid fa-grip-vertical me-1 opacity-75"></i>#' + newOrder;
+                        });
+
+                        // Notify button
+                        const saveBtn = document.getElementById('saveAllOrdersBtn');
+                        if (saveBtn) saveBtn.classList.add('btn-primary');
+
+                        // Save order via AJAX in background
+                        const formData = new FormData();
+                        formData.append('action', 'reorder_personal_photos');
+                        formData.append('csrf_token', '<?= csrf_token() ?>');
+                        formData.append('order_data', JSON.stringify(orderMap));
+
+                        fetch(window.location.href, {
+                            method: 'POST',
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                            body: formData
+                        }).then(r => r.json()).then(res => {
+                            if (res.status === 'success') {
+                                if (saveBtn) {
+                                    saveBtn.innerHTML = '<i class="fa-solid fa-check text-success me-1"></i> Order Saved!';
+                                    setTimeout(() => {
+                                        saveBtn.innerHTML = '<i class="fa-solid fa-sort me-1"></i> Save Orders';
+                                    }, 2000);
+                                }
+                            }
+                        }).catch(() => {});
+                    });
+                })();
+                </script>
             <?php elseif ($module === 'videos'): ?>
                 <?php
                 require_once __DIR__ . '/../models/VideoModel.php';
@@ -3073,7 +3776,7 @@ $metrics = $content->metrics();
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Location / Address Tag</label>
-                                        <input type="text" name="location" class="form-control" value="<?= e($editUser['location'] ?? '') ?>" placeholder="e.g. कमरावां, सतरिख, बाराबंकी (उ० प्र०)">
+                                        <input type="text" name="location" class="form-control" value="<?= e($editUser['location'] ?? '') ?>" placeholder="e.g. ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">LinkedIn Profile Link</label>
@@ -3533,7 +4236,7 @@ $metrics = $content->metrics();
 
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Location / Address Tag</label>
-                                <input type="text" name="author_location" class="form-control" placeholder="कमरावां, सतरिख, बाराबंकी (उ० प्र०)" value="<?= e($settings['author_location'] ?? 'कमरावां, सतरिख, बाराबंकी (उ० प्र०)') ?>">
+                                <input type="text" name="author_location" class="form-control" placeholder="ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत" value="<?= e($settings['author_location'] ?? 'ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत') ?>">
                             </div>
 
                             <div class="col-md-6">

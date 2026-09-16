@@ -180,6 +180,12 @@ $isHomePage = basename($viewFile) === 'home.php';
             vertical-align: middle;
             line-height: 1;
         }
+        header a[class*="bg-[#14532D]"],
+        header a[class*="bg-[#C05632]"],
+        header a[class*="bg-[#14532D]"] *,
+        header a[class*="bg-[#C05632]"] * {
+            color: #ffffff !important;
+        }
     </style>
     <?php if (!$isHomePage): ?>
         <link href="<?= e(asset('css/site/home.css')) ?>" rel="stylesheet">
@@ -271,13 +277,283 @@ $isHomePage = basename($viewFile) === 'home.php';
         </div>
         <div class="mt-4 flex items-center justify-between gap-4">
             <p id="ps-lightbox-caption" class="font-body-md text-deep-forest font-medium"></p>
-            <a class="text-primary hover:text-deep-forest font-label-md text-label-md font-bold flex items-center gap-1 shrink-0" id="ps-lightbox-original" href="#" target="_blank" rel="noopener noreferrer">
-                <?= e(ps_text('मूल चित्र खोलें','Open original image')) ?> ↗
-            </a>
         </div>
     </dialog>
+
+    <!-- Volunteer Enrollment Form Popup Modal -->
+    <dialog id="ps-volunteer-modal" class="backdrop:bg-black/75 backdrop:backdrop-blur-sm rounded-2xl p-0 bg-transparent max-w-3xl w-[94vw] shadow-2xl z-[100000] border-0 my-auto overflow-hidden">
+        <div class="bg-surface-container-lowest rounded-2xl border border-border-warm overflow-hidden flex flex-col max-h-[90vh]">
+            <!-- Modal Header with Close Button in Corner -->
+            <div class="bg-deep-forest text-on-primary px-5 py-4 flex items-center justify-between sticky top-0 z-20 shadow-md">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-fresh-sprout text-[26px]">volunteer_activism</span>
+                    <div>
+                        <h3 class="font-headline-sm text-base sm:text-lg font-bold text-pure-white leading-tight m-0">
+                            <?= e(ps_text('स्वयंसेवक सहभागिता प्रपत्र (Volunteer Enrollment Form)', 'Volunteer Registration Form')) ?>
+                        </h3>
+                        <p class="font-label-sm text-xs opacity-90 m-0" style="color: rgba(255, 255, 255, 0.9);">
+                            <?= e(ps_text('माटी का ऋण और सामाजिक उत्तरदायित्व • ग्रीन गैंग स्वयंसेवक दल', 'Green Gang & Public Service Volunteer Network')) ?>
+                        </p>
+                    </div>
+                </div>
+                <!-- Close Button in Corner -->
+                <button type="button" onclick="closeVolunteerModal(event)" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/25 text-white flex items-center justify-center transition-all cursor-pointer border-0 text-xl font-bold shrink-0 ml-2" title="<?= e(ps_text('बंद करें', 'Close')) ?>" aria-label="<?= e(ps_text('बंद करें', 'Close')) ?>">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable Form) -->
+            <div class="p-5 sm:p-7 overflow-y-auto space-y-5 bg-cream-canvas text-left">
+                <form id="modalVolunteerForm" method="post" action="<?= e(base_url('/volunteer')) ?>" enctype="multipart/form-data" class="space-y-5">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="form_type" value="volunteer">
+
+                    <div class="bg-surface-container-lowest p-3.5 rounded-xl border border-border-warm shadow-xs flex items-center gap-3 text-xs text-text-muted">
+                        <span class="material-symbols-outlined text-primary text-[20px] shrink-0">edit_note</span>
+                        <span><?= e(ps_text('कृपया अपनी सही जानकारी भरें ताकि आपके निकटतम क्षेत्र के ग्रीन गैंग समन्वयक आपसे संपर्क कर सकें।', 'Please enter your authentic details so your nearest Green Gang coordinator can reach out.')) ?></span>
+                    </div>
+
+                    <!-- Row 1: Full Name & WhatsApp Number -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="modalFullName" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('पूरा नाम (Full Name)', 'Full Name')) ?> <span class="text-error">*</span>
+                            </label>
+                            <input type="text" id="modalFullName" name="full_name" required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                        <div>
+                            <label for="modalWhatsappNumber" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('मोबाइल / WhatsApp नंबर', 'Mobile / WhatsApp Number')) ?> <span class="text-error">*</span>
+                            </label>
+                            <input type="tel" id="modalWhatsappNumber" name="phone" required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Father Name & Email -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="modalFatherName" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('पिता / अभिभावक का नाम', 'Father / Guardian Name')) ?>
+                            </label>
+                            <input type="text" id="modalFatherName" name="father_name" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                        <div>
+                            <label for="modalEmailAddress" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('ईमेल पता (Email Address)', 'Email Address')) ?> <span class="text-error">*</span>
+                            </label>
+                            <input type="email" id="modalEmailAddress" name="email" required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Gender, DOB, Occupation -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="modalGenderSelect" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('लिंग (Gender)', 'Gender')) ?>
+                            </label>
+                            <select id="modalGenderSelect" name="gender" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                                <option value="Male"><?= e(ps_text('पुरुष (Male)', 'Male')) ?></option>
+                                <option value="Female"><?= e(ps_text('महिला (Female)', 'Female')) ?></option>
+                                <option value="Other"><?= e(ps_text('अन्य (Other)', 'Other')) ?></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="modalUserDob" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('जन्म तिथि (Date of Birth)', 'Date of Birth')) ?>
+                            </label>
+                            <input type="date" id="modalUserDob" name="dob" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                        <div>
+                            <label for="modalUserOccupation" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('व्यवसाय / पेशा', 'Occupation')) ?>
+                            </label>
+                            <input type="text" id="modalUserOccupation" name="occupation" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Row 4: State, District, Pincode -->
+                    <?php 
+                        $modalStates = (new ContentModel())->getStates();
+                        if (empty($modalStates)) {
+                            $modalStates = [
+                                ['state_id' => 1, 'state_name' => 'Uttar Pradesh'],
+                                ['state_id' => 2, 'state_name' => 'Delhi'],
+                                ['state_id' => 3, 'state_name' => 'Bihar'],
+                                ['state_id' => 4, 'state_name' => 'Madhya Pradesh'],
+                                ['state_id' => 5, 'state_name' => 'Rajasthan'],
+                                ['state_id' => 6, 'state_name' => 'Other']
+                            ];
+                        }
+                    ?>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="modalStateSelect" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('राज्य (State)', 'State')) ?> <span class="text-error">*</span>
+                            </label>
+                            <select id="modalStateSelect" name="state" required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                                <option value=""><?= e(ps_text('राज्य चुनें', 'Choose State')) ?></option>
+                                <?php foreach ($modalStates as $st): ?>
+                                    <option value="<?= e((string)($st['state_id'] ?? $st['state_name'])) ?>"><?= e($st['state_name']) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="modalDistrictSelect" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('जिला (District)', 'District')) ?> <span class="text-error">*</span>
+                            </label>
+                            <select id="modalDistrictSelect" name="district" disabled required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                                <option value=""><?= e(ps_text('जिला चुनें', 'Choose District')) ?></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="modalUserPincode" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('पिनकोड (PIN Code)', 'PIN Code')) ?>
+                            </label>
+                            <input type="text" id="modalUserPincode" name="pincode" inputmode="numeric" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                        </div>
+                    </div>
+
+                    <!-- Domains of Contribution -->
+                    <div>
+                        <label for="modalUserInterests" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                            <?= e(ps_text('आप किस अभियान में सहभागिता करना चाहते हैं? (रुचि/कौशल)', 'Which initiatives interest you?')) ?> <span class="text-error">*</span>
+                        </label>
+                        <input type="text" id="modalUserInterests" name="interests" required class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                    </div>
+
+                    <!-- Time Availability -->
+                    <div>
+                        <label for="modalUserAvailability" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                            <?= e(ps_text('समय की उपलब्धता (Time Availability)', 'Time Availability')) ?>
+                        </label>
+                        <select id="modalUserAvailability" name="availability" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+                            <option value="Flexible"><?= e(ps_text('लचीला समय (Flexible Time)', 'Flexible')) ?></option>
+                            <option value="Weekends"><?= e(ps_text('सप्ताहांत (Saturday-Sunday)', 'Weekends')) ?></option>
+                            <option value="Weekdays"><?= e(ps_text('कार्यदिवस (Monday-Friday)', 'Weekdays')) ?></option>
+                            <option value="On-Call"><?= e(ps_text('आवश्यकतानुसार ऑन-कॉल (Emergency On-Call)', 'Emergency On-Call')) ?></option>
+                        </select>
+                    </div>
+
+                    <!-- Upload Photo & Resume -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="modalUserPhoto" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('पासपोर्ट साइज फोटो (Photo Upload)', 'Passport Photo')) ?>
+                            </label>
+                            <input type="file" id="modalUserPhoto" name="photo" accept="image/*" class="w-full px-3 py-2 rounded-xl border border-border-warm bg-pure-white text-on-surface text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-deep-forest file:text-white cursor-pointer">
+                        </div>
+                        <div>
+                            <label for="modalUserResume" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                                <?= e(ps_text('रिज्यूमे / परिचय (Optional Resume)', 'Optional Resume')) ?>
+                            </label>
+                            <input type="file" id="modalUserResume" name="resume" accept=".pdf,.doc,.docx" class="w-full px-3 py-2 rounded-xl border border-border-warm bg-pure-white text-on-surface text-xs file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-deep-forest file:text-white cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Message / Motivation -->
+                    <div>
+                        <label for="modalUserMessage" class="block font-label-md text-sm text-deep-forest font-semibold mb-1.5">
+                            <?= e(ps_text('आप इस अभियान से क्यों जुड़ना चाहते हैं?', 'Why do you want to join?')) ?>
+                        </label>
+                        <textarea id="modalUserMessage" name="message" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface text-sm focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all"></textarea>
+                    </div>
+
+                    <!-- Pledge Checkbox -->
+                    <div class="bg-tertiary-fixed/20 p-3.5 rounded-xl border border-tertiary-fixed/40">
+                        <label class="flex items-start gap-2.5 cursor-pointer">
+                            <input type="checkbox" required class="mt-0.5 w-4 h-4 rounded border-border-warm text-primary-container focus:ring-fresh-sprout/30 shrink-0">
+                            <span class="font-body-sm text-xs text-deep-forest leading-relaxed">
+                                <strong><?= e(ps_text('हमारा संकल्प:', 'Our Pledge:')) ?></strong> <?= e(ps_text('मैं \'ग्रीन मॉर्निंग\' की उदात्त भावना, निस्वार्थ समाजसेवा और पर्यावरण रक्षा के प्रति पूर्ण निष्ठावान रहने का वचन देता/देती हूँ।', 'I pledge commitment to Green Morning, selfless public service and environmental protection.')) ?>
+                            </span>
+                        </label>
+                    </div>
+
+                    <!-- Submit Button & Close -->
+                    <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <button type="submit" class="w-full sm:w-auto px-7 py-3 rounded-xl font-title-md text-sm font-bold shadow-md transition-all flex items-center justify-center gap-2 border-0 cursor-pointer" style="background-color: #14532d; color: #ffffff;">
+                            <span style="color: #ffffff;"><?= e(ps_text('स्वयंसेवक के रूप में पंजीकृत हों', 'Submit Application')) ?></span>
+                            <span class="material-symbols-outlined text-[18px]" style="color: #ffffff;">arrow_forward</span>
+                        </button>
+                        <button type="button" onclick="closeVolunteerModal(event)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-surface-container hover:bg-border-warm font-label-md text-sm font-semibold transition-all border-0 cursor-pointer text-center" style="color: #14532d;">
+                            <?= e(ps_text('रद्द करें (Cancel)', 'Cancel')) ?>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+    function openVolunteerModal(event) {
+        if (event) event.preventDefault();
+        const modal = document.getElementById('ps-volunteer-modal');
+        if (modal) {
+            if (typeof modal.showModal === 'function') {
+                modal.showModal();
+            } else {
+                modal.setAttribute('open', 'true');
+            }
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeVolunteerModal(event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        const modal = document.getElementById('ps-volunteer-modal');
+        if (modal) {
+            if (typeof modal.close === 'function') {
+                modal.close();
+            } else {
+                modal.removeAttribute('open');
+            }
+            document.body.style.overflow = '';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.getElementById('ps-volunteer-modal');
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                const rect = modal.getBoundingClientRect();
+                const isInDialog = (rect.top <= e.clientY && e.clientY <= rect.top + rect.height &&
+                    rect.left <= e.clientX && e.clientX <= rect.left + rect.width);
+                if (!isInDialog) {
+                    closeVolunteerModal();
+                }
+            });
+            modal.addEventListener('close', () => {
+                document.body.style.overflow = '';
+            });
+        }
+
+        const modalState = document.getElementById('modalStateSelect');
+        const modalDistrict = document.getElementById('modalDistrictSelect');
+        if (modalState && modalDistrict) {
+            modalState.addEventListener('change', async () => {
+                modalDistrict.innerHTML = '<option value=""><?= e(ps_text('जिला चुनें', 'Choose District')) ?></option>';
+                modalDistrict.disabled = true;
+                if (!modalState.value) return;
+                try {
+                    const res = await fetch('<?= e(base_url('/api/cities')) ?>?state_id=' + encodeURIComponent(modalState.value));
+                    const json = await res.json();
+                    if (json.status === 'success' && json.data && json.data.length) {
+                        json.data.forEach(c => modalDistrict.add(new Option(c.city_name, c.city_name)));
+                        modalDistrict.disabled = false;
+                    }
+                } catch (err) {
+                    modalDistrict.disabled = true;
+                }
+            });
+        }
+    });
+    </script>
+
     <!-- Deferred Application Engine JS -->
     <script src="<?= e(asset('js/app.js')) ?>" defer></script>
 </body>
 </html>
+
 

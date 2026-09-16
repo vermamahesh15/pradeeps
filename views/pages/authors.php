@@ -60,7 +60,6 @@ $roleNames = [
           <input type="text" 
                  name="q" 
                  value="<?= e($searchQuery) ?>" 
-                 placeholder="<?= e(ps_text('लेखक का नाम या विषय खोजें...', 'Search by author name or topic...')) ?>" 
                  class="w-full pl-10 pr-10 py-2.5 rounded-xl border border-border-warm bg-cream-canvas text-deep-forest font-body-md text-body-md focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all">
           <?php if ($searchQuery !== ''): ?>
             <a href="<?= e(base_url('/authors?role=' . urlencode($currentRole))) ?>" class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-deep-forest text-sm font-bold">&times;</a>
