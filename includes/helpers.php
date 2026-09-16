@@ -680,6 +680,33 @@ if (!function_exists('ps_generate_sitemap')) {
     }
 }
 
+if (!function_exists('transliterate_devanagari')) {
+    /**
+     * Convert Hindi Devanagari text into clean Roman / English characters for titles and slugs.
+     */
+    function transliterate_devanagari(string $text): string
+    {
+        $map = [
+            'अ' => 'a', 'आ' => 'aa', 'इ' => 'i', 'ई' => 'ee', 'उ' => 'u', 'ऊ' => 'oo', 'ऋ' => 'ri',
+            'ए' => 'e', 'ऐ' => 'ai', 'ओ' => 'o', 'औ' => 'au', 'अं' => 'an', 'अः' => 'ah',
+            'क' => 'k', 'ख' => 'kh', 'ग' => 'g', 'घ' => 'gh', 'ङ' => 'ng',
+            'च' => 'ch', 'छ' => 'chh', 'ज' => 'j', 'झ' => 'jh', 'ञ' => 'ny',
+            'ट' => 't', 'ठ' => 'th', 'ड' => 'd', 'ढ' => 'dh', 'ण' => 'n',
+            'त' => 't', 'थ' => 'th', 'द' => 'd', 'ध' => 'dh', 'न' => 'n',
+            'प' => 'p', 'फ' => 'f', 'ब' => 'b', 'भ' => 'bh', 'म' => 'm',
+            'य' => 'y', 'र' => 'r', 'ल' => 'l', 'व' => 'v', 'श' => 'sh', 'ष' => 'sh', 'स' => 's', 'ह' => 'h',
+            'क्ष' => 'ksh', 'त्र' => 'tra', 'ज्ञ' => 'gya', 'श्र' => 'shra',
+            'ा' => 'a', 'ि' => 'i', 'ी' => 'ee', 'ु' => 'u', 'ू' => 'oo', 'ृ' => 'ri',
+            'े' => 'e', 'ै' => 'ai', 'ो' => 'o', 'ौ' => 'au', 'ं' => 'n', 'ँ' => 'n', 'ः' => 'h',
+            '्' => '', '़' => '', '।' => '.', '॥' => '.'
+        ];
+        $res = strtr($text, $map);
+        $res = preg_replace('/[^a-zA-Z0-9\s-]/', ' ', $res);
+        $res = ucwords(strtolower(trim(preg_replace('/\s+/', ' ', $res))));
+        return $res ?: 'Article';
+    }
+}
+
 
 
 

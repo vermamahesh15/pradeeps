@@ -206,11 +206,15 @@ if (is_post()) {
             'canonical_url' => trim($_POST['canonical_url'] ?? ''),
         ];
 
+        // Auto-generate English Title from Hindi title if left blank
+        if (empty($blogData['en_title']) && !empty($blogData['title'])) {
+            $blogData['en_title'] = transliterate_devanagari($blogData['title']);
+        }
+
         $errors = [];
         if (empty($blogData['title'])) $errors[] = 'Title (Hindi) is required.';
         if (empty($blogData['content'])) $errors[] = 'Full Content is required.';
         if (empty($blogData['category_id']) && $blogData['category_id'] !== 0 && $blogData['category_id'] !== '0') $errors[] = 'Category is required. Please select a valid category from the dropdown.';
-        if (empty($blogData['en_title'])) $errors[] = 'English title is required.';
         if ($isEdit && empty($id) && $id !== 0 && $id !== '0') $errors[] = 'Invalid blog ID.';
 
         if (empty($errors)) {
@@ -225,7 +229,8 @@ if (is_post()) {
             if (!empty($slugInput)) {
                 $blogData['slug'] = $blogModel->normalizeSlug($slugInput, $isEdit ? $id : null);
             } else {
-                $blogData['slug'] = $blogModel->normalizeSlug($blogData['en_title'], $isEdit ? $id : null);
+                $slugBase = !empty($blogData['en_title']) ? $blogData['en_title'] : transliterate_devanagari($blogData['title']);
+                $blogData['slug'] = $blogModel->normalizeSlug($slugBase, $isEdit ? $id : null);
             }
 
             // Articles generated/created by Super Admin or titled Super Admin default to प्रदीप सारंग
@@ -1950,12 +1955,28 @@ $metrics = $content->metrics();
                                         <h5 class="card-title mb-3 text-primary"><i class="fa-solid fa-file-pen me-2"></i>Article Information</h5>
                                         <div class="row g-3">
                                             <div class="col-12">
-                                                <label class="form-label font-semibold">Title (Hindi) *</label>
-                                                <input type="text" name="title" class="form-control form-control-lg" value="<?= e($editBlog['title'] ?? '') ?>" required placeholder="e.g. हरियाली संकल्प और पर्यावरण संरक्षण..." onkeyup="updateLiveSEOPreview()">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <label class="form-label font-semibold mb-0">Title (Hindi) *</label>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2.5" style="font-size: 12px;" onclick="translateHindiTitle(true)" id="btnManualTranslate">
+                                                        <i class="fa-solid fa-language me-1"></i> 🪄 Translate to English
+                                                    </button>
+                                                </div>
+                                                <input type="text" name="title" id="blogTitleHindi" class="form-control form-control-lg" value="<?= e($editBlog['title'] ?? '') ?>" required placeholder="e.g. हरियाली संकल्प और पर्यावरण संरक्षण..." onkeyup="updateLiveSEOPreview()" onblur="autoTranslateIfEmpty()">
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label font-semibold">English Title (For Slug Generation) *</label>
-                                                <input type="text" name="en_title" class="form-control" value="<?= e($editBlog['en_title'] ?? '') ?>" required placeholder="e.g. Hariyali Pledge and Environmental Protection">
+                                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                                    <label class="form-label font-semibold mb-0">
+                                                        English Title (For Slug Generation)
+                                                        <span id="translateSpinner" class="spinner-border spinner-border-sm text-primary ms-1" style="display:none;" role="status"></span>
+                                                    </label>
+                                                </div>
+                                                <div class="input-group">
+                                                    <input type="text" name="en_title" id="blogTitleEn" class="form-control" value="<?= e($editBlog['en_title'] ?? '') ?>" placeholder="Auto-translated or type custom..." oninput="syncSlugFromEnTitle()">
+                                                    <button class="btn btn-outline-primary" type="button" title="Translate Hindi Title to English" onclick="translateHindiTitle(true)">
+                                                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="form-text small text-muted">Auto-translates into English from Hindi title. You can also edit or customize it.</div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Category *</label>
@@ -2436,6 +2457,100 @@ $metrics = $content->metrics();
                     if (pvDesc) {
                         pvDesc.textContent = (metaDescVal || excerptVal || 'Brief search engine snippet preview will appear here as you write your post content.');
                     }
+                }
+
+                function slugifyText(text) {
+                    return text.toString().toLowerCase().trim()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/[\s_-]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
+                }
+
+                function transliterateDevanagariJS(text) {
+                    const charMap = {
+                        'अ': 'a', 'आ': 'aa', 'इ': 'i', 'ई': 'ee', 'उ': 'u', 'ऊ': 'oo', 'ऋ': 'ri',
+                        'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au', 'अं': 'an', 'अः': 'ah',
+                        'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ng',
+                        'च': 'ch', 'छ': 'chh', 'ज': 'j', 'झ': 'jh', 'ञ': 'ny',
+                        'ट': 't', 'ठ': 'th', 'ड': 'd', 'ढ': 'dh', 'ण': 'n',
+                        'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+                        'प': 'p', 'फ': 'f', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+                        'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 'sh', 'ष': 'sh', 'स': 's', 'ह': 'h',
+                        'क्ष': 'ksh', 'त्र': 'tra', 'ज्ञ': 'gya', 'श्र': 'shra',
+                        'ा': 'a', 'ि': 'i', 'ी': 'ee', 'ु': 'u', 'ू': 'oo', 'ृ': 'ri',
+                        'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au', 'ं': 'n', 'ँ': 'n', 'ः': 'h',
+                        '्': '', '़': '', '।': '.', '॥': '.'
+                    };
+                    let result = '';
+                    for (let i = 0; i < text.length; i++) {
+                        const char = text[i];
+                        result += charMap[char] !== undefined ? charMap[char] : char;
+                    }
+                    return result.replace(/[^a-zA-Z0-9\s-]/g, ' ').replace(/\s+/g, ' ').trim();
+                }
+
+                async function translateHindiTitle(force = false) {
+                    const hindiInput = document.getElementById('blogTitleHindi');
+                    const enInput = document.getElementById('blogTitleEn');
+                    const slugInput = document.querySelector('input[name="slug"]');
+                    const spinner = document.getElementById('translateSpinner');
+
+                    if (!hindiInput) return;
+                    const text = hindiInput.value.trim();
+                    if (!text) return;
+
+                    // Only translate if force is true OR enInput is currently empty
+                    if (!force && enInput && enInput.value.trim() !== '') {
+                        return;
+                    }
+
+                    if (spinner) spinner.style.display = 'inline-block';
+
+                    let translated = '';
+                    try {
+                        const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=hi&tl=en&dt=t&q=' + encodeURIComponent(text);
+                        const res = await fetch(url);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (Array.isArray(data[0])) {
+                                translated = data[0].map(item => item[0]).join('').trim();
+                            }
+                        }
+                    } catch (e) {
+                        console.warn('Online translation failed, falling back to transliteration', e);
+                    }
+
+                    if (!translated) {
+                        translated = transliterateDevanagariJS(text);
+                    }
+
+                    if (translated) {
+                        // Title-case the result
+                        const titleCased = translated.replace(/\w\S*/g, (w) => (w.replace(/^\w/, (c) => c.toUpperCase())));
+                        if (enInput) enInput.value = titleCased;
+                        if (slugInput && (!slugInput.value.trim() || force)) {
+                            slugInput.value = slugifyText(translated);
+                        }
+                        updateLiveSEOPreview();
+                    }
+
+                    if (spinner) spinner.style.display = 'none';
+                }
+
+                function autoTranslateIfEmpty() {
+                    const enInput = document.getElementById('blogTitleEn');
+                    if (enInput && !enInput.value.trim()) {
+                        translateHindiTitle(false);
+                    }
+                }
+
+                function syncSlugFromEnTitle() {
+                    const enInput = document.getElementById('blogTitleEn');
+                    const slugInput = document.querySelector('input[name="slug"]');
+                    if (enInput && slugInput && (!slugInput.value.trim() || slugInput.dataset.autoSlug !== 'false')) {
+                        slugInput.value = slugifyText(enInput.value);
+                    }
+                    updateLiveSEOPreview();
                 }
 
                 function rejectBlog(id) {
