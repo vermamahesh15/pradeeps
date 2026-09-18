@@ -5,10 +5,11 @@ $canonicalPath = preg_replace('#^/pradeep(?=/|$)#i', '', current_path()) ?: '/';
 $isHomePage = basename($viewFile) === 'home.php';
 ?>
 <!doctype html>
-<html lang="<?= e(current_lang()) ?>" class="scroll-smooth">
+<html lang="<?= e(current_lang()) ?>" class="scroll-smooth" translate="no">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <title><?= e($title) ?> | <?= e(app_config('name')) ?></title>
     <meta name="description" content="<?= e(ps_text('प्रदीप सारंग की जनसेवा, हरियाली अभियान, अवधी साहित्य और सामुदायिक कार्यों की यात्रा।','Discover Pradeep Sarang’s community service, Green Gang initiative, Awadhi literature and cultural work.')) ?>">
     <link rel="canonical" href="<?= e(base_url($canonicalPath)) ?>">
@@ -22,8 +23,8 @@ $isHomePage = basename($viewFile) === 'home.php';
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&display=swap"></noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Noto+Sans:wght@400;500;600;700&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap"></noscript>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap"></noscript>
@@ -62,7 +63,7 @@ $isHomePage = basename($viewFile) === 'home.php';
               "on-primary": "#ffffff",
               "error-container": "#ffdad6",
               "on-secondary-fixed-variant": "#15803d",
-              "outline": "#667085",
+              "outline": "#475467",
               "primary": "#14532d",
               "surface-variant": "#f3f5f1",
               "background": "#faf8f3",
@@ -70,15 +71,15 @@ $isHomePage = basename($viewFile) === 'home.php';
               "terracotta": "#c05632",
               "gold": "#b28a42",
               "charcoal": "#172033",
-              "slate-gray": "#667085",
+              "slate-gray": "#475467",
               "error": "#ba1a1a",
               "on-surface": "#172033",
               "on-secondary-container": "#ffffff",
               "on-secondary-fixed": "#14532d",
               "inverse-on-surface": "#faf8f3",
-              "on-surface-variant": "#667085",
+              "on-surface-variant": "#475467",
               "deep-forest": "#14532d",
-              "text-muted": "#667085",
+              "text-muted": "#475467",
               "secondary-container": "#c05632",
               "surface-tint": "#14532d",
               "on-tertiary-fixed": "#14532d",
@@ -140,20 +141,20 @@ $isHomePage = basename($viewFile) === 'home.php';
               "space-sm": "0.75rem"
             },
             "fontFamily": {
-              "headline-lg-mobile": ["Noto Serif", "serif"],
-              "quote-editorial": ["Noto Serif", "serif"],
-              "headline-lg": ["Noto Serif", "serif"],
-              "body-md": ["Manrope", "sans-serif"],
-              "label-md": ["Noto Sans", "sans-serif"],
-              "display-hero": ["Noto Serif", "serif"],
-              "headline-sm": ["Noto Serif", "serif"],
-              "headline-md": ["Noto Serif", "serif"],
-              "label-sm": ["Noto Sans", "sans-serif"],
-              "title-lg": ["Manrope", "sans-serif"],
-              "display-hero-mobile": ["Noto Serif", "serif"],
-              "title-md": ["Manrope", "sans-serif"],
-              "body-sm": ["Manrope", "sans-serif"],
-              "body-lg": ["Manrope", "sans-serif"]
+              "headline-lg-mobile": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "quote-editorial": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "headline-lg": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "body-md": ["Noto Sans Devanagari", "Manrope", "sans-serif"],
+              "label-md": ["Noto Sans Devanagari", "Noto Sans", "sans-serif"],
+              "display-hero": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "headline-sm": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "headline-md": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "label-sm": ["Noto Sans Devanagari", "Noto Sans", "sans-serif"],
+              "title-lg": ["Noto Sans Devanagari", "Manrope", "sans-serif"],
+              "display-hero-mobile": ["Noto Serif Devanagari", "Noto Serif", "serif"],
+              "title-md": ["Noto Sans Devanagari", "Manrope", "sans-serif"],
+              "body-sm": ["Noto Sans Devanagari", "Manrope", "sans-serif"],
+              "body-lg": ["Noto Sans Devanagari", "Manrope", "sans-serif"]
             },
             "fontSize": {
               "headline-lg-mobile": ["28px", { "lineHeight": "38px", "fontWeight": "600" }],
@@ -197,6 +198,14 @@ $isHomePage = basename($viewFile) === 'home.php';
             vertical-align: middle;
             line-height: 1;
         }
+        header {
+            z-index: 9999 !important;
+        }
+        .ps-site header,
+        .ps-site header * {
+            line-height: initial;
+            letter-spacing: initial;
+        }
         header a[class*="bg-[#14532D]"],
         header a[class*="bg-[#C05632]"],
         header a[class*="bg-[#14532D]"] *,
@@ -209,7 +218,14 @@ $isHomePage = basename($viewFile) === 'home.php';
     <?php endif; ?>
     <script src="<?= e(asset('js/site/home.js')) ?>" defer></script>
 </head>
-    <?php $isFullPage = $isHomePage || in_array(basename($viewFile), ['contact.php', 'volunteer.php', 'blog.php', 'cause-detail.php', 'causes.php', 'events.php', 'media.php', 'blog-detail.php', 'donation.php', 'about.php', 'portfolio.php', 'awards.php', 'journey.php', 'impact.php', 'green-gang.php', 'salahkaar.php', 'videos.php'], true); ?>
+    <?php $isFullPage = $isHomePage || in_array(basename($viewFile), [
+        'contact.php', 'volunteer.php', 'blog.php', 'cause-detail.php', 'causes.php', 
+        'events.php', 'event-detail.php', 'media.php', 'blog-detail.php', 'donation.php', 
+        'donate-now.php', 'about.php', 'portfolio.php', 'awards.php', 'journey.php', 
+        'impact.php', 'green-gang.php', 'salahkaar.php', 'videos.php', 'privacy-policy.php', 
+        'terms-and-conditions.php', 'cookie-policy.php', 'disclaimer.php', 
+        'editorial-policy.php', 'author-guidelines.php', 'authors.php', '404.php'
+    ], true); ?>
 <body class="<?= $isFullPage ? 'bg-cream-canvas font-body-md text-body-md text-on-surface antialiased' : 'ps-site ps-inner-page' ?>">
     <?php if (!empty($isAdminPreview) && !empty($post)): ?>
         <div style="position: sticky; top: 0; left: 0; right: 0; z-index: 999999; background: #0f172a; color: #ffffff; padding: 10px 24px; border-bottom: 2px solid #334155; font-family: system-ui, -apple-system, sans-serif;" class="flex flex-wrap items-center justify-between gap-3 shadow-2xl">
@@ -305,9 +321,9 @@ $isHomePage = basename($viewFile) === 'home.php';
                 <div class="flex items-center gap-3">
                     <span class="material-symbols-outlined text-fresh-sprout text-[26px]">volunteer_activism</span>
                     <div>
-                        <h3 class="font-headline-sm text-base sm:text-lg font-bold text-pure-white leading-tight m-0">
+                        <h2 class="font-headline-sm text-base sm:text-lg font-bold text-pure-white leading-tight m-0">
                             <?= e(ps_text('स्वयंसेवक सहभागिता प्रपत्र (Volunteer Enrollment Form)', 'Volunteer Registration Form')) ?>
-                        </h3>
+                        </h2>
                         <p class="font-label-sm text-xs opacity-90 m-0" style="color: rgba(255, 255, 255, 0.9);">
                             <?= e(ps_text('माटी का ऋण और सामाजिक उत्तरदायित्व • ग्रीन गैंग स्वयंसेवक दल', 'Green Gang & Public Service Volunteer Network')) ?>
                         </p>

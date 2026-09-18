@@ -6,9 +6,10 @@ $canonicalUrl = $canonicalUrl ?? base_url(preg_replace('#/amp$#i', '', current_p
 $siteName = app_config('name', 'Pradeep Sarang');
 ?>
 <!doctype html>
-<html ⚡ lang="<?= e($currentLang) ?>">
+<html ⚡ lang="<?= e($currentLang) ?>" translate="no">
 <head>
     <meta charset="utf-8">
+    <meta name="google" content="notranslate">
     <title><?= e($title) ?> | <?= e($siteName) ?> AMP</title>
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">

@@ -5,6 +5,111 @@ $campaigns = $campaigns ?? [];
 $phone = trim($settings['phone'] ?? '+91 9919007190');
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
+
+// Exact verbatim charter text provided by user - completely unmodified
+$rawCharterText = <<<'CHARTER_TEXT'
+ ग्रीन गैंग जानकारी, नियम, निर्देश
+◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+1- विश्व पर्यावरण दिवस 5 जून 2019 को शहीद उद्यान, बाराबंकी, उत्तर प्रदेश में आँखें फाउण्डेशन (राष्ट्रीय पुनर्जागरण अभियान- आँखें इण्डिया) द्वारा धरती पर कम हो रही प्राणवायु बढ़ाने के लिए एक सामूहिक प्रयास "ग्रीन-गैंग/पर्यावरण सेना" की संकल्पना को साकार किया गया। संस्थापक श्री प्रदीप सारंग जी द्वारा श्री रजत बहादुर वर्मा जी, श्री हरिप्रसाद वर्मा जी, श्री सदानन्द जी, श्री अब्दुल खालिक जी संस्थापक सदस्य/ संचालक सदस्य बनाया गया। यही संचालक मण्डल कहलायेगा।
+
+2- धरती और धरती वासियों के लिए हरियाली संवर्धन से महत्वपूर्ण कोई अभियान नहीं है। धरती पर हरियाली बढ़ेगी तो मनुष्य सहित समस्त प्राणियों के लिए सुखद एवं स्वास्थ्य वातावरण बनेगा और यदि धरती पर हरियाली घटेगी तो मनुष्य सहित समस्त प्राणियों के लिये संकट ही संकट का वातावरण बनेगा।
+
+3- धरती पर हरियाली बढ़ाने हेतु आमजन को आकृष्ट करने के लिए विश्व पर्यावरण दिवस 5 जून 2019 के अवसर पर  सोशल एक्टिविस्ट श्री प्रदीप सारंग जी ने अपने बालों को हरे रंग से रंगवाया। अनेक लोगों ने विशेष कर महिला सदस्यों ने अपने हाथों पर हरे पेड़ के टैटू बनवाये।
+
+ 4- शहीद पार्क, देवा रोड, बाराबंकी उत्तर प्रदेश में बैठकर 111 लोगों ने सर्व सहमति से "ग्रीन गैंग/ पर्यावरण सेना" बनाकर धरती पर हरियाली बढ़ाने का संकल्प लिया। एक पेड़ लगाकर शुरुआत की गई। 
+
+5- जून 2026 में निर्णय लिया गया कि ग्रीन गैंग/पर्यावरण सेना का नाम बदलकर सिर्फ "ग्रीन गैंग" किया जाए। यानी अब आगे से सिर्फ ग्रीन गैंग लिखा जाएगा।
+
+6- आप सभी सज्जनों से  विनम्र निवेदन है कि आप भी धरती पर हरियाली बढ़ाने की इस मुहिम "ग्रीन-गैंग" में शामिल होकर हरियाली वातारण बनाने में सहयोग करें। साथ ही हरियाली के इस सामूहिक प्रयास में हिस्सेदार बनें।
+ 
+7- "ग्रीन गैंग" कुछ संकल्पवान साथियों का एक समूह है। जो धरती पर हरियाली बढ़ाने के लिए कुछ काम कर रहा है। इसमें किसी भी को जोड़ा जा सकेगा जो निम्न 5 बातों पर पूर्णतया सहमत होता हो-
+
+8- जो संकल्प ले कि "पेड़ लगाएंगे, पेड़ लगवाएंगे, पेड़ बचाएंगे"
+
+9- जो प्रेरित होकर मन से स्वीकार कर ले कि धरती पर हरियाली घटेगी तो मनुष्य सहित समस्त प्राणियों के लिए संकट और दुखद वातावरण तैयार होगा। और अगर धरती पर हरियाली बढ़ेगी तो मनुष्य सहित समस्त प्राणियों के लिए सुखद व स्वास्थ्य परक वातावरण तैयार होगा।
+
+10- जो यह संकल्प ले कि देश के प्रधानमंत्री जी से लेकर ग्राम प्रधान जी तक, पुलिस से लेकर वन विभाग तक कोई क्या करता है हम विचलित नहीं होंगे, और न ही इनसे लड़ाई लड़ेंगे न ही शिकायत करेंगे। सिर्फ इन्हें  प्रेरित करने की कोशिश की जाएगी। असल ये है कि धरती पर हरियाली बढ़ाने के लिए हम स्वयं क्या कर सकते हैं सिर्फ वही करेंगे।
+
+11- जो ये संकल्प ले कि पर्यावरण सेना अथवा ग्रीन गैंग व्हाट्सएप ग्रुप अथवा एप में स्वयं अथवा पर्यावरण सैनिकों की सिर्फ पर्यावरण गतिविधियों व उसकी निजी गतिविधियों के अतिरिक्त अन्य कोई भी कटपेस्ट जैसे ज्ञानवर्धक मेसेज सेंड नहीं करेंगे।
+
+12- जो अपने जन्मदिन पर कम से कम एक वृक्ष जरूर रोपित करने का संकल्प ले सके।
+
+13- "पेड़ लगाएंगे, पेड़ लगवाएंगे, पेड़ बचाएंगे" का संकल्प लेने वाला कोई भी, "ग्रीन-गैंग" का सदस्य बनकर, अपने एकल अथवा सामूहिक प्रयासों से धरती को हर भरा बना सकेगा।
+सरकारी/अर्धसरकारी विभाग, सामाजिक संस्था, संगठन, ट्रेड यूनियन, स्कूल, कालेज, अस्पताल, एन एस एस, स्काउट, एन सी सी, युवक मंगल दल, एन वाई के,  साहित्य, पत्रकारिता, किसान सहित किसी भी पेशा/कार्य व्यवसाय से जुड़े लोग "उद्देश्य" से प्रेरित होकर तथा नियम/निर्देश से सहमत होकर, हरियाली बढ़ाने की इस मुहिम "ग्रीन-गैंग" का हिस्सा बन सकेंगे।
+
+14- ग्रीन गैंग संसार की पहली ऐसी सेना है जिसके पर्यावरण-सैनिक पूर्णतया प्रतिबन्धों से मुक्त है और उसकी पहली जंग खुद से है।
+ग्रीन गैंग एक मूवमेंट है इसलिए इसमें समय का कोई प्रतिबन्ध नहीं है जिसके पास जब जितना समय हो उतना काम करे। जब न हो समय, तो कोई शिकवा शिकायत नहीं। दरअसल इस मुहिम की कुछ अलग तरह की  विशेषताएं हैं।
+
+15- हर एक को अपना लक्ष्य स्वयं ही तय करना है फिर उसे पाने की कोशिश करनी है। लोग सहयोग करेंगे।
+
+16- ग्रीन गैंग का उद्देश्य समस्त पृथ्वी वासियों में हरियाली को लेकर पसंदगी और आदत में बदलाव लाना है। हरियाली को लेकर जिम्मेदारी का एहसास कराकर धरती पर हरियाली बढ़ाने के लिए स्वयं-संकल्पित कराना है।
+
+17- सक्रिय सदस्य की ऊर्जा-शक्ति और ज्ञान-शक्ति का निरन्तर सकारात्मक व रचनात्मक उपयोग हेतु मार्ग प्रशस्त करना है।
+
+18- सक्रिय सदस्य के आचरण व्यवहार और मन मस्तिष्क से नकारात्मक/निगेटिव तत्वों को शून्य स्थिति तक पहुँचाना है।
+
+19- सक्रिय सदस्य के मन, मष्तिष्क में अवस्थित "राँग -अण्डर-स्टैंडिग्स/भ्रामक समझ" को समाप्त कर "राइट-अण्डर-स्टैंडिग्स/सर्वोचित समझ" स्थापित करना है। 
+
+ 20- सच में "ग्रीन गैंग" एक हरियाली मुहिम है, एक बहुत बड़ा जन-आंदोलन है। इस मुहिम का सदस्य स्वयं अपना लक्ष्य तय करेगा। 
+
+       21- ग्रीन गैंग के उद्देश्य, अथवा लक्ष्य से प्रेरित होकर, नियम निर्देश अनुशासन, स्वीकार कर, स्वेच्छा से हर एक को जुड़ना है। सदस्य को कार्य करने के लिए कोई समय निर्धारित नहीं है। जब जिसे समय मिले कार्य करे। 
+
+       22- जो नेतृत्व संभालेंगे यानी समन्वयक होंगे उनके दायित्व कुछ बढ़ जाएंगे। उन्हें अन्य से अधिक समय देना रहेगा।
+       
+       23- विशेष ध्यान कराना होगा कि ग्रीन गैंग के किसी भी आयोजन, बैठक, कार्यक्रम में कतई आना-जाना अनिवार्य नहीं है किन्तु आने या न आने की सूचना "ग्रीन गैंग" ग्रुप /पेज पर अवश्य पोस्ट करें। जो जितना अधिक समय देगा वह उतना ही अधिक मुहिम को समझ सकेगा, और इसी अनुरूप उतना ही अधिक योगदान हो सकेगा।
+       
+ 24- ग्रीन गैंग के किसी ग्रुप पर अपनी गतिविधियों और अपने विचारों के अलावा कटपेस्ट जैसे कोई भी मैसेज भेजना मना रहेगा। सिर्फ ग्रीन गैंग की गतिविधियों से सम्बन्धित मैसेज, फोटो ही पोस्ट करने की अनुमति रहेगी। आपको कोई मैसेज बहुत अच्छा लगता है तो पर्सनल व्हाट्सएप पर भेजिए, किन्तु ग्रीन गैंग ग्रुप पर बिल्कुल नहीं। अपेक्षा है आप अच्छे व सच्चे सदस्य की तरह कार्य करेंगे। आप खुश हो जाइए कि आप पृथ्वी ग्रह की सबसे महत्वपूर्ण मुहिम से जुड़े हैं। 
+
+25-  हम सदस्य-गण अपने द्वारा किये गए पर्यावरणीय कार्य अपने द्वारा लिखे गए पर्यावरणीय लेख/गीत/कहानी/आलेखन/गतिविधियाँ/अखबार कतरन इत्यादि की ही पोस्ट ग्रीन गैंग व्हाट्सएप ग्रुप पर डालेंगें। पेड़ में पानी डालते हुए, निराई करते हुए, ऐसे ही कार्य की फोटो पोस्ट कर सकते हैं। किसी को पर्यावरण  सेना के बारे में समझाते हुए/ योजना बनाते हुए फोटो पोस्ट कर सकते हैं।
+
+26- ध्यान रखने योग्य दूसरी बात ये है कि जिस प्रकार आपको ग्रीन गैंग के बारे में समझाने के बाद आप द्वारा स्वीकार कर लिए जाने के बाद ही ग्रीन गैंग से जोड़ा गया है उसी प्रकार किसी को भी बिना पढ़ाये, समझाए, तथा उसके द्वारा बिना स्वीकार किये, न जोड़ा जाए।
+
+27- ग्रीन गैंग/पर्यावरण सेना को भीड़ नहीं चाहिए,,, चाहिए पर्यावरण प्रेमी। जो भी सज्जन जुड़ेंगे वो पर्यावरण प्रेमी बन जाएंगे। 
+
+  28- बिना अनुमति कोई भी ग्रीन गैंग का व्हाट्सएप ग्रुप नहीं बनाएगा। 
+
+  29- "ग्रीन गैंग" का हर स्तर पर व्हाट्सएप ग्रुप बनाया जाना है। इन ग्रुप में अपने द्वारा किये जाने वाले हरियाली सम्बन्धी कार्यों का विवरण फोटो आदि पोस्ट करनी है।
+
+30- इस ग्रुप का उपयोग सिर्फ निम्न कार्य में ही करें--
+ निर्देश प्राप्त करने के लिए। सुझाव देने के लिए। राय मशविरा के लिए। एक दूसरे को विशेष मौकों पर बधाई देने के लिए।
+
+31- विशेष निर्देश है कि प्रत्येक स्तर के समन्यवयक गण उच्च ग्रुप से जरूरी मैसेज या स्टिकर्स कॉपी करेंगें तथा अपने ग्रुप पर पेस्ट करेंगें। ताकि प्रशासनिक अथवा राज्य स्तर से भेजे जाने वाले मेसेज आदि ग्राम और मुहल्ला स्तर  के ग्रुप तक पहुँच सकें।
+
+32- प्रत्येक स्तर पर अध्यक्ष नामित किया जाना है। अध्यक्ष का दायित्व है कि अपने कार्य क्षेत्र में सदस्य बनाता रहे। लोगों को प्रेरित करता रहे। प्रत्येक अध्यक्ष एक व्हाट्सएप ग्रुप चलाएगा। जिसमें कार्यक्षेत्र के सदस्यों को जोड़ा जाएगा। प्रत्येक सदस्य तक जरुरी सन्देश, जरूरी जानकारी पहुँच सकें, इस हेतु अध्यक्ष अपने उच्च व्हाट्सएप ग्रुप से उपयोगी सामग्री कॉपी करके अपने द्वारा संचालित ग्रुप में पोस्ट करेगा।
+
+ 33- अध्यक्ष गण सभी को जानकारी देंगे कि ग्रीन मॉर्निंग/हरित प्रभात, ग्रीन इवनिंग, ग्रीन नाईट आदि के मैसेज या बनाये गए चित्र भेज सकते हैं। किसी को जन्मदिन इत्यादि खुशी उल्लास या यादगार पलो में शुभकामनाएं दी जा सकती हैं।
+
+34- अध्यक्ष गण सभी को जानकारी देंगें कि जब भी व्हाट्सएप पर  मेसेज भेजें तो अपना नाम, पद नाम पता जरूर लिखें क्योंकि सभी ने आपके नाम नम्बर फीड नही किये जा सकते हैं। बिना नाम पदनाम पता के पहचान नही मिल पाता है कि किसने क्या भेजा है।
+
+35- अध्यक्ष गण सभी को जानकारी देंगे कि अपने द्वारा पेड़ लगाते हुए, पेड़ गिफ्ट देते, लेते हुए चित्र,  पूर्व से लगाये गए पेड़ों की देखभाल करते हुए, निराई करते हुए, पानी देते हुए आदि फोटो पोस्ट करते रहें।
+
+36- ग्रीन गैंग का प्रत्येक सदस्य गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग, सुप्रभात या शुभ प्रभात के स्थान पर हरित प्रात व हरित प्रभात, लिखेगा बोलेगा। यही ग्रीन गैंग के कल्चर की अपनी विशेष पहचान होगी।
+
+37- ग्रीन=हरा और हरा का अर्थ होता है खुशहाली और सुख समृद्धि संपन्नता। भारत देश के राष्ट्रीय ध्वज में प्रयुक्त हरा रंग भी यही अर्थ देता है।
+
+38- बिहारी जी का एक दोहा है-
+मेरी भव बाधा हरो, राधा नागरि सोय।
+जा तन की झाईं पड़े, श्याम हरित दुति होय।।
+     हिंदी के प्रसिद्ध लेखक बिहारी जी ने भी हरित-दुति का अर्थ प्रसन्न मुद्रा से लगाया है।
+     राधा गोरी है यानी पीली हैं। श्याम नीले, सांवरे रँग के हैं। बिहारी जी ने लिखा है कि जब राधा की परछाई पड़ती है तो श्याम यानी कृष्ण भी प्रसत्र हो जाया करते हैं।  वैसे भी नीला+ पीला रंग मिलने पर हरा रंग बनकर तैयार होता है।
+
+39- फूलों और पेड़ों की तरह मनुष्य के चेहरे के लिए भी "खिला है, मुरझाया है" बोला जाता है। इसका भी अर्थ खिला यानी हर भरा यानी प्रसन्न है। हरियाली कम यानी मुरझाया हुआ है, यानी प्रसन्नता कम।
+
+40- अंग्रेजी में प्रायः बोला जाता है- एवरग्रीन/Evergreen. इसका अर्थ है सदाबहार यानी सदैव हरा भरा रहने वाला। मनुष्य के सदाबहार अथवा हरा भरा रहने से मतलब है खुशहाल/प्रसन्न रहना।
+
+ 41-ग्रीन गैंग/पर्यावरण सेना नियम निर्देश की धारा जे (38 से 43) द्वारा सिद्ध हो जाता है कि गुड मॉर्निंग का अर्थ सिर्फ सुप्रभात अथवा शुभ प्रभात होगा, जबकि ग्रीन मॉर्निंग का अर्थ हरित प्रभात यानी खुशहाल प्रात अथवा सुख सम्पन्न प्रात/प्रभात होगा।
+
+42- हमें विश्वास है कि आप सभी जिम्मेदार हैं, जिम्मेदारी का परिचय देते हुए किसी व्हाट्सएप ग्रुप Green Gang  का दुरुपयोग नहीं करगें। नियम निर्देश का पालन करेंगे। अनुशासन उलंघन नहीं करेंगे।
+
+43- ग्रीन गैंग की नियमावली (जनकारी, नियम, निर्देश) से पूर्णतया सहमत व्यक्ति ही ग्रीन गैंग का सदस्य हो सकता है। अतः यदि आप सहमत नहीं हैं तो आप स्वयं बाहर हो जाएं। क्योंकि बारम्बार अनुशासन उल्लंघन करने पर सदस्यता समाप्ति की कार्यवाही की जाएगी एवं आवश्यक होने पर पुलिस को भी सूचना दी जाएगी।
+  
+◆◆प्रदीप सारंग- संस्थापक◆◆
+ग्रीन-गैंग/पर्यावरण सेना, भारत गणराज्य।
+CHARTER_TEXT;
+
+// Parse the 43 individual points exactly as written for structured presentation
+preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-–])|(?:\r?\n\s*◆◆)|$)/u", $rawCharterText, $parsedCharterPoints, PREG_SET_ORDER);
 ?>
 
 <div class="flex flex-col w-full">
@@ -33,6 +138,18 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
         <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
           <?= e(ps_text('प्रदीप सारंग द्वारा संस्थापित \'ग्रीन गैंग\' आंदोलन — 50,000+ बरगद, पीपल, नीम और पाकड़ के वृक्षों का रोपण एवं 150+ गांवों व 100+ विद्यालयों में दैनिक प्रकृति-प्रेम का संस्कार।', 'A community-led movement transforming greetings into tree conservation, planting over 50,000 native shade trees across Awadh.')) ?>
         </p>
+
+        <!-- Quick Jump Buttons -->
+        <div class="flex flex-wrap items-center gap-3 mt-6">
+          <a href="#charter-scroll-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+            <span class="material-symbols-outlined text-[20px] text-gold">history_edu</span>
+            <span><?= e(ps_text('📜 सम्पूर्ण संकल्प-पत्र व नियमावली पढ़ें', 'Read Official Charter')) ?></span>
+          </a>
+          <a href="#join-green-gang-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-low hover:bg-pure-white text-deep-forest border border-border-warm font-label-md text-label-md font-semibold transition-all">
+            <span class="material-symbols-outlined text-[18px] text-primary">group_add</span>
+            <span><?= e(ps_text('ग्रीन गैंग से जुड़ें', 'Join Green Gang')) ?></span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -69,6 +186,178 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <span class="font-label-sm text-label-sm text-surface-container-high/80 mt-1"><?= e(ps_text('सुरक्षा ट्री-गार्ड एवं सिंचाई', 'Protected with Tree-Guards')) ?></span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- SPECIAL SECTION: LETTER ROLL TIED TO RIBBON (OFFICIAL CHARTER & RULES)   -->
+  <!-- ========================================================================= -->
+  <section id="charter-scroll-section" class="relative w-full bg-gradient-to-b from-[#f4eee1] via-[#faf6ed] to-[#f4eee1] py-16 md:py-24 border-b border-border-warm overflow-hidden">
+    <!-- Ambient Heritage Background Flourish -->
+    <div class="absolute inset-0 opacity-[0.035] pointer-events-none" style="background-image: radial-gradient(#14532d 1px, transparent 1px); background-size: 24px 24px;"></div>
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+      <!-- Section Title & Narrative Intro -->
+      <div class="text-center max-w-3xl mx-auto mb-10 md:mb-12">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-deep-forest/10 text-deep-forest font-label-sm text-xs md:text-sm font-bold tracking-wider uppercase mb-3 border border-deep-forest/20">
+          <span class="material-symbols-outlined text-[17px] text-primary">history_edu</span>
+          <span>आधिकारिक घोषणा-पत्र • OFFICIAL CHARTER & RULES</span>
+        </div>
+        <h2 class="font-display-hero text-headline-md md:text-headline-lg text-deep-forest font-bold tracking-tight">
+          ग्रीन गैंग: जानकारी, नियम एवं निर्देश संकल्प-पत्र
+        </h2>
+        <p class="font-body-md text-body-md text-text-muted mt-3 leading-relaxed">
+          5 जून 2019 को शहीद उद्यान बाराबंकी में 111 संकल्पवान साथियों द्वारा अंगीकृत एवं संस्थापक श्री प्रदीप सारंग जी द्वारा प्रख्यापित 43 स्वर्णिम नियम।
+        </p>
+      </div>
+
+      <!-- MAIN COMPONENT: SACRED CHARTER SCROLL (ALWAYS OPEN) -->
+      <div id="ps-letter-scroll-wrapper" class="w-full">
+        
+        <!-- Sticky / Prominent Control Toolbar -->
+        <div class="sticky top-20 z-40 mb-6 bg-pure-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-4 shadow-lg border border-border-warm flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="copyFullCharterText()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary-fixed/40 hover:bg-primary-fixed text-deep-forest font-label-md text-sm font-bold transition-all border border-border-warm cursor-pointer" title="सम्पूर्ण मूल पाठ कॉपी करें">
+              <span class="material-symbols-outlined text-[18px]">content_copy</span>
+              <span id="ps-copy-btn-text">पूरा पाठ कॉपी करें</span>
+            </button>
+
+            <button type="button" onclick="window.print()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-surface-container hover:bg-border-warm text-deep-forest font-label-md text-sm font-semibold transition-all border border-border-warm cursor-pointer" title="प्रिंट करें">
+              <span class="material-symbols-outlined text-[18px]">print</span>
+              <span>प्रिंट (Print)</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <!-- Quick Rule Search Input -->
+            <div class="relative w-56 sm:w-72">
+              <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-[18px] text-text-muted">search</span>
+              <input type="text" id="charter-rule-search" oninput="filterCharterRules(this.value)" placeholder="नियम खोजें (उदा. 38, जन्मदिन, व्हाट्सएप)..." class="w-full bg-soft-meadow border border-border-warm text-on-surface pl-8 pr-3 py-1.5 rounded-xl text-xs sm:text-sm font-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
+            </div>
+          </div>
+        </div>
+
+        <!-- The Majestic Parchment Document Container (Always Open) -->
+        <div class="ps-unrolled-scroll-paper relative bg-[#fffdf7] rounded-3xl p-6 sm:p-12 md:p-16 shadow-2xl border-4 border-[#b48a3c] overflow-hidden">
+            
+            <!-- Traditional Ornate Corner Borders (SVG) -->
+            <div class="ps-corner-ornament ps-corner-tl pointer-events-none"></div>
+            <div class="ps-corner-ornament ps-corner-tr pointer-events-none"></div>
+            <div class="ps-corner-ornament ps-corner-bl pointer-events-none"></div>
+            <div class="ps-corner-ornament ps-corner-br pointer-events-none"></div>
+
+            <!-- Top Decorative Wooden Scroll Bar -->
+            <div class="ps-scroll-top-bar flex items-center justify-between mb-8 pb-4 border-b-2 border-[#d4af37]/40">
+              <div class="w-8 sm:w-12 h-3 bg-gradient-to-r from-[#5a3818] via-[#ca8a04] to-[#5a3818] rounded-full"></div>
+              <div class="flex items-center gap-2 text-[#78350f] font-serif text-xs sm:text-sm font-semibold tracking-wider">
+                <span>✦</span>
+                <span>श्री गणेशाय नमः • हरियाली ही जीवन है</span>
+                <span>✦</span>
+              </div>
+              <div class="w-8 sm:w-12 h-3 bg-gradient-to-r from-[#5a3818] via-[#ca8a04] to-[#5a3818] rounded-full"></div>
+            </div>
+
+            <!-- Document Official Letterhead Header (EXACT UNMODIFIED TEXT) -->
+            <div class="text-center max-w-2xl mx-auto mb-10">
+              <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 rounded-full bg-[#14532d] text-[#fef08a] flex flex-col items-center justify-center shadow-lg border-2 border-[#b48a3c]">
+                <span class="material-symbols-outlined text-[32px] sm:text-[38px]" style="font-variation-settings: 'FILL' 1;">park</span>
+              </div>
+              
+              <!-- Verbatim Document Title Header -->
+              <h1 class="font-display-hero text-2xl sm:text-3xl md:text-4xl text-[#14532d] font-black tracking-tight leading-snug">
+                ग्रीन गैंग जानकारी, नियम, निर्देश
+              </h1>
+              
+              <!-- Verbatim Diamonds Motif -->
+              <div class="text-[#b48a3c] text-lg sm:text-xl font-bold tracking-[0.3em] my-2 select-none">
+                ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+              </div>
+              
+              <div class="inline-block bg-[#14532d]/10 border border-[#14532d]/30 text-[#14532d] px-4 py-1 rounded-full text-xs font-serif font-bold mt-1">
+                मूल आधिकारिक विधान व आचार संहिता • 43 सूत्र
+              </div>
+            </div>
+
+            <!-- Verbatim Rules & Directives (Points 1 to 43) -->
+            <div id="charter-rules-list" class="space-y-4 font-serif text-[#292524] leading-relaxed text-sm sm:text-base md:text-[17px]">
+              <?php foreach ($parsedCharterPoints as $index => $item): 
+                $ruleNum = (int)$item[1];
+                $ruleBody = trim($item[2]);
+                $isVerse = ($ruleNum === 38);
+              ?>
+                <div class="charter-rule-card group relative p-4 sm:p-5 rounded-2xl transition-all duration-200 border bg-[#fffdf9] border-[#e7dbbe]/70 hover:bg-[#faf5e8]" data-rule-num="<?= $ruleNum ?>">
+                  
+                  <?php if ($isVerse): ?>
+                    <!-- Special Poetic Stanza Styling for Rule 38 (Bihari ji's doha) with uniform colors -->
+                    <div class="rule-content-text leading-relaxed">
+                      <strong class="font-bold text-[#292524]">38- </strong>बिहारी जी का एक दोहा है-
+                      <div class="bg-[#f7efe1] p-4 sm:p-5 rounded-xl border-l-4 border-[#b48a3c] my-3 text-center sm:text-left">
+                        <p class="font-bold text-base sm:text-lg text-[#78350f] leading-loose tracking-wide">
+                          मेरी भव बाधा हरो, राधा नागरि सोय।<br>
+                          जा तन की झाईं पड़े, श्याम हरित दुति होय।।
+                        </p>
+                      </div>
+                      <p class="text-sm sm:text-base text-[#292524] mt-2 leading-relaxed">
+                        हिंदी के प्रसिद्ध लेखक बिहारी जी ने भी हरित-दुति का अर्थ प्रसन्न मुद्रा से लगाया है।
+                      </p>
+                      <p class="text-sm sm:text-base text-[#292524] mt-1.5 leading-relaxed">
+                        राधा गोरी है यानी पीली हैं। श्याम नीले, सांवरे रँग के हैं। बिहारी जी ने लिखा है कि जब राधा की परछाई पड़ती है तो श्याम यानी कृष्ण भी प्रसत्र हो जाया करते हैं।  वैसे भी नीला+ पीला रंग मिलने पर हरा रंग बनकर तैयार होता है।
+                      </p>
+                    </div>
+                  <?php else: ?>
+                    <!-- Verbatim paragraph with single clean number prefix and uniform ink styling -->
+                    <div class="rule-content-text leading-relaxed">
+                      <strong class="font-bold text-[#292524]"><?= $ruleNum ?>- </strong><?= nl2br(e($ruleBody)) ?>
+                    </div>
+                  <?php endif; ?>
+
+                </div>
+              <?php endforeach; ?>
+            </div>
+
+            <!-- Verbatim Sign-Off & Official Founder Stamp (EXACT UNMODIFIED TEXT) -->
+            <div class="mt-12 pt-8 border-t-2 border-[#b48a3c]/40 text-center relative">
+              
+              <!-- Official Stamp Emblem -->
+              <div class="inline-flex flex-col items-center justify-center p-6 sm:p-8 rounded-3xl bg-[#fcf7ec] border-2 border-[#b48a3c] shadow-md max-w-lg mx-auto">
+                <div class="text-[#b48a3c] text-base font-bold tracking-widest mb-1">
+                  ◆◆◆
+                </div>
+                
+                <!-- Verbatim Sign-Off Line 1 -->
+                <div class="font-display-hero text-xl sm:text-2xl text-[#14532d] font-black tracking-wide">
+                  ◆◆प्रदीप सारंग- संस्थापक◆◆
+                </div>
+                
+                <!-- Verbatim Sign-Off Line 2 -->
+                <div class="font-serif text-sm sm:text-base text-[#78350f] font-bold mt-1.5 tracking-wider">
+                  ग्रीन-गैंग/पर्यावरण सेना, भारत गणराज्य।
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-[#b48a3c]/30 text-xs text-text-muted font-sans flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+                  <span>5 जून 2019 (विश्व पर्यावरण दिवस) • शहीद उद्यान, बाराबंकी</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Bottom Decorative Wooden Scroll Bar -->
+            <div class="ps-scroll-bottom-bar flex items-center justify-between mt-10 pt-4 border-t-2 border-[#d4af37]/40">
+              <div class="w-8 sm:w-12 h-3 bg-gradient-to-r from-[#5a3818] via-[#ca8a04] to-[#5a3818] rounded-full"></div>
+              <a href="#charter-scroll-section" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white text-xs sm:text-sm font-bold shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-[18px]">arrow_upward</span>
+                <span>संकल्प-पत्र के शीर्ष पर जाएं (Back to Top)</span>
+              </a>
+              <div class="w-8 sm:w-12 h-3 bg-gradient-to-r from-[#5a3818] via-[#ca8a04] to-[#5a3818] rounded-full"></div>
+            </div>
+
+          </div>
+
+      </div>
+
+      </div>
+
     </div>
   </section>
 
@@ -262,7 +551,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
   </section>
 
   <!-- Join Green Gang Registration Form & Callout -->
-  <section class="w-full bg-soft-meadow py-space-3xl">
+  <section id="join-green-gang-section" class="w-full bg-soft-meadow py-space-3xl">
     <div class="max-w-container-editorial mx-auto px-4 sm:px-8">
       <div class="text-center mb-8">
         <span class="inline-block bg-cream-canvas border border-border-warm text-primary-container px-3 py-1 rounded-md font-label-md text-label-md uppercase mb-2 font-semibold">
@@ -317,3 +606,136 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
     </div>
   </section>
 </div>
+
+<!-- ========================================================================= -->
+<!-- COMPONENT STYLES & INTERACTIVE SCRIPT FOR ALWAYS-OPEN PARCHMENT SCROLL     -->
+<!-- ========================================================================= -->
+<style>
+/* Unrolled Paper Styling */
+.ps-unrolled-scroll-paper {
+  background: #fffdf7;
+  background-image: 
+    radial-gradient(#b48a3c 0.6px, transparent 0.6px),
+    radial-gradient(#b48a3c 0.6px, #fffdf7 0.6px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+  box-shadow: 
+    0 25px 50px -12px rgba(20, 83, 45, 0.25),
+    inset 0 0 70px rgba(180, 138, 60, 0.12);
+}
+
+/* Ornate Corner SVG Accents */
+.ps-corner-ornament {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  opacity: 0.75;
+}
+
+@media (min-width: 640px) {
+  .ps-corner-ornament {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.ps-corner-tl {
+  top: 14px;
+  left: 14px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23b48a3c'%3E%3Cpath d='M0 0 L50 0 C25 10 10 25 0 50 Z'/%3E%3Ccircle cx='25' cy='25' r='10' fill='none' stroke='%23b48a3c' stroke-width='3'/%3E%3Cpath d='M10 90 L10 10 L90 10' fill='none' stroke='%23b48a3c' stroke-width='4'/%3E%3C/svg%3E");
+}
+
+.ps-corner-tr {
+  top: 14px;
+  right: 14px;
+  transform: scaleX(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23b48a3c'%3E%3Cpath d='M0 0 L50 0 C25 10 10 25 0 50 Z'/%3E%3Ccircle cx='25' cy='25' r='10' fill='none' stroke='%23b48a3c' stroke-width='3'/%3E%3Cpath d='M10 90 L10 10 L90 10' fill='none' stroke='%23b48a3c' stroke-width='4'/%3E%3C/svg%3E");
+}
+
+.ps-corner-bl {
+  bottom: 14px;
+  left: 14px;
+  transform: scaleY(-1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23b48a3c'%3E%3Cpath d='M0 0 L50 0 C25 10 10 25 0 50 Z'/%3E%3Ccircle cx='25' cy='25' r='10' fill='none' stroke='%23b48a3c' stroke-width='3'/%3E%3Cpath d='M10 90 L10 10 L90 10' fill='none' stroke='%23b48a3c' stroke-width='4'/%3E%3C/svg%3E");
+}
+
+.ps-corner-br {
+  bottom: 14px;
+  right: 14px;
+  transform: scale(-1, -1);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='%23b48a3c'%3E%3Cpath d='M0 0 L50 0 C25 10 10 25 0 50 Z'/%3E%3Ccircle cx='25' cy='25' r='10' fill='none' stroke='%23b48a3c' stroke-width='3'/%3E%3Cpath d='M10 90 L10 10 L90 10' fill='none' stroke='%23b48a3c' stroke-width='4'/%3E%3C/svg%3E");
+}
+
+/* Print Specific Rules */
+@media print {
+  .sticky,
+  details {
+    display: none !important;
+  }
+  .ps-unrolled-scroll-paper {
+    box-shadow: none !important;
+    border: 2px solid #b48a3c !important;
+  }
+}
+</style>
+
+<script>
+// Exact verbatim text stored for programmatic copy & print
+const PS_RAW_CHARTER_TEXT = <?= json_encode($rawCharterText, JSON_UNESCAPED_UNICODE) ?>;
+
+function copyFullCharterText() {
+  const onSuccess = () => {
+    const btnText = document.getElementById('ps-copy-btn-text');
+    if (btnText) {
+      const orig = btnText.textContent;
+      btnText.textContent = '✓ सम्पूर्ण पाठ कॉपी हो गया!';
+      setTimeout(() => {
+        btnText.textContent = orig;
+      }, 3000);
+    }
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(PS_RAW_CHARTER_TEXT).then(onSuccess).catch(() => {
+      fallbackCopyText(PS_RAW_CHARTER_TEXT, onSuccess);
+    });
+  } else {
+    fallbackCopyText(PS_RAW_CHARTER_TEXT, onSuccess);
+  }
+}
+
+function fallbackCopyText(text, callback) {
+  const el = document.createElement('textarea');
+  el.value = text;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  if (callback) callback();
+}
+
+function filterCharterRules(query) {
+  const q = (query || '').trim().toLowerCase();
+  const ruleCards = document.querySelectorAll('.charter-rule-card');
+
+  ruleCards.forEach(card => {
+    if (!q) {
+      card.style.display = '';
+      return;
+    }
+    const ruleNum = card.getAttribute('data-rule-num') || '';
+    const text = card.textContent.toLowerCase();
+
+    if (ruleNum === q || text.includes(q)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>

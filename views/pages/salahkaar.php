@@ -31,7 +31,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         <span><?= e(ps_text('नि:स्वार्थ जन-मार्गदर्शन एवं सामाजिक चिंतन', 'Compassionate Life & Social Guidance')) ?></span>
                     </div>
 
-                    <h1 class="font-headline-lg text-3xl sm:text-4xl lg:text-5xl text-deep-forest mb-5 tracking-tight leading-tight font-bold">
+                    <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest mb-5 font-bold leading-tight tracking-tight">
                         <?= e(ps_text('उलझ जाए मन, न दिखे कोई राह — संवेदनशीलता से सुनेंगे, व्यावहारिक राह दिखाएंगे', 'When the Mind Feels Clouded — Empathetic Listening & Practical Guidance')) ?>
                     </h1>
 

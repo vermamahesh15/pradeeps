@@ -6,138 +6,46 @@ $phone = trim($settings['phone'] ?? '+91 9919007190');
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
-// Default authentic gallery items if DB is sparse
-$defaultPhotos = [
-    [
-        'title' => ps_text('ग्रीन गैंग पौधारोपण अभियान — ग्राम कमरावाँ', 'Green Gang Tree Planting Drive — Kamrawan Village'),
-        'category' => 'eco',
-        'category_name' => ps_text('पर्यावरण व हरियाली', 'Environment & Green Gang'),
-        'location' => ps_text('कमरावाँ, बाराबंकी', 'Kamrawan, Barabanki'),
-        'year' => '2024',
-        'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db',
-        'featured' => true,
-    ],
-    [
-        'title' => ps_text('भीषण ग्रीष्म में परिंदा सकोरा जल-वितरण अभियान', 'Summer Bird Water Bowl Distribution Campaign'),
-        'category' => 'bird',
-        'category_name' => ps_text('परिंदा व पक्षी सेवा', 'Bird Care'),
-        'location' => ps_text('सतरिख, बाराबंकी', 'Satrikh, Barabanki'),
-        'year' => '2023',
-        'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIdMQwsnVo2dk4ut7g6q_cAP6eTxbCJ79UEWEL6LMYJP9Bzoa711KY0DUcQDKRXxuQ_6LQhxi0vQ2STd8MG_7M8PMwLDKDbl4rkN0NWnrSqVTvaAamPZA23ot4DWOtvh7QMTvSKjQWd4KHteII-UyAePIVzkOU6Kjt18WGSoV63V45Zxnm-uJxCWTIYBFdLiZQTIIpMJ2BicU3nJOrp9TW5wTXMOaNdUj57zI1cu2Z0PJgk4oP02r7',
-        'featured' => true,
-    ],
-    [
-        'title' => ps_text('महामहिम राज्यपाल द्वारा स्वामी विवेकानंद युवा पुरस्कार (1991)', 'Governor Youth Award Presentation (1991)'),
-        'category' => 'awards',
-        'category_name' => ps_text('राष्ट्रीय व राज्य सम्मान', 'Awards & Honors'),
-        'location' => ps_text('राजभवन, लखनऊ', 'Raj Bhavan, Lucknow'),
-        'year' => '1991',
-        'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuAFhcCzDptvdawqahxIf_F6aewWLbhrElKpz8H_SdpdXpvfwrClJ3jd7GZ9s8IMoKni0nNxRMxekp5XwukPPAGZ8JiWIfTdqXGlZuQOtTWSqI1lEO2t8Caw2U_jqNH7qTboXJ3x8qKCEMJkrGgMZJ5LcJ0XXi5QpbeRqyXoboPm3gFtseM0-FLQdWUjpDTjNuI4kUaBCvQrklMOKag47XiVRg-6CA9onDFh_olHoLmOmWixtDFur5TN',
-        'featured' => true,
-    ],
-    [
-        'title' => ps_text('तुलसी जयंती पखवारा एवं अवधी काव्य संध्या', 'Tulsi Jayanti Pakhwara & Awadhi Poetic Evening'),
-        'category' => 'literature',
-        'category_name' => ps_text('अवधी साहित्य व मंच', 'Awadhi Literature'),
-        'location' => ps_text('बाराबंकी', 'Barabanki'),
-        'year' => '2025',
-        'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDNOtpSZS1SiMog6MZDa71DZSMfh6EnAA77Ymmt7zKpBOaoF2T1kWglq8Y53Zsa7euU3rS45qwNdtPbOCAvU8DxMXXSuSW8gAKL7TrAh3UL63gGDIxTMAgC3LukNGRs-_8I2A4TvGb7cVawrjP4eHZn4vCttQfvJgSJxC3lGfMoqJThtsk31BlhWfn-Tl3NqXbIas9Z_rC1JGQtFVyUukAuxzurqbr99QVnyPNLwWoq03MVbPtd27MK',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('ग्रामीण चौपाल एवं \'ग्रीन मॉर्निंग\' अभिवादन गोष्ठी', 'Rural Chaupal & Green Morning Interactive Session'),
-        'category' => 'community',
-        'category_name' => ps_text('ग्राम चौपाल व लोक सेवा', 'Community Chaupals'),
-        'location' => ps_text('नानमऊ, बाराबंकी', 'Nanmau, Barabanki'),
-        'year' => '2024',
-        'image' => 'https://picsum.photos/seed/gallery-comm-1/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('जनकवि बंशीधर शुक्ल एवं गोस्वामी तुलसीदास सम्मान समारोह', 'Banshidhar Shukla & Tulsi Award Ceremony'),
-        'category' => 'awards',
-        'category_name' => ps_text('राष्ट्रीय व राज्य सम्मान', 'Awards & Honors'),
-        'location' => ps_text('लखनऊ', 'Lucknow'),
-        'year' => '2022',
-        'image' => 'https://picsum.photos/seed/gallery-award-2/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('स्कूली छात्रों संग \'परिंदा मित्र\' दाना-पानी संकल्प', 'School Students Bird Friend Water & Grain Pledge'),
-        'category' => 'bird',
-        'category_name' => ps_text('परिंदा व पक्षी सेवा', 'Bird Care'),
-        'location' => ps_text('देवा शरीफ रोड, बाराबंकी', 'Dewa Road, Barabanki'),
-        'year' => '2023',
-        'image' => 'https://picsum.photos/seed/gallery-bird-2/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('बरगद व नीम पौधरोपण अभियान — ग्रीन गैंग युवा दस्ता', 'Banyan & Neem Planting Drive by Green Gang Youth'),
-        'category' => 'eco',
-        'category_name' => ps_text('पर्यावरण व हरियाली', 'Environment & Green Gang'),
-        'location' => ps_text('रामनगर, बाराबंकी', 'Ramnagar, Barabanki'),
-        'year' => '2024',
-        'image' => 'https://picsum.photos/seed/gallery-eco-2/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('अवधी संस्मरण \'झरिहख\' एवं \'सारंग-कुंडलियाँ\' ग्रन्थ विमोचन', 'Awadhi Book Launch Jharihakh & Sarang Hundliyan'),
-        'category' => 'literature',
-        'category_name' => ps_text('अवधी साहित्य व मंच', 'Awadhi Literature'),
-        'location' => ps_text('उत्तर प्रदेश हिंदी संस्थान, लखनऊ', 'UP Hindi Sansthan, Lucknow'),
-        'year' => '2024',
-        'image' => 'https://picsum.photos/seed/gallery-lit-2/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('कोरोना योद्धा आपातकालीन राहत एवं स्वास्थ्य शिविर (2020)', 'Corona Warrior Emergency Medical & Food Relief Drive'),
-        'category' => 'community',
-        'category_name' => ps_text('ग्राम चौपाल व लोक सेवा', 'Community Chaupals'),
-        'location' => ps_text('बाराबंकी ग्रामीण अंचल', 'Barabanki Rural'),
-        'year' => '2020',
-        'image' => 'https://picsum.photos/seed/gallery-covid/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('मुख्य निर्वाचन अधिकारी द्वारा मतदाता जागरूकता प्रशस्ति पत्र', 'UP Chief Electoral Officer Voter Awareness Citation'),
-        'category' => 'awards',
-        'category_name' => ps_text('राष्ट्रीय व राज्य सम्मान', 'Awards & Honors'),
-        'location' => ps_text('जिला निर्वाचन कार्यालय, बाराबंकी', 'District Election Office, Barabanki'),
-        'year' => '2019',
-        'image' => 'https://picsum.photos/seed/gallery-voter/900/700',
-        'featured' => false,
-    ],
-    [
-        'title' => ps_text('गणतंत्र दिवस राष्ट्रीय परेड NSS शिविर (1988)', 'Republic Day NSS National Parade Camp (1988)'),
-        'category' => 'awards',
-        'category_name' => ps_text('राष्ट्रीय व राज्य सम्मान', 'Awards & Honors'),
-        'location' => ps_text('इंडिया गेट, नई दिल्ली', 'India Gate, New Delhi'),
-        'year' => '1988',
-        'image' => 'https://picsum.photos/seed/gallery-nss/900/700',
-        'featured' => false,
-    ],
-];
-
-// Merge DB photos if present
-$dbPhotos = [];
+// Build gallery photos strictly from database items
+$root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
+$allPhotos = [];
 foreach ($items as $idx => $dbItem) {
-    if (!empty($dbItem['image'])) {
-        $dbPhotos[] = [
-            'title' => $dbItem['title'] ?? ps_text('छायाचित्र', 'Archival Photo'),
-            'category' => 'community',
-            'category_name' => ps_text('सामुदायिक सेवा', 'Community Service'),
-            'location' => ps_text('बाराबंकी', 'Barabanki'),
-            'year' => '2024',
-            'image' => base_url($dbItem['image']),
-            'featured' => ($idx === 0),
-        ];
+    $img = trim($dbItem['image'] ?? '');
+    if ($img === '') continue;
+
+    $clean = ltrim($img, '/');
+    if (!preg_match('#^https?://#i', $img) && !file_exists($root . '/' . $clean)) {
+        continue;
     }
+
+    $title = trim($dbItem['title'] ?? '');
+    if ($title === '' || strtolower($title) === 'erer') {
+        $title = ps_text('छायाचित्र', 'Archival Photo');
+    }
+
+    $cat = !empty($dbItem['category']) ? strtolower(trim($dbItem['category'])) : 'community';
+    $catNames = [
+        'eco' => ps_text('पर्यावरण व हरियाली', 'Environment & Green Gang'),
+        'bird' => ps_text('परिंदा व पक्षी सेवा', 'Bird Care'),
+        'literature' => ps_text('अवधी साहित्य व मंच', 'Awadhi Literature'),
+        'awards' => ps_text('राष्ट्रीय व राज्य सम्मान', 'Awards & Honors'),
+        'community' => ps_text('सामुदायिक सेवा', 'Community Service'),
+    ];
+
+    $allPhotos[] = [
+        'title' => $title,
+        'category' => $cat,
+        'category_name' => $catNames[$cat] ?? ps_text('सामुदायिक सेवा', 'Community Service'),
+        'location' => ps_text('बाराबंकी', 'Barabanki'),
+        'year' => !empty($dbItem['created_at']) ? date('Y', strtotime($dbItem['created_at'])) : date('Y'),
+        'image' => base_url($clean),
+        'featured' => ($idx === 0),
+    ];
 }
 
-$allPhotos = !empty($dbPhotos) ? array_merge($dbPhotos, $defaultPhotos) : $defaultPhotos;
 $featuredPhotos = array_filter($allPhotos, fn($p) => !empty($p['featured']));
-if (count($featuredPhotos) < 3) {
-    $featuredPhotos = array_slice($allPhotos, 0, 3);
+if (empty($featuredPhotos) && !empty($allPhotos)) {
+    $featuredPhotos = array_slice($allPhotos, 0, min(3, count($allPhotos)));
 }
 ?>
 
@@ -159,7 +67,7 @@ if (count($featuredPhotos) < 3) {
       <div class="max-w-4xl">
         <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
           <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">photo_library</span>
-          <span><?= e(ps_text('100+ प्रामाणिक छायाचित्र अभिलेखागार (1987 से आज तक)', '100+ Authentic Photo Archives (1987 — Present)')) ?></span>
+          <span><?= count($allPhotos) ?> <?= e(ps_text('प्रामाणिक छायाचित्र दीर्घा', 'Authentic Photo Gallery')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
           <?= e(ps_text('चार दशकों की ऐतिहासिक सेवा यात्रा के सजीव छायाचित्र', 'Visual Legacy of Four Decades of Community Dedication')) ?>
@@ -193,6 +101,7 @@ if (count($featuredPhotos) < 3) {
     </div>
   </section>
 
+  <?php if (!empty($featuredPhotos)): ?>
   <!-- Featured Spotlight Section -->
   <section class="w-full bg-cream-canvas py-space-2xl border-b border-border-warm">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
@@ -240,6 +149,7 @@ if (count($featuredPhotos) < 3) {
       </div>
     </div>
   </section>
+  <?php endif; ?>
 
   <!-- Dynamic Gallery Grid Section -->
   <section class="w-full bg-cream-canvas py-space-3xl">
@@ -258,6 +168,7 @@ if (count($featuredPhotos) < 3) {
 
       <!-- Photo Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="gallery-grid">
+        <?php if (!empty($allPhotos)): ?>
         <?php foreach ($allPhotos as $photo): ?>
           <div class="gallery-card group bg-pure-white rounded-2xl shadow-sm border border-border-warm overflow-hidden hover:shadow-md transition-all flex flex-col justify-between" data-category="<?= e($photo['category']) ?>">
             <div class="relative overflow-hidden aspect-[4/3] bg-surface-container">
@@ -292,6 +203,17 @@ if (count($featuredPhotos) < 3) {
             </div>
           </div>
         <?php endforeach; ?>
+        <?php else: ?>
+          <div class="col-span-full py-16 text-center bg-pure-white rounded-2xl border border-border-warm p-8">
+            <span class="material-symbols-outlined text-5xl text-text-muted mb-3 inline-block">photo_library</span>
+            <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold mb-2">
+              <?= e(ps_text('वर्तमान में कोई छायाचित्र उपलब्ध नहीं है', 'No Gallery Photos Available')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-text-muted max-w-md mx-auto">
+              <?= e(ps_text('डेटाबेस में नए छायाचित्र जोड़े जाने पर वे यहाँ प्रदर्शित होंगे।', 'Photographs stored in database will appear here once added.')) ?>
+            </p>
+          </div>
+        <?php endif; ?>
       </div>
     </div>
   </section>
