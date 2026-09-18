@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/helpers.php';
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_cache_limiter('public');
+    session_cache_expire(60);
+    session_start();
+}
 date_default_timezone_set(app_config('timezone', 'Asia/Kolkata'));
 
 require_once __DIR__ . '/../models/Blog.php';

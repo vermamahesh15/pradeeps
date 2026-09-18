@@ -2,9 +2,16 @@
 declare(strict_types=1);
 
 $items = $items ?? [];
-$clips = array_values(array_filter($items, fn($i) => !empty($i['image'])));
+$root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
+$clips = array_values(array_filter($items, function($i) use ($root) {
+    $img = trim($i['image'] ?? '');
+    if ($img === '') return false;
+    if (preg_match('#^https?://#i', $img)) return true;
+    return file_exists($root . '/' . ltrim($img, '/'));
+}));
 $contactPhone = $settings['phone'] ?? '+91 9919007190';
 $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
+$spotlightClip = !empty($clips) ? $clips[0] : null;
 ?>
 
 <div class="flex flex-col w-full">
@@ -101,6 +108,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
   </div>
 </section>
 
+<?php if ($spotlightClip): ?>
 <!-- Featured Archival Showcase Spotlight -->
 <section class="w-full py-space-3xl px-4 sm:px-8 bg-cream-canvas">
   <div class="max-w-container-max mx-auto">
@@ -108,15 +116,15 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
       <div>
         <div class="flex items-center gap-2 font-label-md text-label-md text-secondary uppercase tracking-wider mb-1 font-semibold">
           <span class="material-symbols-outlined text-[18px]">verified</span>
-          <span><?= e(ps_text('विशिष्ट मुख्य कवरेज (Front Page Archive)', 'Front Page Archive Feature')) ?></span>
+          <span><?= e(ps_text('विशिष्ट मुख्य कवरेज (Featured Press Archive)', 'Featured Press Archive')) ?></span>
         </div>
         <h2 class="font-headline-md text-headline-md text-deep-forest font-bold">
-          <?= e(ps_text('जब गाँव कमरावां से उठी ‘ग्रीन मॉर्निंग’ की गूंज बनी राष्ट्रीय सुर्खी', 'When the Echo of Green Morning from Kamrawan became National Headlines')) ?>
+          <?= e($spotlightClip['title'] ?: ps_text('समाचार पत्रों में जनसेवा एवं पर्यावरण चेतना की गूंज', 'Public Service & Environmental Drives in Press')) ?>
         </h2>
       </div>
       <div class="flex items-center gap-2 text-text-muted font-body-sm text-body-sm">
         <span class="material-symbols-outlined text-[16px] text-primary-container">archive</span>
-        <span><?= e(ps_text('संग्रहालय संदर्भ सं.: PS/MED/2024/0616', 'Archive Ref: PS/MED/2024/0616')) ?></span>
+        <span><?= e(ps_text('अभिलेख सं.: PS/MED/' . ($spotlightClip['id'] ?? '1'), 'Archive Ref: PS/MED/' . ($spotlightClip['id'] ?? '1'))) ?></span>
       </div>
     </div>
 
@@ -124,13 +132,13 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
     <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-border-warm overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-0">
       <!-- Visual Column -->
       <div class="lg:col-span-6 relative bg-surface-container-low min-h-[380px] lg:min-h-full flex flex-col justify-between p-6 sm:p-8">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVYEBF8jQ5mXhhPDicbMeSgJQyCWMUjClD95gEs6N7BOKeAEyw8FXe0J0PdKqHvUvrJxYA_k4sGjQOUMHUWakFxh4yRBfsmx964Xy_20XFbZVf3JfzGNyOq0ouXvsVDyUfr3o6W3un1eIyCEWgSuVIg7P1vpAW8hGAbO32ecvzJp0feBTOkuFZnfwnA7-wRmGcZikiAEc_2ZDUymhYLrUm8oFkBDn2DLRUj1-BAeh3rXpi8pHW5PPD" alt="<?= e(ps_text('दैनिक जागरण समाचार पत्र कवरेज', 'Dainik Jagran Newspaper Coverage')) ?>" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-30">
+        <img src="<?= e(base_url($spotlightClip['image'])) ?>" alt="<?= e($spotlightClip['title'] ?: ps_text('समाचार पत्र कवरेज', 'Newspaper Coverage')) ?>" class="absolute inset-0 w-full h-full object-cover mix-blend-multiply opacity-40">
         <div class="relative z-10 flex items-center justify-between">
           <span class="px-3 py-1 rounded-full bg-primary-container text-pure-white font-label-sm text-label-sm shadow-sm font-semibold">
-            <?= e(ps_text('दैनिक जागरण विशेष फीचर', 'Dainik Jagran Feature')) ?>
+            <?= e(ps_text('समाचार पत्र विशेष फीचर', 'Newspaper Feature')) ?>
           </span>
-          <span class="font-label-sm text-label-sm text-text-muted bg-pure-white/90 px-2.5 py-0.5 rounded shadow-sm">
-            16 <?= e(ps_text('जून 2024 • पृष्ठ संख्या 03', 'June 2024 • Page 03')) ?>
+          <span class="font-label-sm text-label-sm text-text-muted bg-pure-white/90 px-2.5 py-0.5 rounded shadow-sm font-semibold">
+            <?= e(date('d M Y', strtotime($spotlightClip['created_at'] ?? 'now'))) ?>
           </span>
         </div>
         <div class="relative z-10 bg-pure-white/95 rounded-xl p-5 shadow-sm mt-12 backdrop-blur-sm border border-border-warm">
@@ -139,7 +147,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
             <span><?= e(ps_text('अखबार की मूल सुर्खी', 'Original Press Headline')) ?></span>
           </div>
           <p class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
-            <?= ps_text('‘ग्रीन मॉर्निंग’ के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '‘Green Morning’ Founder: New Voice of Environmental Consciousness from Kamrawan') ?>
+            <?= e($spotlightClip['title'] ?: ps_text('‘ग्रीन मॉर्निंग’ के जनक: बाराबंकी से उठी पर्यावरण चेतना की आवाज़', 'Green Morning Movement: Environmental Consciousness in Media')) ?>
           </p>
         </div>
         <div class="relative z-10 flex items-center gap-3 pt-4 text-deep-forest font-label-sm text-label-sm">
@@ -148,7 +156,7 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
             <?= e(ps_text('बाराबंकी ब्यूरो (उ.प्र.)', 'Barabanki Bureau (U.P.)')) ?>
           </span>
           <span class="opacity-30">•</span>
-          <span><?= e(ps_text('विशेष संवाददाता: अरुण कुमार दीक्षित', 'Special Correspondent: Arun Kumar Dixit')) ?></span>
+          <span><?= e(ps_text('ऐतिहासिक प्रेस पुरालेख', 'Historical Press Archive')) ?></span>
         </div>
       </div>
 
@@ -191,15 +199,16 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
         </div>
         <!-- Actions -->
         <div class="flex flex-wrap items-center gap-3 pt-4">
-          <button type="button" onclick="openArchivalModal('spotlight')" class="px-5 py-2.5 rounded-xl bg-primary-container text-pure-white hover:bg-deep-forest font-label-md text-label-md transition-colors flex items-center gap-2 shadow-sm font-semibold">
+          <a href="<?= e(base_url($spotlightClip['image'])) ?>" data-ps-lightbox data-caption="<?= e($spotlightClip['title'] ?: ps_text('समाचार पत्र की कतरन', 'Newspaper Clipping')) ?>" class="px-5 py-2.5 rounded-xl bg-primary-container text-pure-white hover:bg-deep-forest font-label-md text-label-md transition-colors flex items-center gap-2 shadow-sm font-semibold">
             <span class="material-symbols-outlined text-[18px]">zoom_in</span>
             <span><?= e(ps_text('पूरी कतरन देखें (Open Lightbox)', 'Open Full Clipping')) ?></span>
-          </button>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- Interactive Newspaper Clippings Grid -->
 <section class="w-full py-space-3xl px-4 sm:px-8 bg-soft-meadow border-t border-border-warm">
@@ -247,122 +256,15 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
           </div>
         </article>
       <?php endforeach; else: ?>
-        <!-- Curated Fallback Clippings matching Pradeep Sarang Archive -->
-        <!-- Card 1 -->
-        <article class="clipping-card group bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="literature">
-          <div>
-            <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-[16/10] mb-4">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlqEx_r0JOG01dN1O9cME417DJrGkAjrXmbAtq7zuhgIPkjx1RRiOU94uXZ0HWqUwEXCwX3SB9lPKnCmFr173p0TtpbimjSZGgXxNUbC1Fr3u83NpRgzYTHC6rHX68FIJFe6uCoTvKNpAp_58_Wlr0EQ8IZ6Yyu8V7L8CHOSICicT74oESIWAmdNXtMmT7CMgauoe-73X8TkZVuEwytWIymEIS9aVyPyz99wTJHZjFyyUW5v5dqI82" alt="Amar Ujala Clipping" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-2.5 left-2.5 bg-tertiary-container text-pure-white px-2.5 py-0.5 rounded font-label-sm text-label-sm shadow-sm font-semibold">
-                Amar Ujala
-              </span>
-            </div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2">
-              <span>18 Aug 2024</span>
-              <span><?= e(ps_text('सतरिख मंच', 'Satrikh Platform')) ?></span>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug mb-2 group-hover:text-primary transition-colors font-bold">
-              <?= e(ps_text('सतरिख में प्रदीप सारंग द्वारा तुलसी जयंती पखवाड़ा और साहित्य गोष्ठी आयोजित', 'Tulsi Jayanti Fortnight & Literary Meet Organized by Pradeep Sarang in Satrikh')) ?>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">
-              <?= e(ps_text('घर-घर तुलसी वितरण व अवधी चौपाल में सारंग ने कहा कि तुलसी मात्र पौधा नहीं, हमारे सांस्कृतिक और प्राकृतिक स्वास्थ्य की संजीवनी है।', 'Distribution of Tulsi plants and Awadhi chaupals celebrating cultural heritage.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between border-t border-border-warm">
-            <span class="px-2 py-0.5 rounded bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold"><?= e(ps_text('अवधी संस्कृति', 'Awadhi Culture')) ?></span>
-            <button type="button" onclick="openArchivalModal('clipping-1')" class="text-primary-container font-label-sm text-label-sm font-semibold hover:text-deep-forest flex items-center gap-1">
-              <span><?= e(ps_text('कतरन पढ़ें', 'View Clipping')) ?></span>
-              <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="clipping-card group bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="environment">
-          <div>
-            <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-[16/10] mb-4">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDB-EAIIXMiB60M_0ANLdYUnaj0sSLru_LVlIvJ6-1WGaYiQy41NkpOwo5G3amHP-KW7_221_Fa-hPTSF0emLb3Tz3FMmaQEULQ9sHw4OrguLUJvI0hD2tutqhCLMcLY6gN78hpQdu_CtYNkUP1kKyxqz33sibqD3Qd755H60Iq0J2LAEqPPtycWxowHizq6vsZaQoxjP7AN3Pr0qzFOknL_08LXw-0dzCF24z8ydEqfCtiPF_ZF6BA" alt="Dainik Jagran Environment Rally" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-2.5 left-2.5 bg-primary-container text-pure-white px-2.5 py-0.5 rounded font-label-sm text-label-sm shadow-sm font-semibold">
-                Dainik Jagran
-              </span>
-            </div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2">
-              <span>06 Jun 2024</span>
-              <span><?= e(ps_text('पर्यावरण दिवस', 'Environment Day')) ?></span>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug mb-2 group-hover:text-primary transition-colors font-bold">
-              <?= e(ps_text('पर्यावरण दिवस 2024: हरित महा-रैली का आयोजन, प्रदीप सारंग का उद्बोधन', 'Environment Day 2024: Green Mega Rally & Address by Pradeep Sarang')) ?>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">
-              <?= e(ps_text('ग्रीन गैंग के सैकड़ों युवाओं ने ली धरती को पॉलीथिन मुक्त बनाने और प्रत्येक उत्सव पर 5 पौधे रोपने की सामूहिक शपथ।', 'Hundreds of Green Gang youth pledge to eliminate polythene and plant trees.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between border-t border-border-warm">
-            <span class="px-2 py-0.5 rounded bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold"><?= e(ps_text('हरित संकल्प', 'Green Pledge')) ?></span>
-            <button type="button" onclick="openArchivalModal('clipping-2')" class="text-primary-container font-label-sm text-label-sm font-semibold hover:text-deep-forest flex items-center gap-1">
-              <span><?= e(ps_text('कतरन पढ़ें', 'View Clipping')) ?></span>
-              <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="clipping-card group bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="environment">
-          <div>
-            <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-[16/10] mb-4">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-rS3QuXkx8VlItzSSVQ_SM-6-l-lVklNz-zE0tiUUwIGlWARYlJCzg-DMJSvs-n3zBo5Sxq6TVi7XZw3LszjNmfN0R1oz5BC-tiPlONh2C7XyGIU6kMJRCb6TpfRsKw0HNH8B4jkt-6QRp9xE_nyMD3JEGOqaz6-6UdVgmbHyZPpndskEhzJle2RBhCPUHCS2Djt156m3VQuvUOUTUCupeVp3umASoPHWZmhKgLKCRlF1PYtZsWeq" alt="Hindustan Sakora Distribution" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-2.5 left-2.5 bg-secondary text-pure-white px-2.5 py-0.5 rounded font-label-sm text-label-sm shadow-sm font-semibold">
-                Hindustan
-              </span>
-            </div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2">
-              <span>22 May 2024</span>
-              <span><?= e(ps_text('परिंदा संरक्षण', 'Bird Conservation')) ?></span>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug mb-2 group-hover:text-primary transition-colors font-bold">
-              <?= e(ps_text('गर्मियों में बेजुबान परिंदों के लिए मसीहा बने सारंग, बाँटे 5000 सकोरे', '5000 Earthen Water Bowls Distributed for Birds in Summer')) ?>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">
-              <?= e(ps_text('तीव्र लू के बीच पक्षियों के दाना-पानी हेतु अभियान चलाकर सार्वजनिक स्थलों, वृक्षों और छतों पर मिट्टी के सकोरे स्थापित कराए।', 'Drive for bird water bowls hung across trees and roofs during heatwaves.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between border-t border-border-warm">
-            <span class="px-2 py-0.5 rounded bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold"><?= e(ps_text('जीव दया', 'Bird Welfare')) ?></span>
-            <button type="button" onclick="openArchivalModal('clipping-3')" class="text-primary-container font-label-sm text-label-sm font-semibold hover:text-deep-forest flex items-center gap-1">
-              <span><?= e(ps_text('कतरन पढ़ें', 'View Clipping')) ?></span>
-              <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-            </button>
-          </div>
-        </article>
-
-        <!-- Card 4 -->
-        <article class="clipping-card group bg-surface-container-lowest rounded-2xl p-5 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between" data-category="honors">
-          <div>
-            <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-[16/10] mb-4">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAr7te-Dq2bPHY75NlCCxz1Ohq1n_C9mAXgoSjQg6mygYhyk-5SpjE9SKgNx_mjFtv8xNZY-C8i9NPkBuErYzZBLndhXbyY3pqwjkBYtMCupRJuNOHLy9b7AEZj1AQXvNprkfR6kj0Wn2aLuY8vzeGbnvFPaJUZpNigPfa6WK8HSSviPskLcJvDxPyIwdilpVRYjYV-Taa5m0Pvorj2nPIDJGP9bZcWLLMJk_DVuykraKBlJR-_DRaS" alt="1988 NSS Rajpath Parade" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-              <span class="absolute top-2.5 left-2.5 bg-primary-container text-pure-white px-2.5 py-0.5 rounded font-label-sm text-label-sm shadow-sm font-semibold">
-                NSS Archive 1988
-              </span>
-            </div>
-            <div class="flex items-center justify-between text-text-muted font-label-sm text-label-sm mb-2">
-              <span>27 Jan 1988</span>
-              <span><?= e(ps_text('राजपथ, नई दिल्ली', 'Rajpath, New Delhi')) ?></span>
-            </div>
-            <h3 class="font-headline-sm text-headline-sm text-deep-forest leading-snug mb-2 group-hover:text-primary transition-colors font-bold">
-              <?= e(ps_text('गणतंत्र दिवस राष्ट्रीय परेड शिविर: राजपथ पर प्रदीप सारंग ने लहराया परचम', 'Republic Day National Parade Camp 1988: Pradeep Sarang at Rajpath')) ?>
-            </h3>
-            <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-3 mb-4">
-              <?= e(ps_text('राष्ट्रीय सेवा योजना (NSS) के अंतर्गत अनुकरणीय समाजसेवा और नेतृत्व हेतु राष्ट्रीय परेड दल में बाराबंकी से सारंग का ऐतिहासिक चयन।', 'Historic selection of Pradeep Sarang representing UP in the Republic Day Parade at Rajpath.')) ?>
-            </p>
-          </div>
-          <div class="pt-3 flex items-center justify-between border-t border-border-warm">
-            <span class="px-2 py-0.5 rounded bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold"><?= e(ps_text('NSS पुरालेख', 'NSS Archive')) ?></span>
-            <button type="button" onclick="openArchivalModal('clipping-5')" class="text-primary-container font-label-sm text-label-sm font-semibold hover:text-deep-forest flex items-center gap-1">
-              <span><?= e(ps_text('कतरन पढ़ें', 'View Clipping')) ?></span>
-              <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
-            </button>
-          </div>
-        </article>
+        <div class="col-span-full py-16 text-center bg-surface-container-lowest rounded-2xl border border-border-warm p-8">
+          <span class="material-symbols-outlined text-5xl text-text-muted mb-3 inline-block">newspaper</span>
+          <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold mb-2">
+            <?= e(ps_text('वर्तमान में कोई प्रेस कतरन उपलब्ध नहीं है', 'No Press Clippings Available')) ?>
+          </h3>
+          <p class="font-body-md text-body-md text-text-muted max-w-md mx-auto">
+            <?= e(ps_text('डेटाबेस में नई प्रेस कतरनें जोड़े जाने पर वे यहाँ प्रदर्शित होंगी।', 'Newspaper clippings stored in database will appear here once added.')) ?>
+          </p>
+        </div>
       <?php endif; ?>
     </div>
   </div>
@@ -441,12 +343,12 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
               <span><?= e(ps_text('डीडी यूपी विशेष', 'DD UP Feature')) ?></span>
             </span>
           </div>
-          <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-video mb-5 group border border-border-warm">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOAfG01lcYZDlEShf5zbZufqZB4nvyYv-XTSeNInK4mY_Kxs4WImkb48TA-vvSFWAiLi01MFbYMV8vJuZv5O0w0jiFiafV6iW90iPnemJPk-wwLB_gq3T43iFL9gxS8ZY58A7Um3fErwoJT6nWKNbJHkX_k3x4cTZgLrHKN7nrHvv5yTI-rl5home5vQCOFPdhQAm9MnRei5gloeI2GfDZ1DY_bY1UaAb3605gTsxT76DHrpDRHQcA" alt="DD UP Broadcast" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-deep-forest/30 flex items-center justify-center">
-              <div class="w-12 h-12 rounded-full bg-pure-white/90 text-deep-forest flex items-center justify-center shadow-md">
-                <span class="material-symbols-outlined text-[24px]">play_arrow</span>
+          <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-forest-canopy to-deep-forest aspect-video mb-5 group border border-border-warm flex items-center justify-center p-6 text-center">
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 rounded-full bg-pure-white/15 text-primary-fixed flex items-center justify-center backdrop-blur-sm border border-pure-white/20">
+                <span class="material-symbols-outlined text-[26px]">play_arrow</span>
               </div>
+              <span class="text-pure-white/90 font-label-sm text-label-sm font-semibold tracking-wide"><?= e(ps_text('दूरदर्शन विशेष ग्राउंड रिपोर्ट', 'Doordarshan Ground Report')) ?></span>
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-deep-forest mb-2 font-bold">
@@ -474,12 +376,12 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
               <span><?= e(ps_text('विशेष वृत्तचित्र', 'Documentary')) ?></span>
             </span>
           </div>
-          <div class="relative overflow-hidden rounded-xl bg-surface-container aspect-video mb-5 group border border-border-warm">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTa5tOs3Udskdvl6FmlqyQagSaDu_TnPhoA7lHjvDoi9i6nHZBKt_qQqkp4tVZVbN6banVt959Ig3iJbocDOaHTf9_nJmpyabRTOExT5ICAefRz3nIqm1cAigkugvg7wVBXE3xEC_yn6eVWSZXQCulPwfCqfmnE9dpdxai1YYkNJ2I0qYtacexP-l88XeuNgN50EODWlADuGgHbXMO5EpSh_q04gs8gZgeGOZddlKxvZ578dOQ5Px-" alt="Digital Podcast Studio" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-            <div class="absolute inset-0 bg-deep-forest/30 flex items-center justify-center">
-              <div class="w-12 h-12 rounded-full bg-pure-white/90 text-deep-forest flex items-center justify-center shadow-md">
-                <span class="material-symbols-outlined text-[24px]">headphones</span>
+          <div class="relative overflow-hidden rounded-xl bg-gradient-to-br from-deep-forest via-primary-container to-earth-brown aspect-video mb-5 group border border-border-warm flex items-center justify-center p-6 text-center">
+            <div class="flex flex-col items-center gap-2">
+              <div class="w-12 h-12 rounded-full bg-pure-white/15 text-tertiary-fixed flex items-center justify-center backdrop-blur-sm border border-pure-white/20">
+                <span class="material-symbols-outlined text-[26px]">headphones</span>
               </div>
+              <span class="text-pure-white/90 font-label-sm text-label-sm font-semibold tracking-wide"><?= e(ps_text('डिजिटल पॉडकास्ट एवं वृत्तचित्र', 'Digital Podcast & Documentary')) ?></span>
             </div>
           </div>
           <h3 class="font-title-lg text-title-lg text-deep-forest mb-2 font-bold">
@@ -639,43 +541,6 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
   </div>
 </section>
 
-<!-- Archival Clipping Detail Modal / Lightbox -->
-<div id="archival-modal" class="fixed inset-0 z-50 hidden bg-on-surface/70 backdrop-blur-sm p-4 sm:p-8 flex items-center justify-center">
-  <div class="bg-surface-container-lowest rounded-2xl shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 relative border border-border-warm">
-    <button type="button" onclick="closeArchivalModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-surface-container text-deep-forest hover:bg-surface-container-high flex items-center justify-center transition-colors">
-      <span class="material-symbols-outlined text-[20px]">close</span>
-    </button>
-    <div class="mb-4">
-      <span id="modal-pub-tag" class="px-3 py-1 rounded-full bg-primary-container text-pure-white font-label-sm text-label-sm font-semibold">
-        <?= e(ps_text('अखबार कतरन', 'Press Clipping')) ?>
-      </span>
-      <span id="modal-date" class="ml-3 font-label-sm text-label-sm text-text-muted">
-        16 <?= e(ps_text('जून 2024', 'June 2024')) ?>
-      </span>
-    </div>
-    <h3 id="modal-title" class="font-headline-sm text-headline-sm text-deep-forest mb-4 leading-snug font-bold">
-      <?= e(ps_text('अखबार की सुर्खी', 'Newspaper Headline')) ?>
-    </h3>
-    <div class="relative w-full rounded-xl bg-surface-container-low overflow-hidden mb-5 aspect-[16/10] border border-border-warm">
-      <img id="modal-img" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZtggCNP0RlaRVGT_o1k_lc9kwoPQQU0RWMrkCCOkN8rLyIpIjOQb9sEJVlhUv6dwoj5g4a3NjDUyV-ewQjYyqAEnpN4XB7oQQv5ASRde4PbO86D5OYuLxqT13z3cTf17IRVZvdGTvbxs84kS1iCRQ9HbND9QpLu2pbrz2jM2ID2HOxXpLLRYaULKB2lAYphwxYhQTGvG69xeLoqT9l3IMZY_PvE0S3MIM1_i6ldVFcq_ucu2yo8i5" alt="Newspaper Scan" class="w-full h-full object-contain bg-cream-canvas">
-    </div>
-    <p id="modal-body" class="font-body-md text-body-md text-on-surface leading-relaxed mb-6">
-      <?= e(ps_text('कतरन का विस्तृत विवरण यहाँ प्रदर्शित होगा।', 'Detailed description of clipping will be displayed here.')) ?>
-    </p>
-    <div class="flex flex-wrap items-center justify-between gap-4 pt-4 bg-surface-container-low/50 rounded-xl p-4 border border-border-warm">
-      <div class="flex items-center gap-2 text-label-sm font-label-sm text-text-muted">
-        <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
-        <span><?= e(ps_text('प्रदीप सारंग अधिकृत मीडिया पुरालेख संग्रह', 'Pradeep Sarang Official Press Archive')) ?></span>
-      </div>
-      <div class="flex items-center gap-3">
-        <button type="button" onclick="closeArchivalModal()" class="px-4 py-1.5 rounded-xl bg-primary-container text-pure-white hover:bg-deep-forest font-label-sm text-label-sm font-semibold transition-colors">
-          <?= e(ps_text('बंद करें', 'Close')) ?>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   (function() {
     const filterButtons = document.querySelectorAll('#media-filters .filter-btn');
@@ -704,72 +569,4 @@ $contactEmail = $settings['email'] ?? 'press@pradeepsarang.in';
       });
     });
   })();
-
-  const archivalData = {
-    'spotlight': {
-      pub: '<?= e(ps_text('दैनिक जागरण (मुख्य पृष्ठ)', 'Dainik Jagran (Front Page)')) ?>',
-      date: '16 <?= e(ps_text('जून 2024 • बाराबंकी', 'June 2024 • Barabanki')) ?>',
-      title: '<?= e(ps_text('‘ग्रीन मॉर्निंग’ के जनक: बाराबंकी के गाँव कमरावां से उठी पर्यावरण चेतना की नई आवाज़', '‘Green Morning’ Founder: New Voice of Environmental Consciousness')) ?>',
-      body: '<?= e(ps_text('दैनिक जागरण के विशेष परिशिष्ट में प्रकाशित विस्तृत आलेख: गाँव कमरावां निवासी प्रदीप सारंग द्वारा शुरू की गई ‘ग्रीन मॉर्निंग’ मुहिम अब 100 से अधिक ग्राम पंचायतों में फैल चुकी है।', 'Dainik Jagran feature: Green Morning movement led by Pradeep Sarang from Kamrawan village spread to over 100 panchayats.')) ?>'
-    },
-    'clipping-1': {
-      pub: '<?= e(ps_text('अमर उजाला', 'Amar Ujala')) ?>',
-      date: '18 <?= e(ps_text('अगस्त 2024 • सतरिख मंच', 'Aug 2024 • Satrikh Platform')) ?>',
-      title: '<?= e(ps_text('सतरिख में प्रदीप सारंग द्वारा तुलसी जयंती पखवाड़ा और साहित्य गोष्ठी आयोजित', 'Tulsi Jayanti Fortnight & Literary Meet Organized in Satrikh')) ?>',
-      body: '<?= e(ps_text('अमर उजाला ब्यूरो: अवधी संस्कृति और तुलसीदास जी के सामाजिक संदेश को जन-जन तक पहुँचाने के उद्देश्य से प्रदीप सारंग की अध्यक्षता में आयोजित हुआ तुलसी पखवाड़ा।', 'Amar Ujala report: Tulsi Jayanti fortnight organized under leadership of Pradeep Sarang.')) ?>'
-    },
-    'clipping-2': {
-      pub: '<?= e(ps_text('दैनिक जागरण', 'Dainik Jagran')) ?>',
-      date: '06 <?= e(ps_text('जून 2024 • विश्व पर्यावरण दिवस', 'June 2024 • World Environment Day')) ?>',
-      title: '<?= e(ps_text('पर्यावरण दिवस 2024: हरित महा-रैली का आयोजन, प्रदीप सारंग का उद्बोधन', 'Environment Day 2024: Green Rally & Address by Pradeep Sarang')) ?>',
-      body: '<?= e(ps_text('दैनिक जागरण रिपोर्ट: पर्यावरण दिवस पर ग्रीन गैंग के युवाओं द्वारा जनपद में विशाल हरित रैली निकाली गई।', 'Dainik Jagran report: Massive green rally led by Green Gang youth on Environment Day.')) ?>'
-    },
-    'clipping-3': {
-      pub: '<?= e(ps_text('हिन्दुस्तान', 'Hindustan')) ?>',
-      date: '22 <?= e(ps_text('मई 2024 • परिंदा संरक्षण', 'May 2024 • Bird Protection')) ?>',
-      title: '<?= e(ps_text('गर्मियों में बेजुबान परिंदों के लिए मसीहा बने सारंग, बाँटे 5000 सकोरे', '5000 Earthen Water Bowls Distributed for Birds in Summer')) ?>',
-      body: '<?= e(ps_text('हिन्दुस्तान रिपोर्ट: 45 डिग्री के भीषण तापमान में पक्षियों को पानी के अभाव से बचाने के लिए प्रदीप सारंग ने बाराबंकी में मिट्टी के 5000 सकोरे वितरित किए।', 'Hindustan report: 5000 earthen water bowls distributed for thirsty birds.')) ?>'
-    },
-    'clipping-5': {
-      pub: '<?= e(ps_text('दैनिक जागरण पुरालेख 1988', 'Dainik Jagran Archive 1988')) ?>',
-      date: '27 <?= e(ps_text('जनवरी 1988 • नई दिल्ली', 'Jan 1988 • New Delhi')) ?>',
-      title: '<?= e(ps_text('गणतंत्र दिवस राष्ट्रीय परेड शिविर: राजपथ पर प्रदीप सारंग ने लहराया परचम', 'Republic Day National Parade Camp 1988: Pradeep Sarang at Rajpath')) ?>',
-      body: '<?= e(ps_text('ऐतिहासिक पुरालेख 1988: राष्ट्रीय सेवा योजना (NSS) के अंतर्गत अनुकरणीय समाजसेवा और नेतृत्व हेतु राष्ट्रीय परेड दल में बाराबंकी से सारंग का ऐतिहासिक चयन।', '1988 Archive: Selection of Pradeep Sarang representing UP in the Republic Day Parade at Rajpath.')) ?>'
-    }
-  };
-
-  function decodeHtmlEntities(str) {
-    if (!str) return '';
-    const txt = document.createElement('textarea');
-    txt.innerHTML = str;
-    return txt.value;
-  }
-
-  function openArchivalModal(id) {
-    const modal = document.getElementById('archival-modal');
-    const data = archivalData[id];
-    if (!data) return;
-
-    document.getElementById('modal-pub-tag').innerText = decodeHtmlEntities(data.pub);
-    document.getElementById('modal-date').innerText = decodeHtmlEntities(data.date);
-    document.getElementById('modal-title').innerText = decodeHtmlEntities(data.title);
-    document.getElementById('modal-body').innerText = decodeHtmlEntities(data.body);
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  }
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeArchivalModal() {
-    const modal = document.getElementById('archival-modal');
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  document.getElementById('archival-modal').addEventListener('click', function(e) {
-    if (e.target === this) {
-      closeArchivalModal();
-    }
-  });
 </script>

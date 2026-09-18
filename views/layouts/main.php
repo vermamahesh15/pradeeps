@@ -11,10 +11,11 @@ $flashError = flash('error');
 $route = current_path();
 ?>
 <!DOCTYPE html>
-<html lang="<?= e(current_lang()) ?>">
+<html lang="<?= e(current_lang()) ?>" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate">
     <?php if (isset($post) && !empty($post['seo_title'])): ?>
         <title><?= e($post['seo_title']) ?></title>
     <?php else: ?>

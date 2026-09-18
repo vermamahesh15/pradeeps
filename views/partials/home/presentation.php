@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 if (!function_exists('ps_text')) {
-    function ps_text(string $hi, string $en): string { return current_lang() === 'hi' ? $hi : $en; }
+    // English suspended for the time being; kept for future use:
+    // function ps_text(string $hi, string $en): string { return current_lang() === 'hi' ? $hi : $en; }
+    function ps_text(string $hi, string $en): string { return $hi; }
 }
 if (!function_exists('ps_content_lang')) {
     function ps_content_lang(string $text): string { return preg_match('/[\x{0900}-\x{097F}]/u', $text) ? 'hi' : 'en'; }

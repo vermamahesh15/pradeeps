@@ -52,11 +52,15 @@ function e($value): string
 
 function current_lang(): string
 {
+    // Temporarily disabled multi-language/English switching - Hindi is strict default
+    /*
     if (isset($_GET['lang']) && in_array($_GET['lang'], app_config('supported_langs', []), true)) {
         $_SESSION['lang'] = $_GET['lang'];
     }
 
-    return $_SESSION['lang'] ?? app_config('default_lang', 'en');
+    return $_SESSION['lang'] ?? app_config('default_lang', 'hi');
+    */
+    return 'hi';
 }
 
 function lang(string $key, ?string $lang = null): string
@@ -101,7 +105,15 @@ function base_url(string $path = ''): string
 
 function asset(string $path): string
 {
-    return base_url('assets/' . ltrim($path, '/'));
+    $cleanPath = ltrim($path, '/');
+    if (preg_match('/\.(css|js)$/i', $cleanPath) && !str_contains($cleanPath, '.min.')) {
+        $minPath = preg_replace('/\.(css|js)$/i', '.min.$1', $cleanPath);
+        $fullMinPath = dirname(__DIR__) . '/assets/' . $minPath;
+        if (is_file($fullMinPath)) {
+            $cleanPath = $minPath;
+        }
+    }
+    return base_url('assets/' . $cleanPath);
 }
 
 function current_path(): string
@@ -130,7 +142,9 @@ function is_nav_item_active(string $navUrl, string $currentPath): bool
 
 function ps_text(string $hi, string $en): string
 {
-    return current_lang() === 'hi' ? $hi : $en;
+    // English suspended for the time being; kept for future use:
+    // return current_lang() === 'hi' ? $hi : $en;
+    return $hi;
 }
 
 function json_response(array $data, int $statusCode = 200): void
@@ -204,7 +218,7 @@ function ps_image_path(?string $dbPath): ?string
         return base_url($webp);
     }
 
-    return base_url($clean);
+    return null;
 }
 
 if (!function_exists('ps_resolve_img')) {
@@ -220,9 +234,6 @@ if (!function_exists('ps_resolve_img')) {
             if (file_exists($root . '/' . $webp)) {
                 return base_url($webp);
             }
-            if (strpos($clean, 'uploads/') === 0) {
-                return base_url($clean);
-            }
         }
         if (empty($fallback)) {
             $fallback = 'assets/images/slider_final_1.webp';
@@ -236,7 +247,7 @@ if (!function_exists('ps_resolve_img')) {
         if (file_exists($root . '/' . $webpFallback)) {
             return base_url($webpFallback);
         }
-        return base_url($cleanFallback);
+        return base_url('assets/images/slider_final_1.webp');
     }
 }
 
@@ -292,54 +303,34 @@ if (!function_exists('ps_responsive_img')) {
         $loadingAttr = ' loading="' . ($loading === 'eager' ? 'eager' : 'lazy') . '"';
         $decodingAttr = ' decoding="async"';
 
+        $cleanPath = parse_url($resolved, PHP_URL_PATH) ?? '';
+        $root = dirname(__DIR__);
+        $relPath = ltrim(preg_replace('#^/pradeep/#i', '', $cleanPath), '/');
+        $localFile = $root . '/' . $relPath;
+
+        $dimAttr = '';
+        if (isset($extraAttributes['width']) && isset($extraAttributes['height'])) {
+            $dimAttr = sprintf(' width="%s" height="%s"', e((string)$extraAttributes['width']), e((string)$extraAttributes['height']));
+            unset($extraAttributes['width'], $extraAttributes['height']);
+        } elseif (file_exists($localFile) && !is_dir($localFile)) {
+            $imgInfo = @getimagesize($localFile);
+            if ($imgInfo && !empty($imgInfo[0]) && !empty($imgInfo[1])) {
+                $dimAttr = sprintf(' width="%d" height="%d"', $imgInfo[0], $imgInfo[1]);
+            }
+        }
+        if (empty($dimAttr)) {
+            $dimAttr = ' width="800" height="600"';
+        }
+
         $extraStr = '';
         foreach ($extraAttributes as $k => $v) {
             $extraStr .= ' ' . e((string)$k) . '="' . e((string)$v) . '"';
         }
 
-        // External URLs or SVGs return enhanced standard <img>
-        if (preg_match('#^https?://#i', $resolved) || preg_match('/\.svg$/i', $resolved)) {
-            return sprintf(
-                '<img src="%s" alt="%s"%s%s%s%s>',
-                e($resolved),
-                $altAttr,
-                $classAttr,
-                $sizesAttr,
-                $loadingAttr . $decodingAttr,
-                $extraStr
-            );
-        }
-
-        // Local images: check for WebP version and generate <picture> element
-        $cleanPath = parse_url($resolved, PHP_URL_PATH) ?? '';
-        $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
-        $webpPath = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanPath);
-
-        $pictureClass = !empty($class) ? ' class="' . e($class) . '"' : '';
-        $html = '<picture' . $pictureClass . ' style="display: inline-flex; align-items: center; max-width: 100%;">';
-        
-        $dimAttr = '';
-        if (!isset($extraAttributes['width']) && !isset($extraAttributes['height'])) {
-            $localFile = $root . '/' . ltrim($cleanPath, '/');
-            if (file_exists($localFile)) {
-                $imgInfo = @getimagesize($localFile);
-                if ($imgInfo && !empty($imgInfo[0]) && !empty($imgInfo[1])) {
-                    $dimAttr = sprintf(' width="%d" height="%d"', $imgInfo[0], $imgInfo[1]);
-                }
-            }
-        }
         $priorityAttr = ($loading === 'eager') ? ' fetchpriority="high"' : '';
 
-        // If webp version exists on disk, add WebP <source>
-        if ($webpPath !== $cleanPath && file_exists($root . '/' . ltrim($webpPath, '/'))) {
-            $html .= sprintf(
-                '<source srcset="%s"%s type="image/webp">',
-                e(base_url(ltrim($webpPath, '/'))),
-                $sizesAttr
-            );
-        }
-
-        $html .= sprintf(
+        // Standard <img> with explicit width & height and async decoding
+        return sprintf(
             '<img src="%s" alt="%s"%s%s%s%s%s%s>',
             e($resolved),
             $altAttr,
@@ -350,10 +341,6 @@ if (!function_exists('ps_responsive_img')) {
             $dimAttr,
             $extraStr
         );
-
-        $html .= '</picture>';
-
-        return $html;
     }
 }
 

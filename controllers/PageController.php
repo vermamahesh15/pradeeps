@@ -75,7 +75,7 @@ class PageController
     public function home(): void
     {
         $this->render('home', [
-            'title' => 'Home',
+            'title' => ps_text('मुख्य पृष्ठ', 'Home'),
             'page' => [
                 'campaigns' => $this->content->all('campaigns'),
                 'events' => $this->content->all('events'),
@@ -93,20 +93,20 @@ class PageController
         $slug = rtrim($slug, '/') ?: '/';
 
         $map = [
-            '/about' => ['view' => 'about', 'title' => 'About Us'],
-            '/campaigns' => ['view' => 'causes', 'title' => 'Campaigns', 'items' => $this->content->all('campaigns')],
-            '/events' => ['view' => 'events', 'title' => 'Events', 'items' => $this->content->all('events')],
-            '/portfolio' => ['view' => 'portfolio', 'title' => 'Gallery', 'items' => $this->content->allGallery(100)],
-            '/media' => ['view' => 'media', 'title' => 'Media Coverage', 'items' => $this->content->allNewspaperCuttings(100)],
-            '/awards' => ['view' => 'awards', 'title' => 'Awards & Achievements', 'items' => $this->content->getTimeline()],
-            '/contact' => ['view' => 'contact', 'title' => 'Contact'],
-            '/volunteer' => ['view' => 'volunteer', 'title' => 'Volunteer Registration', 'states' => $this->content->getStates()],
-            '/donation' => ['view' => 'donation', 'title' => 'Donate Now'],
+            '/about' => ['view' => 'about', 'title' => ps_text('परिचय', 'About Us')],
+            '/campaigns' => ['view' => 'causes', 'title' => ps_text('प्रमुख अभियान', 'Campaigns'), 'items' => $this->content->all('campaigns')],
+            '/events' => ['view' => 'events', 'title' => ps_text('कार्यक्रम', 'Events'), 'items' => $this->content->all('events')],
+            '/portfolio' => ['view' => 'portfolio', 'title' => ps_text('छायाचित्र दीर्घा', 'Gallery'), 'items' => $this->content->allGallery(100)],
+            '/media' => ['view' => 'media', 'title' => ps_text('प्रेस व कतरनें', 'Media Coverage'), 'items' => $this->content->allNewspaperCuttings(100)],
+            '/awards' => ['view' => 'awards', 'title' => ps_text('सम्मान व पुरस्कार', 'Awards & Achievements'), 'items' => $this->content->getTimeline()],
+            '/contact' => ['view' => 'contact', 'title' => ps_text('संपर्क', 'Contact')],
+            '/volunteer' => ['view' => 'volunteer', 'title' => ps_text('स्वयंसेवक पंजीकरण', 'Volunteer Registration'), 'states' => $this->content->getStates()],
+            '/donation' => ['view' => 'donation', 'title' => ps_text('सहयोग करें', 'Donate Now')],
         ];
 
         if ($slug === '/about') {
             $this->render('about', [
-                'title' => 'About Us',
+                'title' => ps_text('परिचय', 'About Us'),
                 'timeline' => $this->content->getTimeline(),
                 'personalPhotos' => $this->content->getPublishedPersonalPhotos()
             ]);
@@ -127,7 +127,7 @@ class PageController
             $totalPages = max(1, (int)ceil($totalVideos / $limit));
 
             $this->render('videos', [
-                'title' => 'वीडियो दीर्घा (Video Gallery)',
+                'title' => ps_text('वीडियो दीर्घा', 'Video Gallery'),
                 'videos' => $videos,
                 'selectedCategory' => $category ?: 'all',
                 'searchQuery' => $search,
@@ -143,7 +143,7 @@ class PageController
             $items = $this->blogModel->allPublished(500);
 
             $this->render('blog', [
-                'title' => 'Blog',
+                'title' => ps_text('साहित्य व विचार', 'Blog'),
                 'items' => $items,
                 'categories' => $this->categoryModel->all(),
             ]);
@@ -152,7 +152,7 @@ class PageController
 
         if ($slug === '/donation' || $slug === '/donate' || $slug === '/donate-now') {
             $this->render('donate-now', [
-                'title' => 'Donate Now - सहयोग करें',
+                'title' => ps_text('सहयोग करें', 'Donate Now'),
                 'donation_settings' => $this->content->getDonationSettings()
             ]);
             return;
@@ -160,7 +160,7 @@ class PageController
 
         if ($slug === '/journey' || $slug === '/timeline') {
             $this->render('journey', [
-                'title' => 'Service Journey & Timeline',
+                'title' => ps_text('सेवा यात्रा', 'Service Journey'),
                 'timeline' => $this->content->getTimeline()
             ]);
             return;
@@ -168,7 +168,7 @@ class PageController
 
         if ($slug === '/impact') {
             $this->render('impact', [
-                'title' => 'Community Impact & Proof',
+                'title' => ps_text('जनप्रभाव', 'Community Impact'),
                 'campaigns' => $this->content->all('campaigns')
             ]);
             return;
@@ -176,7 +176,7 @@ class PageController
 
         if ($slug === '/green-gang' || $slug === '/greengang') {
             $this->render('green-gang', [
-                'title' => 'Green Gang Movement & Green Morning',
+                'title' => ps_text('ग्रीन गैंग — जानकारी, नियम व निर्देश', 'Green Gang Movement'),
                 'campaigns' => $this->content->all('campaigns')
             ]);
             return;
@@ -184,7 +184,7 @@ class PageController
 
         if ($slug === '/salahkaar' || $slug === '/counsellor' || $slug === '/counsellor-guidance') {
             $this->render('salahkaar', [
-                'title' => 'Counsellor & Guidance'
+                'title' => ps_text('सलाहकार', 'Counsellor & Guidance')
             ]);
             return;
         }
