@@ -73,19 +73,22 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </h1>
 
         <p class="font-body-lg text-body-lg text-[#334155] leading-relaxed">
-          <?= e(ps_text('बाराबंकी के कमरावां गांव से शुरू होकर चार दशकों तक फैली निस्वार्थ जनसेवा — पर्यावरण संरक्षण, गौरैया व पक्षी संवर्धन, जल-सकोरा वितरण, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Selfless community service spanning four decades from Kamrawan, Barabanki — environmental protection, sparrow and bird conservation, water bowl distribution, Awadhi language promotion and continuous youth empowerment.')) ?>
+          <?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत से शुरू होकर चार दशकों तक फैली निस्वार्थ जनसेवा — पर्यावरण संरक्षण, गौरैया व पक्षी संवर्धन, जल-सकोरा वितरण, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Selfless community service spanning four decades from Gram Kamrawan, District Barabanki, Uttar Pradesh, India — environmental protection, sparrow and bird conservation, water bowl distribution, Awadhi language promotion and continuous youth empowerment.')) ?>
         </p>
 
         <!-- Green Greeting Pill -->
-        <div class="bg-white rounded-xl p-4 flex items-center gap-3.5 border border-[#E5E7EB] shadow-xs">
-          <div class="w-10 h-10 rounded-lg bg-[#15803D] text-white flex items-center justify-center shrink-0 shadow-sm">
-            <span class="material-symbols-outlined text-2xl">spa</span>
+        <a href="<?= e(base_url('/green-gang')) ?>" class="bg-white hover:bg-[#F0FDF4] rounded-xl p-4 flex items-center justify-between gap-3.5 border border-[#E5E7EB] hover:border-[#15803D]/40 shadow-xs hover:shadow-sm transition-all group">
+          <div class="flex items-center gap-3.5">
+            <div class="w-10 h-10 rounded-lg bg-[#15803D] group-hover:bg-[#14532D] text-white flex items-center justify-center shrink-0 shadow-sm transition-colors">
+              <span class="material-symbols-outlined text-2xl">spa</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-title-md text-title-md text-[#14532D] group-hover:text-[#15803D] font-bold transition-colors"><?= e(ps_text('ग्रीन मॉर्निंग की अनूठी पहल', 'Unique Initiative: Green Morning')) ?></span>
+              <span class="font-body-sm text-body-sm text-[#475467]"><?= e(ps_text("दैनिक अभिवादन में 'गुड मॉर्निंग' के स्थान पर 'ग्रीन मॉर्निंग' बोलकर प्रकृति प्रेम का संचार", "Inspiring love for nature by greeting with 'Green Morning' instead of 'Good Morning'")) ?></span>
+            </div>
           </div>
-          <div class="flex flex-col">
-            <span class="font-title-md text-title-md text-[#14532D] font-bold"><?= e(ps_text('ग्रीन मॉर्निंग की अनूठी पहल', 'Unique Initiative: Green Morning')) ?></span>
-            <span class="font-body-sm text-body-sm text-[#475467]"><?= e(ps_text("दैनिक अभिवादन में 'गुड मॉर्निंग' के स्थान पर 'ग्रीन मॉर्निंग' बोलकर प्रकृति प्रेम का संचार", "Inspiring love for nature by greeting with 'Green Morning' instead of 'Good Morning'")) ?></span>
-          </div>
-        </div>
+          <span class="material-symbols-outlined text-[#15803D] opacity-60 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-xl shrink-0">arrow_forward</span>
+        </a>
 
         <!-- Hero Actions -->
         <div class="flex flex-wrap items-center gap-4 pt-2">
