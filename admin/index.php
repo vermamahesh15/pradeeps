@@ -64,6 +64,36 @@ if ($loggedIn) {
 if (is_post()) {
     verify_csrf();
     
+    // AJAX Upload Media (Blogs, Events, Campaigns)
+    if ($loggedIn && (($_POST['action'] ?? '') === 'upload_blog_media' || ($_POST['action'] ?? '') === 'upload_media')) {
+        header('Content-Type: application/json');
+        if (!isset($_FILES['media_file']) || $_FILES['media_file']['error'] === UPLOAD_ERR_NO_FILE) {
+            echo json_encode(['success' => false, 'message' => 'No file uploaded.']);
+            exit;
+        }
+        $subfolder = trim(preg_replace('/[^a-zA-Z0-9_-]/', '', (string)($_POST['folder'] ?? 'blogs'))) ?: 'blogs';
+        $err = '';
+        $uploaded = upload_file($_FILES['media_file'], $err, $subfolder, 1200, 630);
+        if ($uploaded) {
+            $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+            $fullPath = $root . '/' . ltrim($uploaded, '/');
+            $size = file_exists($fullPath) ? format_bytes((int)filesize($fullPath)) : '';
+            echo json_encode([
+                'success' => true,
+                'path' => $uploaded,
+                'url' => base_url($uploaded),
+                'filename' => basename($uploaded),
+                'folder' => $subfolder,
+                'size' => $size,
+                'date' => date('d M Y, H:i')
+            ]);
+            exit;
+        } else {
+            echo json_encode(['success' => false, 'message' => $err ?: 'Upload failed.']);
+            exit;
+        }
+    }
+
     // Login Handling
     if (($_POST['action'] ?? '') === 'login') {
         $email = trim($_POST['email'] ?? '');
@@ -287,7 +317,7 @@ if (is_post()) {
             }
 
             // File uploading for banner image & featured image (max 1200x630 responsive WebP)
-            $bannerPath = $_POST['existing_banner'] ?? '';
+            $bannerPath = trim((string)($_POST['existing_banner'] ?? ($_POST['featured_image'] ?? '')));
             if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] === UPLOAD_ERR_OK) {
                 $errorUpload = '';
                 $uploaded = upload_file($_FILES['banner_image'], $errorUpload, 'blogs', 1200, 630);
@@ -299,7 +329,7 @@ if (is_post()) {
             }
             $blogData['banner_image'] = $bannerPath;
             $blogData['featured_image'] = $bannerPath;
-            $blogData['og_image'] = $bannerPath;
+            $blogData['og_image'] = !empty($blogData['og_image']) ? $blogData['og_image'] : $bannerPath;
 
             // Optional explicit OG Image (max 1200x630)
             if (isset($_FILES['og_image_file']) && $_FILES['og_image_file']['error'] === UPLOAD_ERR_OK) {
@@ -1312,6 +1342,137 @@ if (is_post()) {
     }
 }
 
+// AJAX Get Media Gallery (Blogs, Events, Campaigns)
+if ($loggedIn && (($_GET['action'] ?? '') === 'get_blog_media' || ($_POST['action'] ?? '') === 'get_blog_media' || ($_GET['action'] ?? '') === 'get_media')) {
+    header('Content-Type: application/json');
+    $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+    $dirs = [
+        'blogs' => [$root . '/uploads/blogs', 'uploads/blogs/'],
+        'events' => [$root . '/uploads/events', 'uploads/events/'],
+        'campaigns' => [$root . '/uploads/campaigns', 'uploads/campaigns/'],
+        'uploads' => [$root . '/uploads', 'uploads/'],
+    ];
+    $allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
+    $images = [];
+    $seenPaths = [];
+
+    foreach ($dirs as $folderKey => [$dir, $prefix]) {
+        if (is_dir($dir)) {
+            $files = scandir($dir);
+            if ($files) {
+                foreach ($files as $file) {
+                    if ($file === '.' || $file === '..' || is_dir($dir . '/' . $file)) continue;
+                    $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                    if (in_array($ext, $allowedExts, true)) {
+                        $relPath = $prefix . $file;
+                        if (!isset($seenPaths[$relPath])) {
+                            $filePath = $dir . '/' . $file;
+                            if (file_exists($filePath) && is_file($filePath)) {
+                                $seenPaths[$relPath] = true;
+                                $images[] = [
+                                    'path' => $relPath,
+                                    'url' => base_url($relPath),
+                                    'filename' => $file,
+                                    'folder' => $folderKey,
+                                    'size' => format_bytes((int)filesize($filePath)),
+                                    'timestamp' => (int)filemtime($filePath),
+                                    'date' => date('d M Y, H:i', (int)filemtime($filePath)),
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Include unique images from blogs table
+    try {
+        $dbBlogs = $blogModel->all(300);
+        foreach ($dbBlogs as $b) {
+            foreach (['featured_image', 'banner_image', 'og_image'] as $col) {
+                $p = trim((string)($b[$col] ?? ''));
+                if ($p !== '' && !preg_match('#^https?://#i', $p)) {
+                    $clean = ltrim($p, '/');
+                    if (!isset($seenPaths[$clean])) {
+                        $full = $root . '/' . $clean;
+                        if (file_exists($full) && is_file($full)) {
+                            $seenPaths[$clean] = true;
+                            $images[] = [
+                                'path' => $clean,
+                                'url' => base_url($clean),
+                                'filename' => basename($clean),
+                                'folder' => 'blogs',
+                                'size' => format_bytes((int)filesize($full)),
+                                'timestamp' => (int)filemtime($full),
+                                'date' => date('d M Y, H:i', (int)filemtime($full)),
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Throwable $e) {}
+
+    // Include unique images from events table
+    try {
+        $dbEvents = $content->allEvents();
+        foreach ($dbEvents as $ev) {
+            $p = trim((string)($ev['image'] ?? ''));
+            if ($p !== '' && !preg_match('#^https?://#i', $p)) {
+                $clean = ltrim($p, '/');
+                if (!isset($seenPaths[$clean])) {
+                    $full = $root . '/' . $clean;
+                    if (file_exists($full) && is_file($full)) {
+                        $seenPaths[$clean] = true;
+                        $images[] = [
+                            'path' => $clean,
+                            'url' => base_url($clean),
+                            'filename' => basename($clean),
+                            'folder' => 'events',
+                            'size' => format_bytes((int)filesize($full)),
+                            'timestamp' => (int)filemtime($full),
+                            'date' => date('d M Y, H:i', (int)filemtime($full)),
+                        ];
+                    }
+                }
+            }
+        }
+    } catch (Throwable $e) {}
+
+    // Include unique images from campaigns table
+    try {
+        $dbCampaigns = $content->allCampaigns();
+        foreach ($dbCampaigns as $cp) {
+            $p = trim((string)($cp['image'] ?? ''));
+            if ($p !== '' && !preg_match('#^https?://#i', $p)) {
+                $clean = ltrim($p, '/');
+                if (!isset($seenPaths[$clean])) {
+                    $full = $root . '/' . $clean;
+                    if (file_exists($full) && is_file($full)) {
+                        $seenPaths[$clean] = true;
+                        $images[] = [
+                            'path' => $clean,
+                            'url' => base_url($clean),
+                            'filename' => basename($clean),
+                            'folder' => 'campaigns',
+                            'size' => format_bytes((int)filesize($full)),
+                            'timestamp' => (int)filemtime($full),
+                            'date' => date('d M Y, H:i', (int)filemtime($full)),
+                        ];
+                    }
+                }
+            }
+        }
+    } catch (Throwable $e) {}
+
+    // Sort newest first
+    usort($images, fn($a, $b) => ($b['timestamp'] ?? 0) <=> ($a['timestamp'] ?? 0));
+
+    echo json_encode(['success' => true, 'images' => $images]);
+    exit;
+}
+
 // Full-page Admin Article Preview Handler
 if ($loggedIn && ($_GET['module'] ?? '') === 'blogs' && ($_GET['action'] ?? '') === 'preview') {
     $rawEditId = $_GET['edit_id'] ?? ($_GET['id'] ?? null);
@@ -1956,9 +2117,12 @@ $metrics = $content->metrics();
                         <form method="post" enctype="multipart/form-data" id="createBlogForm">
                             <?= csrf_field() ?>
                             <input type="hidden" name="action" value="<?= ($editBlog && (!empty($editBlog['id']) || !empty($editBlog['slug']))) ? 'update_blog' : 'create_blog' ?>">
+                            <?php 
+                                $currentBlogBanner = !empty($editBlog['featured_image']) ? $editBlog['featured_image'] : (!empty($editBlog['banner_image']) ? $editBlog['banner_image'] : '');
+                            ?>
+                            <input type="hidden" name="existing_banner" id="existing_banner" value="<?= e($currentBlogBanner) ?>">
                             <?php if ($editBlog): ?>
                                 <input type="hidden" name="id" value="<?= e($editBlog['id'] ?? ($editBlog['slug'] ?? '')) ?>">
-                                <input type="hidden" name="existing_banner" value="<?= e($editBlog['banner_image'] ?? '') ?>">
                             <?php endif; ?>
 
                             <div class="row g-4">
@@ -2115,18 +2279,48 @@ $metrics = $content->metrics();
                                     </div>
 
                                     <!-- Featured Image / Banner Card -->
-                                    <div class="card card-body border shadow-xs mb-4">
-                                        <h5 class="card-title mb-3 text-secondary"><i class="fa-solid fa-image me-2"></i> Featured Image / Banner</h5>
-                                        <?php if ($editBlog && $editBlog['banner_image']): ?>
-                                            <div class="mb-3 text-center">
-                                                <img src="<?= e(base_url($editBlog['banner_image'])) ?>" class="img-fluid rounded border mb-2" style="max-height: 180px; object-fit: cover;">
-                                                <div class="small text-muted">Current image</div>
+                                    <div class="card card-body border shadow-xs mb-4" id="featuredImageCard">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title mb-0 text-secondary"><i class="fa-solid fa-image me-2"></i> Featured Image / Banner</h5>
+                                            <button type="button" class="btn btn-sm btn-outline-primary py-1 px-2.5" onclick="openBlogMediaModal()" title="Browse Server Media Gallery">
+                                                <i class="fa-solid fa-photo-film me-1"></i> Gallery
+                                            </button>
+                                        </div>
+
+                                        <!-- Interactive Image Box -->
+                                        <div id="featuredImgPreviewWrap" class="mb-3 <?= empty($currentBlogBanner) ? 'd-none' : '' ?>">
+                                            <div class="position-relative rounded border overflow-hidden bg-light text-center" style="cursor: pointer;" onclick="openBlogMediaModal()" title="Click to choose from media gallery">
+                                                <img id="featuredImgPreview" src="<?= !empty($currentBlogBanner) ? e(base_url($currentBlogBanner)) : '' ?>" class="img-fluid w-100" style="max-height: 180px; object-fit: cover;" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';">
+                                                <div class="position-absolute bottom-0 start-0 end-0 py-1 px-2 bg-dark bg-opacity-75 text-white small d-flex justify-content-between align-items-center">
+                                                    <span class="text-truncate me-2" style="font-size: 11px;" id="featuredImgPathText"><?= e($currentBlogBanner) ?></span>
+                                                    <span class="badge bg-primary" style="font-size: 10px;"><i class="fa-solid fa-pen me-1"></i> Change</span>
+                                                </div>
                                             </div>
-                                        <?php endif; ?>
-                                        <div class="mb-3">
-                                            <label class="form-label">Upload New Featured Image</label>
-                                            <input type="file" name="banner_image" class="form-control" accept="image/*">
-                                            <div class="form-text text-success"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Auto-resized to max 1200x630 & mobile responsive (WebP)</div>
+                                            <div class="d-flex gap-2 mt-2">
+                                                <button type="button" class="btn btn-sm btn-outline-primary flex-fill" onclick="openBlogMediaModal()">
+                                                    <i class="fa-solid fa-images me-1"></i> Choose from Gallery
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFeaturedImage()" title="Remove image">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Empty State Drop / Select Box -->
+                                        <div id="featuredImgEmptyBox" class="mb-3 p-4 rounded border-2 border-dashed text-center bg-light <?= !empty($currentBlogBanner) ? 'd-none' : '' ?>" onclick="openBlogMediaModal()" style="cursor: pointer; transition: background-color 0.2s;" onmouseover="this.classList.add('bg-white')" onmouseout="this.classList.remove('bg-white')">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-2x text-primary mb-2 d-block"></i>
+                                            <div class="fw-semibold text-secondary small">Click to Choose Featured Image</div>
+                                            <div class="text-muted mt-1" style="font-size: 11px;">Select from server gallery or upload new</div>
+                                            <button type="button" class="btn btn-sm btn-primary mt-2">
+                                                <i class="fa-solid fa-photo-film me-1"></i> Open Media Gallery
+                                            </button>
+                                        </div>
+
+                                        <!-- Direct File Upload (Alternative) -->
+                                        <div class="pt-2 border-top">
+                                            <label class="form-label small text-muted mb-1">Or direct file upload:</label>
+                                            <input type="file" name="banner_image" id="direct_banner_image_input" class="form-control form-control-sm" accept="image/*" onchange="handleDirectBannerUpload(this)">
+                                            <div class="form-text text-success" style="font-size: 11px;"><i class="fa-solid fa-wand-magic-sparkles me-1"></i> Auto-resized to max 1200x630 & mobile responsive (WebP)</div>
                                         </div>
                                     </div>
 
@@ -2824,9 +3018,9 @@ $metrics = $content->metrics();
                             <form method="post" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="<?= $editCampaign ? 'update_campaign' : 'create_campaign' ?>">
+                                <input type="hidden" name="existing_image" id="campaign_existing_image" value="<?= e($editCampaign['image'] ?? '') ?>">
                                 <?php if ($editCampaign): ?>
                                     <input type="hidden" name="id" value="<?= $editCampaign['id'] ?>">
-                                    <input type="hidden" name="existing_image" value="<?= e($editCampaign['image']) ?>">
                                 <?php endif; ?>
                                 <div class="row g-3">
                                     <div class="col-md-8">
@@ -2867,11 +3061,41 @@ $metrics = $content->metrics();
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label">Image</label>
-                                        <input type="file" name="image" class="form-control" accept="image/*">
-                                        <?php if ($editCampaign && $editCampaign['image']): ?>
-                                            <div class="form-text">Current: <?= e($editCampaign['image']) ?></div>
-                                        <?php endif; ?>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label font-semibold mb-0">Cover Image</label>
+                                            <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" onclick="openCampaignMediaModal()">
+                                                <i class="fa-solid fa-photo-film me-1"></i> Gallery
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Campaign Preview Wrap -->
+                                        <div id="campaign_preview_container" class="mb-2 <?= empty($editCampaign['image']) ? 'd-none' : '' ?>">
+                                            <div class="position-relative rounded border overflow-hidden bg-light text-center" style="cursor: pointer;" onclick="openCampaignMediaModal()" title="Click to choose from media gallery">
+                                                <img id="campaign_img_preview" src="<?= !empty($editCampaign['image']) ? e(ps_resolve_img($editCampaign['image'], 'assets/images/slider_final_1.webp')) : '' ?>" class="img-fluid w-100" style="max-height: 140px; object-fit: cover;" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';">
+                                                <div class="position-absolute bottom-0 start-0 end-0 py-1 px-2 bg-dark bg-opacity-75 text-white small d-flex justify-content-between align-items-center">
+                                                    <span class="text-truncate me-2" style="font-size: 11px;" id="campaign_img_filename"><?= e($editCampaign['image'] ?? '') ?></span>
+                                                    <span class="badge bg-primary" style="font-size: 10px;"><i class="fa-solid fa-pen me-1"></i> Change</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-1">
+                                                <button type="button" class="btn btn-sm btn-outline-primary flex-fill py-1" onclick="openCampaignMediaModal()">
+                                                    <i class="fa-solid fa-images me-1"></i> Choose from Gallery
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger py-1" onclick="removeCampaignImage()" title="Remove image">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Empty State Box -->
+                                        <div id="campaign_empty_box" class="p-3 rounded border-2 border-dashed text-center bg-light mb-2 <?= !empty($editCampaign['image']) ? 'd-none' : '' ?>" onclick="openCampaignMediaModal()" style="cursor: pointer;">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-lg text-primary mb-1 d-block"></i>
+                                            <div class="fw-semibold text-secondary small">Click to Choose Campaign Image</div>
+                                            <div class="text-muted" style="font-size: 10px;">Select from server gallery or upload new</div>
+                                        </div>
+
+                                        <input type="file" name="image" id="campaign_file_input" class="form-control form-control-sm" accept="image/*" onchange="handleDirectCampaignUpload(this)">
+                                        <div class="form-text text-muted" style="font-size: 11px;">Upload directly or pick from media gallery</div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-check form-switch bg-light p-3 rounded border">
@@ -2964,9 +3188,9 @@ $metrics = $content->metrics();
                             <form method="post" enctype="multipart/form-data">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="<?= $editEvent ? 'update_event' : 'create_event' ?>">
+                                <input type="hidden" name="existing_image" id="event_existing_image" value="<?= e($editEvent['image'] ?? '') ?>">
                                 <?php if ($editEvent): ?>
                                     <input type="hidden" name="id" value="<?= $editEvent['id'] ?>">
-                                    <input type="hidden" name="existing_image" value="<?= e($editEvent['image']) ?>">
                                 <?php endif; ?>
                                 <div class="row g-3">
                                     <div class="col-md-12"><label class="form-label font-semibold">Title *</label><input type="text" name="title" class="form-control" value="<?= e($editEvent['title'] ?? '') ?>" required></div>
@@ -2975,22 +3199,46 @@ $metrics = $content->metrics();
                                     <div class="col-md-4"><label class="form-label font-semibold">Status</label><select name="status" class="form-select"><option value="upcoming" <?= ($editEvent['status'] ?? '') === 'upcoming' ? 'selected' : '' ?>>Upcoming</option><option value="past" <?= ($editEvent['status'] ?? '') === 'past' ? 'selected' : '' ?>>Past</option></select></div>
                                     
                                     <div class="col-md-6">
-                                        <label class="form-label font-semibold">Upload Cover Image</label>
-                                        <input type="file" name="image" class="form-control" accept="image/*" onchange="previewSelectedImage(this, 'event_img_preview', 'event_img_filename')">
-                                        <small class="text-muted">Upload an image file (JPG, PNG, WebP — Max 10MB)</small>
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <label class="form-label font-semibold mb-0">Cover Image</label>
+                                            <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" onclick="openEventMediaModal()">
+                                                <i class="fa-solid fa-photo-film me-1"></i> Gallery
+                                            </button>
+                                        </div>
+                                        
+                                        <!-- Event Preview Wrap -->
+                                        <div id="event_preview_container" class="mb-2 <?= empty($editEvent['image']) ? 'd-none' : '' ?>">
+                                            <div class="position-relative rounded border overflow-hidden bg-light text-center" style="cursor: pointer;" onclick="openEventMediaModal()" title="Click to choose from media gallery">
+                                                <img id="event_img_preview" src="<?= !empty($editEvent['image']) ? e(ps_resolve_img($editEvent['image'], 'assets/images/slider_final_1.webp')) : '' ?>" class="img-fluid w-100" style="max-height: 140px; object-fit: cover;" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';">
+                                                <div class="position-absolute bottom-0 start-0 end-0 py-1 px-2 bg-dark bg-opacity-75 text-white small d-flex justify-content-between align-items-center">
+                                                    <span class="text-truncate me-2" style="font-size: 11px;" id="event_img_filename"><?= e($editEvent['image'] ?? '') ?></span>
+                                                    <span class="badge bg-primary" style="font-size: 10px;"><i class="fa-solid fa-pen me-1"></i> Change</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-1">
+                                                <button type="button" class="btn btn-sm btn-outline-primary flex-fill py-1" onclick="openEventMediaModal()">
+                                                    <i class="fa-solid fa-images me-1"></i> Choose from Gallery
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger py-1" onclick="removeEventImage()" title="Remove image">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Empty State Box -->
+                                        <div id="event_empty_box" class="p-3 rounded border-2 border-dashed text-center bg-light mb-2 <?= !empty($editEvent['image']) ? 'd-none' : '' ?>" onclick="openEventMediaModal()" style="cursor: pointer;">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-lg text-primary mb-1 d-block"></i>
+                                            <div class="fw-semibold text-secondary small">Click to Choose Event Image</div>
+                                            <div class="text-muted" style="font-size: 10px;">Select from server gallery or upload new</div>
+                                        </div>
+
+                                        <input type="file" name="image" id="event_file_input" class="form-control form-control-sm" accept="image/*" onchange="handleDirectEventUpload(this)">
+                                        <div class="form-text text-muted" style="font-size: 11px;">Upload directly or pick from media gallery</div>
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label font-semibold">Or Image URL / Path</label>
-                                        <input type="text" name="image_url" class="form-control" placeholder="https://example.com/image.jpg or assets/images/...">
+                                        <input type="text" name="image_url" id="event_image_url_input" class="form-control" placeholder="https://example.com/image.jpg or assets/images/..." oninput="if(this.value){document.getElementById('event_existing_image').value=this.value;}">
                                         <small class="text-muted">Enter direct image link if not uploading file</small>
-                                    </div>
-
-                                    <div class="col-12" id="event_preview_container" style="<?= empty($editEvent['image']) ? 'display:none;' : '' ?>">
-                                        <label class="form-label font-semibold" id="event_preview_label"><?= !empty($editEvent['image']) ? 'Current Image Preview:' : 'Selected Image Preview (Click "Save Event" to apply):' ?></label>
-                                        <div class="d-flex align-items-center gap-3">
-                                            <img id="event_img_preview" src="<?= !empty($editEvent['image']) ? e(ps_resolve_img($editEvent['image'], 'assets/images/slider_final_1.webp')) : '' ?>" alt="Current Event Cover" class="img-thumbnail" style="max-height: 90px; object-fit: cover;">
-                                            <span id="event_img_filename" class="small text-muted font-monospace"><?= e($editEvent['image'] ?? '') ?></span>
-                                        </div>
                                     </div>
 
                                     <div class="col-md-12"><label class="form-label font-semibold">Excerpt / Summary</label><textarea name="excerpt" class="form-control" rows="2"><?= e($editEvent['excerpt'] ?? '') ?></textarea></div>
@@ -4726,7 +4974,511 @@ $metrics = $content->metrics();
     </div>
 </div>
 
+<!-- Universal Media Gallery Modal (Blogs, Events, Campaigns) -->
+<div class="modal fade" id="blogMediaModal" tabindex="-1" aria-labelledby="blogMediaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center gap-2">
+                    <h5 class="modal-title mb-0" id="blogMediaModalLabel">
+                        <i class="fa-solid fa-photo-film text-warning me-2"></i> Media Gallery & Library
+                    </h5>
+                    <span class="badge bg-secondary" id="galleryCountBadge">0 images</span>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3">
+                <!-- Toolbar with Search, Category Filter, and Upload -->
+                <div class="row g-2 align-items-center mb-3">
+                    <div class="col-md-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text bg-white"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                            <input type="text" id="gallerySearchInput" class="form-control" placeholder="Search images by name..." onkeyup="filterMediaGallery()">
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-md-center">
+                        <div class="btn-group btn-group-sm" role="group" id="galleryFolderFilter">
+                            <button type="button" class="btn btn-outline-primary active" id="btnFilterAll" onclick="filterGalleryByFolder('all')">All</button>
+                            <button type="button" class="btn btn-outline-primary" id="btnFilterBlogs" onclick="filterGalleryByFolder('blogs')">Blogs</button>
+                            <button type="button" class="btn btn-outline-primary" id="btnFilterEvents" onclick="filterGalleryByFolder('events')">Events</button>
+                            <button type="button" class="btn btn-outline-primary" id="btnFilterCampaigns" onclick="filterGalleryByFolder('campaigns')">Campaigns</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-md-end gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="loadBlogMediaGallery()" title="Reload images from server">
+                            <i class="fa-solid fa-rotate me-1"></i> Refresh
+                        </button>
+                        <button type="button" class="btn btn-sm btn-success" onclick="document.getElementById('galleryModalUploadInput').click()">
+                            <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload New Image
+                        </button>
+                        <input type="file" id="galleryModalUploadInput" accept="image/*" style="display:none;" onchange="uploadMediaFileAjax(this)">
+                    </div>
+                </div>
+
+                <!-- Upload Status / Alert -->
+                <div id="galleryUploadAlert" class="alert alert-info py-2 px-3 small d-none align-items-center mb-3">
+                    <div class="spinner-border spinner-border-sm me-2"></div>
+                    <span id="galleryUploadAlertText">Uploading and converting image to WebP...</span>
+                </div>
+
+                <!-- Gallery Loading State -->
+                <div id="galleryLoadingSpinner" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <div class="small text-muted mt-2">Loading server media gallery...</div>
+                </div>
+
+                <!-- Empty State -->
+                <div id="galleryGridEmpty" class="text-center py-5 text-muted d-none">
+                    <i class="fa-regular fa-image fa-3x mb-2 opacity-50"></i>
+                    <p class="mb-2">No images found in your media directory.</p>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="document.getElementById('galleryModalUploadInput').click()">
+                        <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Your First Image
+                    </button>
+                </div>
+
+                <!-- Grid -->
+                <div id="galleryGrid" class="row g-3 overflow-auto" style="max-height: 480px; min-height: 240px;">
+                    <!-- Dynamically populated via JS -->
+                </div>
+            </div>
+
+            <!-- Modal Footer with Selection Preview -->
+            <div class="modal-footer bg-light d-flex justify-content-between align-items-center py-2 px-3">
+                <div class="d-flex align-items-center gap-2 text-truncate me-2" id="gallerySelectionInfo">
+                    <span class="text-muted small"><i class="fa-regular fa-hand-pointer me-1"></i> Click any image to select, or double-click to apply immediately.</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary btn-sm px-3" id="btnConfirmMediaSelect" onclick="confirmMediaSelection()" disabled>
+                        <i class="fa-solid fa-check me-1"></i> Use Selected Image
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+// Universal Media Gallery JS Logic (Blogs, Events, Campaigns)
+let mediaGalleryList = [];
+let selectedMediaItem = null;
+let mediaModalInstance = null;
+let currentFolderFilter = 'all';
+
+let activeMediaTarget = {
+    context: 'blogs',       // 'blogs', 'events', 'campaigns'
+    inputId: 'existing_banner',
+    previewId: 'featuredImgPreview',
+    filenameId: 'featuredImgPathText',
+    wrapId: 'featuredImgPreviewWrap',
+    emptyBoxId: 'featuredImgEmptyBox'
+};
+
+function openBlogMediaModal() {
+    activeMediaTarget = {
+        context: 'blogs',
+        inputId: 'existing_banner',
+        previewId: 'featuredImgPreview',
+        filenameId: 'featuredImgPathText',
+        wrapId: 'featuredImgPreviewWrap',
+        emptyBoxId: 'featuredImgEmptyBox'
+    };
+    filterGalleryByFolder('blogs');
+    openMediaModalInstance();
+}
+
+function openEventMediaModal() {
+    activeMediaTarget = {
+        context: 'events',
+        inputId: 'event_existing_image',
+        previewId: 'event_img_preview',
+        filenameId: 'event_img_filename',
+        wrapId: 'event_preview_container',
+        emptyBoxId: 'event_empty_box'
+    };
+    filterGalleryByFolder('events');
+    openMediaModalInstance();
+}
+
+function openCampaignMediaModal() {
+    activeMediaTarget = {
+        context: 'campaigns',
+        inputId: 'campaign_existing_image',
+        previewId: 'campaign_img_preview',
+        filenameId: 'campaign_img_filename',
+        wrapId: 'campaign_preview_container',
+        emptyBoxId: 'campaign_empty_box'
+    };
+    filterGalleryByFolder('campaigns');
+    openMediaModalInstance();
+}
+
+function openMediaModalInstance() {
+    const modalEl = document.getElementById('blogMediaModal');
+    if (!modalEl) return;
+    if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+        mediaModalInstance = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+        mediaModalInstance.show();
+    }
+    if (mediaGalleryList.length === 0) {
+        loadBlogMediaGallery();
+    } else {
+        filterMediaGallery();
+    }
+}
+
+function filterGalleryByFolder(folder) {
+    currentFolderFilter = folder;
+    const btns = document.querySelectorAll('#galleryFolderFilter .btn');
+    btns.forEach(b => b.classList.remove('active'));
+    if (folder === 'blogs') {
+        const b = document.getElementById('btnFilterBlogs'); if (b) b.classList.add('active');
+    } else if (folder === 'events') {
+        const b = document.getElementById('btnFilterEvents'); if (b) b.classList.add('active');
+    } else if (folder === 'campaigns') {
+        const b = document.getElementById('btnFilterCampaigns'); if (b) b.classList.add('active');
+    } else {
+        const b = document.getElementById('btnFilterAll'); if (b) b.classList.add('active');
+    }
+    filterMediaGallery();
+}
+
+function loadBlogMediaGallery() {
+    const spinner = document.getElementById('galleryLoadingSpinner');
+    const grid = document.getElementById('galleryGrid');
+    const emptyBox = document.getElementById('galleryGridEmpty');
+    
+    if (spinner) spinner.classList.remove('d-none');
+    if (grid) grid.innerHTML = '';
+    if (emptyBox) emptyBox.classList.add('d-none');
+
+    fetch('index.php?action=get_blog_media', {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (spinner) spinner.classList.add('d-none');
+        if (data.success && Array.isArray(data.images)) {
+            mediaGalleryList = data.images;
+            filterMediaGallery();
+            const badge = document.getElementById('galleryCountBadge');
+            if (badge) badge.innerText = `${mediaGalleryList.length} images`;
+        } else {
+            if (emptyBox) emptyBox.classList.remove('d-none');
+        }
+    })
+    .catch(err => {
+        if (spinner) spinner.classList.add('d-none');
+        if (emptyBox) {
+            emptyBox.classList.remove('d-none');
+            emptyBox.innerHTML = `<div class="text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i> Failed to load media gallery.</div>`;
+        }
+    });
+}
+
+function filterMediaGallery() {
+    const q = (document.getElementById('gallerySearchInput')?.value || '').toLowerCase().trim();
+    let filtered = mediaGalleryList;
+    if (currentFolderFilter && currentFolderFilter !== 'all') {
+        filtered = filtered.filter(item => {
+            if (item.folder === currentFolderFilter) return true;
+            if (item.path && item.path.includes('/' + currentFolderFilter + '/')) return true;
+            return false;
+        });
+    }
+    if (q) {
+        filtered = filtered.filter(item => 
+            (item.filename && item.filename.toLowerCase().includes(q)) || 
+            (item.path && item.path.toLowerCase().includes(q))
+        );
+    }
+    renderMediaGalleryGrid(filtered);
+}
+
+function renderMediaGalleryGrid(items) {
+    const grid = document.getElementById('galleryGrid');
+    const emptyBox = document.getElementById('galleryGridEmpty');
+    if (!grid) return;
+    
+    grid.innerHTML = '';
+    if (items.length === 0) {
+        if (emptyBox) emptyBox.classList.remove('d-none');
+        return;
+    }
+    if (emptyBox) emptyBox.classList.add('d-none');
+
+    const curVal = (activeMediaTarget.inputId && document.getElementById(activeMediaTarget.inputId) ? document.getElementById(activeMediaTarget.inputId).value : '').trim();
+
+    items.forEach((item, index) => {
+        const isCur = (curVal !== '' && (curVal === item.path || curVal.endsWith(item.filename)));
+        const col = document.createElement('div');
+        col.className = 'col-6 col-sm-4 col-md-3 col-lg-2';
+        col.innerHTML = `
+            <div class="card h-100 border media-thumb-card ${isCur ? 'border-primary shadow-sm bg-primary-subtle' : ''}" 
+                 style="cursor: pointer; transition: all 0.2s;" 
+                 data-index="${index}"
+                 data-path="${escapeHtml(item.path)}"
+                 data-url="${escapeHtml(item.url)}"
+                 onclick="selectMediaItemDirect(${index})" 
+                 ondblclick="confirmMediaSelection()">
+                <div class="position-relative overflow-hidden bg-light" style="aspect-ratio: 1; border-radius: 4px 4px 0 0;">
+                    <img src="${escapeHtml(item.url)}" class="w-100 h-100 object-fit-cover" loading="lazy" alt="${escapeHtml(item.filename)}" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';">
+                    <div class="check-badge position-absolute top-0 end-0 m-1 badge bg-primary ${isCur ? '' : 'd-none'}">
+                        <i class="fa-solid fa-check"></i>
+                    </div>
+                    <div class="position-absolute bottom-0 start-0 m-1 badge bg-dark bg-opacity-50 text-white" style="font-size: 9px;">
+                        ${escapeHtml(item.folder || '')}
+                    </div>
+                </div>
+                <div class="p-2 small">
+                    <div class="text-truncate fw-semibold" title="${escapeHtml(item.filename)}" style="font-size: 11px;">${escapeHtml(item.filename)}</div>
+                    <div class="text-muted d-flex justify-content-between mt-1" style="font-size: 10px;">
+                        <span>${escapeHtml(item.size || '')}</span>
+                        <span>${escapeHtml(item.date ? item.date.split(',')[0] : '')}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        grid.appendChild(col);
+        if (isCur && !selectedMediaItem) {
+            selectMediaItemDirect(index);
+        }
+    });
+}
+
+function selectMediaItemDirect(index) {
+    const item = mediaGalleryList[index];
+    if (!item) return;
+    selectedMediaItem = item;
+
+    document.querySelectorAll('.media-thumb-card').forEach((card) => {
+        const cardPath = card.getAttribute('data-path');
+        const badge = card.querySelector('.check-badge');
+        if (cardPath === item.path) {
+            card.classList.add('border-primary', 'shadow-sm', 'bg-primary-subtle');
+            if (badge) badge.classList.remove('d-none');
+        } else {
+            card.classList.remove('border-primary', 'shadow-sm', 'bg-primary-subtle');
+            if (badge) badge.classList.add('d-none');
+        }
+    });
+
+    const info = document.getElementById('gallerySelectionInfo');
+    if (info) {
+        info.innerHTML = `
+            <img src="${escapeHtml(item.url)}" class="rounded border" style="width: 38px; height: 38px; object-fit: cover;">
+            <div class="text-truncate" style="max-width: 400px;">
+                <div class="fw-semibold small text-truncate">${escapeHtml(item.filename)}</div>
+                <div class="text-muted" style="font-size: 11px;">${escapeHtml(item.path)} • ${escapeHtml(item.size)}</div>
+            </div>
+        `;
+    }
+
+    const btn = document.getElementById('btnConfirmMediaSelect');
+    if (btn) btn.disabled = false;
+}
+
+function confirmMediaSelection() {
+    if (!selectedMediaItem) return;
+    
+    if (activeMediaTarget.inputId) {
+        const input = document.getElementById(activeMediaTarget.inputId);
+        if (input) input.value = selectedMediaItem.path;
+    }
+
+    if (activeMediaTarget.previewId) {
+        const img = document.getElementById(activeMediaTarget.previewId);
+        if (img) img.src = selectedMediaItem.url;
+    }
+
+    if (activeMediaTarget.filenameId) {
+        const label = document.getElementById(activeMediaTarget.filenameId);
+        if (label) label.innerText = selectedMediaItem.path;
+    }
+
+    if (activeMediaTarget.wrapId) {
+        const wrap = document.getElementById(activeMediaTarget.wrapId);
+        if (wrap) {
+            wrap.classList.remove('d-none');
+            wrap.style.display = '';
+        }
+    }
+
+    if (activeMediaTarget.emptyBoxId) {
+        const empty = document.getElementById(activeMediaTarget.emptyBoxId);
+        if (empty) {
+            empty.classList.add('d-none');
+            empty.style.display = 'none';
+        }
+    }
+
+    if (mediaModalInstance) {
+        mediaModalInstance.hide();
+    }
+}
+
+function removeFeaturedImage() {
+    const input = document.getElementById('existing_banner');
+    if (input) input.value = '';
+    const directInput = document.getElementById('direct_banner_image_input');
+    if (directInput) directInput.value = '';
+    const wrap = document.getElementById('featuredImgPreviewWrap');
+    const emptyBox = document.getElementById('featuredImgEmptyBox');
+    if (wrap) wrap.classList.add('d-none');
+    if (emptyBox) emptyBox.classList.remove('d-none');
+    selectedMediaItem = null;
+}
+
+function removeEventImage() {
+    const input = document.getElementById('event_existing_image');
+    if (input) input.value = '';
+    const fileInput = document.getElementById('event_file_input');
+    if (fileInput) fileInput.value = '';
+    const urlInput = document.getElementById('event_image_url_input');
+    if (urlInput) urlInput.value = '';
+    const wrap = document.getElementById('event_preview_container');
+    const emptyBox = document.getElementById('event_empty_box');
+    if (wrap) wrap.style.display = 'none';
+    if (emptyBox) emptyBox.classList.remove('d-none');
+    selectedMediaItem = null;
+}
+
+function removeCampaignImage() {
+    const input = document.getElementById('campaign_existing_image');
+    if (input) input.value = '';
+    const fileInput = document.getElementById('campaign_file_input');
+    if (fileInput) fileInput.value = '';
+    const wrap = document.getElementById('campaign_preview_container');
+    const emptyBox = document.getElementById('campaign_empty_box');
+    if (wrap) wrap.style.display = 'none';
+    if (emptyBox) emptyBox.classList.remove('d-none');
+    selectedMediaItem = null;
+}
+
+function uploadMediaFileAjax(input) {
+    if (!input || !input.files || input.files.length === 0) return;
+    const file = input.files[0];
+    const alertBox = document.getElementById('galleryUploadAlert');
+    const alertText = document.getElementById('galleryUploadAlertText');
+    const currentFolder = activeMediaTarget.context || 'blogs';
+    
+    if (alertBox) {
+        alertBox.className = 'alert alert-info py-2 px-3 small d-flex align-items-center mb-3';
+        if (alertText) alertText.innerText = 'Uploading and optimizing "' + file.name + '" to WebP (' + currentFolder + ')...';
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'upload_blog_media');
+    formData.append('media_file', file);
+    formData.append('folder', currentFolder);
+    formData.append('csrf_token', '<?= csrf_token() ?>');
+
+    fetch('index.php', {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(res => {
+        input.value = '';
+        if (res.success) {
+            if (alertBox) {
+                alertBox.className = 'alert alert-success py-2 px-3 small d-flex align-items-center mb-3';
+                if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i> Successfully uploaded and added to media library!';
+                setTimeout(() => { alertBox.classList.add('d-none'); }, 3000);
+            }
+            const newItem = {
+                path: res.path,
+                url: res.url,
+                filename: res.filename,
+                folder: res.folder || currentFolder,
+                size: res.size,
+                date: res.date,
+                timestamp: Date.now() / 1000
+            };
+            mediaGalleryList.unshift(newItem);
+            filterMediaGallery();
+            selectMediaItemDirect(0);
+            const badge = document.getElementById('galleryCountBadge');
+            if (badge) badge.innerText = `${mediaGalleryList.length} images`;
+        } else {
+            if (alertBox) {
+                alertBox.className = 'alert alert-danger py-2 px-3 small d-flex align-items-center mb-3';
+                if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> ' + (res.message || 'Upload failed.');
+            }
+        }
+    })
+    .catch(err => {
+        input.value = '';
+        if (alertBox) {
+            alertBox.className = 'alert alert-danger py-2 px-3 small d-flex align-items-center mb-3';
+            if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> Upload request failed.';
+        }
+    });
+}
+
+function handleDirectBannerUpload(input) {
+    if (input && input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgPreview = document.getElementById('featuredImgPreview');
+            if (imgPreview) imgPreview.src = e.target.result;
+            const pathLabel = document.getElementById('featuredImgPathText');
+            if (pathLabel) pathLabel.innerText = 'New local file: ' + file.name;
+            const wrap = document.getElementById('featuredImgPreviewWrap');
+            const emptyBox = document.getElementById('featuredImgEmptyBox');
+            if (wrap) wrap.classList.remove('d-none');
+            if (emptyBox) emptyBox.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function handleDirectEventUpload(input) {
+    if (input && input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgPreview = document.getElementById('event_img_preview');
+            if (imgPreview) imgPreview.src = e.target.result;
+            const pathLabel = document.getElementById('event_img_filename');
+            if (pathLabel) pathLabel.innerText = 'New local file: ' + file.name;
+            const wrap = document.getElementById('event_preview_container');
+            const emptyBox = document.getElementById('event_empty_box');
+            if (wrap) { wrap.classList.remove('d-none'); wrap.style.display = ''; }
+            if (emptyBox) emptyBox.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function handleDirectCampaignUpload(input) {
+    if (input && input.files && input.files[0]) {
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgPreview = document.getElementById('campaign_img_preview');
+            if (imgPreview) imgPreview.src = e.target.result;
+            const pathLabel = document.getElementById('campaign_img_filename');
+            if (pathLabel) pathLabel.innerText = 'New local file: ' + file.name;
+            const wrap = document.getElementById('campaign_preview_container');
+            const emptyBox = document.getElementById('campaign_empty_box');
+            if (wrap) { wrap.classList.remove('d-none'); wrap.style.display = ''; }
+            if (emptyBox) emptyBox.classList.add('d-none');
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/[&<>"']/g, function(m) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+}
+
+
 window.configuredSocialSettings = <?= json_encode([
     'facebook' => $settings['facebook'] ?? '',
     'twitter' => $settings['twitter'] ?? '',
