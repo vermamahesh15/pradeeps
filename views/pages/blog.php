@@ -80,7 +80,7 @@ $categories = $categories ?? [];
     <!-- Articles Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="articles-grid">
       <?php if (!empty($items)): foreach ($items as $idx => $post): 
-        $rawImg = !empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['featured_image']) ? $post['featured_image'] : ($post['image'] ?? ''));
+        $rawImg = !empty($post['featured_image']) ? $post['featured_image'] : (!empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['image']) ? $post['image'] : ''));
         $img = ps_resolve_img($rawImg, 'assets/images/slider_final_1.webp');
         $cleanTitle = html_entity_decode((string)($post['title'] ?? ''), ENT_QUOTES, 'UTF-8');
         $cleanExcerpt = html_entity_decode((string)(!empty($post['excerpt']) ? $post['excerpt'] : ps_excerpt($post['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
@@ -88,7 +88,7 @@ $categories = $categories ?? [];
         <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="<?= e((string)($post['category_id'] ?? 'all')) ?>">
           <!-- Card Cover Image Container -->
           <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
-            <img src="<?= e($img) ?>" alt="<?= e($cleanTitle) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            <img src="<?= e($img) ?>" alt="<?= e($cleanTitle) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
             <div class="absolute top-3 left-3">
               <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
                 <?= e($post['category_name'] ?? ps_text('वैचारिक आलेख', 'Article')) ?>

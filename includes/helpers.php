@@ -234,6 +234,10 @@ if (!function_exists('ps_resolve_img')) {
             if (file_exists($root . '/' . $webp)) {
                 return base_url($webp);
             }
+            // If explicit path was provided in DB, preserve it so browser can load the image
+            if ($clean !== '') {
+                return base_url($clean);
+            }
         }
         if (empty($fallback)) {
             $fallback = 'assets/images/slider_final_1.webp';

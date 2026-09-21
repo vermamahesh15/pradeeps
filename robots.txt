@@ -5,5 +5,7 @@ Disallow: /config/
 Disallow: /models/
 Disallow: /controllers/
 Disallow: /includes/
+Disallow: /shop/
+Disallow: /products/
 
 Sitemap: https://pradeepsarang.in/sitemap.xml

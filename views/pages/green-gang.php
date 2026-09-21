@@ -145,6 +145,10 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
             <span class="material-symbols-outlined text-[20px] text-gold">history_edu</span>
             <span><?= e(ps_text('📜 सम्पूर्ण संकल्प-पत्र व नियमावली पढ़ें', 'Read Official Charter')) ?></span>
           </a>
+          <a href="#green-morning-philosophy" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-pure-white font-label-md text-label-md font-bold shadow-md transition-all transform hover:-translate-y-0.5">
+            <span class="material-symbols-outlined text-[18px] text-primary-fixed">spa</span>
+            <span><?= e(ps_text('ग्रीन मॉर्निंग वैचारिकी व 6 तर्क', 'Green Morning Ethos & 6 Arguments')) ?></span>
+          </a>
           <a href="#join-green-gang-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-low hover:bg-pure-white text-deep-forest border border-border-warm font-label-md text-label-md font-semibold transition-all">
             <span class="material-symbols-outlined text-[18px] text-primary">group_add</span>
             <span><?= e(ps_text('ग्रीन गैंग से जुड़ें', 'Join Green Gang')) ?></span>
@@ -361,6 +365,275 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
     </div>
   </section>
 
+  <!-- Dedicated Deep Dive: Green Morning Ideology & The 6 Philosophical Arguments -->
+  <section id="green-morning-philosophy" class="w-full bg-soft-meadow py-16 md:py-24 border-b border-border-warm scroll-mt-12">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1.5 rounded-full font-label-sm text-label-sm border border-border-warm font-semibold mb-3">
+          <span class="material-symbols-outlined text-[18px] text-primary-container">eco</span>
+          <span><?= e(ps_text('वैचारिक दर्शन • एक अभिनव अभिवादन क्रांति', 'Ideological Ethos • The Green Greeting Revolution')) ?></span>
+        </div>
+        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold tracking-tight">
+          <?= e(ps_text('गुड मॉर्निंग की जगह \'ग्रीन मॉर्निंग\' और \'हरित प्रभात\' क्यों...?', 'Why \'Green Morning\' & \'Harit Prabhat\' Instead of \'Good Morning\'...?')) ?>
+        </h2>
+        <p class="font-body-md text-body-md text-text-muted mt-3 leading-relaxed">
+          <?= e(ps_text('विश्व पर्यावरण दिवस 05 जून 2019 से आरम्भ हुई चिंतन यात्रा, संस्थापक सदस्य स्व. हरिप्रसाद वर्मा जी से ऐतिहासिक संवाद और श्री प्रदीप सारंग जी द्वारा खोजे गए 6 अकाट्य दार्शनिक तर्क।', 'The journey of reflection that began on World Environment Day 2019, the dialogue with Late Hari Prasad Verma, and the 6 foundational rationale pillars discovered by Pradeep Sarang.')) ?>
+        </p>
+      </div>
+
+      <!-- Part 1: Origin & Universal Inclusivity -->
+      <div class="bg-pure-white rounded-3xl p-6 sm:p-10 shadow-sm border border-border-warm mb-10">
+        <div class="flex items-center gap-3 mb-5 border-b border-border-warm pb-4">
+          <div class="w-10 h-10 rounded-xl bg-primary-fixed/30 text-deep-forest flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">spa</span>
+          </div>
+          <div>
+            <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
+              <?= e(ps_text('1. उत्पत्ति एवं सर्वसमावेशी अभिवादन की खोज', '1. Inception & The Search for an Inclusive Greeting')) ?>
+            </h3>
+            <span class="text-xs text-secondary font-semibold uppercase tracking-wider">
+              <?= e(ps_text('5 जून 2019 • विश्व पर्यावरण दिवस पर वैचारिक मंथन', '5 June 2019 • World Environment Day Ideation')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          <p>
+            <?= e(ps_text('धरती पर हरियाली बढ़ाने के उद्देश्य से 05 जून 2019 को विश्व पर्यावरण दिवस पर ग्रीन गैंग की स्थापना हो जाने के बाद, इसकी वैचारिकी का साहित्य सृजित करना था। इसी चिन्तन में श्री सारंग के मन मे विचार आया कि क्यों न हरियाली पर काम करने वालों के लिए अलग अभिवादन शैली का विकास किया जाए। जितने धर्म, सम्प्रदाय, वैचारिकी, अस्तित्व और प्रचलन में हैं सभी के अनुयायी स्वतः एक अलग अभिवादन शैली अपनाते हैं। जैसे— जै राम, जै श्रीराम, ऊँ नमः शिवाय, राधे राधे, जय गुरुदेव, आदाब अर्ज, अस्सलाम वालेकुम, सत श्री अकाल, गुड मॉर्निंग, जय जिनेन्द्र, नमो बुद्धाय, जय हिंद, जय सरदार, जय पटेल, जय भीम आदि इत्यादि।', 'Following the foundation of Green Gang on World Environment Day, 05 June 2019 to enhance greenery on earth, shaping its ideological literature was essential. In this contemplation, Pradeep Sarang conceived that environmental champions must possess a unique greeting. Across all faiths, traditions, and ideologies, communities embrace their own distinctive greetings.')) ?>
+          </p>
+          <p>
+            <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार श्री प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Shri Pradeep Sarang pioneered the unique greeting — ')) ?><strong class="font-bold text-deep-forest"><?= e(ps_text('ग्रीन मॉर्निंग', 'Green Morning')) ?></strong> <?= e(ps_text('और', 'and')) ?> <strong class="font-bold text-deep-forest"><?= e(ps_text('हरित प्रभात', 'Harit Prabhat')) ?></strong> <?= e(ps_text('का आविष्कार किया गया।', 'was born.')) ?>
+          </p>
+          <div class="bg-soft-meadow rounded-2xl p-5 border-l-4 border-primary text-deep-forest">
+            <p class="font-body-md text-body-md italic leading-relaxed">
+              <?= e(ps_text('“श्री सारंग का कहना है कि निरंतर चिंतन का परिणाम रहा कि अभिनव अभिवादन शैली का आविष्कार हो गया। गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग का चयन किया। हमको अपनी बुद्धि पर इस नई खोज पर स्वयं को बहुत अच्छा लग रहा है कि हमने एक नया शब्द अभिवादन के लिए खोज लिया है।”', '“Shri Sarang reflects that sustained contemplation bore fruit in this innovative greeting. Choosing Green Morning in place of Good Morning gave deep inner fulfillment — discovering a universal word of greeting for humanity and mother earth.”')) ?>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 2: Dialogue with Late Hari Prasad Verma ji -->
+      <div class="bg-gradient-to-br from-[#FFFDF7] to-[#F5EFE1] rounded-3xl p-6 sm:p-10 shadow-sm border border-[#E3D7C3] mb-10">
+        <div class="flex items-center gap-3 mb-5 border-b border-[#E3D7C3] pb-4">
+          <div class="w-10 h-10 rounded-xl bg-secondary/15 text-secondary flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">record_voice_over</span>
+          </div>
+          <div>
+            <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
+              <?= e(ps_text('2. संस्थापक सदस्य स्व. हरिप्रसाद वर्मा जी से संवाद एवं तर्कों की खोज', '2. Dialogue with Late Hari Prasad Verma & The Search for Rationale')) ?>
+            </h3>
+            <span class="text-xs text-secondary font-semibold uppercase tracking-wider">
+              <?= e(ps_text('एक विचार की परीक्षा • संशय से समाधान तक', 'Testing the Concept • From Doubt to Conviction')) ?>
+            </span>
+          </div>
+        </div>
+
+        <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
+          <p>
+            <?= e(ps_text('श्री सारंग ने अनेक तर्क खोजे कि क्यों ग्रीन मॉर्निंग, क्यों हरित प्रभात या हरित प्रात? हम किसी को हर सुबह गुड मॉर्निंग बोलकर विश करते हैं कि आपकी सुबह शुभ हो। यहाँ श्री सारंग जी का तर्क है कि ', 'Sarang explored numerous dimensions: Why Green Morning? Why Harit Prabhat? Greeting someone with \'Good Morning\' simply wishes a good day. But between \'Good\' and \'Green\', there lies a vast philosophical difference: ')) ?><strong class="font-bold text-deep-forest"><?= e(ps_text('गुड शब्द के अर्थ और ग्रीन शब्द के अर्थ में जमीन-आसमान जैसा अंतर है', 'there lies an immense philosophical difference between the meaning of Good and Green')) ?></strong><?= e(ps_text('। गुड शब्द का अर्थ सिर्फ शुभ है, अच्छा है जबकि ग्रीन शब्द के अर्थ में बहुत आयाम हैं।', '. \'Good\' only means fine or auspicious, whereas \'Green\' embodies multidimensional life and cosmic vitality.')) ?>
+          </p>
+
+          <div class="bg-white/80 rounded-2xl p-5 sm:p-6 border border-[#E3D7C3] my-4">
+            <p class="font-body-md text-body-md text-deep-forest leading-relaxed">
+              <?= e(ps_text('श्री सारंग जी बताते हैं कि जब पहली बार ग्रीन गैंग के संस्थापक सदस्य स्मृति शेष बड़े भाई ', 'When first discussing \'Green Morning\' with Green Gang founding member Late brother ')) ?><strong class="font-bold"><?= e(ps_text('हरिप्रसाद वर्मा जी', 'Hari Prasad Verma')) ?></strong><?= e(ps_text(' से इस नई अभिवादन शब्द— "ग्रीन मॉर्निंग" पर बात हुई तो श्री वर्मा जी का पहला सवाल था कि ', ', his immediate question was: ')) ?><span class="italic font-semibold"><?= e(ps_text('"गुड मॉर्निंग की जगह ग्रीन मॉर्निंग क्यों?"', '"Why Green Morning instead of Good Morning?"')) ?></span>
+            </p>
+            <p class="font-body-md text-body-md text-deep-forest mt-3 leading-relaxed">
+              <?= e(ps_text('श्री वर्मा जी को तत्काल समुचित उत्तर नहीं दिया जा सका किन्तु उन्हें संतुष्ट करने की हमने भरपूर कोशिश की। हमें लगा कि श्री वर्मा जी संतुष्ट नहीं हुए। उन्होंने हमारी भावनाओं को समझा और यह कहकर चर्चा को समाप्त किया कि—', 'He could not be given an exhaustive answer immediately, though we tried our best. Understanding our heartfelt sentiment, he concluded with wisdom:')) ?>
+            </p>
+            <blockquote class="my-3 pl-4 border-l-4 border-secondary text-base sm:text-lg font-serif italic text-secondary font-semibold">
+              <?= e(ps_text('“समाज किसी नए प्रयोग को बहुत जल्दी स्वीकार नहीं करता है। अभी इस पर और चिंतन करो।”', '“Society does not adopt new experiments hastily. Reflect on this further.”')) ?>
+            </blockquote>
+            <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
+              <?= e(ps_text('श्री सारंग जी के अनुसार— हमारी चिंता बढ़ गयी और जो उत्साह बना हुआ था उसमें कुछ कमी भी आई। लेकिन आदतन हमने हार नहीं मानी। कुछ तर्क गढ़ने लगे कि परम्परागत रूप से चले आ रहे गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग क्यों? हमने कुछ निम्नलिखित 6 तर्क खोजकर इकट्ठा किये:', 'According to Shri Sarang: "Our concern grew and initial excitement dipped slightly. But characteristically, we never conceded defeat. We set out to discover profound, undeniable logic for replacing traditional Good Morning with Green Morning. This led to the 6 pillars of rationale:"')) ?>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Part 3: The 6 Rationale Pillars (6 अकाट्य तर्क) -->
+      <div class="mb-12">
+        <div class="text-center mb-8">
+          <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('दार्शनिक एवं भाषाई आधार', 'Philosophical & Linguistic Foundations')) ?></span>
+          <h3 class="font-headline-md text-headline-md text-deep-forest font-bold mt-1">
+            <?= e(ps_text('श्री प्रदीप सारंग द्वारा प्रतिपादित 6 अकाट्य तर्क', 'The 6 Undeniable Rationale Pillars by Pradeep Sarang')) ?>
+          </h3>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Argument 1 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">1</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">psychiatry</span>
+                  <?= e(ps_text('चैतन्य वैचारिकी', 'Conscious Ethos')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('चैतन्य रूप में जीवन में अपनाने की जरूरत', 'Living Consciousness')) ?>
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('ग्रीन गैंग एक नई विचारधारा को चैतन्य रूप में जीवन में अपनाने की जरूरत है। किसी के द्वारा वृक्षारोपण करना एक उत्कृष्ट कार्य है किन्तु हरियाली की चैतन्य वैचारिकी को धारण करके वृक्षारोपण करना एक अलग प्रभावकारी स्थिति उत्पन्न करेगा। यह चैतन्यता ग्रीन गैंग के कल्चर की पहचान होगी।', 'Tree planting is noble, but planting trees while embodying a living green consciousness creates a profoundly transformative impact. This living consciousness is the defining culture of Green Gang.')) ?>
+              </p>
+            </div>
+          </div>
+
+          <!-- Argument 2 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">2</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">format_quote</span>
+                  <?= e(ps_text('अर्थ की व्यापकता', 'Depth of Meaning')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('\'गुड\' बनाम \'ग्रीन\' — आयामों का अंतर', 'Good vs Green Semantics')) ?>
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('गुड का अर्थ होता है शुभ और अच्छा। हम हर सुबह किसी को गुड मॉर्निंग बोलकर उसे विश करते हैं शुभकामनाएं प्रदान करते हैं कि आपकी यह सुबह यह प्रातः शुभ हो अच्छी हो। जबकि ग्रीन का अर्थ बहुत व्यापक है। इसमें अनेक आयाम समाहित हैं।', 'Good merely denotes \'fine\' or \'auspicious\'. Green, however, is cosmic and expansive — encapsulating environmental vitality, clean air, life-support systems, and collective well-being.')) ?>
+              </p>
+            </div>
+          </div>
+
+          <!-- Argument 3 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">3</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">flag</span>
+                  <?= e(ps_text('राष्ट्रीय ध्वज व समृद्धि', 'National Flag & Prosperity')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('तिरंगे का हरा रंग: सुख व कृषि संपन्नता', 'Tricolor\'s Green Band')) ?>
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('ग्रीन = हरा। हरा रंग भारत के राष्ट्रीय ध्वज तिरंगे में है। यहाँ हरा रंग सुख, कृषि गत संपन्नता और समृद्धता तथा हरियाली संवर्धन का अर्थ देता है। यानी ग्रीन शब्द में ये भाव संपदा समाहित है।', 'Green represents the lower band of India\'s national tricolor — symbolizing agriculture, flourishing soil, happiness, and ecological abundance. This rich heritage is packed in the word Green.')) ?>
+              </p>
+            </div>
+          </div>
+
+          <!-- Argument 4 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all md:col-span-2 lg:col-span-1">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">4</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">auto_stories</span>
+                  <?= e(ps_text('साहित्यिक प्रमाण', 'Literary & Optical Logic')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('महाकवि बिहारी जी का दोहा व हरित-दुति', 'Bihari\'s Poetic Evidence')) ?>
+              </h4>
+              <div class="bg-soft-meadow rounded-xl p-3 border-l-2 border-primary mb-3 text-center">
+                <p class="font-serif italic font-semibold text-deep-forest text-xs sm:text-sm leading-relaxed">
+                  “मेरी भव बाधा हरो, राधा नागरि सोय।<br>
+                  जा तन की झाईं पड़े, श्याम हरित दुति होय।।”
+                </p>
+                <span class="text-[11px] text-text-muted block mt-1"><?= e(ps_text('— महाकवि बिहारी', '— Mahakavi Bihari')) ?></span>
+              </div>
+              <p class="font-body-xs text-xs text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('हिंदी के प्रसिद्ध लेखक बिहारी जी ने भी हरित-दुति का अर्थ प्रसन्न मुद्रा से लगाया है। राधा गोरी (पीली) हैं, श्याम नीले/सांवरे रंग के हैं। राधा की परछाई पड़ने पर श्याम आह्लादित हो जाते हैं। वैसे भी नीला+पीला रंग मिलने पर हरा रंग बनता है। यहाँ सिद्ध है कि ग्रीन के अर्थ में ऐसी प्रसन्नता और ऐसा आह्लाद भी समाहित है।', 'Bihari associated \'Harit-Duti\' with sheer joy. When Radha\'s golden complexion reflects upon Shyam (Krishna), he lights up with bliss. Optically too, blue and yellow produce green.')) ?>
+              </p>
+            </div>
+          </div>
+
+          <!-- Argument 5 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">5</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">sentiment_satisfied</span>
+                  <?= e(ps_text('मानवीय भाव', 'Human Emotions')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('खिला बनाम मुरझाया: चेहरे का भाव', 'Blooming vs Withering')) ?>
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('फूलों और पेड़ों की तरह मनुष्य के चेहरे के लिए भी "खिला है, मुरझाया है" बोला जाता है। इसका भी अर्थ खिला यानी हरा-भरा यानी प्रसन्न है। हरियाली कम यानी मुरझाया हुआ है, यानी प्रसन्नता कम।', 'Just like trees and blossoms, a human countenance is described as \'blooming\' (fresh, green, joyful) or \'withered\' (devoid of greenery, sad). Green is synonymous with human happiness.')) ?>
+              </p>
+            </div>
+          </div>
+
+          <!-- Argument 6 -->
+          <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-all">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">6</span>
+                <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[16px]">all_inclusive</span>
+                  <?= e(ps_text('सदाबहार जीवन', 'Evergreen Vibrancy')) ?>
+                </span>
+              </div>
+              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2">
+                <?= e(ps_text('एवरग्रीन (Evergreen): सदैव खुशहाल', 'Evergreen: Perennially Joyful')) ?>
+              </h4>
+              <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                <?= e(ps_text('अंग्रेजी में प्रायः बोला जाता है— एवरग्रीन/Evergreen. इसका अर्थ है सदाबहार यानी सदैव हरा भरा रहने वाला। मनुष्य के सदाबहार अथवा हरा भरा रहने से मतलब है सदैव खुशहाल रहना, सदैव प्रसन्न रहना।', 'The global term \'Evergreen\' stands for eternal vitality and verdance. Applied to human life, staying evergreen means maintaining perpetual joy and unwaning optimism.')) ?>
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Part 4: The Proven Conclusion & The 4 Daily Prahar Expansion -->
+      <div class="bg-deep-forest text-pure-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+        <div class="relative z-10">
+          <div class="max-w-3xl mb-8">
+            <span class="text-xs font-bold uppercase tracking-widest text-primary-fixed block mb-2">
+              <?= e(ps_text('स्वतः सिद्ध निष्कर्ष • भाव संपदा की श्रेष्ठता', 'Self-Evident Conclusion • Superiority of Emotional Wealth')) ?>
+            </span>
+            <h3 class="font-headline-md text-headline-md font-bold text-pure-white mb-4">
+              <?= e(ps_text('गुड शब्द की अपेक्षा ग्रीन शब्द कई गुना उत्तम व श्रेष्ठ है', 'Green is Incomparably Superior to Good in Meaning')) ?>
+            </h3>
+            <p class="font-body-md text-body-md text-surface-container-high leading-relaxed mb-4">
+              <?= e(ps_text('इस प्रकार श्री सारंग जी के द्वारा खोजे गए उपरोक्त तर्कों से स्वतः सिद्ध हो जाता है कि गुड मॉर्निंग का अर्थ सिर्फ सुप्रभात अथवा शुभ प्रभात होगा, जबकि ग्रीन मॉर्निंग का अर्थ— हरित प्रभात यानी खुशहाल प्रात अथवा सुख सम्पन्न, समृद्ध प्रात/प्रभात होगा। यहाँ ग्रीन मॉर्निंग की इस विश में हृदय की भावनाओं में आह्लाद की उपस्थिति की स्थिति से भी है। भाव संपदा की दृष्टि से गुड शब्द की अपेक्षा ग्रीन शब्द कई गुना उत्तम है, श्रेष्ठ है।', 'Thus, Shri Sarang\'s rationale conclusively establishes that while Good Morning simply means an auspicious morning, Green Morning implies a flourishing, joyful, and ecologically enriched dawn. In emotional wealth and depth, Green is vastly superior to Good.')) ?>
+            </p>
+            <p class="font-body-sm text-body-sm text-surface-container-high/90 leading-relaxed">
+              <?= e(ps_text('प्रेरणादायक चर्चाओं का परिणाम है कि आज हजारों लोग अभिवादन शैली में गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग, गुड अफ्टरनून के स्थान पर ग्रीन आफ्टरनून, गुड इवनिंग के स्थान पर ग्रीन इवनिंग और गुड नाइट के स्थान पर ग्रीन नाइट को अपना रहे हैं। इसी प्रकार सुप्रभात या शुभ प्रात के स्थान पर हरित प्रभात, हरित प्रात, हरित सुबह तथा क्रमशः हरित दोपहर, हरित संध्या, हरित साँझ, हरित रात्रि आदि।', 'As a result of these inspiring dialogues, thousands have embraced Green greetings across the four times of day: Green Morning, Green Afternoon, Green Evening, and Green Night (Harit Prabhat, Harit Dopahar, Harit Sandhya, Harit Ratri).')) ?>
+            </p>
+          </div>
+
+          <!-- The 4 Daily Greetings Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-white/10">
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+              <div class="text-primary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('प्रातः काल • Morning', 'Morning')) ?></div>
+              <div class="text-lg font-bold text-pure-white">ग्रीन मॉर्निंग</div>
+              <div class="text-xs text-primary-fixed/80 mt-1">हरित प्रभात • हरित प्रात • हरित सुबह</div>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+              <div class="text-tertiary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('दोपहर काल • Afternoon', 'Afternoon')) ?></div>
+              <div class="text-lg font-bold text-pure-white">ग्रीन आफ्टरनून</div>
+              <div class="text-xs text-tertiary-fixed/80 mt-1">हरित दोपहर</div>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+              <div class="text-secondary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('सायं काल • Evening', 'Evening')) ?></div>
+              <div class="text-lg font-bold text-pure-white">ग्रीन इवनिंग</div>
+              <div class="text-xs text-secondary-fixed/80 mt-1">हरित संध्या • हरित साँझ</div>
+            </div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+              <div class="text-on-primary-container font-bold text-xs uppercase mb-1"><?= e(ps_text('रात्रि काल • Night', 'Night')) ?></div>
+              <div class="text-lg font-bold text-pure-white">ग्रीन नाइट</div>
+              <div class="text-xs text-on-primary-container/80 mt-1">हरित रात्रि</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
   <!-- Core Pillars of Green Gang Movement -->
   <section class="w-full bg-cream-canvas py-space-3xl border-b border-border-warm">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
@@ -385,9 +658,14 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
               <?= e(ps_text('विद्यालयों, चौपालों और सार्वजनिक जीवन में \'गुड मॉर्निंग\' की जगह \'ग्रीन मॉर्निंग\' (Green Morning) बोलने का शिष्टाचार। यह शब्द प्रत्येक व्यक्ति को रोज़ सवेरे प्रकृति के प्रति अपने नैतिक कर्तव्य का स्मरण दिलाता है।', 'Replacing \'Good Morning\' with \'Green Morning\' across schools, village chaupals, and families as a daily reminder to nurture nature.')) ?>
             </p>
           </div>
-          <div class="bg-soft-meadow p-3.5 rounded-xl border border-border-warm font-body-sm text-body-sm text-deep-forest font-semibold flex items-center gap-2">
-            <span class="material-symbols-outlined text-primary-container text-[18px]">eco</span>
-            <span><?= e(ps_text('100+ विद्यालयों में दैनिक प्रार्थना सत्र में शामिल', 'Practiced daily in 100+ school assemblies')) ?></span>
+          <div class="bg-soft-meadow p-3.5 rounded-xl border border-border-warm font-body-sm text-body-sm text-deep-forest font-semibold flex flex-col gap-1.5">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary-container text-[18px]">eco</span>
+              <span><?= e(ps_text('100+ विद्यालयों में दैनिक प्रार्थना सत्र में शामिल', 'Practiced daily in 100+ school assemblies')) ?></span>
+            </div>
+            <a href="#green-morning-philosophy" class="text-xs text-secondary hover:text-primary font-bold inline-flex items-center gap-1 transition-colors">
+              <span><?= e(ps_text('विस्तृत वैचारिकी व 6 दार्शनिक तर्क ऊपर पढ़ें ↑', 'Read Full Philosophy & 6 Arguments Above ↑')) ?></span>
+            </a>
           </div>
         </div>
 

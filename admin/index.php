@@ -2287,7 +2287,7 @@ $metrics = $content->metrics();
                                         <tr><td colspan="6" class="text-center py-5 text-muted"><i class="fa-solid fa-folder-open fa-2x mb-2 d-block opacity-50"></i>No blogs found in database.</td></tr>
                                     <?php else: ?>
                                         <?php foreach ($blogs as $b): 
-                                            $coverImg = ps_resolve_img($b['banner_image'] ?: $b['featured_image'], 'assets/images/slider_final_1.webp');
+                                            $coverImg = ps_resolve_img($b['featured_image'] ?: $b['banner_image'], 'assets/images/slider_final_1.webp');
                                             $catName = $b['category_name'] ?? 'Uncategorized';
                                             $authorName = $b['author'] ?: ($b['author_name'] ?: 'प्रदीप सारंग');
                                             $blogKey = !empty($b['id']) ? $b['id'] : ($b['slug'] ?? '');

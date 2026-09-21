@@ -11,7 +11,11 @@ $siteName = app_config('name', 'Pradeep Sarang');
     <meta charset="utf-8">
     <meta name="google" content="notranslate">
     <title><?= e($title) ?> | <?= e($siteName) ?> AMP</title>
+    <?php if (http_response_code() >= 400): ?>
+    <meta name="robots" content="noindex, nofollow">
+    <?php else: ?>
     <link rel="canonical" href="<?= e($canonicalUrl) ?>">
+    <?php endif; ?>
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     
     <script async src="https://cdn.ampproject.org/v0.js"></script>

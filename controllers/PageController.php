@@ -21,14 +21,16 @@ class PageController
 
     public function render(string $view, array $data = []): void
     {
-        if ($view === '404') {
+        if ($view === '404' && http_response_code() === 200) {
             http_response_code(404);
         }
         $title = $data['title'] ?? app_config('name');
         $viewFile = __DIR__ . '/../views/pages/' . $view . '.php';
 
         if (!file_exists($viewFile)) {
-            http_response_code(404);
+            if (http_response_code() === 200) {
+                http_response_code(404);
+            }
             $viewFile = __DIR__ . '/../views/pages/404.php';
             $title = 'Page Not Found';
         }
@@ -648,10 +650,12 @@ class PageController
             return;
         }
 
-        // 13. Fallback generic AMP page
+        // 13. Fallback: Not Found
+        http_response_code(404);
         $this->renderAmp('amp-page', [
-            'title' => ucwords(trim(str_replace('-', ' ', $cleanSlug), '/')),
-            'canonicalUrl' => $canonical,
+            'title' => 'Page Not Found',
+            'canonicalUrl' => base_url('/'),
+            'content' => '<p>' . htmlspecialchars(ps_text('यह पृष्ठ उपलब्ध नहीं है।', 'The requested page was not found.')) . '</p>',
         ]);
     }
 

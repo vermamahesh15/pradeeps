@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../partials/home/presentation.php';
 $canonicalPath = preg_replace('#^/pradeep(?=/|$)#i', '', current_path()) ?: '/';
 $isHomePage = basename($viewFile) === 'home.php';
+$isNotFoundPage = basename($viewFile) === '404.php' || http_response_code() >= 400;
 ?>
 <!doctype html>
 <html lang="<?= e(current_lang()) ?>" class="scroll-smooth" translate="no">
@@ -12,8 +13,12 @@ $isHomePage = basename($viewFile) === 'home.php';
     <meta name="google" content="notranslate">
     <title><?= e($title) ?> | <?= e(app_config('name')) ?></title>
     <meta name="description" content="<?= e(ps_text('प्रदीप सारंग की जनसेवा, हरियाली अभियान, अवधी साहित्य और सामुदायिक कार्यों की यात्रा।','Discover Pradeep Sarang’s community service, Green Gang initiative, Awadhi literature and cultural work.')) ?>">
+    <?php if ($isNotFoundPage): ?>
+    <meta name="robots" content="noindex, nofollow">
+    <?php else: ?>
     <link rel="canonical" href="<?= e(base_url($canonicalPath)) ?>">
     <link rel="amphtml" href="<?= e(base_url(($canonicalPath === '/' ? '/amp' : rtrim($canonicalPath, '/') . '/amp'))) ?>">
+    <?php endif; ?>
     <link rel="icon" href="<?= e(asset('images/home/icon.svg')) ?>" type="image/svg+xml">
     
     <!-- Resource Hints & Non-blocking Fonts -->

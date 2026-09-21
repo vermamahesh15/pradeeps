@@ -62,6 +62,16 @@ if ($path === '/') {
     return;
 }
 
+// Intercept legacy/obsolete shop, product and cart URLs (permanently removed - HTTP 410 Gone)
+if (preg_match('#^/(amp/)?(shop|products|product|cart|checkout)(/.*)?$#i', $path) || preg_match('#^/(shop|products|product|cart|checkout)(/.*)?/amp$#i', $path)) {
+    http_response_code(410);
+    header('X-Robots-Tag: noindex, nofollow');
+    $controller->render('404', [
+        'title' => 'Page Permanently Removed'
+    ]);
+    return;
+}
+
 if ($path === '/api/cities') {
     $rawStateId = $_GET['state_id'] ?? ($_GET['state'] ?? 0);
     $stateId = is_numeric($rawStateId) ? (int)$rawStateId : trim((string)$rawStateId);

@@ -193,7 +193,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
   </div>
 
   <!-- 3. MAIN CONTENT BODY — REALISTIC OPEN-BOOK EXPERIENCE WITH 3D FLIP MECHANISM -->
-  <section class="w-full bg-[#1b261d] py-3 lg:py-5 px-3 sm:px-6 md:px-8 relative overflow-hidden">
+  <section id="reading-book-section" class="w-full bg-[#1b261d] py-3 lg:py-5 px-3 sm:px-6 md:px-8 relative overflow-hidden">
     <!-- Ambient Vignette & Texture Gradients -->
     <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
     <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-primary/15 blur-3xl pointer-events-none"></div>
@@ -670,7 +670,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($related as $relIdx => $relArt): 
-          $rawImg = !empty($relArt['banner_image']) ? $relArt['banner_image'] : (!empty($relArt['featured_image']) ? $relArt['featured_image'] : ($relArt['image'] ?? ''));
+          $rawImg = !empty($relArt['featured_image']) ? $relArt['featured_image'] : (!empty($relArt['banner_image']) ? $relArt['banner_image'] : (!empty($relArt['image']) ? $relArt['image'] : ''));
           $relImg = ps_resolve_img($rawImg, 'assets/images/slider_final_1.webp');
           $relTitle = html_entity_decode((string)($relArt['title'] ?? ''), ENT_QUOTES, 'UTF-8');
           $relExcerpt = html_entity_decode((string)(!empty($relArt['excerpt']) ? $relArt['excerpt'] : ps_excerpt($relArt['content'] ?? '', 120)), ENT_QUOTES, 'UTF-8');
@@ -923,9 +923,33 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
       }
     }
 
-    function flipToSpread(targetIndex, direction) {
+    function scrollToTopOfBook() {
+      const targetElem = document.getElementById('reading-book-section') || document.getElementById('book-spread-paper');
+      if (targetElem) {
+        const siteHeader = document.querySelector('.site-header, header, .nav-floating-island');
+        let headerOffset = 80;
+        if (siteHeader) {
+          const hRect = siteHeader.getBoundingClientRect();
+          headerOffset = Math.max(headerOffset, hRect.height + 16);
+        }
+        const rect = targetElem.getBoundingClientRect();
+        const targetY = window.pageYOffset + rect.top - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth'
+        });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function flipToSpread(targetIndex, direction, shouldScroll = false) {
       if (isAnimating || targetIndex < 0 || targetIndex >= totalSpreads || targetIndex === currentSpreadIndex) return;
       isAnimating = true;
+
+      if (shouldScroll) {
+        scrollToTopOfBook();
+      }
 
       const currentSpread = spreads[currentSpreadIndex];
       const nextSpread = spreads[targetIndex];
@@ -982,14 +1006,14 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
     }
 
     // Next / Prev actions
-    if (btnNext) btnNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
-    if (btnPrev) btnPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
-    if (btnTopNext) btnTopNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
-    if (btnTopPrev) btnTopPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
-    if (btnBinderNext) btnBinderNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
-    if (btnBinderPrev) btnBinderPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
-    if (hotzoneRight) hotzoneRight.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward'));
-    if (hotzoneLeft) hotzoneLeft.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward'));
+    if (btnNext) btnNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward', true));
+    if (btnPrev) btnPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward', true));
+    if (btnTopNext) btnTopNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward', false));
+    if (btnTopPrev) btnTopPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward', false));
+    if (btnBinderNext) btnBinderNext.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward', false));
+    if (btnBinderPrev) btnBinderPrev.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward', false));
+    if (hotzoneRight) hotzoneRight.addEventListener('click', () => flipToSpread(currentSpreadIndex + 1, 'forward', true));
+    if (hotzoneLeft) hotzoneLeft.addEventListener('click', () => flipToSpread(currentSpreadIndex - 1, 'backward', true));
 
     // Table of Contents Drawer Modal interactions
     const tocModal = document.getElementById('toc-modal');
@@ -1025,11 +1049,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
         if (!isNaN(target)) {
           closeToc();
           const dir = target > currentSpreadIndex ? 'forward' : 'backward';
-          flipToSpread(target, dir);
-          const bookSpread = document.getElementById('book-spread-paper');
-          if (bookSpread) {
-            bookSpread.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
+          flipToSpread(target, dir, true);
         }
       });
     });
@@ -1038,9 +1058,9 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
     window.addEventListener('keydown', (e) => {
       if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
       if (e.key === 'ArrowRight') {
-        flipToSpread(currentSpreadIndex + 1, 'forward');
+        flipToSpread(currentSpreadIndex + 1, 'forward', true);
       } else if (e.key === 'ArrowLeft') {
-        flipToSpread(currentSpreadIndex - 1, 'backward');
+        flipToSpread(currentSpreadIndex - 1, 'backward', true);
       } else if (e.key === 'Escape') {
         closeToc();
       }
