@@ -80,10 +80,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </p>
 
         <!-- Green Greeting Feature Card (वैचारिकी एवं उत्पत्ति) -->
-        <div class="bg-white rounded-2xl p-5 sm:p-6 border border-[#E5E7EB] hover:border-[#15803D]/40 shadow-sm hover:shadow-md transition-all">
-          <div class="flex items-center justify-between gap-3.5 pb-3.5 mb-3.5 border-b border-[#F0F2F0]">
+        <a href="<?= e(base_url('/green-gang#green-morning-philosophy')) ?>" class="group block bg-white rounded-2xl p-4 sm:p-5 border border-[#E5E7EB] hover:border-[#15803D]/40 shadow-sm hover:shadow-md transition-all">
+          <div class="flex items-center justify-between gap-3.5">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-[#15803D] text-white flex items-center justify-center shrink-0 shadow-xs">
+              <div class="w-10 h-10 rounded-xl bg-[#15803D] text-white flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
                 <span class="material-symbols-outlined text-2xl">spa</span>
               </div>
               <div class="flex flex-col">
@@ -91,32 +91,12 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                 <span class="font-label-sm text-xs text-[#15803D] font-semibold"><?= e(ps_text('ग्रीन मॉर्निंग की अनूठी पहल • वैचारिक पृष्ठभूमि', 'Green Morning Milestone • Ideological Roots')) ?></span>
               </div>
             </div>
-            <a href="<?= e(base_url('/green-gang#green-morning-philosophy')) ?>" class="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#15803D] hover:text-[#14532D] transition-colors shrink-0">
+            <span class="inline-flex items-center gap-1 text-xs font-bold text-[#15803D] group-hover:text-[#14532D] transition-colors shrink-0">
               <span><?= e(ps_text('विस्तार से जानें', 'Learn More')) ?></span>
-              <span class="material-symbols-outlined text-base">arrow_forward</span>
-            </a>
-          </div>
-
-          <div class="space-y-3 font-body-sm text-body-sm text-[#475467] leading-relaxed">
-            <p>
-              <?= e(ps_text('धरती पर हरियाली बढ़ाने के उद्देश्य से 05 जून 2019 को विश्व पर्यावरण दिवस पर ग्रीन गैंग की स्थापना हो जाने के बाद, इसकी वैचारिकी का साहित्य सृजित करना था। इसी चिन्तन में श्री सारंग के मन मे विचार आया कि क्यों न हरियाली पर काम करने वालों के लिए अलग अभिवादन शैली का विकास किया जाए। जितने धर्म, सम्प्रदाय, वैचारिकी, अस्तित्व और प्रचलन में हैं सभी के अनुयायी स्वतः एक अलग अभिवादन शैली अपनाते हैं। जैसे— जै राम, जै श्रीराम, ऊँ नमः शिवाय, राधे राधे, जय गुरुदेव, आदाब अर्ज, अस्सलाम वालेकुम, सत श्री अकाल, गुड मॉर्निंग, जय जिनेन्द्र, नमो बुद्धाय, जय हिंद, जय सरदार, जय पटेल, जय भीम आदि इत्यादि।', 'Following the foundation of Green Gang on World Environment Day, 05 June 2019 to nurture greenery on earth, shaping its literature and ethos became essential. Pradeep Sarang contemplated that while all faiths, philosophies, and communities naturally adopt distinctive greetings, environmental champions too deserved a dedicated greeting of their own.')) ?>
-            </p>
-            <p>
-              <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार श्री प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Shri Pradeep Sarang pioneered the unique greeting — ')) ?><strong class="text-[#14532D] font-bold"><?= e(ps_text('ग्रीन मॉर्निंग', 'Green Morning')) ?></strong> <?= e(ps_text('और', 'and')) ?> <strong class="text-[#14532D] font-bold"><?= e(ps_text('हरित प्रभात', 'Harit Prabhat')) ?></strong> <?= e(ps_text('का आविष्कार किया गया।', 'was born.')) ?>
-            </p>
-          </div>
-
-          <div class="pt-3.5 mt-3.5 border-t border-[#F0F2F0] flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
-            <span class="text-xs text-[#667085] flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-[15px] text-[#15803D]">menu_book</span>
-              <?= e(ps_text('स्व. हरिप्रसाद वर्मा जी से संवाद एवं 6 दार्शनिक तर्क', 'Dialogue with Late Hari Prasad Verma & 6 Arguments')) ?>
+              <span class="material-symbols-outlined text-base group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
             </span>
-            <a href="<?= e(base_url('/green-gang#green-morning-philosophy')) ?>" class="inline-flex items-center gap-1 text-xs font-bold text-[#15803D] hover:text-[#14532D] group transition-colors">
-              <span><?= e(ps_text('ग्रीन-गैंग पेज पर सम्पूर्ण दर्शन पढ़ें', 'Read Full Philosophy on Green Gang Page')) ?></span>
-              <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
-            </a>
           </div>
-        </div>
+        </a>
 
         <!-- Hero Actions -->
         <div class="flex flex-wrap items-center gap-4 pt-2">
