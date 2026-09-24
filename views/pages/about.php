@@ -32,7 +32,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और अवधी की मिठास', 'Rooted in Service, Nature & Awadhi Heritage')) ?>
         </h1>
         <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-          <?= e(ps_text('श्री प्रदीप सारंग — एक बहुआयामी सामाजिक कार्यकर्ता, ग्रीन गैंग के प्रणेता और संवेदनशील साहित्यकार का सम्पूर्ण जीवन परिचय।', 'Shri Pradeep Sarang — Social worker, founder of Green Gang, and Awadhi litterateur.')) ?>
+          <?= e(ps_text('प्रदीप सारंग — एक बहुआयामी सामाजिक कार्यकर्ता, ग्रीन गैंग के प्रणेता और संवेदनशील साहित्यकार का सम्पूर्ण जीवन परिचय।', 'Pradeep Sarang — Social worker, founder of Green Gang, and Awadhi litterateur.')) ?>
         </p>
       </div>
     </div>
@@ -51,7 +51,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 <span class="font-headline-lg text-headline-md tracking-tighter font-serif text-deep-forest font-bold">PS</span>
               </div>
               <div class="flex flex-col">
-                <span class="font-title-lg text-title-lg text-deep-forest leading-snug font-bold"><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></span>
+                <span class="font-title-lg text-title-lg text-deep-forest leading-snug font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
                 <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('लोक सेवा की वैचारिक नींव', 'Social Worker & Author')) ?></span>
               </div>
             </div>
@@ -60,7 +60,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
           <!-- Featured Portrait Image -->
           <div class="relative rounded-xl overflow-hidden mb-6 border border-border-warm shadow-xs">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="<?= e(ps_text('श्री प्रदीप सारंग - पौधारोपण अभियान', 'Shri Pradeep Sarang Field Drive')) ?>" class="w-full h-52 object-cover">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="<?= e(ps_text('प्रदीप सारंग - पौधारोपण अभियान', 'Pradeep Sarang Field Drive')) ?>" class="w-full h-52 object-cover">
             <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent p-3 text-pure-white">
               <span class="font-label-sm text-label-sm font-semibold flex items-center gap-1">
                 <span class="material-symbols-outlined text-[14px] text-fresh-sprout">location_on</span>
@@ -76,7 +76,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
                 <span class="material-symbols-outlined text-[16px] text-secondary">badge</span>
                 <span><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
               </span>
-              <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('श्री प्रदीप सारंग (Pradeep Sarang)', 'Shri Pradeep Sarang')) ?></span>
+              <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('प्रदीप सारंग (Pradeep Sarang)', 'Pradeep Sarang')) ?></span>
             </div>
             <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
               <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
@@ -166,7 +166,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <!-- Narrative Prose -->
           <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
             <p>
-              <?= ps_text('बाराबंकी की उर्वर माटी और ग्रामीण परिवेश में जन्मे <strong class="text-deep-forest font-semibold">प्रदीप सारंग</strong> ने अपने जीवन के चार दशक वंचितों के अधिकार, पर्यावरण संरक्षण, अवधी साहित्य और जन-जागरण को समर्पित कर दिए। 1987 में राष्ट्रीय सेवा योजना (NSS) और स्वामी विवेकानंद के विचारों से प्रेरित होकर शुरू हुई यह यात्रा आज एक सशक्त वटवृक्ष बन चुकी है।', 'Born in Barabanki, <strong class="text-deep-forest font-semibold">Shri Pradeep Sarang</strong> has dedicated four decades to social service, environmental protection, and Awadhi literature since his NSS days in 1987.') ?>
+              <?= ps_text('बाराबंकी की उर्वर माटी और ग्रामीण परिवेश में जन्मे <strong class="text-deep-forest font-semibold">प्रदीप सारंग</strong> ने अपने जीवन के चार दशक वंचितों के अधिकार, पर्यावरण संरक्षण, अवधी साहित्य और जन-जागरण को समर्पित कर दिए। 1987 में राष्ट्रीय सेवा योजना (NSS) और स्वामी विवेकानंद के विचारों से प्रेरित होकर शुरू हुई यह यात्रा आज एक सशक्त वटवृक्ष बन चुकी है।', 'Born in Barabanki, <strong class="text-deep-forest font-semibold">Pradeep Sarang</strong> has dedicated four decades to social service, environmental protection, and Awadhi literature since his NSS days in 1987.') ?>
             </p>
             <p>
               <?= e(ps_text('ग्रामीण परिवेश के अभावों और संघर्षों को उन्होंने कभी अवरोध नहीं माना, अपितु उसे लोक-उत्थान का प्रेरक माध्यम बनाया। उनका मानना है कि वास्तविक समाज सेवा महलों की गोष्ठियों में नहीं, बल्कि खेतों की मेड़ों, परिंदों के सकोरों और ग्रामवासियों की चौपालों में प्रत्यक्ष पसीने के रूप में प्रकट होती है।', 'He transformed rural struggles into motivation. True social work happens not in luxury halls, but on farm edges and village chaupals.')) ?>
@@ -730,7 +730,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <?= e(ps_text('जीवन के कुछ यादगार पल (Personal Moments)', 'Personal Moments & Life Journey')) ?>
         </h2>
         <p class="font-body-md text-body-md text-text-muted mt-2 leading-relaxed">
-          <?= e(ps_text('श्री प्रदीप सारंग जी के सामाजिक संघर्ष, आत्मीय जन-सरोकारों, पर्यावरण साधना और ऐतिहासिक प्रसंगों का सचित्र संकलन।', 'A curated photographic chronicle capturing Shri Pradeep Sarang\'s grassroots dedication, social milestones, and memorable moments.')) ?>
+          <?= e(ps_text('प्रदीप सारंग जी के सामाजिक संघर्ष, आत्मीय जन-सरोकारों, पर्यावरण साधना और ऐतिहासिक प्रसंगों का सचित्र संकलन।', 'A curated photographic chronicle capturing Pradeep Sarang\'s grassroots dedication, social milestones, and memorable moments.')) ?>
         </p>
       </div>
 
@@ -1035,7 +1035,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <div class="lg:col-span-7">
             <span class="font-label-sm text-label-sm text-secondary tracking-wider font-bold uppercase"><?= e(ps_text('सीधा संवाद एवं सहयोग', 'Direct Outreach')) ?></span>
             <h3 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1.5 mb-4">
-              <?= e(ps_text('श्री प्रदीप सारंग जी से संवाद, पर्यावरण अभियान अथवा साहित्यिक विमर्श हेतु संपर्क करें', 'Connect for Environmental Drives or Awadhi Literature Dialogues')) ?>
+              <?= e(ps_text('प्रदीप सारंग जी से संवाद, पर्यावरण अभियान अथवा साहित्यिक विमर्श हेतु संपर्क करें', 'Connect for Environmental Drives or Awadhi Literature Dialogues')) ?>
             </h3>
             <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
               <?= e(ps_text('चाहे आपके क्षेत्र में ग्रीन गैंग की शाखा शुरू करनी हो, पौधारोपण हेतु मिट्टी के सकोरे व पौधे चाहिए हों, अथवा अवधी साहित्य शोध — सारंग जी का द्वार जनसेवा के लिए सदैव खुला है।', 'Whether starting a Green Gang wing, requesting bird water pots, or conducting Awadhi research — feel free to reach out.')) ?>

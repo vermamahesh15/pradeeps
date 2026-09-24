@@ -23,7 +23,7 @@ if ($currentIndex < 0 || $currentIndex >= $totalArticles) {
 
 $postTitle = html_entity_decode(trim($post['title'] ?? '') ?: ps_text('झरिहख', 'Jharihakh'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postCategory = html_entity_decode(trim($post['category_name'] ?? $post['category'] ?? '') ?: ps_text('अवधी संस्मरण', 'Awadhi Memoir'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-$postAuthor = html_entity_decode(trim(($post['author_name'] ?? '') ?: ($post['author'] ?? '')) ?: ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$postAuthor = html_entity_decode(trim(($post['author_name'] ?? '') ?: ($post['author'] ?? '')) ?: ps_text('प्रदीप सारंग', 'Pradeep Sarang'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postDate = !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : ps_text('मई २०२६', 'May 2026');
 $postExcerpt = html_entity_decode(trim(strip_tags($post['excerpt'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postContent = (string)($post['content'] ?? $post['body'] ?? $post['excerpt'] ?? '');
@@ -241,7 +241,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
               $isActive = ($spreadIdx === $currentIndex);
               $artTitle = html_entity_decode(trim($articleItem['title'] ?? '') ?: ps_text('अध्याय', 'Story'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
               $artCategory = html_entity_decode(trim($articleItem['category_name'] ?? $articleItem['category'] ?? '') ?: ps_text('आलेख', 'Article'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-              $artAuthor = html_entity_decode(trim(($articleItem['author_name'] ?? '') ?: ($articleItem['author'] ?? '')) ?: ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+              $artAuthor = html_entity_decode(trim(($articleItem['author_name'] ?? '') ?: ($articleItem['author'] ?? '')) ?: ps_text('प्रदीप सारंग', 'Pradeep Sarang'), ENT_QUOTES | ENT_HTML5, 'UTF-8');
               $artDate = !empty($articleItem['published_at']) ? date('d M Y', strtotime($articleItem['published_at'])) : ps_text('मई २०२६', 'May 2026');
               $artExcerpt = html_entity_decode(trim(strip_tags($articleItem['excerpt'] ?? '')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
               $artContent = trim($articleItem['content'] ?? '');
@@ -320,7 +320,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
                     <div class="flex items-center justify-between px-3 pt-2.5 pb-1 text-xs text-[#7d6b5c] font-serif">
                       <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-[15px] text-secondary">photo_camera</span>
-                        <span><?= e(ps_text('आलेख प्रमुख दृश्य • श्री प्रदीप सारंग संग्रह', 'Featured Editorial Visual • Pradeep Sarang Archives')) ?></span>
+                        <span><?= e(ps_text('आलेख प्रमुख दृश्य • प्रदीप सारंग संग्रह', 'Featured Editorial Visual • Pradeep Sarang Archives')) ?></span>
                       </span>
                       <span class="italic text-[11px]"><?= e(ps_text('उच्च-रिज़ॉल्यूशन मूल छायाचित्र', 'High-Resolution Archival Plate')) ?></span>
                     </div>
@@ -513,7 +513,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
   $authorRoleVal = !empty($settings['author_role']) ? $settings['author_role'] : ps_text('वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता', 'Senior Awadhi Author & Environmentalist');
   $authorLocVal = !empty($settings['author_location']) ? $settings['author_location'] : ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India');
   $authorBadgeVal = !empty($settings['author_badge']) ? $settings['author_badge'] : ps_text('साहित्यिक व जमीनी सरोकार', 'Literary & Social Legacy');
-  $authorBioVal = !empty($settings['author_bio']) ? $settings['author_bio'] : ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Shri Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.');
+  $authorBioVal = !empty($settings['author_bio']) ? $settings['author_bio'] : ps_text('विगत चार दशकों से अवधी साहित्य की समृद्ध वाचिक परंपरा के संवर्धन और ग्रामीण पर्यावरण के पुनर्जीवन में संलग्न। हिंदी दैनिक समाचार पत्र सन्दौली टाइम्स के सह-संपादक के रूप में निरंतर पत्रकारिता के सरोकारों को जीने वाले सारंग जी ने बाराबंकी की मिट्टी, तालाबों और वृक्षों के संरक्षण हेतु युवाओं की \'ग्रीन गैंग\' का नेतृत्व किया है।', 'For over four decades, Pradeep Sarang has dedicated his life to Awadhi oral literature, rural environmental conservation, and Sandauli Times journalism, guiding the youth Green Gang initiative.');
   $authorQuoteVal = !empty($settings['author_quote']) ? $settings['author_quote'] : ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.');
   $authorBadgesRaw = !empty($settings['author_badges_list']) ? $settings['author_badges_list'] : '40+ वर्ष साहित्य सेवा, ग्रीन गैंग संस्थापक';
   $authorBadgesArr = array_filter(array_map('trim', explode(',', $authorBadgesRaw)));
@@ -908,7 +908,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
           window.history.replaceState({ spread: currentSpreadIndex }, meta.crumbTitle, newUrl);
         }
 
-        const shareText = encodeURIComponent(meta.crumbTitle + ' - श्री प्रदीप सारंग संस्मरण\n\n' + newUrl);
+        const shareText = encodeURIComponent(meta.crumbTitle + ' - प्रदीप सारंग संस्मरण\n\n' + newUrl);
         const waBtn = document.querySelector('a[href*="whatsapp.com"]');
         if (waBtn) waBtn.href = 'https://api.whatsapp.com/send?text=' + shareText;
 

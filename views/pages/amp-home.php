@@ -29,7 +29,7 @@ $siteName = app_config('name', 'Pradeep Sarang');
                 <?= e($b['excerpt'] ?: ps_excerpt($b['content'] ?? '', 120)) ?>
             </p>
             <div style="font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
-                <span>लेखक: <?= e($b['author'] ?: 'श्री प्रदीप सारंग') ?></span>
+                <span>लेखक: <?= e($b['author'] ?: 'प्रदीप सारंग') ?></span>
                 <a href="<?= e(base_url('/blog/' . $b['slug'] . '/amp')) ?>" style="color: var(--primary); font-weight: bold; text-decoration: none;">पढ़ें ⚡</a>
             </div>
         </div>

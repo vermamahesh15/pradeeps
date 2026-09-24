@@ -408,11 +408,11 @@ class PageController
         // 1. About
         if ($cleanSlug === '/about' || $cleanSlug === '/parichay') {
             $this->renderAmp('amp-page', [
-                'title' => 'परिचय (About Shri Pradeep Sarang)',
+                'title' => 'परिचय (About Pradeep Sarang)',
                 'subtitle' => 'पर्यावरणविद् • लोकसेवक • अवधी साहित्यकार',
                 'canonicalUrl' => $canonical,
                 'content' => '
-                    <p>श्री प्रदीप सारंग उत्तर प्रदेश के एक प्रतिष्ठित पर्यावरणविद्, सामाजिक कार्यकर्ता एवं अवधी भाषा व संस्कृति के समर्पित साधक हैं। इन्होंने प्रकृति संरक्षण, ग्रामीण सशक्तिकरण और अवधी साहित्य के पुनरुद्धार में अपना जीवन समर्पित किया है।</p>
+                    <p>प्रदीप सारंग उत्तर प्रदेश के एक प्रतिष्ठित पर्यावरणविद्, सामाजिक कार्यकर्ता एवं अवधी भाषा व संस्कृति के समर्पित साधक हैं। इन्होंने प्रकृति संरक्षण, ग्रामीण सशक्तिकरण और अवधी साहित्य के पुनरुद्धार में अपना जीवन समर्पित किया है।</p>
                     <h2>हरियाली और पर्यावरण संरक्षण</h2>
                     <p>\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\' अभियानों के माध्यम से 50,000 से अधिक फलदार व छायादार वृक्षों का रोपण तथा जन-जागरूकता कार्यक्रमों का संचालन किया गया है।</p>
                     <h2>अवधी साहित्य एवं सांस्कृतिक अवदान</h2>
@@ -450,7 +450,7 @@ class PageController
                 'title' => 'प्रमुख जन-अभियान (Key Campaigns)',
                 'subtitle' => 'प्रकृति संरक्षण, सामाजिक सुधार एवं जनचेतना की मुहिम',
                 'canonicalUrl' => $canonical,
-                'content' => '<p>श्री प्रदीप सारंग के नेतृत्व में समाज के सर्वांगीण विकास, प्रकृति संतुलन और मानवीय संवेदनाओं के विस्तार हेतु चलाए जा रहे प्रमुख अभियान:</p>',
+                'content' => '<p>प्रदीप सारंग के नेतृत्व में समाज के सर्वांगीण विकास, प्रकृति संतुलन और मानवीय संवेदनाओं के विस्तार हेतु चलाए जा रहे प्रमुख अभियान:</p>',
                 'items' => $items,
             ]);
             return;
@@ -512,7 +512,7 @@ class PageController
             $items = array_map(function ($b) {
                 return [
                     'title' => $b['title'] ?? '',
-                    'date' => 'लेखक: ' . ($b['author'] ?: 'श्री प्रदीप सारंग') . ' • ' . (!empty($b['published_at']) ? date('d M Y', strtotime($b['published_at'])) : ''),
+                    'date' => 'लेखक: ' . ($b['author'] ?: 'प्रदीप सारंग') . ' • ' . (!empty($b['published_at']) ? date('d M Y', strtotime($b['published_at'])) : ''),
                     'description' => $b['excerpt'] ?: ps_excerpt($b['content'] ?? '', 140),
                     'image' => $b['featured_image'] ?? $b['banner_image'] ?? $b['image'] ?? '',
                     'url' => base_url('/blog/' . ($b['slug'] ?? '') . '/amp'),
@@ -523,7 +523,7 @@ class PageController
                 'title' => 'साहित्य व विचार (Literature & Thoughts)',
                 'subtitle' => 'अवधी रचनाएं, पर्यावरण विचार एवं सामाजिक दृष्टिकोण',
                 'canonicalUrl' => $canonical,
-                'content' => '<p>श्री प्रदीप सारंग एवं अन्य प्रबुद्ध विचारकों द्वारा लिखित उत्कृष्ट आलेख, संस्मरण और विचार:</p>',
+                'content' => '<p>प्रदीप सारंग एवं अन्य प्रबुद्ध विचारकों द्वारा लिखित उत्कृष्ट आलेख, संस्मरण और विचार:</p>',
                 'items' => $items,
             ]);
             return;
@@ -532,7 +532,7 @@ class PageController
         // 6. Contact
         if ($cleanSlug === '/contact') {
             $this->renderAmp('amp-page', [
-                'title' => 'संपर्क करें (Contact Shri Pradeep Sarang)',
+                'title' => 'संपर्क करें (Contact Pradeep Sarang)',
                 'subtitle' => 'कार्यालय, संवाद एवं स्वयंसेवक सहयोग',
                 'canonicalUrl' => $canonical,
                 'content' => '

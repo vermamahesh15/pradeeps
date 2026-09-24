@@ -37,7 +37,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
           </h1>
 
           <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed mb-6">
-            <?= e(ps_text('प्रदीप सारंग द्वारा समाज के समग्र विकास, पर्यावरण संवर्धन, सांस्कृतिक अस्मिता व जन-चेतना हेतु संचालित सेवा-आधारित एवं जन-जागरूकता अभियान।', 'Ground-level initiatives led by Shri Pradeep Sarang for environmental protection, Awadhi heritage, and community empowerment.')) ?>
+            <?= e(ps_text('प्रदीप सारंग द्वारा समाज के समग्र विकास, पर्यावरण संवर्धन, सांस्कृतिक अस्मिता व जन-चेतना हेतु संचालित सेवा-आधारित एवं जन-जागरूकता अभियान।', 'Ground-level initiatives led by Pradeep Sarang for environmental protection, Awadhi heritage, and community empowerment.')) ?>
           </p>
 
           <div class="p-4 bg-cream-canvas rounded-xl shadow-sm border border-border-warm max-w-2xl mb-8 relative">
@@ -427,7 +427,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
             <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider"><?= e(ps_text('स्तम्भ २', 'Pillar 2')) ?></span>
             <h3 class="font-title-lg text-title-lg text-deep-forest mt-1 mb-3 font-bold"><?= e(ps_text('गाँव / विद्यालय में \'ग्रीन चौपाल\'', 'Host Green Chaupal')) ?></h3>
             <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
-              <?= e(ps_text('अपने संस्थान, पंचायत या विद्यालय में प्रदीप सारंग जी को जन-संवाद, तुलसी मानस विचार गोष्ठी अथवा पर्यावरण जागरूकता हेतु आमंत्रित करें।', 'Invite Shri Pradeep Sarang to conduct environmental or Awadhi literature sessions.')) ?>
+              <?= e(ps_text('अपने संस्थान, पंचायत या विद्यालय में प्रदीप सारंग जी को जन-संवाद, तुलसी मानस विचार गोष्ठी अथवा पर्यावरण जागरूकता हेतु आमंत्रित करें।', 'Invite Pradeep Sarang to conduct environmental or Awadhi literature sessions.')) ?>
             </p>
           </div>
           <a href="<?= e(base_url('/contact')) ?>" class="inline-flex items-center gap-2 text-secondary font-label-md text-label-md hover:text-deep-forest transition-colors font-bold">

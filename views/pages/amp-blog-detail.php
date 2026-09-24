@@ -4,7 +4,7 @@ declare(strict_types=1);
 $post = $post ?? [];
 $postTitle = html_entity_decode(trim($post['title'] ?? '') ?: 'झरिहख', ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postCategory = html_entity_decode(trim($post['category_name'] ?? '') ?: 'अवधी संस्मरण', ENT_QUOTES | ENT_HTML5, 'UTF-8');
-$postAuthor = html_entity_decode(trim(($post['author'] ?? '') ?: ($post['author_name'] ?? 'श्री प्रदीप सारंग')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+$postAuthor = html_entity_decode(trim(($post['author'] ?? '') ?: ($post['author_name'] ?? 'प्रदीप सारंग')), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 $postDate = !empty($post['published_at']) ? date('d M Y', strtotime($post['published_at'])) : date('d M Y');
 
 $rawImg = !empty($post['featured_image']) ? $post['featured_image'] : (!empty($post['banner_image']) ? $post['banner_image'] : (!empty($post['image']) ? $post['image'] : (!empty($post['image_url']) ? $post['image_url'] : '')));

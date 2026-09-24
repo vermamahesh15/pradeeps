@@ -68,7 +68,7 @@ $youtubeChannelUrl = (!empty($ytSetting) && $ytSetting !== '#') ? $ytSetting : '
           </h1>
 
           <p class="text-emerald-100/90 text-base md:text-lg max-w-3xl leading-relaxed font-body-lg" style="color: #d1fae5 !important;">
-            <?= e(ps_text('श्री प्रदीप सारंग जी के ओजस्वी भाषणों, ग्रामीण चौपालों के जीवंत संवाद, ग्रीन गैंग अभियानों, अवधी कवि सम्मेलनों और मीडिया साक्षात्कारों के आधिकारिक वीडियो देखें।', 'Explore official videos of Shri Pradeep Sarang\'s speeches, rural chaupals, Green Gang plantation drives, Awadhi poetry sessions, and media interviews.')) ?>
+            <?= e(ps_text('प्रदीप सारंग जी के ओजस्वी भाषणों, ग्रामीण चौपालों के जीवंत संवाद, ग्रीन गैंग अभियानों, अवधी कवि सम्मेलनों और मीडिया साक्षात्कारों के आधिकारिक वीडियो देखें।', 'Explore official videos of Pradeep Sarang\'s speeches, rural chaupals, Green Gang plantation drives, Awadhi poetry sessions, and media interviews.')) ?>
           </p>
 
           <!-- Channel Stats & Subscribe Strip -->

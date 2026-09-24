@@ -168,7 +168,7 @@ $spotlightClip = !empty($clips) ? $clips[0] : null;
             <span><?= e(ps_text('संपादकीय समीक्षा एवं सारांश', 'Editorial Overview')) ?></span>
           </div>
           <p class="font-body-lg text-body-lg text-on-surface leading-relaxed mb-4">
-            <?= e(ps_text('ग्रामीण जनजीवन में सुबह के सामान्य अभिवादन को धरती के प्रति आदर में बदलने वाले प्रदीप सारंग के ‘ग्रीन मॉर्निंग’ अभियान ने उत्तर प्रदेश के सैकड़ों गाँवों को प्रेरित किया है। रिपोर्ट में रेखांकित किया गया कि कैसे व्यक्तिगत संकल्प 50,000+ पौधों की जीवंत हरियाली में रूपांतरित हुआ।', 'Shri Pradeep Sarang\'s Green Morning movement transformed ordinary morning greetings into ecological consciousness across hundreds of villages.')) ?>
+            <?= e(ps_text('ग्रामीण जनजीवन में सुबह के सामान्य अभिवादन को धरती के प्रति आदर में बदलने वाले प्रदीप सारंग के ‘ग्रीन मॉर्निंग’ अभियान ने उत्तर प्रदेश के सैकड़ों गाँवों को प्रेरित किया है। रिपोर्ट में रेखांकित किया गया कि कैसे व्यक्तिगत संकल्प 50,000+ पौधों की जीवंत हरियाली में रूपांतरित हुआ।', 'Pradeep Sarang\'s Green Morning movement transformed ordinary morning greetings into ecological consciousness across hundreds of villages.')) ?>
           </p>
           <div class="bg-soft-meadow rounded-xl p-4 mb-6 border border-border-warm">
             <p class="font-quote-editorial text-body-md text-deep-forest italic">

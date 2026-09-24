@@ -216,7 +216,7 @@ $allHonors = !empty($dbHonors) ? array_merge($dbHonors, $defaultHonors) : $defau
           <?= e(ps_text('महामहिम राज्यपाल से लेकर ग्राम चौपाल तक प्राप्त ऐतिहासिक सम्मान', 'Honors & Citations from the UP Governor to Village Chaupals')) ?>
         </h1>
         <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-          <?= e(ps_text('श्री प्रदीप सारंग जी की चार दशकों की अनवरत जनसेवा, पर्यावरण संवर्धन, परिंदा संरक्षण एवं अवधी साहित्य साधना का प्रामाणिक वर्षवार अभिलेखागार।', 'Historical timeline of awards conferred by Governors, Ministers, Election Officers, and cultural academies.')) ?>
+          <?= e(ps_text('प्रदीप सारंग जी की चार दशकों की अनवरत जनसेवा, पर्यावरण संवर्धन, परिंदा संरक्षण एवं अवधी साहित्य साधना का प्रामाणिक वर्षवार अभिलेखागार।', 'Historical timeline of awards conferred by Governors, Ministers, Election Officers, and cultural academies.')) ?>
         </p>
       </div>
 

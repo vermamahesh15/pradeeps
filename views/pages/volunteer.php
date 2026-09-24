@@ -722,7 +722,7 @@ $states = $states ?? [];
           <span id="icon-vfaq-3" class="material-symbols-outlined text-[22px] text-text-muted transition-transform">expand_more</span>
         </button>
         <div id="vfaq-3" class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-border-warm bg-soft-meadow/50 leading-relaxed">
-          <?= e(ps_text('हाँ। कम से कम ३० घंटे या किसी विशेष अभियान (जैसे तुलसी जयंती पखवाड़ा, हरियाली पखवाड़ा, या रक्त सेवा) में सक्रिय सहभागिता निभाने वाले छात्र-छात्राओं को श्री प्रदीप सारंग जी के हस्ताक्षरयुक्त सामाजिक अनुभव प्रमाण पत्र प्रदान किया जाता है।', 'Yes! Students participating actively receive a signed social service experience certificate.')) ?>
+          <?= e(ps_text('हाँ। कम से कम ३० घंटे या किसी विशेष अभियान (जैसे तुलसी जयंती पखवाड़ा, हरियाली पखवाड़ा, या रक्त सेवा) में सक्रिय सहभागिता निभाने वाले छात्र-छात्राओं को प्रदीप सारंग जी के हस्ताक्षरयुक्त सामाजिक अनुभव प्रमाण पत्र प्रदान किया जाता है।', 'Yes! Students participating actively receive a signed social service experience certificate.')) ?>
         </div>
       </div>
       <!-- FAQ 4 -->

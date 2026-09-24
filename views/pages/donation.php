@@ -44,7 +44,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
             <?= ps_text('माटी के ऋण और बेजुबानों की रक्षा में हाथ बंटाएँ — <span class="text-primary">दान एवं लोक-सहयोग</span>', 'Support Land & Wildlife Conservation — <span class="text-primary">Donations & Public Support</span>') ?>
           </h1>
           <p class="font-body-lg text-body-lg text-text-muted max-w-3xl leading-relaxed">
-            <?= e(ps_text('प्रदीप सारंग जी का चार दशकों का जीवन जनसेवा, पौधरोपण और अवधी संस्कृति के संवर्धन को समर्पित है। आपका प्रत्येक अंशदान बाराबंकी और ग्रामीण अंचलों में प्रत्यक्ष ज़मीनी बदलाव लाता है।', 'Shri Pradeep Sarang\'s four decades of dedication to environmental protection, Awadhi literature, and rural service. Every contribution drives direct grassroots impact.')) ?>
+            <?= e(ps_text('प्रदीप सारंग जी का चार दशकों का जीवन जनसेवा, पौधरोपण और अवधी संस्कृति के संवर्धन को समर्पित है। आपका प्रत्येक अंशदान बाराबंकी और ग्रामीण अंचलों में प्रत्यक्ष ज़मीनी बदलाव लाता है।', 'Pradeep Sarang\'s four decades of dedication to environmental protection, Awadhi literature, and rural service. Every contribution drives direct grassroots impact.')) ?>
           </p>
         </div>
 
@@ -669,7 +669,7 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
             <?= e(ps_text('हर पाई समाज की, हर पाई का हिसाब सार्वजनिक', 'Every Rupee Audited and Publicly Disclosed')) ?>
           </h2>
           <p class="font-body-lg text-body-lg text-on-surface-variant">
-            <?= e(ps_text('हम किसी बहुराष्ट्रीय कॉर्पोरेट ग्रांट या विदेशी फंडिंग से नहीं, बल्कि स्थानीय जनमानस के स्वैच्छिक सहयोग और प्रदीप सारंग जी के व्यक्तिगत संसाधनों से कार्य करते हैं। जनविश्वास ही हमारी सबसे बड़ी पूँजी है।', 'We operate through voluntary community support and Shri Pradeep Sarang\'s personal dedication. Public trust is our ultimate asset.')) ?>
+            <?= e(ps_text('हम किसी बहुराष्ट्रीय कॉर्पोरेट ग्रांट या विदेशी फंडिंग से नहीं, बल्कि स्थानीय जनमानस के स्वैच्छिक सहयोग और प्रदीप सारंग जी के व्यक्तिगत संसाधनों से कार्य करते हैं। जनविश्वास ही हमारी सबसे बड़ी पूँजी है।', 'We operate through voluntary community support and Pradeep Sarang\'s personal dedication. Public trust is our ultimate asset.')) ?>
           </p>
         </div>
 

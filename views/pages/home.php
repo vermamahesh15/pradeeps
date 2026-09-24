@@ -135,10 +135,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="lg:col-span-5 relative">
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-pure-white p-3 border border-border-warm">
           <div class="relative w-full h-[440px] sm:h-[480px] rounded-xl overflow-hidden bg-surface-container">
-            <?= ps_responsive_img($heroImg, ps_text('श्री प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-cover', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
+            <?= ps_responsive_img($heroImg, ps_text('प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-cover', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
             <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/30 to-transparent flex flex-col justify-end p-6 text-pure-white">
               <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed mb-1 font-semibold"><?= e(ps_text('संस्थापक — ग्रीन गैंग (2019)', 'Founder — Green Gang (2019)')) ?></span>
-              <h2 class="font-headline-sm text-headline-sm font-semibold"><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></h2>
+              <h2 class="font-headline-sm text-headline-sm font-semibold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></h2>
               <p class="font-body-sm text-body-sm text-surface-container-high mt-1"><?= e(ps_text('बाराबंकी की माटी से उठकर जन-जन तक हरियाली का अलख जगाने वाले जनसेवक।', 'A grassroots changemaker inspiring community action for environment and culture.')) ?></p>
             </div>
           </div>
@@ -238,7 +238,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="lg:col-span-7 flex flex-col space-y-6">
         <div class="inline-flex items-center gap-2 self-start bg-pure-white px-3 py-1 rounded-full shadow-sm border border-border-warm">
           <span class="material-symbols-outlined text-primary text-[16px]">menu_book</span>
-          <span class="font-label-sm text-label-sm font-semibold text-deep-forest"><?= e(ps_text('एक परिचय — श्री प्रदीप सारंग', 'Biography — Shri Pradeep Sarang')) ?></span>
+          <span class="font-label-sm text-label-sm font-semibold text-deep-forest"><?= e(ps_text('एक परिचय — प्रदीप सारंग', 'Biography — Pradeep Sarang')) ?></span>
         </div>
 
         <h2 class="font-headline-lg text-headline-lg text-deep-forest font-bold">
@@ -246,7 +246,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </h2>
 
         <p class="font-body-md text-body-md text-on-surface leading-relaxed">
-          <?= e(ps_text('वर्ष 1969 की 20 अक्टूबर को बाराबंकी के ग्राम कमरावां में जन्मे श्री प्रदीप सारंग एक समर्पित सामाजिक कार्यकर्ता, साहित्यकार एवं जनसेवक हैं, जो कि समाज के विभिन्न क्षेत्रों में अपने निरंतर सक्रिय योगदान से युवाओं में सकारात्मक एवं प्रेरणादायक वातावरण सृजित करते रहते हैं।', 'Born on 20 October 1969 in Kamrawan village, Barabanki, Shri Pradeep Sarang is a devoted social worker, writer and public servant who creates an inspiring, positive environment for youth through sustained grassroots leadership.')) ?>
+          <?= e(ps_text('वर्ष 1969 की 20 अक्टूबर को बाराबंकी के ग्राम कमरावां में जन्मे प्रदीप सारंग एक समर्पित सामाजिक कार्यकर्ता, साहित्यकार एवं जनसेवक हैं, जो कि समाज के विभिन्न क्षेत्रों में अपने निरंतर सक्रिय योगदान से युवाओं में सकारात्मक एवं प्रेरणादायक वातावरण सृजित करते रहते हैं।', 'Born on 20 October 1969 in Kamrawan village, Barabanki, Pradeep Sarang is a devoted social worker, writer and public servant who creates an inspiring, positive environment for youth through sustained grassroots leadership.')) ?>
         </p>
 
         <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
@@ -484,7 +484,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <?= e(ps_text('धरती पर हरियाली बढ़ाने के उद्देश्य से 05 जून 2019 को विश्व पर्यावरण दिवस पर ग्रीन गैंग की स्थापना हो जाने के बाद, इसकी वैचारिकी का साहित्य सृजित करना था। इसी चिन्तन में श्री सारंग के मन मे विचार आया कि क्यों न हरियाली पर काम करने वालों के लिए अलग अभिवादन शैली का विकास किया जाए। जितने धर्म, सम्प्रदाय, वैचारिकी, अस्तित्व और प्रचलन में हैं सभी के अनुयायी स्वतः एक अलग अभिवादन शैली अपनाते हैं। जैसे— जै राम, जै श्रीराम, ऊँ नमः शिवाय, राधे राधे, जय गुरुदेव, आदाब अर्ज, अस्सलाम वालेकुम, सत श्री अकाल, गुड मॉर्निंग, जय जिनेन्द्र, नमो बुद्धाय, जय हिंद, जय सरदार, जय पटेल, जय भीम आदि इत्यादि।', 'Following the foundation of Green Gang on World Environment Day, 05 June 2019 to nurture earth\'s greenery, shaping its literature and ethos became essential. Pradeep Sarang contemplated that while all faiths, philosophies, and communities naturally adopt distinctive greetings, environmental champions too deserved a dedicated greeting of their own.')) ?>
         </p>
         <p>
-          <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार श्री प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ग्रीन मॉर्निंग और हरित प्रभात का आविष्कार किया गया।', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Shri Pradeep Sarang pioneered the unique greeting — \'Green Morning\' and \'Harit Prabhat\'.')) ?>
+          <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ग्रीन मॉर्निंग और हरित प्रभात का आविष्कार किया गया।', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Pradeep Sarang pioneered the unique greeting — \'Green Morning\' and \'Harit Prabhat\'.')) ?>
         </p>
       </div>
 

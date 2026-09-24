@@ -37,8 +37,8 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
 
                     <p class="font-body-lg text-lg text-on-surface-variant mb-8 leading-relaxed">
                         <?= e(ps_text(
-                            'श्री प्रदीप सारंग कोई व्यावसायिक ज्योतिषी या कर्मकांडी नहीं हैं; वे एक संवेदनशील सामाजिक चिंतक, अवधी साहित्यकार एवं चार दशकों के अनुभवी जनसेवक हैं। आपकी समस्याओं का गंभीर, निष्पक्ष, वैज्ञानिक व व्यावहारिक अध्ययन कर उचित दिशा प्रदान करना ही उनका ध्येय है।',
-                            'Shri Pradeep Sarang is not a commercial astrologer or ritualist. He is a compassionate social thinker, Awadhi literary voice, and public servant with over 40 years of wisdom. His mission is to listen with patience and offer practical, rational life direction.'
+                            'प्रदीप सारंग कोई व्यावसायिक ज्योतिषी या कर्मकांडी नहीं हैं; वे एक संवेदनशील सामाजिक चिंतक, अवधी साहित्यकार एवं चार दशकों के अनुभवी जनसेवक हैं। आपकी समस्याओं का गंभीर, निष्पक्ष, वैज्ञानिक व व्यावहारिक अध्ययन कर उचित दिशा प्रदान करना ही उनका ध्येय है।',
+                            'Pradeep Sarang is not a commercial astrologer or ritualist. He is a compassionate social thinker, Awadhi literary voice, and public servant with over 40 years of wisdom. His mission is to listen with patience and offer practical, rational life direction.'
                         )) ?>
                     </p>
 
@@ -85,14 +85,14 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         <img class="w-full h-[440px] sm:h-[480px] object-cover object-center" 
                              src="<?= e(asset('images/pradeepsarang.webp')) ?>" 
                              width="480" height="480" decoding="async" fetchpriority="high"
-                             alt="<?= e(ps_text('श्री प्रदीप सारंग - सामाजिक कार्यकर्ता व साहित्यकार', 'Shri Pradeep Sarang - Social Worker & Scholar')) ?>" 
+                             alt="<?= e(ps_text('प्रदीप सारंग - सामाजिक कार्यकर्ता व साहित्यकार', 'Pradeep Sarang - Social Worker & Scholar')) ?>" 
                              loading="eager" />
                         <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent flex flex-col justify-end p-6 text-pure-white">
                             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-pure-white/20 backdrop-blur-md text-primary-fixed font-label-sm text-xs mb-2.5 w-max border border-white/20">
                                 <span class="material-symbols-outlined text-[14px]">verified</span>
                                 <span><?= e(ps_text('सहानुभूतिपूर्ण व तार्किक दृष्टिकोण', 'Empathetic & Logical Life Guidance')) ?></span>
                             </div>
-                            <p class="font-headline-sm text-2xl font-bold text-pure-white mb-1"><?= e(ps_text('श्री प्रदीप सारंग', 'Shri Pradeep Sarang')) ?></p>
+                            <p class="font-headline-sm text-2xl font-bold text-pure-white mb-1"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></p>
                             <p class="font-body-sm text-sm text-surface-variant"><?= e(ps_text('सामाजिक कार्यकर्ता • आयुर्वेद रत्न (1997) • अवधी साहित्यकार', 'Social Leader • Ayurveda Ratna (1997) • Awadhi Scholar')) ?></p>
                             <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-pure-white/90 font-label-sm text-xs">
                                 <span>📍 <?= e(ps_text('बाराबंकी, अवध, उत्तर प्रदेश', 'Barabanki, Awadh, Uttar Pradesh')) ?></span>
@@ -266,7 +266,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                     <?= e(ps_text('परामर्श कैसे प्राप्त करें? ४ सरल व गोपनीय चरण', 'How to Seek Guidance? 4 Simple & Confidential Steps')) ?>
                 </h2>
                 <p class="font-body-md text-base text-on-surface-variant">
-                    <?= e(ps_text('आपकी गोपनीयता हमारी सर्वोच्च मर्यादा है। किसी मध्यस्थ के बिना सीधा संवाद श्री प्रदीप सारंग जी से ही होता है।', 'Your privacy is our utmost priority. You connect directly with Shri Pradeep Sarang without third-party involvement.')) ?>
+                    <?= e(ps_text('आपकी गोपनीयता हमारी सर्वोच्च मर्यादा है। किसी मध्यस्थ के बिना सीधा संवाद प्रदीप सारंग जी से ही होता है।', 'Your privacy is our utmost priority. You connect directly with Pradeep Sarang without third-party involvement.')) ?>
                 </p>
             </div>
 
@@ -348,8 +348,8 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         </h3>
                         <p class="font-body-md text-base text-white/90 leading-relaxed">
                             <?= e(ps_text(
-                                'यह श्री प्रदीप सारंग जी का निजी एवं व्यक्तिगत फोन/व्हाट्सएप नंबर है। आपकी व्यक्तिगत, पारिवारिक अथवा सामाजिक बातें किसी भी परिस्थिति में सार्वजनिक नहीं की जाती हैं। बिना किसी संकोच के अपनी बात साझा करें।',
-                                'This is Shri Pradeep Sarang’s direct phone and WhatsApp number. Your personal or family concerns are strictly private and never shared.'
+                                'यह प्रदीप सारंग जी का निजी एवं व्यक्तिगत फोन/व्हाट्सएप नंबर है। आपकी व्यक्तिगत, पारिवारिक अथवा सामाजिक बातें किसी भी परिस्थिति में सार्वजनिक नहीं की जाती हैं। बिना किसी संकोच के अपनी बात साझा करें।',
+                                'This is Pradeep Sarang’s direct phone and WhatsApp number. Your personal or family concerns are strictly private and never shared.'
                             )) ?>
                         </p>
                     </div>
@@ -382,7 +382,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                     <p class="font-body-md text-base text-on-surface-variant mb-6 leading-relaxed">
                         <?= e(ps_text(
                             'यदि आप तुरंत फोन करने में असहज महसूस कर रहे हैं या अपनी बात को लिखकर साझा करना चाहते हैं, तो नीचे दिया गया प्रपत्र भरें। आपकी दी गई जानकारी सीधे श्री सारंग जी के व्यक्तिगत अवलोकन हेतु ही सुरक्षित रहेगी।',
-                            'If you prefer to write down your concerns before speaking, please complete this form. Your submission goes directly to Shri Pradeep Sarang.'
+                            'If you prefer to write down your concerns before speaking, please complete this form. Your submission goes directly to Pradeep Sarang.'
                         )) ?>
                     </p>
 
@@ -490,7 +490,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
 
                         <div class="p-3 rounded-xl bg-soft-meadow text-deep-forest text-xs font-medium flex items-start gap-2 border border-border-warm/60">
                             <span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">verified_user</span>
-                            <span><?= e(ps_text('आपकी दी गई समस्त जानकारी शत-प्रतिशत सुरक्षित है और केवल श्री प्रदीप सारंग जी के व्यक्तिगत अवलोकन हेतु ही सुरक्षित रहेगी।', 'All details provided remain strictly confidential and for Shri Pradeep Sarang’s eyes only.')) ?></span>
+                            <span><?= e(ps_text('आपकी दी गई समस्त जानकारी शत-प्रतिशत सुरक्षित है और केवल प्रदीप सारंग जी के व्यक्तिगत अवलोकन हेतु ही सुरक्षित रहेगी।', 'All details provided remain strictly confidential and for Pradeep Sarang’s eyes only.')) ?></span>
                         </div>
 
                         <button class="w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 bg-primary-container text-on-primary font-title-md text-base font-bold rounded-xl shadow-md hover:bg-deep-forest transition-all" type="submit">
@@ -507,8 +507,8 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                         <h3 class="font-headline-md text-2xl font-bold text-deep-forest mb-2"><?= e(ps_text('अनुरोध सफलतापूर्वक प्राप्त हुआ', 'Request Received Successfully')) ?></h3>
                         <p class="font-body-md text-sm text-on-surface-variant max-w-md mb-6 leading-relaxed">
                             <?= e(ps_text(
-                                'धन्यवाद! आपकी समस्या का विवरण श्री प्रदीप सारंग जी तक सुरक्षित पहुँच गया है। चयनित समय स्लॉट के भीतर वे स्वयं आपसे संपर्क स्थापित करेंगे।',
-                                'Thank you! Your request details have been securely sent to Shri Pradeep Sarang. He will reach out during your selected time slot.'
+                                'धन्यवाद! आपकी समस्या का विवरण प्रदीप सारंग जी तक सुरक्षित पहुँच गया है। चयनित समय स्लॉट के भीतर वे स्वयं आपसे संपर्क स्थापित करेंगे।',
+                                'Thank you! Your request details have been securely sent to Pradeep Sarang. He will reach out during your selected time slot.'
                             )) ?>
                         </p>
                         <div class="flex flex-wrap items-center justify-center gap-3">
@@ -551,7 +551,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                             <div class="flex items-start gap-2 mt-1 text-on-surface-variant">
                                 <span class="font-bold text-secondary text-sm shrink-0"><?= e(ps_text('उत्तर:', 'Answer:')) ?></span>
                                 <p class="font-body-md text-sm leading-relaxed">
-                                    <strong><?= e(ps_text('कदापि नहीं।', 'Absolutely NOT.')) ?></strong> <?= e(ps_text('यह पूर्णतः नि:स्वार्थ समाजसेवा, मानवीय सरोकार और जनकल्याण का संकल्प है। श्री प्रदीप सारंग जी किसी भी प्रकार का परामर्श शुल्क, दक्षिणा अथवा अप्रत्यक्ष भेंट स्वीकार नहीं करते हैं।', 'This is purely a non-commercial public service initiative. Shri Pradeep Sarang accepts no consultation fees, donations, or hidden charges.')) ?>
+                                    <strong><?= e(ps_text('कदापि नहीं।', 'Absolutely NOT.')) ?></strong> <?= e(ps_text('यह पूर्णतः नि:स्वार्थ समाजसेवा, मानवीय सरोकार और जनकल्याण का संकल्प है। प्रदीप सारंग जी किसी भी प्रकार का परामर्श शुल्क, दक्षिणा अथवा अप्रत्यक्ष भेंट स्वीकार नहीं करते हैं।', 'This is purely a non-commercial public service initiative. Pradeep Sarang accepts no consultation fees, donations, or hidden charges.')) ?>
                                 </p>
                             </div>
                         </div>

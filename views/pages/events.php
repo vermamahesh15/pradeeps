@@ -44,7 +44,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         <?= ps_text('गाँव की चौपाल से राष्ट्रीय मंचों तक — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">सेवा और संवाद के जीवंत आयोजन</span>', 'From Village Trails to National Dais — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">Gatherings of Service & Dialogue</span>') ?>
       </h1>
       <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-        <?= e(ps_text('श्री प्रदीप सारंग के नेतृत्व में आयोजित होने वाले आगामी जन-अभियान, ग्रीन चौपाल, काव्य-गोष्ठियां और ऐतिहासिक जनसेवा पड़ाव। जनचेतना और लोक-कल्याण के सामूहिक संकल्प का मंच।', 'Upcoming campaigns, Green Chaupals, poetry assemblies & historic social service milestones led by Shri Pradeep Sarang.')) ?>
+        <?= e(ps_text('प्रदीप सारंग के नेतृत्व में आयोजित होने वाले आगामी जन-अभियान, ग्रीन चौपाल, काव्य-गोष्ठियां और ऐतिहासिक जनसेवा पड़ाव। जनचेतना और लोक-कल्याण के सामूहिक संकल्प का मंच।', 'Upcoming campaigns, Green Chaupals, poetry assemblies & historic social service milestones led by Pradeep Sarang.')) ?>
       </p>
     </div>
 

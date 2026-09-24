@@ -11,11 +11,11 @@ $rawCharterText = <<<'CHARTER_TEXT'
  ग्रीन गैंग जानकारी, नियम, निर्देश
 ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
-1- विश्व पर्यावरण दिवस 5 जून 2019 को शहीद उद्यान, बाराबंकी, उत्तर प्रदेश में आँखें फाउण्डेशन (राष्ट्रीय पुनर्जागरण अभियान- आँखें इण्डिया) द्वारा धरती पर कम हो रही प्राणवायु बढ़ाने के लिए एक सामूहिक प्रयास "ग्रीन-गैंग/पर्यावरण सेना" की संकल्पना को साकार किया गया। संस्थापक श्री प्रदीप सारंग जी द्वारा श्री रजत बहादुर वर्मा जी, श्री हरिप्रसाद वर्मा जी, श्री सदानन्द जी, श्री अब्दुल खालिक जी संस्थापक सदस्य/ संचालक सदस्य बनाया गया। यही संचालक मण्डल कहलायेगा।
+1- विश्व पर्यावरण दिवस 5 जून 2019 को शहीद उद्यान, बाराबंकी, उत्तर प्रदेश में आँखें फाउण्डेशन (राष्ट्रीय पुनर्जागरण अभियान- आँखें इण्डिया) द्वारा धरती पर कम हो रही प्राणवायु बढ़ाने के लिए एक सामूहिक प्रयास "ग्रीन-गैंग/पर्यावरण सेना" की संकल्पना को साकार किया गया। संस्थापक प्रदीप सारंग जी द्वारा श्री रजत बहादुर वर्मा जी, श्री हरिप्रसाद वर्मा जी, श्री सदानन्द जी, श्री अब्दुल खालिक जी संस्थापक सदस्य/ संचालक सदस्य बनाया गया। यही संचालक मण्डल कहलायेगा।
 
 2- धरती और धरती वासियों के लिए हरियाली संवर्धन से महत्वपूर्ण कोई अभियान नहीं है। धरती पर हरियाली बढ़ेगी तो मनुष्य सहित समस्त प्राणियों के लिए सुखद एवं स्वास्थ्य वातावरण बनेगा और यदि धरती पर हरियाली घटेगी तो मनुष्य सहित समस्त प्राणियों के लिये संकट ही संकट का वातावरण बनेगा।
 
-3- धरती पर हरियाली बढ़ाने हेतु आमजन को आकृष्ट करने के लिए विश्व पर्यावरण दिवस 5 जून 2019 के अवसर पर  सोशल एक्टिविस्ट श्री प्रदीप सारंग जी ने अपने बालों को हरे रंग से रंगवाया। अनेक लोगों ने विशेष कर महिला सदस्यों ने अपने हाथों पर हरे पेड़ के टैटू बनवाये।
+3- धरती पर हरियाली बढ़ाने हेतु आमजन को आकृष्ट करने के लिए विश्व पर्यावरण दिवस 5 जून 2019 के अवसर पर  सोशल एक्टिविस्ट प्रदीप सारंग जी ने अपने बालों को हरे रंग से रंगवाया। अनेक लोगों ने विशेष कर महिला सदस्यों ने अपने हाथों पर हरे पेड़ के टैटू बनवाये।
 
  4- शहीद पार्क, देवा रोड, बाराबंकी उत्तर प्रदेश में बैठकर 111 लोगों ने सर्व सहमति से "ग्रीन गैंग/ पर्यावरण सेना" बनाकर धरती पर हरियाली बढ़ाने का संकल्प लिया। एक पेड़ लगाकर शुरुआत की गई। 
 
@@ -211,7 +211,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
           ग्रीन गैंग: जानकारी, नियम एवं निर्देश संकल्प-पत्र
         </h2>
         <p class="font-body-md text-body-md text-text-muted mt-3 leading-relaxed">
-          5 जून 2019 को शहीद उद्यान बाराबंकी में 111 संकल्पवान साथियों द्वारा अंगीकृत एवं संस्थापक श्री प्रदीप सारंग जी द्वारा प्रख्यापित 43 स्वर्णिम नियम।
+          5 जून 2019 को शहीद उद्यान बाराबंकी में 111 संकल्पवान साथियों द्वारा अंगीकृत एवं संस्थापक प्रदीप सारंग जी द्वारा प्रख्यापित 43 स्वर्णिम नियम।
         </p>
       </div>
 
@@ -379,7 +379,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
           <?= e(ps_text('गुड मॉर्निंग की जगह \'ग्रीन मॉर्निंग\' और \'हरित प्रभात\' क्यों...?', 'Why \'Green Morning\' & \'Harit Prabhat\' Instead of \'Good Morning\'...?')) ?>
         </h2>
         <p class="font-body-md text-body-md text-text-muted mt-3 leading-relaxed">
-          <?= e(ps_text('विश्व पर्यावरण दिवस 05 जून 2019 से आरम्भ हुई चिंतन यात्रा, संस्थापक सदस्य स्व. हरिप्रसाद वर्मा जी से ऐतिहासिक संवाद और श्री प्रदीप सारंग जी द्वारा खोजे गए 6 अकाट्य दार्शनिक तर्क।', 'The journey of reflection that began on World Environment Day 2019, the dialogue with Late Hari Prasad Verma, and the 6 foundational rationale pillars discovered by Pradeep Sarang.')) ?>
+          <?= e(ps_text('विश्व पर्यावरण दिवस 05 जून 2019 से आरम्भ हुई चिंतन यात्रा, संस्थापक सदस्य स्व. हरिप्रसाद वर्मा जी से ऐतिहासिक संवाद और प्रदीप सारंग जी द्वारा खोजे गए 6 अकाट्य दार्शनिक तर्क।', 'The journey of reflection that began on World Environment Day 2019, the dialogue with Late Hari Prasad Verma, and the 6 foundational rationale pillars discovered by Pradeep Sarang.')) ?>
         </p>
       </div>
 
@@ -404,7 +404,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
             <?= e(ps_text('धरती पर हरियाली बढ़ाने के उद्देश्य से 05 जून 2019 को विश्व पर्यावरण दिवस पर ग्रीन गैंग की स्थापना हो जाने के बाद, इसकी वैचारिकी का साहित्य सृजित करना था। इसी चिन्तन में श्री सारंग के मन मे विचार आया कि क्यों न हरियाली पर काम करने वालों के लिए अलग अभिवादन शैली का विकास किया जाए। जितने धर्म, सम्प्रदाय, वैचारिकी, अस्तित्व और प्रचलन में हैं सभी के अनुयायी स्वतः एक अलग अभिवादन शैली अपनाते हैं। जैसे— जै राम, जै श्रीराम, ऊँ नमः शिवाय, राधे राधे, जय गुरुदेव, आदाब अर्ज, अस्सलाम वालेकुम, सत श्री अकाल, गुड मॉर्निंग, जय जिनेन्द्र, नमो बुद्धाय, जय हिंद, जय सरदार, जय पटेल, जय भीम आदि इत्यादि।', 'Following the foundation of Green Gang on World Environment Day, 05 June 2019 to enhance greenery on earth, shaping its ideological literature was essential. In this contemplation, Pradeep Sarang conceived that environmental champions must possess a unique greeting. Across all faiths, traditions, and ideologies, communities embrace their own distinctive greetings.')) ?>
           </p>
           <p>
-            <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार श्री प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Shri Pradeep Sarang pioneered the unique greeting — ')) ?><strong class="font-bold text-deep-forest"><?= e(ps_text('ग्रीन मॉर्निंग', 'Green Morning')) ?></strong> <?= e(ps_text('और', 'and')) ?> <strong class="font-bold text-deep-forest"><?= e(ps_text('हरित प्रभात', 'Harit Prabhat')) ?></strong> <?= e(ps_text('का आविष्कार किया गया।', 'was born.')) ?>
+            <?= e(ps_text('महीनों चिंतन के बाद यह सुपरिणाम मिला कि एक अलग तरह की अभिवादन शैली का आविष्कार हो। चूँकि हरियाली संवृद्धि में संलग्न लोग विभिन्न लिंग, जाति, धर्म, सम्प्रदाय, राष्ट्रीयता के लोग हैं अतः अभिवादन में एक ऐसा शब्द अपनाया जाए जिससे किसी को अनुचित और असुविधाजनक न लगे। और इस प्रकार प्रदीप सारंग जी द्वारा एक अनूठी अभिवादन शैली— ', 'After months of contemplation, a breakthrough emerged: an all-inclusive greeting was invented. Since people dedicated to greening represent diverse backgrounds, faiths, and nationalities, the greeting needed to be universally comfortable and welcoming. Thus, Pradeep Sarang pioneered the unique greeting — ')) ?><strong class="font-bold text-deep-forest"><?= e(ps_text('ग्रीन मॉर्निंग', 'Green Morning')) ?></strong> <?= e(ps_text('और', 'and')) ?> <strong class="font-bold text-deep-forest"><?= e(ps_text('हरित प्रभात', 'Harit Prabhat')) ?></strong> <?= e(ps_text('का आविष्कार किया गया।', 'was born.')) ?>
           </p>
           <div class="bg-soft-meadow rounded-2xl p-5 border-l-4 border-primary text-deep-forest">
             <p class="font-body-md text-body-md italic leading-relaxed">
@@ -457,7 +457,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
         <div class="text-center mb-8">
           <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('दार्शनिक एवं भाषाई आधार', 'Philosophical & Linguistic Foundations')) ?></span>
           <h3 class="font-headline-md text-headline-md text-deep-forest font-bold mt-1">
-            <?= e(ps_text('श्री प्रदीप सारंग द्वारा प्रतिपादित 6 अकाट्य तर्क', 'The 6 Undeniable Rationale Pillars by Pradeep Sarang')) ?>
+            <?= e(ps_text('प्रदीप सारंग द्वारा प्रतिपादित 6 अकाट्य तर्क', 'The 6 Undeniable Rationale Pillars by Pradeep Sarang')) ?>
           </h3>
         </div>
 

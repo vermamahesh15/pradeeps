@@ -810,7 +810,7 @@ if (is_post()) {
             'footer_text' => trim($_POST['footer_text'] ?? ''),
 
             // AUTHOR PROFILE & BIO CARD FIELDS
-            'author_name' => trim($_POST['author_name'] ?? 'श्री प्रदीप सारंग'),
+            'author_name' => trim($_POST['author_name'] ?? 'प्रदीप सारंग'),
             'author_role' => trim($_POST['author_role'] ?? 'वरिष्ठ साहित्यकार एवं पर्यावरण कार्यकर्ता'),
             'author_location' => trim($_POST['author_location'] ?? 'ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत'),
             'author_badge' => trim($_POST['author_badge'] ?? 'साहित्यिक व जमीनी सरोकार'),
@@ -3385,7 +3385,7 @@ $metrics = $content->metrics();
                                 <h2 class="mb-0 fw-bold"><i class="fa-solid fa-camera-retro text-success me-2"></i>About Page: Personal Photographs</h2>
                                 <span class="badge bg-dark rounded-pill"><?= $totalCount ?></span>
                             </div>
-                            <p class="text-muted small mb-0">Manage photographs of Shri Pradeep Sarang displayed in the "जीवन के कुछ यादगार पल (Personal Moments)" section on the public About page.</p>
+                            <p class="text-muted small mb-0">Manage photographs of Pradeep Sarang displayed in the "जीवन के कुछ यादगार पल (Personal Moments)" section on the public About page.</p>
                         </div>
                         <div class="d-flex flex-wrap align-items-center gap-2">
                             <a href="<?= e(base_url('/about')) ?>#personal-moments" target="_blank" class="btn btn-outline-secondary btn-sm" title="Preview on public website">
@@ -3549,7 +3549,7 @@ $metrics = $content->metrics();
                             </div>
                             <h4 class="fw-bold text-dark mb-1">No personal photos have been uploaded yet.</h4>
                             <p class="text-muted small max-w-md mx-auto mb-4" style="max-width: 460px;">
-                                Upload personal and archival photographs of Shri Pradeep Sarang to feature in the "जीवन के कुछ यादगार पल" gallery on the About page.
+                                Upload personal and archival photographs of Pradeep Sarang to feature in the "जीवन के कुछ यादगार पल" gallery on the About page.
                             </p>
                             <button class="btn btn-success px-4 py-2 fw-semibold shadow-xs" type="button" data-bs-toggle="collapse" data-bs-target="#uploadPhotoCollapse" onclick="document.getElementById('photoFileInput').focus()">
                                 <i class="fa-solid fa-plus me-1"></i> Upload First Photo
@@ -4741,7 +4741,7 @@ $metrics = $content->metrics();
 
                             <div class="col-md-4">
                                 <label class="form-label fw-bold">Author Full Name</label>
-                                <input type="text" name="author_name" class="form-control" placeholder="श्री प्रदीप सारंग" value="<?= e($settings['author_name'] ?? 'श्री प्रदीप सारंग') ?>">
+                                <input type="text" name="author_name" class="form-control" placeholder="प्रदीप सारंग" value="<?= e($settings['author_name'] ?? 'प्रदीप सारंग') ?>">
                             </div>
 
                             <div class="col-md-4">
