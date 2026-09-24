@@ -3,21 +3,35 @@ declare(strict_types=1);
 
 // Helper to resolve images cleanly
 if (!function_exists('ps_resolve_img')) {
-    function ps_resolve_img(?string $dbPath, string $fallback): string {
+    function ps_resolve_img(?string $dbPath, string $fallback = 'assets/images/slider_final_1.webp'): string {
         $root = realpath(__DIR__ . '/../..') ?: dirname(__DIR__, 2);
         if (!empty($dbPath)) {
             if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
             $clean = ltrim($dbPath, '/');
-            if (file_exists($root . '/' . $clean)) {
-                return base_url($clean);
-            }
-            $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
-            if (file_exists($root . '/' . $webp)) {
-                return base_url($webp);
-            }
             if ($clean !== '') {
-                return base_url($clean);
+                if (file_exists($root . '/' . $clean)) {
+                    return base_url($clean);
+                }
+                $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+                if (file_exists($root . '/' . $webp)) {
+                    return base_url($webp);
+                }
+                $jpg = preg_replace('/\.webp$/i', '.jpg', $clean);
+                if (file_exists($root . '/' . $jpg)) {
+                    return base_url($jpg);
+                }
+                $jpeg = preg_replace('/\.webp$/i', '.jpeg', $clean);
+                if (file_exists($root . '/' . $jpeg)) {
+                    return base_url($jpeg);
+                }
+                $png = preg_replace('/\.webp$/i', '.png', $clean);
+                if (file_exists($root . '/' . $png)) {
+                    return base_url($png);
+                }
             }
+        }
+        if (empty($fallback)) {
+            $fallback = 'assets/images/slider_final_1.webp';
         }
         if (preg_match('#^https?://#i', $fallback)) return $fallback;
         $cleanFallback = ltrim($fallback, '/');
@@ -28,7 +42,7 @@ if (!function_exists('ps_resolve_img')) {
         if (file_exists($root . '/' . $webpFallback)) {
             return base_url($webpFallback);
         }
-        return base_url($cleanFallback);
+        return base_url('assets/images/slider_final_1.webp');
     }
 }
 

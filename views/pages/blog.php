@@ -88,7 +88,7 @@ $categories = $categories ?? [];
         <article class="article-card flex flex-col bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-lg transition-all overflow-hidden group" data-cat="<?= e((string)($post['category_id'] ?? 'all')) ?>">
           <!-- Card Cover Image Container -->
           <div class="relative w-full h-48 sm:h-52 overflow-hidden bg-surface-container">
-            <img src="<?= e($img) ?>" alt="<?= e($cleanTitle) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
+            <img src="<?= e($img) ?>" alt="<?= e($cleanTitle) ?>" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';">
             <div class="absolute top-3 left-3">
               <span class="bg-white/95 backdrop-blur-md text-deep-forest font-label-sm text-label-sm px-3 py-1 rounded-md font-bold border border-border-warm shadow-xs">
                 <?= e($post['category_name'] ?? ps_text('वैचारिक आलेख', 'Article')) ?>

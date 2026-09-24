@@ -314,7 +314,7 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
                   <?php if (!empty($artImg)): ?>
                   <div class="my-6 sm:my-8 rounded-2xl overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.12)] border border-[#decbb4] bg-white p-2 group">
                     <div class="relative w-full overflow-hidden rounded-xl bg-[#f2ecdf]">
-                      <img src="<?= e($artImg) ?>" alt="<?= e($artTitle) ?>" class="w-full h-[280px] sm:h-[400px] md:h-[480px] lg:h-[540px] object-cover object-center group-hover:scale-[1.015] transition-transform duration-700 ease-out" loading="eager" onerror="this.parentElement.parentElement.style.display='none';" />
+                      <img src="<?= e($artImg) ?>" alt="<?= e($artTitle) ?>" class="w-full h-[280px] sm:h-[400px] md:h-[480px] lg:h-[540px] object-cover object-center group-hover:scale-[1.015] transition-transform duration-700 ease-out" loading="eager" onerror="this.onerror=null; this.src='<?= e(base_url('assets/images/slider_final_1.webp')) ?>';" />
                       <div class="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none"></div>
                     </div>
                     <div class="flex items-center justify-between px-3 pt-2.5 pb-1 text-xs text-[#7d6b5c] font-serif">

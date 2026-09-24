@@ -227,16 +227,26 @@ if (!function_exists('ps_resolve_img')) {
         if (!empty($dbPath)) {
             if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
             $clean = ltrim($dbPath, '/');
-            if (file_exists($root . '/' . $clean)) {
-                return base_url($clean);
-            }
-            $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
-            if (file_exists($root . '/' . $webp)) {
-                return base_url($webp);
-            }
-            // If explicit path was provided in DB, preserve it so browser can load the image
             if ($clean !== '') {
-                return base_url($clean);
+                if (file_exists($root . '/' . $clean)) {
+                    return base_url($clean);
+                }
+                $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
+                if (file_exists($root . '/' . $webp)) {
+                    return base_url($webp);
+                }
+                $jpg = preg_replace('/\.webp$/i', '.jpg', $clean);
+                if (file_exists($root . '/' . $jpg)) {
+                    return base_url($jpg);
+                }
+                $jpeg = preg_replace('/\.webp$/i', '.jpeg', $clean);
+                if (file_exists($root . '/' . $jpeg)) {
+                    return base_url($jpeg);
+                }
+                $png = preg_replace('/\.webp$/i', '.png', $clean);
+                if (file_exists($root . '/' . $png)) {
+                    return base_url($png);
+                }
             }
         }
         if (empty($fallback)) {
@@ -384,6 +394,7 @@ if (!function_exists('upload_file')) {
      * and converts to optimized WebP format with full mobile responsiveness.
      */
     function upload_file(array $file, string &$error = '', string $subfolder = 'blogs', int $maxWidth = 1200, int $maxHeight = 630): ?string {
+        @ini_set('memory_limit', '256M');
         $error = '';
         if (empty($file) || !isset($file['error']) || $file['error'] === UPLOAD_ERR_NO_FILE) {
             $error = 'No file uploaded.';
@@ -418,6 +429,7 @@ if (!function_exists('upload_file')) {
         }
         @chmod($uploadDir, 0775);
 
+        $uniquePrefix = uniqid();
         $isImage = false;
         $imgInfo = @getimagesize($tmpPath);
         if ($imgInfo !== false && in_array($imgInfo[2], [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP], true)) {
@@ -425,7 +437,7 @@ if (!function_exists('upload_file')) {
         }
 
         if ($isImage && extension_loaded('gd')) {
-            $filename = uniqid() . '_' . substr($cleanSlug, 0, 40) . '.webp';
+            $filename = $uniquePrefix . '_' . substr($cleanSlug, 0, 40) . '.webp';
             $destPath = $uploadDir . '/' . $filename;
 
             $raw = @file_get_contents($tmpPath);
@@ -453,6 +465,8 @@ if (!function_exists('upload_file')) {
                     $saved = @imagewebp($dstImg, $destPath, 85);
                 }
                 if (!$saved) {
+                    $filename = $uniquePrefix . '_' . substr($cleanSlug, 0, 40) . '.jpg';
+                    $destPath = $uploadDir . '/' . $filename;
                     $saved = @imagejpeg($dstImg, $destPath, 85);
                 }
 
@@ -467,7 +481,7 @@ if (!function_exists('upload_file')) {
 
         // Non-image file or GD fallback
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = uniqid() . '_' . substr($cleanSlug, 0, 40) . ($ext ? '.' . strtolower($ext) : '');
+        $filename = $uniquePrefix . '_' . substr($cleanSlug, 0, 40) . ($ext ? '.' . strtolower($ext) : '');
         $destPath = $uploadDir . '/' . $filename;
 
         if (@move_uploaded_file($tmpPath, $destPath) || @copy($tmpPath, $destPath)) {
