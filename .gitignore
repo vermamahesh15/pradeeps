@@ -16,7 +16,7 @@ ads.txt
 # Dependencies
 /vendor/
 /node_modules/
-
+/uploads/
 # Cache & Temporary Files
 /tmp/
 /temp/

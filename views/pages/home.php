@@ -40,7 +40,7 @@ if (!function_exists('ps_resolve_img')) {
     }
 }
 
-$heroImg = ps_resolve_img($sliders[0]['image'] ?? '', 'assets/images/slider_final_1.webp');
+$heroImg = ps_resolve_img($sliders[0]['image'] ?? '', 'assets/images/pradeepsarang.webp');
 $phone = !empty($contact['phone']) ? $contact['phone'] : '+91 9919007190';
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.in';
