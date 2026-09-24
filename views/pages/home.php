@@ -28,6 +28,7 @@ if (!function_exists('ps_resolve_img')) {
                 if (file_exists($root . '/' . $png)) {
                     return base_url($png);
                 }
+                return base_url($clean);
             }
         }
         if (empty($fallback)) {
@@ -35,14 +36,7 @@ if (!function_exists('ps_resolve_img')) {
         }
         if (preg_match('#^https?://#i', $fallback)) return $fallback;
         $cleanFallback = ltrim($fallback, '/');
-        if (file_exists($root . '/' . $cleanFallback)) {
-            return base_url($cleanFallback);
-        }
-        $webpFallback = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $cleanFallback);
-        if (file_exists($root . '/' . $webpFallback)) {
-            return base_url($webpFallback);
-        }
-        return base_url('assets/images/slider_final_1.webp');
+        return base_url($cleanFallback);
     }
 }
 
