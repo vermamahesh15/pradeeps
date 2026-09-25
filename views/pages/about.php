@@ -139,7 +139,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
             <!-- Poster Image Container -->
             <div class="relative rounded-2xl overflow-hidden border border-border-warm shadow-inner group/img cursor-pointer bg-surface-container" onclick="openSwayUdghoshModal()">
-              <img src="<?= e(base_url('assets/images/sway_udghosh.jpg')) ?>" 
+              <img src="<?= e(base_url('assets/images/swayudghosh.jpg')) ?>" 
                    alt="<?= e(ps_text('स्व-उद्घोष - अभिरुचि एवं पसंदगी अनुरूप जीवन का नियोजन', 'Swayam Udghosh - Life Planning Poster')) ?>" 
                    class="w-full h-auto max-h-[580px] object-cover object-top group-hover/img:scale-105 transition-transform duration-500">
               
