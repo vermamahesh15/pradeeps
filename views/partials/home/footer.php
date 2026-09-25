@@ -5,7 +5,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.in';
 $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Kamrawan, Barabanki, Uttar Pradesh, India');
 
-$siteLogo = setting('logo', 'assets/images/logo.webp');
+$siteLogo = setting('logo', 'assets/images/logonew.webp');
 $rootDir = dirname(__DIR__, 3);
 $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
 ?>

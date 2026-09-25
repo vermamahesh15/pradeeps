@@ -1354,7 +1354,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
     </button>
 
     <div class="relative max-w-4xl max-h-[92vh] w-full flex flex-col items-center justify-center">
-      <img src="<?= e(base_url('assets/images/sway_udghosh.jpg')) ?>" 
+      <img src="<?= e(base_url('assets/images/swayudghosh.jpg')) ?>" 
            alt="<?= e(ps_text('स्व-उद्घोष - श्री प्रदीप सारंग', 'Swayam Udghosh Poster')) ?>" 
            class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/20">
       

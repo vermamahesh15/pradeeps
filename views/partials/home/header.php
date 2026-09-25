@@ -117,7 +117,7 @@ if (!isset($nav) || !is_array($nav)) {
         <div class="max-w-container-max mx-auto w-full flex items-center justify-between gap-4">
             <!-- Brand Identity: Logo Image Only -->
             <?php 
-              $siteLogo = setting('logo', 'assets/images/logo.webp');
+              $siteLogo = setting('logo', 'assets/images/logonew.webp');
               $rootDir = dirname(__DIR__, 3);
               $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '/')) || preg_match('#^https?://#i', $siteLogo));
             ?>
