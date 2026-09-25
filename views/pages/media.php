@@ -28,18 +28,37 @@ $spotlightClip = !empty($clips) ? $clips[0] : null;
       <span class="text-deep-forest font-semibold"><?= e(ps_text('प्रेस एवं मीडिया कवरेज (Press & Media Coverage)', 'Press & Media Coverage')) ?></span>
     </nav>
 
-    <!-- Editorial Header -->
-    <div class="max-w-4xl">
-      <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-        <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">newspaper</span>
-        <span><?= e(ps_text('प्रेस मान्यता एवं जन-सरोकारों की गूंज', 'Press Recognition & Public Impact')) ?></span>
+    <!-- Editorial Header with Right Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 flex flex-col">
+        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold self-start">
+          <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">newspaper</span>
+          <span><?= e(ps_text('प्रेस मान्यता एवं जन-सरोकारों की गूंज', 'Press Recognition & Public Impact')) ?></span>
+        </div>
+        <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
+          <?= ps_text('अखबारों के पन्नों में जनसेवा की दास्तान — <span class="text-primary-container">मीडिया में प्रदीप सारंग</span>', 'Tales of Service in Press Pages — <span class="text-primary-container">Pradeep Sarang in Media</span>') ?>
+        </h1>
+        <p class="font-body-lg text-body-lg text-text-muted mt-space-sm leading-relaxed">
+          <?= e(ps_text('चार दशकों से पर्यावरण, अवधी संस्कृति, गौरैया संरक्षण और सामाजिक सरोकारों को राष्ट्रीय व क्षेत्रीय समाचार पत्रों ने प्रमुखता से प्रकाशित कर जन-आंदोलन का रूप दिया।', 'For four decades, national and regional newspapers have featured environmental protection, Awadhi culture, bird conservation, and social initiatives.')) ?>
+        </p>
       </div>
-      <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-        <?= ps_text('अखबारों के पन्नों में जनसेवा की दास्तान — <span class="text-primary-container">मीडिया में प्रदीप सारंग</span>', 'Tales of Service in Press Pages — <span class="text-primary-container">Pradeep Sarang in Media</span>') ?>
-      </h1>
-      <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-        <?= e(ps_text('चार दशकों से पर्यावरण, अवधी संस्कृति, गौरैया संरक्षण और सामाजिक सरोकारों को राष्ट्रीय व क्षेत्रीय समाचार पत्रों ने प्रमुखता से प्रकाशित कर जन-आंदोलन का रूप दिया।', 'For four decades, national and regional newspapers have featured environmental protection, Awadhi culture, bird conservation, and social initiatives.')) ?>
-      </p>
+
+      <div class="lg:col-span-5 bg-pure-white rounded-2xl p-6 border border-border-warm shadow-sm flex flex-col space-y-3.5">
+        <span class="font-label-sm text-xs font-bold text-secondary uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">verified</span>
+          <span><?= e(ps_text('मीडिया संग्रह', 'Media Archives')) ?></span>
+        </span>
+        <div class="space-y-2.5 font-body-sm text-body-sm">
+          <div class="flex items-center gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+            <span class="material-symbols-outlined text-primary-container text-[18px]">newspaper</span>
+            <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('दैनिक जागरण, अमर उजाला, हिन्दुस्तान कवरेज', 'Dainik Jagran, Amar Ujala Coverage')) ?></span>
+          </div>
+          <div class="flex items-center gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+            <span class="material-symbols-outlined text-secondary text-[18px]">workspace_premium</span>
+            <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('ग्रीन मॉर्निंग व परिंदा संरक्षण विशेष रिपोर्ट', 'Special Movement Features')) ?></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Filter Tabs Bar -->

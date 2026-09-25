@@ -126,33 +126,73 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
         <span class="text-deep-forest font-semibold"><?= e(ps_text('ग्रीन गैंग अभियान (Green Gang Movement)', 'Green Gang Movement')) ?></span>
       </nav>
 
-      <!-- Badge & Main Title -->
-      <div class="max-w-4xl">
-        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-          <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
-          <span><?= e(ps_text('5 जून 2019 (विश्व पर्यावरण दिवस) से निरंतर गतिशील क्रांति', 'Grassroots Revolution Since 5th June 2019')) ?></span>
-        </div>
-        <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-          <?= e(ps_text('ग्रीन गैंग: हरियाली क्रांति, पौधरोपण एवं \'ग्रीन मॉर्निंग\' का अभिनव संस्कार', 'Green Gang: Grassroots Tree Protection & Green Morning Heritage')) ?>
-        </h1>
-        <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-          <?= e(ps_text('प्रदीप सारंग द्वारा संस्थापित \'ग्रीन गैंग\' आंदोलन — 50,000+ बरगद, पीपल, नीम और पाकड़ के वृक्षों का रोपण एवं 150+ गांवों व 100+ विद्यालयों में दैनिक प्रकृति-प्रेम का संस्कार।', 'A community-led movement transforming greetings into tree conservation, planting over 50,000 native shade trees across Awadh.')) ?>
-        </p>
+      <!-- Badge & Main Title with Right Spotlight Card -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Left: Title, Description & Action Buttons -->
+        <div class="lg:col-span-7 flex flex-col">
+          <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-3 border border-border-warm font-semibold self-start">
+            <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <span><?= e(ps_text('5 जून 2019 (विश्व पर्यावरण दिवस) से निरंतर गतिशील क्रांति', 'Grassroots Revolution Since 5th June 2019')) ?></span>
+          </div>
+          <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
+            <?= e(ps_text('ग्रीन गैंग: हरियाली क्रांति, पौधरोपण एवं \'ग्रीन मॉर्निंग\' का अभिनव संस्कार', 'Green Gang: Grassroots Tree Protection & Green Morning Heritage')) ?>
+          </h1>
+          <p class="font-body-lg text-body-lg text-text-muted mt-3 leading-relaxed">
+            <?= e(ps_text('प्रदीप सारंग द्वारा संस्थापित \'ग्रीन गैंग\' आंदोलन — 50,000+ बरगद, पीपल, नीम और पाकड़ के वृक्षों का रोपण एवं 150+ गांवों व 100+ विद्यालयों में दैनिक प्रकृति-प्रेम का संस्कार।', 'A community-led movement transforming greetings into tree conservation, planting over 50,000 native shade trees across Awadh.')) ?>
+          </p>
 
-        <!-- Quick Jump Buttons -->
-        <div class="flex flex-wrap items-center gap-3 mt-6">
-          <a href="#charter-scroll-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
-            <span class="material-symbols-outlined text-[20px] text-gold">history_edu</span>
-            <span><?= e(ps_text('📜 सम्पूर्ण संकल्प-पत्र व नियमावली पढ़ें', 'Read Official Charter')) ?></span>
-          </a>
-          <a href="#green-morning-philosophy" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-pure-white font-label-md text-label-md font-bold shadow-md transition-all transform hover:-translate-y-0.5">
-            <span class="material-symbols-outlined text-[18px] text-primary-fixed">spa</span>
-            <span><?= e(ps_text('ग्रीन मॉर्निंग वैचारिकी व 6 तर्क', 'Green Morning Ethos & 6 Arguments')) ?></span>
-          </a>
-          <a href="#join-green-gang-section" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-surface-container-low hover:bg-pure-white text-deep-forest border border-border-warm font-label-md text-label-md font-semibold transition-all">
-            <span class="material-symbols-outlined text-[18px] text-primary">group_add</span>
-            <span><?= e(ps_text('ग्रीन गैंग से जुड़ें', 'Join Green Gang')) ?></span>
-          </a>
+          <!-- Quick Jump Buttons -->
+          <div class="flex flex-wrap items-center gap-3 mt-6">
+            <a href="#charter-scroll-section" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-label-md font-bold shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5">
+              <span class="material-symbols-outlined text-[18px] text-gold">history_edu</span>
+              <span><?= e(ps_text('संकल्प-पत्र व नियमावली', 'Read Official Charter')) ?></span>
+            </a>
+            <a href="#green-morning-philosophy" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary hover:bg-primary-hover text-pure-white font-label-md text-label-md font-bold shadow-md transition-all transform hover:-translate-y-0.5">
+              <span class="material-symbols-outlined text-[18px] text-primary-fixed">spa</span>
+              <span><?= e(ps_text('वैचारिकी व 6 तर्क', 'Green Morning Ethos')) ?></span>
+            </a>
+            <a href="#join-green-gang-section" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-surface-container-low hover:bg-pure-white text-deep-forest border border-border-warm font-label-md text-label-md font-semibold transition-all">
+              <span class="material-symbols-outlined text-[18px] text-primary">group_add</span>
+              <span><?= e(ps_text('ग्रीन गैंग से जुड़ें', 'Join Green Gang')) ?></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Movement Highlights Spotlight Card -->
+        <div class="lg:col-span-5 bg-pure-white rounded-2xl p-6 border border-border-warm shadow-sm flex flex-col space-y-4">
+          <div class="flex items-center justify-between border-b border-border-warm pb-3">
+            <span class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary-container text-[20px]">spa</span>
+              <span><?= e(ps_text('ग्रीन गैंग मुख्य स्तंभ', 'Green Gang Pillars')) ?></span>
+            </span>
+            <span class="font-label-sm text-xs font-semibold text-secondary bg-soft-meadow px-2.5 py-1 rounded-full border border-border-warm"><?= e(ps_text('पर्यावरण सेना', 'Eco Movement')) ?></span>
+          </div>
+
+          <div class="space-y-3 font-body-sm text-body-sm">
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+              <span class="material-symbols-outlined text-primary-container text-[20px] shrink-0 mt-0.5">park</span>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('50,000+ विशालकाय छायादार वृक्ष', '50,000+ Native Trees')) ?></span>
+                <span class="font-body-sm text-[11px] text-text-muted"><?= e(ps_text('बरगद, पीपल, नीम, पाकड़ व फलदार पौधे', 'Banyan, Peepal, Neem & Fruit trees')) ?></span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+              <span class="material-symbols-outlined text-secondary text-[20px] shrink-0 mt-0.5">waving_hand</span>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('‘ग्रीन मॉर्निंग’ अनूठी अभिवादन शैली', 'Green Morning Greeting')) ?></span>
+                <span class="font-body-sm text-[11px] text-text-muted"><?= e(ps_text('150+ गाँवों व 100+ विद्यालयों में दैनिक संस्कार', 'Daily practice across 150+ villages')) ?></span>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+              <span class="material-symbols-outlined text-tertiary text-[20px] shrink-0 mt-0.5">verified_user</span>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('43 स्वर्णिम नियम व नियमावली', '43 Golden Rules')) ?></span>
+                <span class="font-body-sm text-[11px] text-text-muted"><?= e(ps_text('111 संस्थापक संकल्पवान सदस्यों द्वारा अंगीकृत', 'Adopted by 111 founding members')) ?></span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

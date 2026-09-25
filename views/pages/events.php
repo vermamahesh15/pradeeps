@@ -34,18 +34,41 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
       <span class="text-deep-forest font-semibold"><?= e(ps_text('आयोजन एवं लोक-गतिविधियाँ (Events)', 'Events & Community Gatherings')) ?></span>
     </nav>
 
-    <!-- Main Headline Block -->
-    <div class="max-w-4xl">
-      <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-        <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">event</span>
-        <span><?= e(ps_text('लोक-सरोकार • पर्यावरण चेतना • साहित्यिक संवाद', 'Community Welfare • Ecological Consciousness • Literary Dialogue')) ?></span>
+    <!-- Main Headline Block with Right Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-7 flex flex-col">
+        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold self-start">
+          <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">event</span>
+          <span><?= e(ps_text('लोक-सरोकार • पर्यावरण चेतना • साहित्यिक संवाद', 'Community Welfare • Ecological Consciousness • Literary Dialogue')) ?></span>
+        </div>
+        <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
+          <?= ps_text('गाँव की चौपाल से राष्ट्रीय मंचों तक — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">सेवा और संवाद के जीवंत आयोजन</span>', 'From Village Trails to National Dais — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">Gatherings of Service & Dialogue</span>') ?>
+        </h1>
+        <p class="font-body-lg text-body-lg text-text-muted mt-space-sm leading-relaxed">
+          <?= e(ps_text('प्रदीप सारंग के नेतृत्व में आयोजित होने वाले आगामी जन-अभियान, ग्रीन चौपाल, काव्य-गोष्ठियां और ऐतिहासिक जनसेवा पड़ाव। जनचेतना और लोक-कल्याण के सामूहिक संकल्प का मंच।', 'Upcoming campaigns, Green Chaupals, poetry assemblies & historic social service milestones led by Pradeep Sarang.')) ?>
+        </p>
       </div>
-      <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-        <?= ps_text('गाँव की चौपाल से राष्ट्रीय मंचों तक — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">सेवा और संवाद के जीवंत आयोजन</span>', 'From Village Trails to National Dais — <br class="hidden sm:inline"/><span class="text-primary italic font-quote-editorial">Gatherings of Service & Dialogue</span>') ?>
-      </h1>
-      <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-        <?= e(ps_text('प्रदीप सारंग के नेतृत्व में आयोजित होने वाले आगामी जन-अभियान, ग्रीन चौपाल, काव्य-गोष्ठियां और ऐतिहासिक जनसेवा पड़ाव। जनचेतना और लोक-कल्याण के सामूहिक संकल्प का मंच।', 'Upcoming campaigns, Green Chaupals, poetry assemblies & historic social service milestones led by Pradeep Sarang.')) ?>
-      </p>
+
+      <div class="lg:col-span-5 bg-pure-white rounded-2xl p-6 border border-border-warm shadow-sm flex flex-col space-y-3.5">
+        <span class="font-label-sm text-xs font-bold text-secondary uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+          <span><?= e(ps_text('आयोजन श्रेणियाँ', 'Event Categories')) ?></span>
+        </span>
+        <div class="space-y-2.5 font-body-sm text-body-sm">
+          <div class="flex items-center gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+            <span class="material-symbols-outlined text-primary-container text-[18px]">park</span>
+            <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('ग्रीन चौपाल व पौधरोपण पखवाड़ा', 'Green Chaupal & Planting Drive')) ?></span>
+          </div>
+          <div class="flex items-center gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+            <span class="material-symbols-outlined text-secondary text-[18px]">water_drop</span>
+            <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('जल-सकोरा व परिंदा वितरण', 'Water Bowl Distribution')) ?></span>
+          </div>
+          <div class="flex items-center gap-3 p-2.5 rounded-xl bg-soft-meadow border border-border-warm">
+            <span class="material-symbols-outlined text-tertiary text-[18px]">auto_stories</span>
+            <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('अवधी काव्य-गोष्ठी व तुलसी विचार पखवाड़ा', 'Awadhi Poetry & Literature Drive')) ?></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- 2-Photo Event Gallery Spotlight -->

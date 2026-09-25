@@ -22,146 +22,407 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
         <span class="text-deep-forest font-semibold"><?= e(ps_text('परिचय एवं जीवन-दर्शन (About Pradeep Sarang)', 'About Pradeep Sarang')) ?></span>
       </nav>
       
-      <!-- Badge & Main Editorial Title -->
-      <div class="max-w-4xl">
-        <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-          <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
-          <span><?= e(ps_text('चार दशकों की अविरल जनसेवा एवं लोक-चेतना (1987 से आज तक)', 'Four Decades of Community Dedication (1987 — Present)')) ?></span>
+      <!-- Badge & Main Editorial Title with Quick Section Navigator -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <!-- Left: Title & Mission Subtitle -->
+        <div class="lg:col-span-7 flex flex-col">
+          <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-3 border border-border-warm font-semibold self-start">
+            <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+            <span><?= e(ps_text('चार दशकों की अविरल जनसेवा एवं लोक-चेतना (1987 से आज तक)', 'Four Decades of Community Dedication (1987 — Present)')) ?></span>
+          </div>
+          <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
+            <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और अवधी की मिठास', 'Rooted in Service, Nature & Awadhi Heritage')) ?>
+          </h1>
+          <p class="font-body-lg text-body-lg text-text-muted mt-3 leading-relaxed">
+            <?= e(ps_text('प्रदीप सारंग — एक बहुआयामी सामाजिक कार्यकर्ता, ग्रीन गैंग के प्रणेता और संवेदनशील साहित्यकार का सम्पूर्ण जीवन परिचय।', 'Pradeep Sarang — Social worker, founder of Green Gang, and Awadhi litterateur.')) ?>
+          </p>
         </div>
-        <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-          <?= e(ps_text('माटी का सरोकार, जनसेवा का संकल्प और अवधी की मिठास', 'Rooted in Service, Nature & Awadhi Heritage')) ?>
-        </h1>
-        <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed">
-          <?= e(ps_text('प्रदीप सारंग — एक बहुआयामी सामाजिक कार्यकर्ता, ग्रीन गैंग के प्रणेता और संवेदनशील साहित्यकार का सम्पूर्ण जीवन परिचय।', 'Pradeep Sarang — Social worker, founder of Green Gang, and Awadhi litterateur.')) ?>
-        </p>
+
+        <!-- Right: Quick Navigation Card -->
+        <div class="lg:col-span-5 bg-pure-white rounded-2xl p-5 border border-border-warm shadow-sm flex flex-col space-y-3.5">
+          <span class="font-label-sm text-xs font-bold text-secondary uppercase tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">explore</span>
+            <span><?= e(ps_text('त्वरित अनुभाग मार्गदर्शिका', 'Quick Navigation')) ?></span>
+          </span>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <a href="#biography" class="flex items-center gap-2.5 bg-soft-meadow p-2.5 rounded-xl border border-border-warm hover:border-primary transition-colors group">
+              <div class="w-8 h-8 rounded-lg bg-pure-white text-deep-forest flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">person</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('जीवन परिचय', 'Biography')) ?></span>
+                <span class="font-label-sm text-[10px] text-text-muted"><?= e(ps_text('व्यक्तिगत यात्रा', 'Personal Vita')) ?></span>
+              </div>
+            </a>
+
+            <a href="#life-planning" class="flex items-center gap-2.5 bg-soft-meadow p-2.5 rounded-xl border border-border-warm hover:border-primary transition-colors group">
+              <div class="w-8 h-8 rounded-lg bg-pure-white text-primary-container flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">event_note</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('जीवन का नियोजन', 'Life Planning')) ?></span>
+                <span class="font-label-sm text-[10px] text-text-muted"><?= e(ps_text('3 दायित्व • 5 आयाम', '3 Duties & 5 Dimensions')) ?></span>
+              </div>
+            </a>
+
+            <a href="#philosophy" class="flex items-center gap-2.5 bg-soft-meadow p-2.5 rounded-xl border border-border-warm hover:border-primary transition-colors group">
+              <div class="w-8 h-8 rounded-lg bg-pure-white text-secondary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">psychology</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('दृष्टि व दर्शन', 'Philosophy')) ?></span>
+                <span class="font-label-sm text-[10px] text-text-muted"><?= e(ps_text('मूल सिद्धान्त', 'Core Values')) ?></span>
+              </div>
+            </a>
+
+            <a href="#awards" class="flex items-center gap-2.5 bg-soft-meadow p-2.5 rounded-xl border border-border-warm hover:border-primary transition-colors group">
+              <div class="w-8 h-8 rounded-lg bg-pure-white text-tertiary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">military_tech</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('सम्मान व पुरस्कार', 'Awards')) ?></span>
+                <span class="font-label-sm text-[10px] text-text-muted"><?= e(ps_text('राज्यपाल पुरस्कार', 'State Honors')) ?></span>
+              </div>
+            </a>
+
+            <a href="#archives" class="flex items-center gap-2.5 bg-soft-meadow p-2.5 rounded-xl border border-border-warm hover:border-primary transition-colors group">
+              <div class="w-8 h-8 rounded-lg bg-pure-white text-primary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[18px]">collections</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-title-sm text-xs font-bold text-deep-forest"><?= e(ps_text('अभिलेखागार', 'Archives')) ?></span>
+                <span class="font-label-sm text-[10px] text-text-muted"><?= e(ps_text('1987 से आज तक', '1987 — Present')) ?></span>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Hero Biography & Narrative Persona -->
-  <section class="w-full py-space-2xl md:py-space-3xl border-b border-border-warm">
+  <!-- अभिरुचि एवं पसंदगी अनुरूप जीवन का नियोजन (LIFE & TIME PLANNING & SWAYAM UDGHOSH) -->
+  <section class="w-full bg-gradient-to-b from-pure-white via-soft-meadow/50 to-pure-white py-space-2xl md:py-space-4xl border-b border-border-warm relative overflow-hidden scroll-mt-24" id="life-planning">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      
+      <!-- Section Title & Subheading -->
+      <div class="text-center max-w-3xl mx-auto mb-space-xl">
+        <div class="inline-flex items-center gap-2 bg-primary-container text-on-primary px-4 py-1.5 rounded-full font-label-sm text-label-sm font-bold mb-3 shadow-xs">
+          <span class="material-symbols-outlined text-[16px]">schedule</span>
+          <span><?= e(ps_text('जीवन-दर्शन एवं समय प्रबंधन', 'Life Philosophy & Time Management')) ?></span>
+        </div>
+        <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold tracking-tight">
+          <?= e(ps_text('अभिरुचि एवं पसंदगी अनुरूप जीवन का नियोजन', 'Life & Time Planning According to Aptitude & Passion')) ?>
+        </h2>
+        <div class="w-24 h-1 bg-gradient-to-r from-primary-container via-secondary to-tertiary mx-auto mt-3 rounded-full"></div>
+      </div>
+
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        <!-- Left: Official Emblem & Persona Card -->
-        <div class="lg:col-span-5 bg-pure-white rounded-2xl shadow-sm border border-border-warm p-6 sm:p-8 flex flex-col">
-          <!-- Monogram Logo Badge inspired by official seal -->
-          <div class="flex items-center justify-between pb-6 mb-6 border-b border-border-warm">
-            <div class="flex items-center gap-3">
-              <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-deep-forest shadow-inner border border-border-warm">
-                <span class="font-headline-lg text-headline-md tracking-tighter font-serif text-deep-forest font-bold">PS</span>
+        
+        <!-- Left Column: The Uploaded Poster Showcase Card (स्व-उद्घोष) -->
+        <div class="lg:col-span-5 flex flex-col">
+          <div class="bg-pure-white rounded-3xl p-5 sm:p-6 shadow-md border border-border-warm relative overflow-hidden group hover:shadow-xl transition-all duration-300">
+            <!-- Header Tag -->
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-border-warm">
+              <div class="flex items-center gap-2 text-deep-forest">
+                <span class="material-symbols-outlined text-primary-container text-[24px]">workspace_premium</span>
+                <div>
+                  <span class="font-title-md text-title-md font-bold block leading-tight"><?= e(ps_text('स्व-उद्घोष', 'Swayam Udghosh')) ?></span>
+                  <span class="font-label-sm text-[11px] text-text-muted"><?= e(ps_text('श्री प्रदीप सारंग का जीवन-संकल्प पत्र', 'Life Vow Poster by Pradeep Sarang')) ?></span>
+                </div>
               </div>
-              <div class="flex flex-col">
-                <span class="font-title-lg text-title-lg text-deep-forest leading-snug font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
-                <span class="font-label-sm text-label-sm text-secondary font-semibold"><?= e(ps_text('लोक सेवा की वैचारिक नींव', 'Social Worker & Author')) ?></span>
+              <button type="button" onclick="openSwayUdghoshModal()" class="px-3 py-1 rounded-full bg-soft-meadow hover:bg-primary-container hover:text-on-primary text-deep-forest font-label-sm text-xs transition-colors border border-border-warm font-semibold flex items-center gap-1 cursor-pointer">
+                <span class="material-symbols-outlined text-[14px]">fullscreen</span>
+                <span><?= e(ps_text('ज़ूम करें', 'Zoom')) ?></span>
+              </button>
+            </div>
+
+            <!-- Poster Image Container -->
+            <div class="relative rounded-2xl overflow-hidden border border-border-warm shadow-inner group/img cursor-pointer bg-surface-container" onclick="openSwayUdghoshModal()">
+              <img src="<?= e(base_url('assets/images/sway_udghosh.jpg')) ?>" 
+                   alt="<?= e(ps_text('स्व-उद्घोष - अभिरुचि एवं पसंदगी अनुरूप जीवन का नियोजन', 'Swayam Udghosh - Life Planning Poster')) ?>" 
+                   class="w-full h-auto max-h-[580px] object-cover object-top group-hover/img:scale-105 transition-transform duration-500">
+              
+              <!-- Hover Overlay -->
+              <div class="absolute inset-0 bg-deep-forest/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center p-6 text-pure-white text-center">
+                <div class="w-14 h-14 rounded-full bg-pure-white/20 backdrop-blur-md flex items-center justify-center mb-2 text-pure-white shadow-lg">
+                  <span class="material-symbols-outlined text-[32px]">zoom_in</span>
+                </div>
+                <span class="font-title-md text-base font-bold"><?= e(ps_text('स्व-उद्घोष कविता व पोस्टर विस्तार से पढ़ें', 'Click to read full Swayam Udghosh poster')) ?></span>
               </div>
             </div>
-            <span class="material-symbols-outlined text-primary-container text-[28px]">eco</span>
-          </div>
 
-          <!-- Featured Portrait Image -->
-          <div class="relative rounded-xl overflow-hidden mb-6 border border-border-warm shadow-xs">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="<?= e(ps_text('प्रदीप सारंग - पौधारोपण अभियान', 'Pradeep Sarang Field Drive')) ?>" class="w-full h-52 object-cover">
-            <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent p-3 text-pure-white">
-              <span class="font-label-sm text-label-sm font-semibold flex items-center gap-1">
-                <span class="material-symbols-outlined text-[14px] text-fresh-sprout">location_on</span>
-                <?= e(ps_text('बाराबंकी अंचल • ग्रीन मॉर्निंग पौधारोपण', 'Barabanki Drive • Green Morning')) ?>
+            <!-- Poster Caption Banner -->
+            <div class="mt-4 p-3.5 bg-soft-meadow rounded-xl border border-border-warm text-center">
+              <span class="font-quote-editorial text-sm italic text-deep-forest block font-semibold">
+                "असंभव को संभव, बनाने चले हैं। मरुस्थल में उपवन उगाने चले हैं॥"
+              </span>
+              <span class="font-label-sm text-[11px] text-text-muted mt-1 block">
+                <?= e(ps_text('— ' . 'हरे पेड़ एक बेहतर कल • प्रकृति है तो भविष्य है', 'Green Trees Better Tomorrow')) ?>
               </span>
             </div>
-          </div>
 
-          <!-- Quick Vita Table -->
-          <div class="space-y-3.5 font-body-sm text-body-sm">
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">badge</span>
-                <span><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
-              </span>
-              <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('प्रदीप सारंग (Pradeep Sarang)', 'Pradeep Sarang')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">person</span>
-                <span><?= e(ps_text('पिता:', 'Father:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्री गोविंद प्रसाद', 'Shri Govind Prasad')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">family_restroom</span>
-                <span><?= e(ps_text('माता:', 'Mother:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्रीमती कृष्णावती (कृष्णादेवी)', 'Smt. Krishnavati')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">cake</span>
-                <span><?= e(ps_text('जन्म:', 'Date of Birth:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('20 अक्टूबर 1969 (दीपावली की पावन भोर)', '20 October 1969')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
-                <span><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
-                <span><?= e(ps_text('शैक्षणिक योग्यता:', 'Education:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('बी.ए., बी.एड., पी.जी. डिप्लोमा (अवधी भाषा व साहित्य), आयुर्वेद रत्न (1997)', 'B.A., B.Ed., PG Dip (Awadhi), Ayurveda Ratna')) ?></span>
-            </div>
-            <div class="flex justify-between items-start py-2">
-              <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px] text-secondary">work</span>
-                <span><?= e(ps_text('प्रमुख दायित्व:', 'Roles:')) ?></span>
-              </span>
-              <span class="text-on-surface text-right flex-1"><?= e(ps_text('सह-संपादक \'सन्दौली टाइम्स\', संस्थापक \'ग्रीन गैंग\', जनक \'ग्रीन मॉर्निंग\' अभियान', 'Co-Editor Sandauli Times, Founder Green Gang')) ?></span>
-            </div>
-          </div>
+            <!-- Quick Vita Table under Image -->
+            <div class="mt-5 pt-4 border-t border-border-warm space-y-3 font-body-sm text-body-sm">
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">badge</span>
+                  <span><?= e(ps_text('पूरा नाम:', 'Full Name:')) ?></span>
+                </span>
+                <span class="text-on-surface font-semibold text-right flex-1"><?= e(ps_text('प्रदीप सारंग (Pradeep Sarang)', 'Pradeep Sarang')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">person</span>
+                  <span><?= e(ps_text('पिता:', 'Father:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्री गोविंद प्रसाद', 'Shri Govind Prasad')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">family_restroom</span>
+                  <span><?= e(ps_text('माता:', 'Mother:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('श्रीमती कृष्णावती (कृष्णादेवी)', 'Smt. Krishnavati')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">cake</span>
+                  <span><?= e(ps_text('जन्म:', 'Date of Birth:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('20 अक्टूबर 1969 (दीपावली की पावन भोर)', '20 October 1969')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">location_on</span>
+                  <span><?= e(ps_text('जन्मस्थान:', 'Birthplace:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2 border-b border-border-warm/60">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">school</span>
+                  <span><?= e(ps_text('शैक्षणिक योग्यता:', 'Education:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('बी.ए., बी.एड., पी.जी. डिप्लोमा (अवधी भाषा व साहित्य), आयुर्वेद रत्न (1997)', 'B.A., B.Ed., PG Dip (Awadhi), Ayurveda Ratna')) ?></span>
+              </div>
+              <div class="flex justify-between items-start py-2">
+                <span class="text-text-muted font-medium w-36 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-[16px] text-secondary">work</span>
+                  <span><?= e(ps_text('प्रमुख दायित्व:', 'Roles:')) ?></span>
+                </span>
+                <span class="text-on-surface text-right flex-1"><?= e(ps_text('सह-संपादक \'सन्दौली टाइम्स\', संस्थापक \'ग्रीन गैंग\', जनक \'ग्रीन मॉर्निंग\' अभियान', 'Co-Editor Sandauli Times, Founder Green Gang')) ?></span>
+              </div>
 
-          <!-- Mini Callout in Persona Card -->
-          <div class="mt-6 bg-soft-meadow rounded-xl p-4 flex items-center gap-3 border border-border-warm">
-            <span class="material-symbols-outlined text-primary-container text-[24px]">workspace_premium</span>
-            <div class="flex flex-col">
-              <span class="font-label-sm text-label-sm font-semibold text-deep-forest"><?= e(ps_text('माननीय राज्यपाल द्वारा सम्मानित', 'Governor State Awardee')) ?></span>
-              <span class="font-body-sm text-label-sm text-text-muted"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार (1991)', 'Swami Vivekananda Youth Award (1991)')) ?></span>
+              <!-- Mini Callout in Vita Table -->
+              <div class="mt-4 bg-soft-meadow rounded-xl p-3.5 flex items-center gap-3 border border-border-warm">
+                <span class="material-symbols-outlined text-primary-container text-[24px]">workspace_premium</span>
+                <div class="flex flex-col">
+                  <span class="font-label-sm text-xs font-bold text-deep-forest"><?= e(ps_text('माननीय राज्यपाल द्वारा सम्मानित', 'Governor State Awardee')) ?></span>
+                  <span class="font-body-sm text-xs text-text-muted"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार (1991)', 'Swami Vivekananda Youth Award (1991)')) ?></span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right: Narrative & Calligraphic Motto -->
-        <div class="lg:col-span-7 flex flex-col justify-between">
-          <!-- Founder's Calligraphic Motto Quote -->
-          <div class="bg-soft-meadow rounded-2xl p-6 sm:p-8 relative shadow-sm border border-border-warm mb-8">
-            <span class="material-symbols-outlined text-secondary text-[40px] opacity-20 absolute top-4 right-5 select-none">format_quote</span>
-            <span class="font-label-md text-label-md text-secondary tracking-wider block mb-3 font-bold"><?= e(ps_text('संस्थापक संदेश एवं जीवन-मंत्र', 'Life Motto')) ?></span>
-            <blockquote class="font-quote-editorial text-title-lg md:text-quote-editorial text-deep-forest italic leading-relaxed">
-              "<?= e(ps_text('मरुस्थल में सुमन खिलाने चले हैं, चल सको तो चलो। तेज धूप तो होगी ही तप सको तो चलो। राह में काँटे तो होंगे ही, देश दुनिया को बेहतर बनाना है, अपने छुद्र सुख भूल सको तो चलो, झेल सको तो चलो।', 'To bloom flowers in the desert, walk if you can... Leave personal comfort behind if you can.')) ?>"
-            </blockquote>
-            <div class="mt-4 pt-3 flex items-center justify-between border-t border-border-warm">
-              <span class="font-headline-sm text-headline-sm text-deep-forest font-bold">— <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
-              <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('बाराबंकी (उ.प्र.)', 'Barabanki, UP')) ?></span>
+        <!-- Right Column: Narrative, 3 Duties & 5 Dimensions -->
+        <div class="lg:col-span-7 flex flex-col space-y-6">
+
+          <!-- Main Philosophy Intro Card -->
+          <div class="bg-pure-white rounded-3xl p-6 sm:p-8 shadow-sm border border-border-warm">
+            <span class="material-symbols-outlined text-primary-container text-[36px] mb-2 block opacity-80">format_quote</span>
+            <p class="font-quote-editorial text-headline-sm md:text-title-lg text-deep-forest leading-relaxed font-bold mb-4">
+              <?= e(ps_text('समय ही जीवन है, ऐसा मानकर अपने जीवन का यानी समय का नियोजन कर रखा है। श्री प्रदीप सारंग ने तीन दायित्व मानकर, पाँच आयाम निर्धारित करके जीवन समर्पित किया हुआ है—', 'Believing time to be life itself, Shri Pradeep Sarang has planned his life across 3 obligations and 5 dimensions.')) ?>
+            </p>
+
+            <!-- 3 Responsibilities Section -->
+            <div class="mt-6 pt-6 border-t border-border-warm">
+              <span class="font-label-sm text-xs font-bold text-secondary uppercase tracking-widest block mb-3.5 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px]">military_tech</span>
+                <span><?= e(ps_text('तीन प्रमुख दायित्व (3 Key Responsibilities)', '3 Key Responsibilities')) ?></span>
+              </span>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <!-- 1. स्वयं -->
+                <div class="bg-soft-meadow p-4 rounded-2xl border border-border-warm flex flex-col hover:border-primary transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-pure-white text-primary-container flex items-center justify-center font-mono font-bold text-sm mb-2 shadow-xs border border-border-warm">
+                    1
+                  </div>
+                  <span class="font-title-sm text-sm font-bold text-deep-forest"><?= e(ps_text('स्वयं के प्रति दायित्व', 'Duty to Self')) ?></span>
+                  <span class="font-body-sm text-[11px] text-text-muted mt-1"><?= e(ps_text('आत्म-अनुशासन, स्वास्थ्य व नैतिक निष्ठा', 'Self-discipline & ethics')) ?></span>
+                </div>
+
+                <!-- 2. परिवार -->
+                <div class="bg-soft-meadow p-4 rounded-2xl border border-border-warm flex flex-col hover:border-secondary transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-pure-white text-secondary flex items-center justify-center font-mono font-bold text-sm mb-2 shadow-xs border border-border-warm">
+                    2
+                  </div>
+                  <span class="font-title-sm text-sm font-bold text-deep-forest"><?= e(ps_text('परिवार के प्रति दायित्व', 'Duty to Family')) ?></span>
+                  <span class="font-body-sm text-[11px] text-text-muted mt-1"><?= e(ps_text('गृहस्थ धर्म, संस्कार व परिजन देखभाल', 'Domestic duties & family ethics')) ?></span>
+                </div>
+
+                <!-- 3. देश और समाज -->
+                <div class="bg-soft-meadow p-4 rounded-2xl border border-border-warm flex flex-col hover:border-tertiary transition-all">
+                  <div class="w-8 h-8 rounded-xl bg-pure-white text-tertiary flex items-center justify-center font-mono font-bold text-sm mb-2 shadow-xs border border-border-warm">
+                    3
+                  </div>
+                  <span class="font-title-sm text-sm font-bold text-deep-forest"><?= e(ps_text('देश और समाज के प्रति दायित्व', 'Duty to Nation & Society')) ?></span>
+                  <span class="font-body-sm text-[11px] text-text-muted mt-1"><?= e(ps_text('निःस्वार्थ जनसेवा व पर्यावरण रक्षा', 'Selfless service & eco-drives')) ?></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transition Text -->
+            <div class="mt-6 p-4 rounded-2xl bg-surface-container-low border border-border-warm font-body-md text-sm text-on-surface-variant leading-relaxed">
+              <?= e(ps_text('गृहस्थ जीवन में अपने और परिवार के प्रति दायित्व का निर्वहन करते हुए देश और समाज के निमित्त पाँच आयाम सुनिश्चित कर सम्पूर्ण-जीवन यानी समय को योजित किया हुआ है। जो निम्नवत है—', 'Fulfilling duties towards self and family in household life, he dedicated his whole life-time to 5 nation-building dimensions:')) ?>
             </div>
           </div>
 
-          <!-- 2-Photo Archival Memories Spotlight -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            <div class="relative rounded-xl overflow-hidden border border-border-warm shadow-xs group">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdMQwsnVo2dk4ut7g6q_cAP6eTxbCJ79UEWEL6LMYJP9Bzoa711KY0DUcQDKRXxuQ_6LQhxi0vQ2STd8MG_7M8PMwLDKDbl4rkN0NWnrSqVTvaAamPZA23ot4DWOtvh7QMTvSKjQWd4KHteII-UyAePIVzkOU6Kjt18WGSoV63V45Zxnm-uJxCWTIYBFdLiZQTIIpMJ2BicU3nJOrp9TW5wTXMOaNdUj57zI1cu2Z0PJgk4oP02r7" alt="Bird Conservation Drive" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
-              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 to-transparent p-3 text-pure-white">
-                <span class="font-label-sm text-label-sm font-semibold block"><?= e(ps_text('परिंदा जल-सकोरा वितरण अभियान', 'Bird Water Bowl Distribution Drive')) ?></span>
+          <!-- 5 Dimensions Grid (पाँच आयाम) -->
+          <div class="space-y-3.5">
+            <span class="font-label-sm text-xs font-bold text-primary-container uppercase tracking-widest block mb-1 flex items-center gap-1.5 px-1">
+              <span class="material-symbols-outlined text-[16px]">grid_view</span>
+              <span><?= e(ps_text('पाँच आयाम एवं लोक-कल्याणकारी योजनाएँ (5 Dimensions & Plans)', '5 Dimensions of Life Service')) ?></span>
+            </span>
+
+            <!-- Dimension 1: पृथ्वी संरक्षण -->
+            <div class="bg-pure-white p-4 sm:p-5 rounded-2xl border border-border-warm shadow-xs hover:shadow-md transition-all flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-2xl bg-soft-meadow text-primary-container flex items-center justify-center shrink-0 border border-border-warm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">nature</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h4 class="font-title-md text-base font-bold text-deep-forest">
+                    1- <?= e(ps_text('जन्मभूमि यानी पृथ्वी संरक्षण', '1- Motherland & Earth Conservation')) ?>
+                  </h4>
+                  <span class="inline-flex items-center gap-1 bg-primary-fixed/40 text-deep-forest px-3 py-0.5 rounded-full text-xs font-bold border border-border-warm">
+                    <span class="material-symbols-outlined text-[13px] text-primary-container">park</span>
+                    <?= e(ps_text('योजना: ग्रीन गैंग', 'Plan: Green Gang')) ?>
+                  </span>
+                </div>
+                <p class="font-body-sm text-xs sm:text-sm text-text-muted mt-1 leading-relaxed">
+                  <?= e(ps_text('पर्यावरण संतुलन, 50,000+ वृक्षारोपण, पक्षियों हेतु जल-सकोरा वितरण और नित्य \'ग्रीन मॉर्निंग\' अभिवादन के माध्यम से प्रकृति संरक्षण।', 'Environmental protection through tree planting, bird water bowls, and daily Green Morning greetings.')) ?>
+                </p>
               </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden border border-border-warm shadow-xs group">
-              <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="National Youth Award 1991" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-300">
-              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 to-transparent p-3 text-pure-white">
-                <span class="font-label-sm text-label-sm font-semibold block"><?= e(ps_text('1991 राजभवन स्वामी विवेकानंद सम्मान', '1991 Raj Bhavan Youth Award Ceremony')) ?></span>
+
+            <!-- Dimension 2: अवधी एवं हिंदी -->
+            <div class="bg-pure-white p-4 sm:p-5 rounded-2xl border border-border-warm shadow-xs hover:shadow-md transition-all flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-2xl bg-soft-meadow text-secondary flex items-center justify-center shrink-0 border border-border-warm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">translate</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h4 class="font-title-md text-base font-bold text-deep-forest">
+                    2- <?= e(ps_text('मातृ भाषा अवधी एवं हिंदी', '2- Mother Tongue Awadhi & Hindi')) ?>
+                  </h4>
+                  <span class="inline-flex items-center gap-1 bg-secondary-fixed/40 text-secondary px-3 py-0.5 rounded-full text-xs font-bold border border-border-warm">
+                    <span class="material-symbols-outlined text-[13px]">menu_book</span>
+                    <?= e(ps_text('योजना: भाषा साहित्य संस्कृति का संवर्धन, संरक्षण', 'Plan: Language & Cultural Heritage')) ?>
+                  </span>
+                </div>
+                <p class="font-body-sm text-xs sm:text-sm text-text-muted mt-1 leading-relaxed">
+                  <?= e(ps_text('अवधी कहावतों, लोक साहित्य व अवधी छंदों (सारंग-कुंडलियाँ) का दस्तावेजीकरण और भावी पीढ़ियों के लिए भाषाई समृद्धता का यत्न।', 'Preserving Awadhi proverbs, folk literature, and poetic heritage for future generations.')) ?>
+                </p>
+              </div>
+            </div>
+
+            <!-- Dimension 3: सरदार पटेल -->
+            <div class="bg-pure-white p-4 sm:p-5 rounded-2xl border border-border-warm shadow-xs hover:shadow-md transition-all flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-2xl bg-soft-meadow text-tertiary flex items-center justify-center shrink-0 border border-border-warm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">flag</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h4 class="font-title-md text-base font-bold text-deep-forest">
+                    3- <?= e(ps_text('आधुनिक भारत के शिल्पी सरदार वल्लभ भाई पटेल', '3- Architect of India Sardar Vallabhbhai Patel')) ?>
+                  </h4>
+                  <span class="inline-flex items-center gap-1 bg-tertiary-fixed/40 text-tertiary px-3 py-0.5 rounded-full text-xs font-bold border border-border-warm">
+                    <span class="material-symbols-outlined text-[13px]">directions_bus</span>
+                    <?= e(ps_text('योजना: पटेल चेतना रथ के माध्यम से पटेल के योगदान की चर्चा', 'Plan: Patel Chetna Rath')) ?>
+                  </span>
+                </div>
+                <p class="font-body-sm text-xs sm:text-sm text-text-muted mt-1 leading-relaxed">
+                  <?= e(ps_text('पटेल चेतना रथ के माध्यम से लौह पुरुष सरदार पटेल के राष्ट्र-एकता के अविस्मरणीय योगदान एवं आदर्शों पर परिचर्चा व जन-जागरण।', 'Spreading Sardar Patel\'s legacy of national unity through the Patel Chetna Rath awareness drive.')) ?>
+                </p>
+              </div>
+            </div>
+
+            <!-- Dimension 4: साहित्य सृजन -->
+            <div class="bg-pure-white p-4 sm:p-5 rounded-2xl border border-border-warm shadow-xs hover:shadow-md transition-all flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-2xl bg-soft-meadow text-deep-forest flex items-center justify-center shrink-0 border border-border-warm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">draw</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h4 class="font-title-md text-base font-bold text-deep-forest">
+                    4- <?= e(ps_text('साहित्य सृजन', '4- Literary Creation')) ?>
+                  </h4>
+                  <span class="inline-flex items-center gap-1 bg-soft-meadow text-deep-forest px-3 py-0.5 rounded-full text-xs font-bold border border-border-warm">
+                    <span class="material-symbols-outlined text-[13px] text-primary-container">edit_note</span>
+                    <?= e(ps_text('योजना: कविता कहानी इत्यादि लेखन, संपादन, काव्यपाठ, पत्रकारिता', 'Plan: Creative Writing & Journalism')) ?>
+                  </span>
+                </div>
+                <p class="font-body-sm text-xs sm:text-sm text-text-muted mt-1 leading-relaxed">
+                  <?= e(ps_text('कविता, कहानी, लोक-पत्रकारिता, \'सन्दौली टाइम्स\' का संपादन तथा ग्रामीण संवेदनाओं पर निरन्तर रचना-सृजन।', 'Poetry, short stories, editing of Sandauli Times, and grassroots journalism.')) ?>
+                </p>
+              </div>
+            </div>
+
+            <!-- Dimension 5: युवा मार्गदर्शन -->
+            <div class="bg-pure-white p-4 sm:p-5 rounded-2xl border border-border-warm shadow-xs hover:shadow-md transition-all flex items-start gap-4 group">
+              <div class="w-12 h-12 rounded-2xl bg-soft-meadow text-primary-container flex items-center justify-center shrink-0 border border-border-warm group-hover:scale-105 transition-transform">
+                <span class="material-symbols-outlined text-[24px]">school</span>
+              </div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                  <h4 class="font-title-md text-base font-bold text-deep-forest">
+                    5- <?= e(ps_text('युवाओं का मार्गदर्शन एवं सहयोग', '5- Youth Guidance & Support')) ?>
+                  </h4>
+                  <span class="inline-flex items-center gap-1 bg-primary-fixed/40 text-primary-container px-3 py-0.5 rounded-full text-xs font-bold border border-border-warm">
+                    <span class="material-symbols-outlined text-[13px]">groups</span>
+                    <?= e(ps_text('योजना: संगोष्ठी सेमिनार, मोटिवेशनल क्लासेस, प्रशिक्षण शिविर, सेवा सहायता सहयोग शिविर', 'Plan: Seminars & Mentorship Camps')) ?>
+                  </span>
+                </div>
+                <p class="font-body-sm text-xs sm:text-sm text-text-muted mt-1 leading-relaxed">
+                  <?= e(ps_text('युवाओं हेतु संगोष्ठी, सेमिनार, मोटिवेशनल क्लासेस, कौशल प्रशिक्षण शिविर और निःशुल्क सहायता व सेवा शिविर।', 'Empowering youth through seminars, motivational classes, skill training camps, and service workshops.')) ?>
+                </p>
               </div>
             </div>
           </div>
+
+          <!-- Organization Credit Tag -->
+          <div class="bg-gradient-to-r from-deep-forest via-primary-container to-deep-forest text-pure-white p-4 sm:p-5 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-pure-white/20 backdrop-blur-sm flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-[22px] text-fresh-sprout">verified</span>
+              </div>
+              <div>
+                <span class="font-title-md text-sm sm:text-base font-bold block"><?= e(ps_text('(द्वारा- आँखें फाउंडेशन एवं ग्रीन गैंग)', '(By - Aankhen Foundation & Green Gang)')) ?></span>
+                <span class="font-label-sm text-xs text-surface-container-high opacity-90"><?= e(ps_text('प्रकृति, साहित्य एवं समाज सेवा को समर्पित अभियान', 'Dedicated to nature, literature and social service')) ?></span>
+              </div>
+            </div>
+            <a href="<?= e(base_url('/contact')) ?>" class="bg-pure-white text-deep-forest hover:bg-soft-meadow px-4 py-2 rounded-xl font-label-sm text-xs font-bold transition-colors shrink-0 shadow-xs">
+              <?= e(ps_text('अभियान से जुड़ें', 'Join Drives')) ?>
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Hero Biography & Narrative Persona -->
+  <section class="w-full py-space-2xl md:py-space-3xl border-b border-border-warm scroll-mt-24" id="biography">
+    <div class="max-w-container-max mx-auto px-4 sm:px-8">
+      <div class="w-full">
+        <!-- Full Width: Narrative & Biography Spotlight -->
+        <div class="w-full flex flex-col space-y-6">
+
+
+
 
           <!-- Narrative Prose -->
           <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
@@ -174,7 +435,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           </div>
 
           <!-- Quick Metrics Ribbon -->
-          <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-2">
             <div class="bg-pure-white p-4 rounded-xl shadow-sm border border-border-warm flex flex-col text-center">
               <span class="font-headline-lg text-headline-md text-primary-container leading-tight font-bold">35+</span>
               <span class="font-label-sm text-label-sm text-text-muted mt-1"><?= e(ps_text('वर्ष अनवरत सेवा', 'Years Service')) ?></span>
@@ -195,10 +456,10 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
         </div>
       </div>
     </div>
-  </section>
+
 
   <!-- दृष्टि और जीवन-दर्शन (VISION, MISSION & PRINCIPLES) -->
-  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-3xl border-b border-border-warm">
+  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-3xl border-b border-border-warm scroll-mt-24" id="philosophy">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <div class="text-center max-w-2xl mx-auto mb-space-xl">
         <span class="font-label-sm text-label-sm text-secondary tracking-widest font-semibold uppercase"><?= e(ps_text('दार्शनिक आधारशिला', 'Philosophical Pillars')) ?></span>
@@ -394,7 +655,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
   </section>
 
   <!-- चार दशकों का ऐतिहासिक पड़ाव व सम्मान अभिलेखागार (TIMELINE OF HONORS 1987 से आज तक) -->
-  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-4xl border-b border-border-warm" id="milestones-section">
+  <section class="w-full bg-soft-meadow py-space-2xl md:py-space-4xl border-b border-border-warm scroll-mt-24" id="awards">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-space-xl">
@@ -718,7 +979,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
   <?php if (!empty($personalPhotos)): ?>
   <!-- जीवन के कुछ यादगार पल (PERSONAL MOMENTS GALLERY) -->
-  <section class="w-full py-space-2xl md:py-space-4xl bg-pure-white border-b border-border-warm" id="personal-moments">
+  <section class="w-full py-space-2xl md:py-space-4xl bg-pure-white border-b border-border-warm scroll-mt-24" id="archives">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <!-- Section Header -->
       <div class="text-center max-w-3xl mx-auto mb-space-xl">
@@ -1086,7 +1347,53 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
         </div>
       </div>
     </div>
-  </section>
+  <!-- Dedicated Lightbox Modal for Swayam Udghosh Poster -->
+  <div id="sway-udghosh-modal" class="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6" role="dialog" aria-modal="true" aria-label="Swayam Udghosh Poster">
+    <button type="button" onclick="closeSwayUdghoshModal()" class="absolute top-4 right-4 z-50 w-11 h-11 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all cursor-pointer text-xl font-bold border-0" aria-label="<?= e(ps_text('बंद करें', 'Close')) ?>">
+      ✕
+    </button>
+
+    <div class="relative max-w-4xl max-h-[92vh] w-full flex flex-col items-center justify-center">
+      <img src="<?= e(base_url('assets/images/sway_udghosh.jpg')) ?>" 
+           alt="<?= e(ps_text('स्व-उद्घोष - श्री प्रदीप सारंग', 'Swayam Udghosh Poster')) ?>" 
+           class="max-w-full max-h-[82vh] object-contain rounded-2xl shadow-2xl border border-white/20">
+      
+      <div class="mt-3 text-center text-pure-white">
+        <span class="font-headline-sm text-base sm:text-lg font-bold block"><?= e(ps_text('स्व-उद्घोष • अभिरुचि एवं पसंदगी अनुरूप जीवन का नियोजन', 'Swayam Udghosh - Life Planning')) ?></span>
+        <span class="font-label-sm text-xs text-white/70 block mt-0.5"><?= e(ps_text('श्री प्रदीप सारंग (द्वारा— आँखें फाउंडेशन एवं ग्रीन गैंग)', 'Shri Pradeep Sarang')) ?></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openSwayUdghoshModal() {
+      const modal = document.getElementById('sway-udghosh-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSwayUdghoshModal() {
+      const modal = document.getElementById('sway-udghosh-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeSwayUdghoshModal();
+      }
+    });
+
+    document.getElementById('sway-udghosh-modal')?.addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeSwayUdghoshModal();
+      }
+    });
+  </script>
 </div>
 
 <!-- Interactive Filter JavaScript for Timeline -->
