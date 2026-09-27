@@ -81,6 +81,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pradeepsarang.in/campaigns/sardar-patel-ekta</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://pradeepsarang.in/events/event-5</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
