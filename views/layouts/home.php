@@ -11,14 +11,57 @@ $isNotFoundPage = basename($viewFile) === '404.php' || http_response_code() >= 4
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate">
+    <meta name="theme-color" content="#14532D">
+    <meta name="author" content="<?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?>">
+    
     <title><?= e($title) ?> | <?= e(app_config('name')) ?></title>
-    <meta name="description" content="<?= e(ps_text('प्रदीप सारंग की जनसेवा, हरियाली अभियान, अवधी साहित्य और सामुदायिक कार्यों की यात्रा।','Discover Pradeep Sarang’s community service, Green Gang initiative, Awadhi literature and cultural work.')) ?>">
+    
+    <?php
+    $pageDesc = !empty($metaDescription) 
+        ? $metaDescription 
+        : (isset($post['meta_description']) && !empty($post['meta_description']) 
+            ? $post['meta_description'] 
+            : ps_text('प्रदीप सारंग की जनसेवा, हरियाली अभियान, ग्रीन गैंग, अवधी साहित्य और सामुदायिक कार्यों की आधिकारिक वेबसाइट।', 'Official website of Pradeep Sarang: community service, Green Gang environmental initiative, Awadhi literature and cultural heritage.'));
+    
+    $pageKeywords = !empty($metaKeywords) 
+        ? $metaKeywords 
+        : (isset($post['meta_keywords']) && !empty($post['meta_keywords']) 
+            ? $post['meta_keywords'] 
+            : 'प्रदीप सारंग, Pradeep Sarang, ग्रीन गैंग, Green Gang, हरियाली अभियान, अवधी साहित्य, सरदार पटेल समाजोत्थान ट्रस्ट, बाराबंकी, Barabanki, Samajsewa, Environment Conservation');
+            
+    $ogImg = !empty($ogImage) 
+        ? base_url($ogImage) 
+        : (isset($post['og_image']) && !empty($post['og_image']) 
+            ? base_url($post['og_image']) 
+            : base_url('assets/images/slider_final_1.webp'));
+    ?>
+    
+    <meta name="description" content="<?= e($pageDesc) ?>">
+    <meta name="keywords" content="<?= e($pageKeywords) ?>">
+    
     <?php if ($isNotFoundPage): ?>
     <meta name="robots" content="noindex, nofollow">
     <?php else: ?>
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="<?= e(base_url($canonicalPath)) ?>">
     <link rel="amphtml" href="<?= e(base_url(($canonicalPath === '/' ? '/amp' : rtrim($canonicalPath, '/') . '/amp'))) ?>">
     <?php endif; ?>
+    
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:locale" content="<?= current_lang() === 'hi' ? 'hi_IN' : 'en_US' ?>">
+    <meta property="og:type" content="<?= isset($post) ? 'article' : 'website' ?>">
+    <meta property="og:site_name" content="<?= e(app_config('name')) ?>">
+    <meta property="og:title" content="<?= e($title) ?> | <?= e(app_config('name')) ?>">
+    <meta property="og:description" content="<?= e($pageDesc) ?>">
+    <meta property="og:url" content="<?= e(base_url($canonicalPath)) ?>">
+    <meta property="og:image" content="<?= e($ogImg) ?>">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= e($title) ?> | <?= e(app_config('name')) ?>">
+    <meta name="twitter:description" content="<?= e($pageDesc) ?>">
+    <meta name="twitter:image" content="<?= e($ogImg) ?>">
+
     <link rel="icon" href="<?= e(asset('images/home/icon.svg')) ?>" type="image/svg+xml">
     
     <!-- Resource Hints & Non-blocking Fonts -->

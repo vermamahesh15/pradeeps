@@ -36,7 +36,7 @@ $spotlightClip = !empty($clips) ? $clips[0] : null;
           <span><?= e(ps_text('प्रेस मान्यता एवं जन-सरोकारों की गूंज', 'Press Recognition & Public Impact')) ?></span>
         </div>
         <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-          <?= ps_text('अखबारों के पन्नों में जनसेवा की दास्तान — <span class="text-primary-container">मीडिया में प्रदीप सारंग</span>', 'Tales of Service in Press Pages — <span class="text-primary-container">Pradeep Sarang in Media</span>') ?>
+          <?= ps_text('अखबारों के पन्नों में जनसेवा की दास्तान — <span style="color: #ef4444 !important;">मीडिया में प्रदीप सारंग</span>', 'Tales of Service in Press Pages — <span style="color: #ef4444 !important;">Pradeep Sarang in Media</span>') ?>
         </h1>
         <p class="font-body-lg text-body-lg text-text-muted mt-space-sm leading-relaxed">
           <?= e(ps_text('चार दशकों से पर्यावरण, अवधी संस्कृति, गौरैया संरक्षण और सामाजिक सरोकारों को राष्ट्रीय व क्षेत्रीय समाचार पत्रों ने प्रमुखता से प्रकाशित कर जन-आंदोलन का रूप दिया।', 'For four decades, national and regional newspapers have featured environmental protection, Awadhi culture, bird conservation, and social initiatives.')) ?>

@@ -184,6 +184,14 @@ class PageController
             return;
         }
 
+        if ($slug === '/sardar-patel-ekta' || $slug === '/sardar-patel' || $slug === '/sardar-patel-samajotthan-trust' || $slug === '/campaigns/sardar-patel-ekta' || $slug === '/campaigns/sardar-patel') {
+            $this->render('sardar-patel-ekta', [
+                'title' => ps_text('सरदार पटेल अभियान — सरदार पटेल समाजोत्थान ट्रस्ट', 'Sardar Patel Movement — Samajotthan Trust'),
+                'campaigns' => $this->content->all('campaigns')
+            ]);
+            return;
+        }
+
         if ($slug === '/salahkaar' || $slug === '/counsellor' || $slug === '/counsellor-guidance') {
             $this->render('salahkaar', [
                 'title' => ps_text('सलाहकार', 'Counsellor & Guidance')
@@ -483,6 +491,38 @@ class PageController
             return;
         }
 
+        // 3.1 Sardar Patel Campaign AMP
+        if ($cleanSlug === '/sardar-patel-ekta' || $cleanSlug === '/campaigns/sardar-patel-ekta' || $cleanSlug === '/sardar-patel' || $cleanSlug === '/campaigns/sardar-patel') {
+            $this->renderAmp('amp-page', [
+                'title' => 'सरदार पटेल अभियान — सरदार पटेल समाजोत्थान ट्रस्ट',
+                'subtitle' => 'राष्ट्रीय एकता, अखंडता, 12 मूल उद्देश्य एवं समाजोत्थान संकल्प',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p><strong>सरदार पटेल समाजोत्थान ट्रस्ट</strong> द्वारा संचालित यह अभियान अखण्ड भारत के निर्माता, भारत रत्न लौह पुरुष सरदार वल्लभभाई पटेल के सिद्धांतों, राष्ट्रभक्ति, सामाजिक समरसता एवं समाजोत्थान को समर्पित है।</p>
+                    <h2>ट्रस्ट का पावन संकल्प</h2>
+                    <p><em>"हमें गर्व है कि हम, अखण्ड भारत के निर्माता भारत रत्न लौह पुरुष सरदार वल्लभ भाई पटेल के अनुयायी हैं, हम भारत की एकता अखण्डता के लिए वह सब करेंगे जो संविधान सम्मत है। जय हिंद, जय पटेल।"</em></p>
+                    <h2>प्रमुख उद्देश्य एवं वैचारिकी:</h2>
+                    <p>• <strong>31 अक्टूबर दीपोत्सव:</strong> घर-घर पूड़ी पकवान बनवाएं, शाम को कम से कम "पाँच-दीप" जलाकर दीपोत्सव मनाएं व पटेल जी के जीवन संस्मरणों पर चर्चा करें।</p>
+                    <p>• <strong>20-दिवसीय चेतना रथ:</strong> उत्तर प्रदेश के बाराबंकी सहित विभिन्न अंचलों में प्रतिवर्ष अनवरत संचालित पटेल चेतना रथ एवं विश्व की प्रथम सामूहिक पटेल आरती।</p>
+                    <p>• <strong>12 आधारभूत उद्देश्य:</strong> शिक्षा, संस्कार, तर्कशीलता, अंधविश्वास मुक्ति, वैज्ञानिक दृष्टिकोण, अशक्त-असहाय जनों की सेवा तथा समाज का सर्वांगीण उन्नयन।</p>
+                    <p>• <strong>पूर्णतया अराजनैतिक:</strong> संगठन केवल पटेल अनुयायियों व भावी पीढ़ी के उत्थान तथा राष्ट्रीय एकता के लिए समर्पित है।</p>
+                ',
+                'items' => [
+                    [
+                        'title' => '31 अक्टूबर पंच-दीप दीपोत्सव',
+                        'description' => 'सरदार पटेल जयंती पर घर-घर कम से कम 5 दीप प्रज्वलन, पुष्पांजलि व संस्मरण गोष्ठी।',
+                        'image' => 'assets/images/sardar_patel.webp',
+                    ],
+                    [
+                        'title' => '20-दिवसीय पटेल चेतना रथ व आरती',
+                        'description' => 'महामानव रूप में विश्व की प्रथम श्री पटेल आरती एवं जन-चेतना रथ यात्रा।',
+                        'image' => 'assets/images/sardarpatel.webp',
+                    ]
+                ]
+            ]);
+            return;
+        }
+
         // 4. Events
         if ($cleanSlug === '/events') {
             $events = $this->content->all('events');
@@ -662,6 +702,14 @@ class PageController
     public function campaignDetail(string $slug): void
     {
         $slugLower = strtolower($slug);
+        if ($slugLower === 'sardar-patel-ekta' || $slugLower === 'sardar-patel' || $slugLower === 'sardar-patel-samajotthan-trust' || $slugLower === 'sardar-patel-campaign' || $slugLower === 'patel-campaign' || str_contains($slugLower, 'sardar') || str_contains($slugLower, 'patel')) {
+            $this->render('sardar-patel-ekta', [
+                'title' => ps_text('सरदार पटेल अभियान — सरदार पटेल समाजोत्थान ट्रस्ट', 'Sardar Patel Movement — Samajotthan Trust'),
+                'campaigns' => $this->content->all('campaigns')
+            ]);
+            return;
+        }
+
         $item = $this->content->findBySlug('campaigns', $slug);
         
         $allCampaigns = $this->content->all('campaigns');
