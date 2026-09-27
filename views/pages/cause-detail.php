@@ -56,7 +56,7 @@ $isGreen = preg_match('/हरियाली|green|hariyali/iu', ($item['title'
               <span class="material-symbols-outlined text-[17px]">eco</span>
             </div>
             <div class="flex flex-col">
-              <span class="font-title-md text-title-md text-deep-forest font-semibold leading-none"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+              <span class="font-title-md text-title-md font-semibold leading-none" style="color: #ef4444 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
               <span class="font-label-sm text-label-sm text-text-muted mt-0.5"><?= e(ps_text('संस्थापक, परिंदा व हरियाली अभियान', 'Founder, Parinda & Hariyali Campaign')) ?></span>
             </div>
           </div>

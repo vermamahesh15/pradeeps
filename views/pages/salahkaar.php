@@ -92,7 +92,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                                 <span class="material-symbols-outlined text-[14px]">verified</span>
                                 <span><?= e(ps_text('सहानुभूतिपूर्ण व तार्किक दृष्टिकोण', 'Empathetic & Logical Life Guidance')) ?></span>
                             </div>
-                            <p class="font-headline-sm text-2xl font-bold text-pure-white mb-1"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></p>
+                            <p class="font-headline-sm text-2xl font-bold mb-1" style="color: #fca5a5 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></p>
                             <p class="font-body-sm text-sm text-surface-variant"><?= e(ps_text('सामाजिक कार्यकर्ता • आयुर्वेद रत्न (1997) • अवधी साहित्यकार', 'Social Leader • Ayurveda Ratna (1997) • Awadhi Scholar')) ?></p>
                             <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-pure-white/90 font-label-sm text-xs">
                                 <span>📍 <?= e(ps_text('बाराबंकी, अवध, उत्तर प्रदेश', 'Barabanki, Awadh, Uttar Pradesh')) ?></span>

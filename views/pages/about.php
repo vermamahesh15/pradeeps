@@ -427,7 +427,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <!-- Narrative Prose -->
           <div class="space-y-4 font-body-md text-body-md text-on-surface-variant leading-relaxed">
             <p>
-              <?= ps_text('बाराबंकी की उर्वर माटी और ग्रामीण परिवेश में जन्मे <strong class="text-deep-forest font-semibold">प्रदीप सारंग</strong> ने अपने जीवन के चार दशक वंचितों के अधिकार, पर्यावरण संरक्षण, अवधी साहित्य और जन-जागरण को समर्पित कर दिए। 1987 में राष्ट्रीय सेवा योजना (NSS) और स्वामी विवेकानंद के विचारों से प्रेरित होकर शुरू हुई यह यात्रा आज एक सशक्त वटवृक्ष बन चुकी है।', 'Born in Barabanki, <strong class="text-deep-forest font-semibold">Pradeep Sarang</strong> has dedicated four decades to social service, environmental protection, and Awadhi literature since his NSS days in 1987.') ?>
+              <?= ps_text('बाराबंकी की उर्वर माटी और ग्रामीण परिवेश में जन्मे <strong class="font-semibold" style="color: #ef4444 !important;">प्रदीप सारंग</strong> ने अपने जीवन के चार दशक वंचितों के अधिकार, पर्यावरण संरक्षण, अवधी साहित्य और जन-जागरण को समर्पित कर दिए। 1987 में राष्ट्रीय सेवा योजना (NSS) और स्वामी विवेकानंद के विचारों से प्रेरित होकर शुरू हुई यह यात्रा आज एक सशक्त वटवृक्ष बन चुकी है।', 'Born in Barabanki, <strong class="font-semibold" style="color: #ef4444 !important;">Pradeep Sarang</strong> has dedicated four decades to social service, environmental protection, and Awadhi literature since his NSS days in 1987.') ?>
             </p>
             <p>
               <?= e(ps_text('ग्रामीण परिवेश के अभावों और संघर्षों को उन्होंने कभी अवरोध नहीं माना, अपितु उसे लोक-उत्थान का प्रेरक माध्यम बनाया। उनका मानना है कि वास्तविक समाज सेवा महलों की गोष्ठियों में नहीं, बल्कि खेतों की मेड़ों, परिंदों के सकोरों और ग्रामवासियों की चौपालों में प्रत्यक्ष पसीने के रूप में प्रकट होती है।', 'He transformed rural struggles into motivation. True social work happens not in luxury halls, but on farm edges and village chaupals.')) ?>
@@ -1282,7 +1282,7 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
         "<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.')) ?>"
       </blockquote>
       <div class="mt-6 flex flex-col items-center">
-        <span class="font-headline-sm text-headline-sm text-pure-white font-serif font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+        <span class="font-headline-sm text-headline-sm font-serif font-bold" style="color: #fca5a5 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
         <span class="font-label-sm text-label-sm text-primary-fixed mt-1"><?= e(ps_text('पर्यावरणविद • जनक \'ग्रीन गैंग\' • बाराबंकी (उ.प्र.)', 'Environmentalist • Founder Green Gang • Barabanki (U.P.)')) ?></span>
       </div>
     </div>
