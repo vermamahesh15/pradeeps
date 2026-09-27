@@ -81,22 +81,20 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
 
                 <!-- Hero Portrait Card -->
                 <div class="lg:col-span-5 relative">
-                    <div class="relative rounded-2xl overflow-hidden bg-surface-container-high shadow-xl border border-border-warm">
-                        <img class="w-full h-[440px] sm:h-[480px] object-cover object-center" 
-                             src="<?= e(asset('images/pradeepsarang.webp')) ?>" 
-                             width="480" height="480" decoding="async" fetchpriority="high"
-                             alt="<?= e(ps_text('प्रदीप सारंग - सामाजिक कार्यकर्ता व साहित्यकार', 'Pradeep Sarang - Social Worker & Scholar')) ?>" 
-                             loading="eager" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/40 to-transparent flex flex-col justify-end p-6 text-pure-white">
-                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-pure-white/20 backdrop-blur-md text-primary-fixed font-label-sm text-xs mb-2.5 w-max border border-white/20">
-                                <span class="material-symbols-outlined text-[14px]">verified</span>
-                                <span><?= e(ps_text('सहानुभूतिपूर्ण व तार्किक दृष्टिकोण', 'Empathetic & Logical Life Guidance')) ?></span>
+                    <div class="relative rounded-2xl overflow-hidden bg-pure-white shadow-xl border border-border-warm p-3.5">
+                        <div class="relative w-full h-[400px] sm:h-[440px] rounded-xl overflow-hidden bg-gradient-to-b from-[#1b8da0]/15 to-[#0e6070]/10 flex items-center justify-center">
+                            <?= ps_responsive_img('uploads/slider_final_1.webp', ps_text('प्रदीप सारंग - सामाजिक कार्यकर्ता व साहित्यकार', 'Pradeep Sarang - Social Worker & Scholar'), 'w-full h-full object-contain', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
+                            <div class="absolute top-3 left-3 bg-pure-white/95 backdrop-blur-md rounded-xl shadow-md px-3 py-1.5 flex items-center gap-2 border border-border-warm/80 z-10">
+                                <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
+                                <span class="text-xs font-bold text-deep-forest"><?= e(ps_text('सहानुभूतिपूर्ण व तार्किक दृष्टिकोण', 'Empathetic & Logical Guidance')) ?></span>
                             </div>
-                            <p class="font-headline-sm text-2xl font-bold mb-1" style="color: #fca5a5 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></p>
-                            <p class="font-body-sm text-sm text-surface-variant"><?= e(ps_text('सामाजिक कार्यकर्ता • आयुर्वेद रत्न (1997) • अवधी साहित्यकार', 'Social Leader • Ayurveda Ratna (1997) • Awadhi Scholar')) ?></p>
-                            <div class="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-pure-white/90 font-label-sm text-xs">
+                        </div>
+                        <div class="pt-4 pb-1 px-2 flex flex-col items-center text-center">
+                            <h2 class="font-headline-sm text-headline-sm font-bold text-deep-forest mb-1"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></h2>
+                            <p class="font-body-sm text-sm text-[#475467]"><?= e(ps_text('सामाजिक कार्यकर्ता • आयुर्वेद रत्न (1997) • अवधी साहित्यकार', 'Social Leader • Ayurveda Ratna (1997) • Awadhi Scholar')) ?></p>
+                            <div class="mt-3 pt-3 border-t border-border-warm flex items-center justify-between font-label-sm text-xs text-text-muted w-full">
                                 <span>📍 <?= e(ps_text('बाराबंकी, अवध, उत्तर प्रदेश', 'Barabanki, Awadh, Uttar Pradesh')) ?></span>
-                                <span class="text-fresh-sprout font-bold"><?= e(ps_text('निःशुल्क जन-परामर्श', 'Free Public Service')) ?></span>
+                                <span class="text-secondary font-bold"><?= e(ps_text('निःशुल्क जन-परामर्श', 'Free Public Service')) ?></span>
                             </div>
                         </div>
                     </div>

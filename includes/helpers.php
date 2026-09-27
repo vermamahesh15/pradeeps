@@ -224,39 +224,67 @@ function ps_image_path(?string $dbPath): ?string
 if (!function_exists('ps_resolve_img')) {
     function ps_resolve_img(?string $dbPath, string $fallback = 'assets/images/slider_final_1.webp'): string {
         $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
-        if (!empty($dbPath)) {
-            if (preg_match('#^https?://#i', $dbPath)) return $dbPath;
-            $clean = ltrim($dbPath, '/');
-            if ($clean !== '') {
+        $candidates = array_filter([$dbPath, $fallback, 'uploads/slider_final_1.webp', 'uploads/69eddd34de768_pradeepsarang.webp', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp']);
+        foreach ($candidates as $item) {
+            if (empty($item)) continue;
+            if (preg_match('#^https?://#i', $item)) return $item;
+            $clean = ltrim($item, '/');
+
+            // 1. Direct file check
+            if (file_exists($root . '/' . $clean)) {
+                return base_url($clean);
+            }
+
+            // 2. Check for .bak extension and auto-restore
+            if (file_exists($root . '/' . $clean . '.bak')) {
+                @copy($root . '/' . $clean . '.bak', $root . '/' . $clean);
                 if (file_exists($root . '/' . $clean)) {
                     return base_url($clean);
                 }
-                $webp = preg_replace('/\.(png|jpg|jpeg)$/i', '.webp', $clean);
-                if (file_exists($root . '/' . $webp)) {
-                    return base_url($webp);
+                return base_url($clean . '.bak');
+            }
+
+            $baseName = basename($clean);
+
+            // Check if .bak exists in assets/images
+            if (file_exists($root . '/assets/images/' . $baseName . '.bak')) {
+                @copy($root . '/assets/images/' . $baseName . '.bak', $root . '/assets/images/' . $baseName);
+                if (file_exists($root . '/assets/images/' . $baseName)) {
+                    return base_url('assets/images/' . $baseName);
                 }
-                $jpg = preg_replace('/\.webp$/i', '.jpg', $clean);
-                if (file_exists($root . '/' . $jpg)) {
-                    return base_url($jpg);
+                return base_url('assets/images/' . $baseName . '.bak');
+            }
+
+            // Check in uploads
+            if (file_exists($root . '/uploads/' . $baseName)) {
+                return base_url('uploads/' . $baseName);
+            }
+            if (file_exists($root . '/assets/images/' . $baseName)) {
+                return base_url('assets/images/' . $baseName);
+            }
+
+            // Special known matches
+            if (str_contains($baseName, 'sardar_patel') || str_contains($baseName, 'patel')) {
+                if (file_exists($root . '/uploads/69ee19ac9dac4_sardar_patel_optimized.webp')) {
+                    return base_url('uploads/69ee19ac9dac4_sardar_patel_optimized.webp');
                 }
-                $jpeg = preg_replace('/\.webp$/i', '.jpeg', $clean);
-                if (file_exists($root . '/' . $jpeg)) {
-                    return base_url($jpeg);
+            }
+            if (str_contains($baseName, 'hariyali') || str_contains($baseName, 'green')) {
+                if (file_exists($root . '/assets/images/hariyali_abhiyan.webp.bak')) {
+                    @copy($root . '/assets/images/hariyali_abhiyan.webp.bak', $root . '/assets/images/hariyali_abhiyan.webp');
+                    return base_url('assets/images/hariyali_abhiyan.webp');
                 }
-                $png = preg_replace('/\.webp$/i', '.png', $clean);
-                if (file_exists($root . '/' . $png)) {
-                    return base_url($png);
-                }
-                // Return explicitly specified path so browser can load the uploaded image
-                return base_url($clean);
+            }
+
+            foreach (['.webp', '.jpg', '.jpeg', '.png'] as $ext) {
+                $alt = preg_replace('/\.(png|jpg|jpeg|webp)$/i', $ext, $clean);
+                if (file_exists($root . '/' . $alt)) return base_url($alt);
+                $altBase = basename($alt);
+                if (file_exists($root . '/uploads/' . $altBase)) return base_url('uploads/' . $altBase);
+                if (file_exists($root . '/assets/images/' . $altBase)) return base_url('assets/images/' . $altBase);
             }
         }
-        if (empty($fallback)) {
-            $fallback = 'assets/images/slider_final_1.webp';
-        }
-        if (preg_match('#^https?://#i', $fallback)) return $fallback;
-        $cleanFallback = ltrim($fallback, '/');
-        return base_url($cleanFallback);
+        return base_url('uploads/slider_final_1.webp');
     }
 }
 

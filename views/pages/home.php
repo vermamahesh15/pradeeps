@@ -47,7 +47,7 @@ $email = !empty($contact['email']) ? $contact['email'] : 'contact@pradeepsarang.
 $address = !empty($contact['address']) ? $contact['address'] : ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Kamrawan, Barabanki, Uttar Pradesh, India');
 
 // Green Gang campaign
-$greenImg = base_url('assets/images/hariyali_abhiyan.webp');
+$greenImg = ps_resolve_img($green['image'] ?? '', 'assets/images/hariyali_abhiyan.webp');
 $greenSlug = $green['slug'] ?? 'hariyali-campaign';
 
 // Parinda campaign
@@ -58,7 +58,7 @@ $parindaSlug = $parinda['slug'] ?? 'bird-conservation-campaign';
 $awadhiSlug = $awadhi['slug'] ?? 'language-and-literature-promotion-campaign';
 
 // Patel campaign (Primary Campaign)
-$patelImg = base_url('assets/images/sardar_patel.webp');
+$patelImg = ps_resolve_img($patel['image'] ?? '', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp');
 $patelSlug = $patel['slug'] ?? 'patel-campaign';
 
 // Tulsi campaign
@@ -137,27 +137,35 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 
       <!-- Hero Documentary Photo Card -->
       <div class="lg:col-span-5 relative">
-        <div class="relative rounded-2xl overflow-hidden shadow-xl bg-pure-white p-3 border border-border-warm">
-          <div class="relative w-full h-[440px] sm:h-[480px] rounded-xl overflow-hidden bg-surface-container">
-            <?= ps_responsive_img($heroImg, ps_text('प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-cover', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
-            <div class="absolute inset-0 bg-gradient-to-t from-deep-forest/95 via-deep-forest/50 to-transparent flex flex-col justify-end p-6 pb-20 text-pure-white">
-              <span class="inline-flex items-center gap-1.5 self-start text-xs font-bold uppercase tracking-wider mb-2 px-3 py-1 rounded-full bg-black/50 border border-amber-400/50 backdrop-blur-sm" style="color: #fde68a !important;">
-                <span class="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse"></span>
-                <span style="color: #fde68a !important;"><?= e(ps_text('संस्थापक — ग्रीन गैंग (2019)', 'Founder — Green Gang (2019)')) ?></span>
-              </span>
-              <h2 class="font-headline-sm text-headline-sm font-semibold mb-0.5" style="color: #fca5a5 !important; text-shadow: 0 1px 3px rgba(0,0,0,0.9);"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></h2>
-              <p class="font-body-sm text-body-sm mt-1 leading-relaxed" style="color: #f1f5f9 !important; text-shadow: 0 1px 2px rgba(0,0,0,0.8);"><?= e(ps_text('बाराबंकी की माटी से उठकर जन-जन तक हरियाली की अलख जगाने वाले जनसेवक।', 'A grassroots changemaker inspiring community action for environment and culture.')) ?></p>
+        <div class="relative rounded-2xl overflow-hidden shadow-xl bg-pure-white p-3.5 border border-border-warm">
+          <div class="relative w-full h-[400px] sm:h-[440px] rounded-xl overflow-hidden bg-gradient-to-b from-[#1b8da0]/15 to-[#0e6070]/10 flex items-center justify-center">
+            <?= ps_responsive_img($heroImg, ps_text('प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-contain', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
+            <!-- Top Float Badge -->
+            <div class="absolute top-3 left-3 bg-pure-white/95 backdrop-blur-md rounded-xl shadow-md px-3 py-2 flex items-center gap-2.5 border border-border-warm/80 z-10">
+              <div class="w-7 h-7 rounded-full bg-secondary text-pure-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-[16px]">calendar_month</span>
+              </div>
+              <div class="flex flex-col leading-tight">
+                <span class="text-[10px] uppercase font-bold text-text-muted tracking-wider"><?= e(ps_text('सतत लोकसेवा', 'Continuous Service')) ?></span>
+                <span class="text-xs font-bold text-deep-forest"><?= e(ps_text('1987 से अनवरत', 'Since 1987')) ?></span>
+              </div>
             </div>
           </div>
-          <!-- Overlapping Float Badge -->
-          <div class="absolute -bottom-3 -left-3 sm:-bottom-4 sm:-left-4 bg-pure-white rounded-xl shadow-lg p-3 sm:p-3.5 flex items-center gap-3 max-w-[240px] border border-border-warm z-10">
-            <div class="w-10 h-10 rounded-full bg-secondary text-pure-white flex items-center justify-center shrink-0 shadow-sm">
-              <span class="material-symbols-outlined text-[20px]">calendar_month</span>
+
+          <!-- Clean Info Card Below Photo (Ensures face is completely unobstructed) -->
+          <div class="pt-4 pb-1 px-2 flex flex-col items-center text-center">
+            <div class="flex items-center justify-center gap-2 mb-2">
+              <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#FAF8F3] border border-[#C05632]/30 text-[#14532D]">
+                <span class="w-2 h-2 rounded-full bg-[#15803D] inline-block animate-pulse"></span>
+                <span><?= e(ps_text('संस्थापक — ग्रीन गैंग (2019)', 'Founder — Green Gang (2019)')) ?></span>
+              </span>
             </div>
-            <div class="flex flex-col">
-              <span class="font-label-sm text-label-sm text-text-muted"><?= e(ps_text('सतत लोकसेवा', 'Continuous Service')) ?></span>
-              <span class="font-title-md text-title-md font-bold text-deep-forest"><?= e(ps_text('1987 से अनवरत', 'Since 1987')) ?></span>
-            </div>
+            <h2 class="font-headline-sm text-headline-sm font-bold text-[#14532D] mb-1">
+              <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?>
+            </h2>
+            <p class="font-body-sm text-body-sm text-[#475467] leading-relaxed max-w-sm mx-auto">
+              <?= e(ps_text('बाराबंकी की माटी से उठकर जन-जन तक हरियाली की अलख जगाने वाले जनसेवक।', 'A grassroots changemaker inspiring community action for environment and culture.')) ?>
+            </p>
           </div>
         </div>
       </div>
@@ -228,7 +236,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                height="320"
                loading="lazy"
                decoding="async"
-               src="<?= e(base_url('assets/images/slider_final_3.webp')) ?>" 
+               src="<?= e(ps_resolve_img('assets/images/slider_final_3.webp', 'uploads/69edd6098de58_slider_final_3.webp')) ?>" 
                alt="<?= e(ps_text('प्रदीप सारंग सम्मान समारोह मंच पर', 'Pradeep Sarang at an official recognition dais')) ?>"/>
         </div>
         <!-- Origin Tag Badge -->
@@ -1569,7 +1577,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <!-- Location Snapshot Card -->
         <div class="rounded-2xl overflow-hidden shadow-sm bg-pure-white p-4 border border-border-warm">
           <div class="w-full h-32 rounded-xl bg-cover bg-center flex items-center justify-center bg-surface-container" 
-               style="background-image: linear-gradient(rgba(20,83,45,0.45), rgba(20,83,45,0.45)), url('<?= e(base_url('assets/images/slider_final_1.webp')) ?>');">
+               style="background-image: linear-gradient(rgba(20,83,45,0.45), rgba(20,83,45,0.45)), url('<?= e(ps_resolve_img('assets/images/slider_final_1.webp')) ?>');">
             <span class="text-pure-white font-title-lg text-title-lg font-bold drop-shadow text-center px-2">ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत</span>
           </div>
           <div class="p-2 flex items-center justify-between text-text-muted font-label-sm text-label-sm mt-1">
