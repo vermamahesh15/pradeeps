@@ -224,7 +224,7 @@ $allMilestones = !empty($dbJourney) ? array_merge($dbJourney, $defaultJourney) :
       <!-- 2-Photo Milestone Archive Showcase -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-          <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="Raj Bhavan Award 1991" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="<?= e(ps_resolve_img('assets/images/sardar_patel.webp', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp')) ?>" alt="Raj Bhavan Award 1991" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
             <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('1991 राजभवन युवा पुरस्कार', '1991 Raj Bhavan Youth Award')) ?></span>
             <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('महामहिम राज्यपाल द्वारा स्वामी विवेकानंद युवा सम्मान', 'Governor State Award Presentation Ceremony')) ?></p>

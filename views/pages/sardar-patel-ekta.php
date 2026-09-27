@@ -430,8 +430,7 @@ $trustees = [
             <!-- Portrait Frame -->
             <div class="relative rounded-2xl overflow-hidden bg-stone-900 mb-5 group border border-stone-200 shadow-inner">
               <img 
-                src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" 
-                onerror="this.src='<?= e(base_url('assets/images/sardarpatel.webp')) ?>'"
+                src="<?= e(ps_resolve_img('assets/images/sardar_patel.webp', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp')) ?>" 
                 alt="भारत रत्न लौह पुरुष सरदार वल्लभ भाई पटेल" 
                 class="w-full h-80 sm:h-96 object-cover object-top filter brightness-[1.02] contrast-[1.03] transition-transform duration-500 group-hover:scale-105"
               >

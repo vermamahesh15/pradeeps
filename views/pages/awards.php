@@ -223,7 +223,7 @@ $allHonors = !empty($dbHonors) ? array_merge($dbHonors, $defaultHonors) : $defau
       <!-- 2-Photo Governor Award & Citation Showcase -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-          <img src="<?= e(base_url('assets/images/sardar_patel.webp')) ?>" alt="Governor Award Presentation" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
+          <img src="<?= e(ps_resolve_img('assets/images/sardar_patel.webp', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp')) ?>" alt="Governor Award Presentation" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
           <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
             <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('राजभवन लखनऊ (1991)', 'Raj Bhavan Lucknow (1991)')) ?></span>
             <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('स्वामी विवेकानंद युवा पुरस्कार - महामहिम राज्यपाल अलंकरण', 'Swami Vivekananda State Youth Award Presentation')) ?></p>

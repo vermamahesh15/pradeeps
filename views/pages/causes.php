@@ -4,79 +4,97 @@ declare(strict_types=1);
 $items = $items ?? [];
 $phone = trim($settings['phone'] ?? '+91 9919007190');
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
+
+// Image assets with reliable fallbacks
+$patelImg = ps_resolve_img('assets/images/sardar_patel.webp', 'uploads/69ee19ac9dac4_sardar_patel_optimized.webp');
+$greenImg = ps_resolve_img('assets/images/hariyali_abhiyan.webp', 'uploads/slider_final_1.webp');
+$parindaImg = ps_resolve_img('assets/images/slider_final_2.webp', 'uploads/69edd6098e3e2_slider_final_2.webp');
+$awadhiImg = ps_resolve_img('assets/images/slider_final_3.webp', 'uploads/69edd6098de58_slider_final_3.webp');
+$tulsiImg = ps_resolve_img('assets/images/slider_final_1.webp', 'uploads/slider_final_1.webp');
 ?>
 
-<div class="flex flex-col w-full">
-  <!-- Top Breadcrumb & Hero Masthead -->
-  <section class="relative w-full bg-soft-meadow overflow-hidden py-space-2xl md:py-space-3xl border-b border-border-warm">
-    <!-- Earthen Ambient Background Accents -->
-    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-fresh-sprout/10 blur-3xl pointer-events-none"></div>
-    <div class="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-tertiary-fixed-dim/20 blur-3xl pointer-events-none"></div>
+<div class="flex flex-col w-full bg-[#FAF8F3]">
+  <!-- 1. HERO MASTHEAD SECTION -->
+  <section class="relative w-full overflow-hidden bg-gradient-to-b from-[#FAF8F3] via-[#F3F7F4] to-[#FAF8F3] py-10 lg:py-16 border-b border-[#E5E7EB]">
+    <!-- Ambient Blur Background -->
+    <div class="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-[#15803D]/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full bg-[#C05632]/10 blur-3xl pointer-events-none"></div>
 
     <div class="max-w-container-max mx-auto px-4 sm:px-8 relative z-10">
       <!-- Breadcrumb Bar -->
-      <nav aria-label="Breadcrumb" class="flex items-center gap-2 font-label-md text-label-md text-text-muted mb-space-sm">
-        <a href="<?= e(base_url('/')) ?>" class="hover:text-primary transition-colors flex items-center gap-1">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-2 text-sm text-[#64748B] mb-6">
+        <a href="<?= e(base_url('/')) ?>" class="hover:text-[#14532D] transition-colors flex items-center gap-1 font-medium">
           <span class="material-symbols-outlined text-[16px]">home</span>
           <span><?= e(ps_text('गृह (Home)', 'Home')) ?></span>
         </a>
         <span class="opacity-40">/</span>
-        <span class="text-deep-forest font-semibold"><?= e(ps_text('प्रमुख जन-अभियान (Campaigns)', 'Campaigns & Initiatives')) ?></span>
+        <span class="text-[#14532D] font-bold"><?= e(ps_text('प्रमुख जन-अभियान (Campaigns)', 'Campaigns & Initiatives')) ?></span>
       </nav>
 
-      <!-- Asymmetrical Editorial Header Layout -->
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div class="lg:col-span-8 flex flex-col items-start">
-          <div class="inline-flex items-center gap-2 bg-primary-fixed/40 text-deep-forest px-3.5 py-1 rounded-full font-label-sm text-label-sm mb-space-sm border border-border-warm font-semibold">
-            <span class="material-symbols-outlined text-[15px] text-primary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
-            <span><?= e(ps_text('चार दशकों की सतत ज़मीनी साधना (1987 से आज तक)', 'Four Decades of Community Dedication (1987 — Present)')) ?></span>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div class="lg:col-span-8 flex flex-col items-start space-y-5">
+          <!-- Floating Pill -->
+          <div class="inline-flex items-center gap-2 bg-white px-3.5 py-1.5 rounded-full border border-[#C05632]/30 shadow-xs">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#C05632] animate-pulse"></span>
+            <span class="text-xs text-[#14532D] uppercase tracking-wider font-bold">
+              <?= e(ps_text('चार दशकों की अनवरत साधना • 1987 से निरंतर जनसेवा', 'Four Decades of Dedicated Grassroots Service • Since 1987')) ?>
+            </span>
           </div>
 
-          <h1 class="font-display-hero text-headline-lg md:text-display-hero text-deep-forest leading-tight tracking-tight font-bold">
-            <?= ps_text('प्रमुख जन-अभियान एवं जन-सरोकार आंदोलन', 'Major Environmental & Cultural Movements') ?>
+          <!-- Hero Headline -->
+          <h1 class="font-display-hero text-3xl sm:text-4xl lg:text-5xl text-[#14532D] font-bold leading-tight tracking-tight">
+            <?= ps_text('प्रकृति, संस्कृति, राष्ट्र और समाज को समर्पित प्रमुख जन-अभियान', 'Major Environmental, Cultural & National Movements') ?>
           </h1>
 
-          <p class="font-body-lg text-body-lg text-text-muted mt-space-sm max-w-3xl leading-relaxed mb-6">
-            <?= e(ps_text('प्रदीप सारंग द्वारा समाज के समग्र विकास, पर्यावरण संवर्धन, सांस्कृतिक अस्मिता व जन-चेतना हेतु संचालित सेवा-आधारित एवं जन-जागरूकता अभियान।', 'Ground-level initiatives led by Pradeep Sarang for environmental protection, Awadhi heritage, and community empowerment.')) ?>
+          <p class="text-base sm:text-lg text-[#475467] leading-relaxed max-w-3xl">
+            <?= e(ps_text('प्रदीप सारंग द्वारा बाराबंकी (अवध) की पावन माटी से संचालित राष्ट्रव्यापी व ग्रामीण जन-आंदोलन — पर्यावरण संरक्षण, गौरैया व पक्षी संवर्धन, राष्ट्रीय एकता, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Grassroots public-interest initiatives led by Pradeep Sarang for environmental regeneration, bird conservation, national integration, and Awadhi cultural preservation.')) ?>
           </p>
 
-          <div class="p-4 bg-cream-canvas rounded-xl shadow-sm border border-border-warm max-w-2xl mb-8 relative">
-            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary rounded-l-xl"></div>
-            <p class="font-quote-editorial text-quote-editorial text-secondary leading-snug pl-3 italic">
-              "<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend of humanity.')) ?>"
+          <!-- Signature Poetic Quote Card -->
+          <div class="bg-white rounded-2xl p-5 shadow-xs border-l-4 border-[#C05632] border-t border-r border-b border-[#E5E7EB] max-w-2xl w-full">
+            <p class="font-quote-editorial text-base sm:text-lg text-[#1E293B] italic leading-relaxed">
+              "<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend to humanity.')) ?>"
             </p>
-            <span class="block text-right font-label-sm text-label-sm text-text-muted mt-2 tracking-wide uppercase">— <?= e(ps_text('प्रदीप सारंग, बाराबंकी', 'Pradeep Sarang, Barabanki')) ?></span>
+            <div class="mt-2 flex items-center justify-between text-xs text-[#64748B] pt-2 border-t border-[#F1F5F9]">
+              <span class="font-bold text-[#14532D] uppercase tracking-wider">— <?= e(ps_text('प्रदीप सारंग, बाराबंकी', 'Pradeep Sarang, Barabanki')) ?></span>
+              <span><?= e(ps_text('कवि, पर्यावरणविद् एवं समाजसेवी', 'Poet, Environmentalist & Social Worker')) ?></span>
+            </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-4">
-            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-primary-container text-on-primary hover:bg-deep-forest px-6 py-3.5 rounded-xl font-title-md text-title-md transition-all shadow-md font-bold">
-              <span class="material-symbols-outlined text-[20px]">groups</span>
-              <span><?= e(ps_text('स्वयंसेवक बनें (Join as Volunteer)', 'Join as Volunteer')) ?></span>
+          <!-- Actions -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#campaigns-grid-container" class="inline-flex items-center gap-2 bg-[#14532D] hover:bg-[#0F3D21] text-white px-6 py-3.5 rounded-xl text-base font-semibold transition-all shadow-md">
+              <span class="material-symbols-outlined text-[20px]">explore</span>
+              <span><?= e(ps_text('सभी अभियान देखें', 'Explore All Campaigns')) ?></span>
             </a>
-            <a href="<?= e(base_url('/donation')) ?>" class="inline-flex items-center gap-2 bg-cream-canvas text-deep-forest hover:bg-surface-container px-6 py-3.5 rounded-xl font-title-md text-title-md transition-all shadow-sm border border-border-warm font-semibold">
-              <span class="material-symbols-outlined text-[20px]">volunteer_activism</span>
-              <span><?= e(ps_text('अभियान सहयोग (Support a Cause)', 'Support a Cause')) ?></span>
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-[#C05632] hover:bg-[#A9472B] text-white px-6 py-3.5 rounded-xl text-base font-semibold transition-all shadow-sm">
+              <span class="material-symbols-outlined text-[20px]">groups</span>
+              <span><?= e(ps_text('स्वयंसेवक बनें', 'Join as Volunteer')) ?></span>
+            </a>
+            <a href="<?= e(base_url('/donation')) ?>" class="inline-flex items-center gap-2 bg-white hover:bg-[#F8FAFC] text-[#14532D] px-5 py-3.5 rounded-xl text-base font-semibold transition-all shadow-xs border border-[#E2E8F0]">
+              <span class="material-symbols-outlined text-[20px] text-[#C05632]">volunteer_activism</span>
+              <span><?= e(ps_text('अभियान सहयोग', 'Support a Cause')) ?></span>
             </a>
           </div>
         </div>
 
         <!-- Right Side Embellished Emblem / Legacy Card -->
         <div class="lg:col-span-4 flex justify-center lg:justify-end w-full">
-          <div class="w-full max-w-sm bg-cream-canvas rounded-2xl p-6 shadow-md border border-border-warm relative overflow-hidden">
-            <div class="w-full flex justify-center py-4 bg-soft-meadow rounded-xl mb-4 border border-border-warm">
+          <div class="w-full max-w-sm bg-white rounded-2xl p-6 shadow-md border border-[#E5E7EB] relative overflow-hidden">
+            <div class="w-full flex justify-center py-6 bg-[#F1F7F2] rounded-xl mb-5 border border-[#E2E8F0]">
               <img src="<?= e(ps_resolve_img(setting('logo', 'assets/images/logonew.webp'))) ?>" onerror="this.src='<?= e(base_url('assets/images/home/icon.svg')) ?>'" alt="<?= e(app_config('name')) ?>" class="h-28 w-auto object-contain drop-shadow-sm">
             </div>
             <div class="space-y-3">
-              <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-primary-container text-[20px]">psychology_alt</span>
-                <span class="font-label-md text-label-md font-bold text-deep-forest"><?= e(ps_text('लोक सेवा की वैचारिक नींव', 'Philosophical Pillars')) ?></span>
+              <div class="flex items-center gap-2 text-[#14532D]">
+                <span class="material-symbols-outlined text-[22px] text-[#15803D]">psychology_alt</span>
+                <span class="text-sm font-bold uppercase tracking-wider"><?= e(ps_text('लोक सेवा की वैचारिक नींव', 'Philosophical Foundation')) ?></span>
               </div>
-              <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-                <?= e(ps_text('अवध की माटी से उठकर समाज के अंतिम व्यक्ति तक संवेदना, हरियाली व राष्ट्रप्रेम का संकल्प पहुंचाने वाले जीवंत जन-आंदोलन।', 'Transforming environmental consciousness, bird protection, and Awadhi heritage from Barabanki to all of Uttar Pradesh.')) ?>
+              <p class="text-xs text-[#64748B] leading-relaxed">
+                <?= e(ps_text('अवध की माटी से उठकर समाज के अंतिम व्यक्ति तक संवेदना, हरियाली व राष्ट्रप्रेम का संकल्प पहुंचाने वाले जीवंत जन-आंदोलन।', 'Transforming environmental consciousness, bird protection, and Awadhi heritage across Uttar Pradesh.')) ?>
               </p>
-              <div class="pt-2 flex items-center justify-between text-text-muted font-label-sm text-label-sm border-t border-border-warm">
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-fresh-sprout"></span> <?= e(ps_text('पूर्णतः पारदर्शी', '100% Transparent')) ?></span>
-                <span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-secondary"></span> <?= e(ps_text('लोक-भागीदारी', 'Community Driven')) ?></span>
+              <div class="pt-3 flex items-center justify-between text-xs text-[#475467] font-semibold border-t border-[#E5E7EB]">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#15803D]"></span> <?= e(ps_text('पूर्णतः पारदर्शी', '100% Transparent')) ?></span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-[#C05632]"></span> <?= e(ps_text('जन-सहयोग आधारित', 'Community Driven')) ?></span>
               </div>
             </div>
           </div>
@@ -85,253 +103,387 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
     </div>
   </section>
 
-  <!-- Impact Metrics Summary Bar -->
-  <section class="w-full bg-deep-forest text-pure-white py-space-xl relative shadow-lg">
+  <!-- 2. IMPACT METRICS STRIP -->
+  <section class="w-full bg-[#18392B] text-white py-8 relative shadow-md">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center divide-x-0">
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
         <!-- Metric 1 -->
-        <div class="flex flex-col items-center p-3 rounded-lg hover:bg-surface-container-low/5 transition-colors">
-          <span class="material-symbols-outlined text-fresh-sprout text-[32px] mb-1">history_edu</span>
-          <span class="font-headline-lg text-headline-lg text-primary-fixed leading-tight font-bold">35+ <?= e(ps_text('वर्ष', 'Years')) ?></span>
-          <span class="font-body-sm text-body-sm text-surface-container-high mt-0.5"><?= e(ps_text('अनवरत जनसेवा', 'Continuous Service')) ?></span>
+        <div class="flex flex-col items-center p-3 rounded-xl hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-[#F4C96B] text-[30px] mb-1">history_edu</span>
+          <span class="text-3xl lg:text-4xl text-[#F4C96B] font-bold leading-tight">35+ <?= e(ps_text('वर्ष', 'Yrs')) ?></span>
+          <span class="text-xs text-[#CBD5E1] mt-1"><?= e(ps_text('अनवरत जनसेवा (1987 से)', 'Continuous Service')) ?></span>
         </div>
         <!-- Metric 2 -->
-        <div class="flex flex-col items-center p-3 rounded-lg hover:bg-surface-container-low/5 transition-colors">
-          <span class="material-symbols-outlined text-fresh-sprout text-[32px] mb-1">forest</span>
-          <span class="font-headline-lg text-headline-lg text-pure-white leading-tight font-bold">50,000+</span>
-          <span class="font-body-sm text-body-sm text-surface-container-high mt-0.5"><?= e(ps_text('ग्रीन गैंग पौधारोपण', 'Trees Planted')) ?></span>
+        <div class="flex flex-col items-center p-3 rounded-xl hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-[#6FD08C] text-[30px] mb-1">forest</span>
+          <span class="text-3xl lg:text-4xl text-white font-bold leading-tight">50,000+</span>
+          <span class="text-xs text-[#CBD5E1] mt-1"><?= e(ps_text('ग्रीन गैंग पौधरोपण', 'Trees Planted')) ?></span>
         </div>
         <!-- Metric 3 -->
-        <div class="flex flex-col items-center p-3 rounded-lg hover:bg-surface-container-low/5 transition-colors">
-          <span class="material-symbols-outlined text-tertiary-fixed text-[32px] mb-1">nest_cam_wired_stand</span>
-          <span class="font-headline-lg text-headline-lg text-tertiary-fixed leading-tight font-bold">10,000+</span>
-          <span class="font-body-sm text-body-sm text-surface-container-high mt-0.5"><?= e(ps_text('परिंदा दाना-पानी सकोरे', 'Bird Water Bowls')) ?></span>
+        <div class="flex flex-col items-center p-3 rounded-xl hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-[#F0B45C] text-[30px] mb-1">nest_cam_wired_stand</span>
+          <span class="text-3xl lg:text-4xl text-[#F0B45C] font-bold leading-tight">10,000+</span>
+          <span class="text-xs text-[#CBD5E1] mt-1"><?= e(ps_text('परिंदा जल-सकोरे वितरण', 'Bird Water Bowls')) ?></span>
         </div>
         <!-- Metric 4 -->
-        <div class="flex flex-col items-center p-3 rounded-lg hover:bg-surface-container-low/5 transition-colors">
-          <span class="material-symbols-outlined text-fresh-sprout text-[32px] mb-1">domain</span>
-          <span class="font-headline-lg text-headline-lg text-pure-white leading-tight font-bold">150+ <?= e(ps_text('गाँव', 'Villages')) ?></span>
-          <span class="font-body-sm text-body-sm text-surface-container-high mt-0.5"><?= e(ps_text('बाराबंकी व अवध अंचल', 'Barabanki & Awadh')) ?></span>
+        <div class="flex flex-col items-center p-3 rounded-xl hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-[#76B7D8] text-[30px] mb-1">domain</span>
+          <span class="text-3xl lg:text-4xl text-white font-bold leading-tight">150+ <?= e(ps_text('गाँव', 'Villages')) ?></span>
+          <span class="text-xs text-[#CBD5E1] mt-1"><?= e(ps_text('बाराबंकी व अवध अंचल', 'Barabanki & Awadh')) ?></span>
         </div>
         <!-- Metric 5 -->
-        <div class="col-span-2 md:col-span-1 flex flex-col items-center p-3 rounded-lg hover:bg-surface-container-low/5 transition-colors">
-          <span class="material-symbols-outlined text-secondary-fixed-dim text-[32px] mb-1">handshake</span>
-          <span class="font-headline-lg text-headline-lg text-secondary-fixed-dim leading-tight font-bold">100%</span>
-          <span class="font-body-sm text-body-sm text-surface-container-high mt-0.5"><?= e(ps_text('पूर्णतः जन-सहयोग', 'Community Funded')) ?></span>
+        <div class="col-span-2 md:col-span-1 flex flex-col items-center p-3 rounded-xl hover:bg-white/5 transition-colors">
+          <span class="material-symbols-outlined text-[#E67E57] text-[30px] mb-1">handshake</span>
+          <span class="text-3xl lg:text-4xl text-[#E67E57] font-bold leading-tight">100%</span>
+          <span class="text-xs text-[#CBD5E1] mt-1"><?= e(ps_text('पूर्णतः जन-भागीदारी', 'Community Driven')) ?></span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive Filter Controls & Section Anchor -->
-  <section class="w-full bg-cream-canvas pt-space-2xl pb-space-lg border-b border-border-warm" id="campaign-filter-anchor">
+  <!-- 3. INTERACTIVE CATEGORY FILTER -->
+  <section class="w-full bg-[#FAF8F3] pt-10 pb-4 border-b border-[#E5E7EB]" id="campaign-filter-anchor">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
-      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4">
+      <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-2">
         <div>
-          <span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary font-bold"><?= e(ps_text('जन-आंदोलन संवर्ग', 'Movement Categories')) ?></span>
-          <h2 class="font-headline-md text-headline-md text-deep-forest font-bold"><?= e(ps_text('सक्रिय अभियानों की सूची', 'Active Campaigns List')) ?></h2>
+          <span class="text-xs uppercase tracking-widest text-[#C05632] font-bold"><?= e(ps_text('जन-आंदोलन संवर्ग', 'Campaign Themes')) ?></span>
+          <h2 class="text-2xl sm:text-3xl text-[#14532D] font-bold mt-0.5"><?= e(ps_text('सक्रिय अभियानों की सूची', 'Active Campaigns & Movements')) ?></h2>
         </div>
 
         <!-- Filter Tabs -->
-        <div class="flex flex-wrap items-center gap-2 p-1.5 bg-soft-meadow rounded-xl border border-border-warm" id="campaign-tabs">
-          <button type="button" data-filter="all" class="campaign-tab-btn px-4 py-2 rounded-lg font-label-md text-label-md bg-primary-container text-on-primary shadow-sm transition-all font-semibold cursor-pointer">
-            <?= e(ps_text('सभी अभियान (5)', 'All Campaigns (5)')) ?>
+        <div class="flex flex-wrap items-center gap-2 p-1.5 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs" id="campaign-tabs">
+          <button type="button" data-filter="all" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm bg-[#14532D] text-white shadow-xs transition-all font-bold cursor-pointer">
+            <?= e(ps_text('सभी अभियान', 'All Campaigns')) ?>
           </button>
-          <button type="button" data-filter="unity" class="campaign-tab-btn px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-deep-forest hover:bg-cream-canvas transition-all font-medium cursor-pointer">
-            <?= e(ps_text('राष्ट्रीय चेतना व सरदार पटेल अभियान', 'National Integration & Sardar Patel Drive')) ?>
+          <button type="button" data-filter="unity" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
+            <?= e(ps_text('राष्ट्रीय चेतना (सरदार पटेल)', 'National Integration')) ?>
           </button>
-          <button type="button" data-filter="eco" class="campaign-tab-btn px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-deep-forest hover:bg-cream-canvas transition-all font-medium cursor-pointer">
-            <?= e(ps_text('पर्यावरण एवं जैव-विविधता', 'Environment & Biodiversity')) ?>
+          <button type="button" data-filter="eco" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
+            <?= e(ps_text('पर्यावरण व हरियाली', 'Environment & Green Gang')) ?>
           </button>
-          <button type="button" data-filter="culture" class="campaign-tab-btn px-4 py-2 rounded-lg font-label-md text-label-md text-on-surface-variant hover:text-deep-forest hover:bg-cream-canvas transition-all font-medium cursor-pointer">
-            <?= e(ps_text('संस्कृति व अवधी भाषा', 'Culture & Awadhi Language')) ?>
+          <button type="button" data-filter="bird" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
+            <?= e(ps_text('परिंदा व जीव-दया', 'Bird Protection')) ?>
+          </button>
+          <button type="button" data-filter="culture" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
+            <?= e(ps_text('अवधी संस्कृति व साहित्य', 'Culture & Literature')) ?>
           </button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Campaigns Listing Grid -->
-  <section class="w-full bg-cream-canvas py-space-3xl">
+  <!-- 4. CAMPAIGNS LISTING GRID -->
+  <section class="w-full bg-[#FAF8F3] py-10 lg:py-14">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8" id="campaigns-grid-container">
         
-        <!-- Card 1: सरदार पटेल अभियान (राष्ट्रीय एकता व चेतना) - Featured Large Primary Campaign -->
-        <article class="campaign-card lg:col-span-12 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col lg:flex-row" data-category="unity">
-          <div class="lg:w-5/12 relative min-h-[320px] lg:min-h-full">
-            <img src="assets/images/sardar_patel.webp" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4 flex flex-col gap-2">
-              <span class="inline-flex items-center gap-1.5 bg-deep-forest text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
-                <span class="material-symbols-outlined text-[14px] text-tertiary-fixed">flag</span>
-                <span><?= e(ps_text('राष्ट्रीय एकता, समरसता व युवा प्रेरणा | प्रमुख अभियान', 'National Integration & Unity | Primary Campaign')) ?></span>
+        <!-- ==============================================
+             FEATURED PRIMARY CAMPAIGN: सरदार पटेल अभियान
+             ============================================== -->
+        <article class="campaign-card lg:col-span-12 bg-white rounded-3xl shadow-md hover:shadow-xl border-2 border-[#C05632]/40 transition-all overflow-hidden flex flex-col lg:flex-row" data-category="unity">
+          <!-- Visual Column -->
+          <div class="lg:w-5/12 relative min-h-[340px] lg:min-h-[460px] bg-[#1E293B] flex items-center justify-center p-3">
+            <img src="<?= e($patelImg) ?>" alt="<?= e(ps_text('सरदार पटेल अभियान — राष्ट्रीय एकता व अखंडता', 'Sardar Patel Campaign - National Integration')) ?>" class="w-full h-full object-contain rounded-2xl">
+            <!-- Badges -->
+            <div class="absolute top-4 left-4 flex flex-col gap-2 z-10">
+              <span class="inline-flex items-center gap-1.5 bg-[#14532D] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                <span class="material-symbols-outlined text-[15px] text-[#F4C96B]">flag</span>
+                <span><?= e(ps_text('प्राथमिक मुख्य जन-अभियान', 'Primary Flagship Campaign')) ?></span>
               </span>
-              <span class="inline-flex items-center gap-1.5 bg-cream-canvas/90 backdrop-blur-sm text-deep-forest px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
-                <span class="material-symbols-outlined text-[14px]">military_tech</span>
+              <span class="inline-flex items-center gap-1.5 bg-white/95 backdrop-blur-md text-[#14532D] px-3 py-1 rounded-full text-xs font-bold shadow-sm border border-[#E5E7EB]">
+                <span class="material-symbols-outlined text-[15px] text-[#C05632]">military_tech</span>
                 <span><?= e(ps_text('1987 से राष्ट्रीय चेतना व अखंड भारत संकल्प', 'Since 1987 — National Unity Mission')) ?></span>
               </span>
             </div>
           </div>
 
-          <div class="lg:w-7/12 p-6 sm:p-8 flex flex-col justify-between">
+          <!-- Content Column -->
+          <div class="lg:w-7/12 p-6 sm:p-10 flex flex-col justify-between">
             <div>
-              <div class="flex items-center justify-between gap-4 mb-2">
-                <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
-                  <?= e(ps_text('सरदार पटेल अभियान (राष्ट्रीय एकता व अखंडता)', 'Sardar Patel Integration Drive (Primary Movement)')) ?>
-                </h3>
-                <span class="hidden sm:inline-flex items-center gap-1 bg-soft-meadow text-tertiary font-label-sm text-label-sm px-2.5 py-1 rounded-md font-semibold border border-border-warm">
-                  <span class="material-symbols-outlined text-[16px]">verified</span>
-                  <span><?= e(ps_text('प्राथमिक मुख्य अभियान', 'Primary Campaign')) ?></span>
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+                <div class="inline-flex items-center gap-1.5 text-xs uppercase font-bold text-[#C05632] tracking-wider bg-[#FAF8F3] px-3 py-1 rounded-full border border-[#C05632]/30">
+                  <span class="material-symbols-outlined text-[15px]">verified</span>
+                  <span><?= e(ps_text('सरदार पटेल समाजोत्थान ट्रस्ट • राष्ट्रीय एकता संकल्प', 'Sardar Patel Trust • National Unity Drive')) ?></span>
+                </div>
+                <span class="text-xs font-bold text-[#15803D] bg-[#F1F7F2] px-2.5 py-1 rounded-md border border-[#15803D]/20">
+                  <?= e(ps_text('वार्षिक 20-दिवसीय चेतना रथ', 'Annual 20-Day Chetna Rath')) ?>
                 </span>
               </div>
 
-              <p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
-                <?= e(ps_text('लौह पुरुष सरदार वल्लभभाई पटेल के अखंड भारत, राष्ट्रीय एकता और सामाजिक समरसता के संदेश को जन-जन तक पहुँचाने हेतु संचालित प्रमुख अभियान। इसके माध्यम से युवाओं को राष्ट्र निर्माण, निःस्वार्थ जनसेवा, सर्वधर्म सद्भाव और सामाजिक बंधुत्व के प्रति निरंतर प्रेरित किया जाता है।', 'The flagship national integration initiative promoting Iron Man Sardar Vallabhbhai Patel’s vision of a united India, civic leadership, and youth harmony across Uttar Pradesh.')) ?>
+              <h3 class="font-headline-md text-2xl sm:text-3xl text-[#14532D] font-bold leading-snug mb-3">
+                <?= e(ps_text('सरदार पटेल अभियान (राष्ट्रीय एकता, समरसता व युवा प्रेरणा)', 'Sardar Patel Integration Drive (Primary Movement)')) ?>
+              </h3>
+
+              <p class="text-base text-[#475467] leading-relaxed mb-6">
+                <?= e(ps_text('लौह पुरुष सरदार वल्लभभाई पटेल के अखंड भारत, राष्ट्रीय एकता और सामाजिक समरसता के संदेश को जन-जन तक पहुँचाने हेतु संचालित प्रमुख अभियान। इसके माध्यम से युवाओं को राष्ट्र निर्माण, निःस्वार्थ जनसेवा, सर्वधर्म सद्भाव, पंच-दीप दीपोत्सव और सामाजिक बंधुत्व के प्रति निरंतर प्रेरित किया जाता है।', 'The flagship national integration initiative promoting Iron Man Sardar Vallabhbhai Patel’s vision of a united India, civic leadership, and youth harmony across Uttar Pradesh.')) ?>
               </p>
 
-              <!-- Key Highlights Box -->
-              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4 bg-soft-meadow rounded-xl mb-6 border border-border-warm">
+              <!-- Key Highlights Feature Box -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 p-4 bg-[#F1F7F2] rounded-2xl mb-6 border border-[#E5E7EB]">
                 <div class="flex items-start gap-2.5">
-                  <span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">military_tech</span>
+                  <span class="material-symbols-outlined text-[#C05632] text-[22px] mt-0.5">military_tech</span>
                   <div>
-                    <span class="block font-title-md text-title-md font-bold text-deep-forest">NSS 1987-88</span>
-                    <span class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('गणतंत्र दिवस परेड प्रेरणा', 'Republic Day Parade Legacy')) ?></span>
+                    <span class="block text-sm font-bold text-[#14532D]">NSS 1987-88</span>
+                    <span class="text-xs text-[#64748B]"><?= e(ps_text('गणतंत्र दिवस परेड प्रेरणा', 'Republic Day Parade Legacy')) ?></span>
                   </div>
                 </div>
                 <div class="flex items-start gap-2.5">
-                  <span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">diversity_3</span>
+                  <span class="material-symbols-outlined text-[#15803D] text-[22px] mt-0.5">festival</span>
                   <div>
-                    <span class="block font-title-md text-title-md font-bold text-deep-forest"><?= e(ps_text('युवा संवाद', 'Youth Dialogue')) ?></span>
-                    <span class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('अखंड भारत चेतना यात्रा', 'Unity Consciousness Walk')) ?></span>
+                    <span class="block text-sm font-bold text-[#14532D]">31 <?= e(ps_text('अक्टूबर दीपोत्सव', 'Oct Deepotsav')) ?></span>
+                    <span class="text-xs text-[#64748B]"><?= e(ps_text('घर-घर पंच-दीप प्रज्वलन', 'Panch-Deep Celebration')) ?></span>
                   </div>
                 </div>
                 <div class="flex items-start gap-2.5">
-                  <span class="material-symbols-outlined text-tertiary text-[20px] mt-0.5">handshake</span>
+                  <span class="material-symbols-outlined text-[#C05632] text-[22px] mt-0.5">diversity_3</span>
                   <div>
-                    <span class="block font-title-md text-title-md font-bold text-deep-forest"><?= e(ps_text('सर्वधर्म सद्भाव', 'Harmony Pledge')) ?></span>
-                    <span class="font-body-sm text-body-sm text-text-muted"><?= e(ps_text('जाति-धर्म से ऊपर राष्ट्र', 'Nation Above Divisions')) ?></span>
+                    <span class="block text-sm font-bold text-[#14532D]"><?= e(ps_text('पटेल चेतना रथ', 'Chetna Rath Drive')) ?></span>
+                    <span class="text-xs text-[#64748B]"><?= e(ps_text('विश्व की प्रथम पटेल आरती', 'Historic Patel Aarti')) ?></span>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-border-warm">
-              <div class="flex items-center gap-3">
-                <a href="<?= e(base_url('/campaigns/sardar-patel-ekta')) ?>" class="inline-flex items-center gap-2 bg-primary-container text-on-primary hover:bg-deep-forest px-5 py-2.5 rounded-lg font-label-md text-label-md transition-colors shadow-sm font-semibold">
+            <!-- Footer Actions -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-5 border-t border-[#E5E7EB]">
+              <div class="flex flex-wrap items-center gap-3">
+                <a href="<?= e(base_url('/campaigns/sardar-patel-ekta')) ?>" class="inline-flex items-center gap-2 bg-[#14532D] hover:bg-[#0F3D21] text-white px-5 py-3 rounded-xl text-sm font-bold transition-all shadow-sm">
                   <span><?= e(ps_text('अभियान इतिहास व विस्तृत विवरण', 'Explore Sardar Patel Campaign')) ?></span>
                   <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
                 </a>
-                <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-soft-meadow text-deep-forest hover:bg-surface-container px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors border border-border-warm font-semibold">
-                  <span class="material-symbols-outlined text-[16px] text-tertiary">flag</span>
+                <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-white hover:bg-[#F8FAFC] text-[#14532D] px-4 py-3 rounded-xl text-sm font-bold transition-all border border-[#CBD5E1]">
+                  <span class="material-symbols-outlined text-[16px] text-[#C05632]">flag</span>
                   <span><?= e(ps_text('एकता दल से जुड़ें', 'Join Unity Wing')) ?></span>
                 </a>
               </div>
-              <span class="font-label-sm text-label-sm text-text-muted">#SardarPatelAbhiyan #NationalUnity #AkhandBharat</span>
+              <span class="text-xs text-[#94A3B8] font-medium hidden sm:inline-block">#SardarPatelAbhiyan #NationalUnity #AkhandBharat</span>
             </div>
           </div>
         </article>
 
-        <!-- Card 2: हरियाली-अभियान ('ग्रीन गैंग' एवं 'ग्रीन मॉर्निंग') -->
-        <article class="campaign-card lg:col-span-6 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col" data-category="eco">
-          <div class="relative h-64 w-full">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Green Gang Movement" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4">
-              <span class="inline-flex items-center gap-1.5 bg-deep-forest text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
-                <span class="material-symbols-outlined text-[14px] text-fresh-sprout">eco</span>
-                <span><?= e(ps_text('पर्यावरण व वृक्षारोपण', 'Environment & Forestry')) ?></span>
-              </span>
+        <!-- ==============================================
+             CARD 2: हरियाली-अभियान (ग्रीन गैंग व ग्रीन मॉर्निंग)
+             ============================================== -->
+        <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all overflow-hidden flex flex-col justify-between" data-category="eco">
+          <div>
+            <div class="relative h-64 sm:h-72 w-full bg-[#18392B] overflow-hidden flex items-center justify-center p-3">
+              <img src="<?= e($greenImg) ?>" alt="<?= e(ps_text('हरियाली-अभियान (ग्रीन गैंग)', 'Green Gang Movement')) ?>" class="w-full h-full object-contain rounded-2xl">
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 bg-[#14532D] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span class="material-symbols-outlined text-[14px] text-[#6FD08C]">eco</span>
+                  <span><?= e(ps_text('स्थापना: 05 जून 2019 (पर्यावरण दिवस)', 'Founded: 05 June 2019')) ?></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-[#15803D]">
+                <span class="material-symbols-outlined text-[16px]">park</span>
+                <span><?= e(ps_text('प्रकृति-केंद्रित जीवन शैली आंदोलन', 'Nature Lifestyle Movement')) ?></span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold text-[#14532D] mb-2">
+                <?= e(ps_text('हरियाली-अभियान (\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\')', 'Hariyali Abhiyan (\'Green Gang\' & \'Green Morning\')')) ?>
+              </h3>
+              <p class="text-sm font-semibold text-[#C05632] mb-3">
+                <?= e(ps_text('50,000+ वृक्षारोपण एवं दैनिक अभिवादन में \'ग्रीन मॉर्निंग\' का शिष्टाचार', '50,000+ Trees Planted & Green Morning Greetings')) ?>
+              </p>
+              <p class="text-sm text-[#475467] leading-relaxed mb-6">
+                <?= e(ps_text('धरती पर हरियाली बढ़ाने तथा जन-जन की जीवनशैली में प्रकृति प्रेम को शामिल कराने के उद्देश्य से स्थापित क्रांतिकारी पहल। अभिवादन में \'गुड मॉर्निंग\' की जगह \'ग्रीन-मॉर्निंग\' (Green Morning) बोलने का अभिनव शिष्टाचार।', 'A revolutionary initiative transforming morning greetings into ecological awareness across schools and rural panchayats.')) ?>
+              </p>
+              
+              <div class="space-y-2 mb-6 bg-[#F1F7F2] p-4 rounded-2xl border border-[#E5E7EB]">
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#15803D]">check_circle</span>
+                  <span>50,000+ <?= e(ps_text('वृक्षारोपण एवं सतत संरक्षण संकल्प', 'Trees Planted & Protected')) ?></span>
+                </div>
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#15803D]">check_circle</span>
+                  <span><?= e(ps_text('ग्रीन चौपाल, हरित प्रभात संवाद व युवा पौध दस्ता', 'Green Chaupal & Youth Squads')) ?></span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="p-6 sm:p-7 flex flex-col justify-between flex-1">
-            <div>
-              <div class="flex items-baseline justify-between mb-2">
-                <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
-                  <?= e(ps_text('हरियाली-अभियान (\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\')', 'Hariyali Abhiyan (\'Green Gang\' & \'Green Morning\')')) ?>
-                </h3>
-              </div>
-              <p class="font-label-md text-label-md text-primary-container font-semibold mb-3">
-                <?= e(ps_text('50,000+ वृक्षारोपण एवं दैनिक संवाद में \'ग्रीन मॉर्निंग\' का शिष्टाचार', '50,000+ Trees Planted & Green Morning Greetings')) ?>
-              </p>
-              <p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
-                <?= e(ps_text('धरती पर हरियाली बढ़ाने तथा जन-जन की जीवनशैली में प्रकृति प्रेम को शामिल कराने के उद्देश्य से स्थापित क्रांतिकारी पहल। अभिवादन में \'गुड मॉर्निंग\' की जगह \'ग्रीन-मॉर्निंग\' (Green Morning) बोलने का शिष्टाचार।', 'A revolutionary initiative transforming morning greetings into ecological awareness across schools and panchayats.')) ?>
-              </p>
-              <div class="space-y-2 mb-6 bg-soft-meadow p-3.5 rounded-xl border border-border-warm">
-                <div class="flex items-center gap-2 text-deep-forest font-body-sm text-body-sm">
-                  <span class="material-symbols-outlined text-[18px] text-primary-container">check_circle</span>
-                  <span>50,000+ <?= e(ps_text('वृक्षारोपण एवं संरक्षण संकल्प', 'Trees Planted & Protected')) ?></span>
-                </div>
-                <div class="flex items-center gap-2 text-deep-forest font-body-sm text-body-sm">
-                  <span class="material-symbols-outlined text-[18px] text-primary-container">check_circle</span>
-                  <span><?= e(ps_text('ग्रीन गैंग युवा दस्ता व पौध शपथ संस्कार', 'Green Gang Youth Squad')) ?></span>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex items-center gap-3 pt-2 border-t border-border-warm">
-              <a href="<?= e(base_url('/campaigns/hariyali-sanrakshan')) ?>" class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors shadow-sm font-semibold">
-                <span><?= e(ps_text('विस्तृत विवरण देखें', 'Explore Campaign')) ?></span>
-                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-              </a>
-              <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-soft-meadow text-deep-forest hover:bg-surface-container px-3.5 py-2.5 rounded-lg font-label-md text-label-md transition-colors border border-border-warm font-semibold">
-                <span class="material-symbols-outlined text-[16px] text-primary-container">nature</span>
-                <span><?= e(ps_text('पौधा गोद लें', 'Sponsor Sapling')) ?></span>
-              </a>
-            </div>
+          <div class="px-6 sm:px-8 pb-6 pt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <a href="<?= e(base_url('/green-gang')) ?>" class="inline-flex items-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xs">
+              <span><?= e(ps_text('विस्तृत विवरण देखें', 'Explore Green Gang')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-[#FAF8F3] hover:bg-[#F1F7F2] text-[#14532D] px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-[#CBD5E1]">
+              <span class="material-symbols-outlined text-[16px] text-[#15803D]">nature</span>
+              <span><?= e(ps_text('पौधा गोद लें', 'Sponsor Tree')) ?></span>
+            </a>
           </div>
         </article>
 
-        <!-- Card 5: सरदार पटेल अभियान (राष्ट्रीय एकता व अखंडता) -->
-        <article class="campaign-card lg:col-span-6 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col" data-category="unity">
-          <div class="relative h-64 w-full">
-            <img src="assets/images/sardar_patel.webp" alt="Sardar Patel Abhiyan" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4">
-              <span class="inline-flex items-center gap-1.5 bg-tertiary text-on-tertiary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
-                <span class="material-symbols-outlined text-[14px]">flag</span>
-                <span><?= e(ps_text('राष्ट्रीय एकता, समरसता व युवा प्रेरणा', 'National Integration')) ?></span>
-              </span>
+        <!-- ==============================================
+             CARD 3: परिंदा संवर्धन व जल-सकोरा अभियान
+             ============================================== -->
+        <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all overflow-hidden flex flex-col justify-between" data-category="bird">
+          <div>
+            <div class="relative h-64 sm:h-72 w-full bg-[#FAF8F3] overflow-hidden flex items-center justify-center p-3">
+              <img src="<?= e($parindaImg) ?>" alt="<?= e(ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Bird Conservation Campaign')) ?>" class="w-full h-full object-contain rounded-2xl">
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 bg-[#C05632] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span class="material-symbols-outlined text-[14px]">nest_cam_wired_stand</span>
+                  <span><?= e(ps_text('मूक पक्षी रक्षा एवं जीव-दया', 'Bird Care & Compassion')) ?></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-[#C05632]">
+                <span class="material-symbols-outlined text-[16px]">water_drop</span>
+                <span><?= e(ps_text('गर्मी में मूक पक्षियों हेतु अमृत धारा', 'Summer Water Lifeline for Birds')) ?></span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold text-[#14532D] mb-2">
+                <?= e(ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation (Water Bowls)')) ?>
+              </h3>
+              <p class="text-sm font-semibold text-[#15803D] mb-3">
+                <?= e(ps_text('10,000+ मिट्टी के सकोरे, दाना-पानी प्रबंध एवं गौरैया संरक्षण', '10,000+ Earthen Water Pots & Sparrow Shelters')) ?>
+              </p>
+              <p class="text-sm text-[#475467] leading-relaxed mb-6">
+                <?= e(ps_text('भीषण गर्मी में प्यास से तड़पते बेजुबान पक्षियों हेतु घर-घर, छतों व सार्वजनिक वृक्षों पर मिट्टी के जलपात्र (सकोरे) रखने और दाना चुगाने की जन-जागरूकता मुहिम। विलुप्त होती गौरैया के लिए घोंसले और सुरक्षित आश्रय स्थल का निर्माण।', 'Distributing clay water bowls and food shelters for sparrows and birds to survive blistering summers.')) ?>
+              </p>
+              
+              <div class="space-y-2 mb-6 bg-[#FAF8F3] p-4 rounded-2xl border border-[#E5E7EB]">
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#C05632]">check_circle</span>
+                  <span>10,000+ <?= e(ps_text('मिट्टी के जल-सकोरे एवं दानापात्र निशुल्क वितरित', 'Earthen Bowls Distributed')) ?></span>
+                </div>
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#C05632]">check_circle</span>
+                  <span><?= e(ps_text('गौरैया दिवस चेतना व काष्ठ/मिट्टी घोंसला निर्माण', 'Sparrow Day Awareness & Nesting Drives')) ?></span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="p-6 sm:p-7 flex flex-col justify-between flex-1">
-            <div>
-              <div class="flex items-baseline justify-between mb-2">
-                <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
-                  <?= e(ps_text('सरदार पटेल अभियान (राष्ट्रीय चेतना)', 'Sardar Patel Integration Drive')) ?>
-                </h3>
-              </div>
-              <p class="font-label-md text-label-md text-tertiary font-semibold mb-3">
-                <?= e(ps_text('लौह पुरुष सरदार वल्लभभाई पटेल के अखंड भारत के विचारों का संचार', 'Promoting Iron Man Sardar Patel\'s Unity Vision')) ?>
-              </p>
-              <p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
-                <?= e(ps_text('राष्ट्रीय एकता, अखंडता और सामाजिक समरसता के संदेश को जन-जन तक पहुँचाने हेतु संचालित अभियान। युवाओं को राष्ट्र निर्माण, निःस्वार्थ सेवा और सामाजिक बंधुत्व के प्रति प्रेरित करना ताकि जाति-धर्म से ऊपर उठकर एक भारत का निर्माण हो सके।', 'Fostering national unity, social harmony, and youth service inspired by Sardar Patel.')) ?>
-              </p>
-              <div class="space-y-2 mb-6 bg-soft-meadow p-3.5 rounded-xl border border-border-warm">
-                <div class="flex items-center gap-2 text-deep-forest font-body-sm text-body-sm">
-                  <span class="material-symbols-outlined text-[18px] text-tertiary">check_circle</span>
-                  <span><?= e(ps_text('राष्ट्रीय सेवा योजना (NSS 1987-88) गणतंत्र दिवस परेड आदर्शों का विस्तार', 'NSS Republic Day Camp 1987-88 Legacy')) ?></span>
-                </div>
-                <div class="flex items-center gap-2 text-deep-forest font-body-sm text-body-sm">
-                  <span class="material-symbols-outlined text-[18px] text-tertiary">check_circle</span>
-                  <span><?= e(ps_text('ग्रामीण युवा संवाद यात्रा व अखंड भारत समरसता गोष्ठियाँ', 'Rural Youth Harmony Dialogues')) ?></span>
-                </div>
+          <div class="px-6 sm:px-8 pb-6 pt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xs">
+              <span><?= e(ps_text('सकोरा मुहिम से जुड़ें', 'Join Water Pot Drive')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/donation')) ?>" class="inline-flex items-center gap-1.5 bg-[#FAF8F3] hover:bg-[#F1F7F2] text-[#14532D] px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-[#CBD5E1]">
+              <span class="material-symbols-outlined text-[16px] text-[#C05632]">volunteer_activism</span>
+              <span><?= e(ps_text('सकोरे प्रायोजित करें', 'Sponsor Pots')) ?></span>
+            </a>
+          </div>
+        </article>
+
+        <!-- ==============================================
+             CARD 4: अवधी भाषा व लोक-संस्कृति संवर्धन
+             ============================================== -->
+        <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all overflow-hidden flex flex-col justify-between" data-category="culture">
+          <div>
+            <div class="relative h-64 sm:h-72 w-full bg-[#F1F7F2] overflow-hidden flex items-center justify-center p-3">
+              <img src="<?= e($awadhiImg) ?>" alt="<?= e(ps_text('अवधी भाषा व साहित्य संवर्धन अभियान', 'Awadhi Language & Literature Campaign')) ?>" class="w-full h-full object-contain rounded-2xl">
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 bg-[#14532D] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span class="material-symbols-outlined text-[14px]">auto_stories</span>
+                  <span><?= e(ps_text('मातृभाषा व लोक-संस्कृति संरक्षण', 'Awadhi Language Heritage')) ?></span>
+                </span>
               </div>
             </div>
 
-            <div class="flex items-center gap-3 pt-2 border-t border-border-warm">
-              <a href="<?= e(base_url('/campaigns/sardar-patel-ekta')) ?>" class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors shadow-sm font-semibold">
-                <span><?= e(ps_text('अभियान इतिहास व विवरण', 'Campaign History')) ?></span>
-                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-              </a>
-              <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-soft-meadow text-tertiary hover:bg-surface-container px-3.5 py-2.5 rounded-lg font-label-md text-label-md transition-colors border border-border-warm font-semibold">
-                <span class="material-symbols-outlined text-[16px]">military_tech</span>
-                <span><?= e(ps_text('एकता दल से जुड़ें', 'Join Unity Wing')) ?></span>
-              </a>
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-[#15803D]">
+                <span class="material-symbols-outlined text-[16px]">history_edu</span>
+                <span><?= e(ps_text('साहित्यिक अस्मिता एवं शब्दकोश संकलन', 'Literary Identity & Lexicon Drive')) ?></span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold text-[#14532D] mb-2">
+                <?= e(ps_text('अवधी भाषा व लोक-संस्कृति संवर्धन अभियान', 'Awadhi Language & Folk Culture Promotion')) ?>
+              </h3>
+              <p class="text-sm font-semibold text-[#C05632] mb-3">
+                <?= e(ps_text('काव्य-गोष्ठियाँ, अवधी शब्दकोश एवं ग्रामीण चौपाल साहित्य', 'Poetic Chaupals, Lexicon & Folk Literature')) ?>
+              </p>
+              <p class="text-sm text-[#475467] leading-relaxed mb-6">
+                <?= e(ps_text('हिंदी एवं अवधी भाषा के विस्मृत होते शब्दों, मुहावरों, लोकगीतों और ग्रामीण सांस्कृतिक मूल्यों को सहेजने के लिए निरंतर काव्य-गोष्ठियों, अवधी गद्य लेखन, सारंग-कुंडलियाँ और शोध पत्रिकाओं का जन-प्रसार।', 'Preserving dying Awadhi idioms, folk songs, rural dialects, and poetic heritage through village chaupals.')) ?>
+              </p>
+              
+              <div class="space-y-2 mb-6 bg-[#F1F7F2] p-4 rounded-2xl border border-[#E5E7EB]">
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#15803D]">check_circle</span>
+                  <span><?= e(ps_text('काव्य-मंजरी, सारंग-कुंडलियाँ व अवधी लोक शोध प्रकाशन', 'Sarang-Kundaliyan & Awadhi Publications')) ?></span>
+                </div>
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#15803D]">check_circle</span>
+                  <span><?= e(ps_text('मासिक अवधी चौपाल संगोष्ठी एवं ग्रामीण युवा कवि मंच', 'Monthly Rural Poet Gatherings')) ?></span>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <div class="px-6 sm:px-8 pb-6 pt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <a href="<?= e(base_url('/blog')) ?>" class="inline-flex items-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xs">
+              <span><?= e(ps_text('अवधी साहित्य व रचनाएं पढ़ें', 'Read Awadhi Works')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/contact')) ?>" class="inline-flex items-center gap-1.5 bg-[#FAF8F3] hover:bg-[#F1F7F2] text-[#14532D] px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-[#CBD5E1]">
+              <span class="material-symbols-outlined text-[16px] text-[#15803D]">mic</span>
+              <span><?= e(ps_text('गोष्ठी में शामिल हों', 'Join Symposium')) ?></span>
+            </a>
+          </div>
+        </article>
+
+        <!-- ==============================================
+             CARD 5: तुलसी जयंती पखवारा (16 से 31 अगस्त)
+             ============================================== -->
+        <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all overflow-hidden flex flex-col justify-between" data-category="culture">
+          <div>
+            <div class="relative h-64 sm:h-72 w-full bg-[#FAF8F3] overflow-hidden flex items-center justify-center p-3">
+              <img src="<?= e($tulsiImg) ?>" alt="<?= e(ps_text('तुलसी जयंती पखवारा', 'Tulsi Jayanti Fortnight')) ?>" class="w-full h-full object-contain rounded-2xl">
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 bg-[#C05632] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span class="material-symbols-outlined text-[14px]">menu_book</span>
+                  <span>16-31 <?= e(ps_text('अगस्त वार्षिक उत्सव', 'August Annual Festival')) ?></span>
+                </span>
+              </div>
+            </div>
+
+            <div class="p-6 sm:p-8">
+              <div class="flex items-center gap-2 mb-2 text-xs font-bold uppercase tracking-wider text-[#C05632]">
+                <span class="material-symbols-outlined text-[16px]">import_contacts</span>
+                <span><?= e(ps_text('रामचरितमानस के सामाजिक समरसता मूल्य', 'Social Harmony of Ramcharitmanas')) ?></span>
+              </div>
+              <h3 class="text-xl sm:text-2xl font-bold text-[#14532D] mb-2">
+                <?= e(ps_text('तुलसी जयंती पखवारा (16 से 31 अगस्त)', 'Goswami Tulsidas Jayanti Fortnight')) ?>
+              </h3>
+              <p class="text-sm font-semibold text-[#15803D] mb-3">
+                <?= e(ps_text('16-दिवसीय विचार व्याख्यानमाला, मानस गोष्ठी एवं जीवन-मूल्य प्रसार', '16-Day Cultural Lecture Series & Moral Education')) ?>
+              </p>
+              <p class="text-sm text-[#475467] leading-relaxed mb-6">
+                <?= e(ps_text('महाकवि गोस्वामी तुलसीदास जी के जीवन दर्शन, रामचरितमानस की सामाजिक समरसता, नैतिक सदाचार एवं अवधी भाषा की मिठास को नई पीढ़ी तक पहुंचाने हेतु प्रतिवर्ष आयोजित होने वाला भव्य 16-दिवसीय सांस्कृतिक उत्सव।', 'An annual 16-day cultural fest honoring Goswami Tulsidas, moral living, and social fraternity.')) ?>
+              </p>
+              
+              <div class="space-y-2 mb-6 bg-[#FAF8F3] p-4 rounded-2xl border border-[#E5E7EB]">
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#C05632]">check_circle</span>
+                  <span><?= e(ps_text('प्रतिवर्ष 16 से 31 अगस्त निरंतर सारंग सदन व अंचलों में आयोजन', 'Annual 16-31 August Celebrations')) ?></span>
+                </div>
+                <div class="flex items-center gap-2.5 text-[#14532D] text-xs sm:text-sm font-medium">
+                  <span class="material-symbols-outlined text-[18px] text-[#C05632]">check_circle</span>
+                  <span><?= e(ps_text('विद्यार्थी मानस प्रतियोगिताएं, वक्तृत्व व अवधी गायन', 'Youth Recitation & Awadhi Hymn Contests')) ?></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="px-6 sm:px-8 pb-6 pt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <a href="<?= e(base_url('/campaigns/tulsi-abhiyan-16-31-2026')) ?>" class="inline-flex items-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xs">
+              <span><?= e(ps_text('पखवारा विवरण देखें', 'View Event Details')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/contact')) ?>" class="inline-flex items-center gap-1.5 bg-[#FAF8F3] hover:bg-[#F1F7F2] text-[#14532D] px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-[#CBD5E1]">
+              <span class="material-symbols-outlined text-[16px] text-[#C05632]">calendar_month</span>
+              <span><?= e(ps_text('सहभागी बनें', 'Participate')) ?></span>
+            </a>
           </div>
         </article>
 
         <?php
-        $builtinSlugs = ['hariyali-campaign', 'bird-conservation-campaign', 'tulsi-pakhwara', 'language-and-literature-promotion-campaign', 'patel-campaign', 'hariyali', 'parinda', 'tulsi', 'awadhi', 'patel'];
+        // Filter out dynamic campaigns matching standard builtin slugs
+        $builtinSlugs = ['hariyali-campaign', 'bird-conservation-campaign', 'tulsi-pakhwara', 'language-and-literature-promotion-campaign', 'patel-campaign', 'hariyali', 'parinda', 'tulsi', 'awadhi', 'patel', 'sardar-patel-ekta'];
         $customCampaigns = array_filter($items ?? [], function($c) use ($builtinSlugs) {
             $s = strtolower($c['slug'] ?? '');
             foreach ($builtinSlugs as $b) {
@@ -343,44 +495,42 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
         foreach ($customCampaigns as $c):
             $cTitle = $c['title'] ?? ps_text('नवीन जन-अभियान', 'New Campaign');
             $cSlug = $c['slug'] ?? 'campaign-' . ($c['id'] ?? rand(100, 999));
-            $cImage = !empty($c['image']) ? (str_starts_with($c['image'], 'http') ? $c['image'] : base_url($c['image'])) : 'https://picsum.photos/seed/' . md5($cSlug) . '/900/600';
+            $cImage = ps_resolve_img($c['image'] ?? '', 'uploads/slider_final_1.webp');
             $cExcerpt = ps_excerpt($c, 200);
             $cCategory = strtolower($c['category'] ?? 'eco');
         ?>
         <!-- Dynamic Campaign Card (Added via Admin Database) -->
-        <article class="campaign-card lg:col-span-6 bg-pure-white rounded-2xl shadow-sm border border-border-warm hover:shadow-md transition-all overflow-hidden flex flex-col" data-category="<?= e($cCategory) ?>">
-          <div class="relative h-64 w-full">
-            <img src="<?= e($cImage) ?>" alt="<?= e($cTitle) ?>" class="w-full h-full object-cover">
-            <div class="absolute top-4 left-4">
-              <span class="inline-flex items-center gap-1.5 bg-deep-forest text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm shadow-sm font-semibold">
-                <span class="material-symbols-outlined text-[14px] text-fresh-sprout">eco</span>
-                <span><?= e(ps_text('जन-सरोकार व पर्यावरण अभियान', 'Community Campaign')) ?></span>
-              </span>
-            </div>
-          </div>
-
-          <div class="p-6 sm:p-7 flex flex-col justify-between flex-1">
-            <div>
-              <div class="flex items-baseline justify-between mb-2">
-                <h3 class="font-headline-sm text-headline-sm text-deep-forest font-bold">
-                  <?= e($cTitle) ?>
-                </h3>
+        <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all overflow-hidden flex flex-col justify-between" data-category="<?= e($cCategory) ?>">
+          <div>
+            <div class="relative h-64 sm:h-72 w-full bg-[#18392B] overflow-hidden flex items-center justify-center p-3">
+              <img src="<?= e($cImage) ?>" alt="<?= e($cTitle) ?>" class="w-full h-full object-contain rounded-2xl">
+              <div class="absolute top-4 left-4">
+                <span class="inline-flex items-center gap-1.5 bg-[#14532D] text-white px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                  <span class="material-symbols-outlined text-[14px] text-[#6FD08C]">campaign</span>
+                  <span><?= e(ps_text('जन-सरोकार अभियान', 'Community Drive')) ?></span>
+                </span>
               </div>
-              <p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+            </div>
+
+            <div class="p-6 sm:p-8">
+              <h3 class="text-xl sm:text-2xl font-bold text-[#14532D] mb-3">
+                <?= e($cTitle) ?>
+              </h3>
+              <p class="text-sm text-[#475467] leading-relaxed mb-6">
                 <?= e($cExcerpt) ?>
               </p>
             </div>
+          </div>
 
-            <div class="flex items-center gap-3 pt-2 border-t border-border-warm">
-              <a href="<?= e(base_url('/campaigns/' . $cSlug)) ?>" class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary hover:bg-deep-forest px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors shadow-sm font-semibold">
-                <span><?= e(ps_text('अभियान विवरण देखें', 'View Campaign Details')) ?></span>
-                <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-              </a>
-              <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-soft-meadow text-deep-forest hover:bg-surface-container px-3.5 py-2.5 rounded-lg font-label-md text-label-md transition-colors border border-border-warm font-semibold">
-                <span class="material-symbols-outlined text-[16px]">handshake</span>
-                <span><?= e(ps_text('सहभागिता करें', 'Participate')) ?></span>
-              </a>
-            </div>
+          <div class="px-6 sm:px-8 pb-6 pt-3 border-t border-[#F1F5F9] flex items-center justify-between gap-3">
+            <a href="<?= e(base_url('/campaigns/' . $cSlug)) ?>" class="inline-flex items-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white px-4 py-2.5 rounded-xl text-sm font-bold transition-all shadow-xs">
+              <span><?= e(ps_text('अभियान विवरण देखें', 'View Campaign Details')) ?></span>
+              <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-1.5 bg-[#FAF8F3] hover:bg-[#F1F7F2] text-[#14532D] px-3.5 py-2.5 rounded-xl text-sm font-semibold transition-all border border-[#CBD5E1]">
+              <span class="material-symbols-outlined text-[16px] text-[#15803D]">handshake</span>
+              <span><?= e(ps_text('सहभागिता करें', 'Participate')) ?></span>
+            </a>
           </div>
         </article>
         <?php endforeach; ?>
@@ -388,118 +538,118 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
     </div>
   </section>
 
-  <!-- "अभियानों में कैसे जुड़ें?" (How to Get Involved - 3 Pillars Section) -->
-  <section class="w-full bg-soft-meadow py-space-4xl border-b border-border-warm" id="volunteer-involvement">
+  <!-- 5. "अभियानों में कैसे जुड़ें?" (How to Get Involved - 3 Pillars) -->
+  <section class="w-full bg-[#F1F7F2] py-12 lg:py-16 border-t border-b border-[#E5E7EB]" id="volunteer-involvement">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-space-2xl">
-        <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-container font-bold"><?= e(ps_text('सहभागिता के तीन मार्ग', 'Three Ways to Participate')) ?></span>
-        <h2 class="font-headline-lg text-headline-lg text-deep-forest mt-1 font-bold"><?= e(ps_text('अभियानों में कैसे जुड़ें?', 'How to Get Involved')) ?></h2>
-        <p class="font-body-md text-body-md text-on-surface-variant mt-2">
-          <?= e(ps_text('प्रत्येक नागरिक का छोटा सा योगदान धरती और समाज में एक बड़ी क्रांति ला सकता है। आप अपनी क्षमता और रुचि के अनुसार सीधे सहभागी बन सकते हैं।', 'Every small contribution drives lasting impact. Participate according to your passion.')) ?>
+      <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs uppercase tracking-widest text-[#C05632] font-bold"><?= e(ps_text('सहभागिता के तीन सशक्त मार्ग', 'Three Ways to Participate')) ?></span>
+        <h2 class="text-2xl sm:text-3xl text-[#14532D] font-bold mt-1"><?= e(ps_text('अभियानों में आप कैसे जुड़ सकते हैं?', 'How You Can Get Involved')) ?></h2>
+        <p class="text-sm text-[#475467] mt-2 leading-relaxed">
+          <?= e(ps_text('प्रत्येक नागरिक का छोटा सा योगदान धरती और समाज में एक बड़ी क्रांति ला सकता है। आप अपनी रुचि और सुविधानुसार सीधे सहभागी बन सकते हैं।', 'Every small contribution drives lasting impact. Participate according to your passion and availability.')) ?>
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
         <!-- Pillar 1 -->
-        <div class="bg-pure-white rounded-2xl p-8 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-8 shadow-xs hover:shadow-lg border border-[#E5E7EB] transition-all flex flex-col justify-between">
           <div>
-            <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-primary-container mb-6 border border-border-warm">
+            <div class="w-14 h-14 rounded-2xl bg-[#F1F7F2] flex items-center justify-center text-[#15803D] mb-6 border border-[#E2E8F0]">
               <span class="material-symbols-outlined text-[32px]">diversity_1</span>
             </div>
-            <span class="font-label-sm text-label-sm text-primary-container font-bold uppercase tracking-wider"><?= e(ps_text('स्तम्भ १', 'Pillar 1')) ?></span>
-            <h3 class="font-title-lg text-title-lg text-deep-forest mt-1 mb-3 font-bold"><?= e(ps_text('\'ग्रीन गैंग\' के स्वयंसेवक बनें', 'Become a Green Gang Volunteer')) ?></h3>
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
-              <?= e(ps_text('वृक्षारोपण, परिंदा जलपात्र वितरण और गाँव की पर्यावरण सुरक्षा में अपना सक्रिय समय दें। अपने क्षेत्र में प्रकृति मित्रों का समूह तैयार करें।', 'Give your time for tree planting, bird water pot distribution, and environmental drives.')) ?>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#15803D]"><?= e(ps_text('स्तम्भ १ • प्रत्यक्ष सेवा', 'Pillar 1 • Direct Service')) ?></span>
+            <h3 class="text-xl font-bold text-[#14532D] mt-1 mb-3"><?= e(ps_text('\'ग्रीन गैंग\' के स्वयंसेवक बनें', 'Become a Green Gang Volunteer')) ?></h3>
+            <p class="text-sm text-[#475467] leading-relaxed mb-6">
+              <?= e(ps_text('वृक्षारोपण, परिंदा जलपात्र वितरण और गाँव की पर्यावरण सुरक्षा में अपना सक्रिय समय दें। अपने क्षेत्र में प्रकृति मित्रों का दस्ता तैयार करें।', 'Dedicate your time for tree planting, bird water pot distribution, and environmental youth squads in your village.')) ?>
             </p>
           </div>
-          <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 text-primary-container font-label-md text-label-md hover:text-deep-forest transition-colors font-bold">
+          <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 text-[#15803D] hover:text-[#14532D] text-sm font-bold transition-colors">
             <span><?= e(ps_text('स्वयंसेवक फॉर्म भरें', 'Fill Volunteer Form')) ?></span>
-            <span class="material-symbols-outlined text-[16px]">east</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
 
         <!-- Pillar 2 -->
-        <div class="bg-pure-white rounded-2xl p-8 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-8 shadow-xs hover:shadow-lg border border-[#E5E7EB] transition-all flex flex-col justify-between">
           <div>
-            <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-secondary mb-6 border border-border-warm">
+            <div class="w-14 h-14 rounded-2xl bg-[#FAF8F3] flex items-center justify-center text-[#C05632] mb-6 border border-[#E2E8F0]">
               <span class="material-symbols-outlined text-[32px]">campaign</span>
             </div>
-            <span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider"><?= e(ps_text('स्तम्भ २', 'Pillar 2')) ?></span>
-            <h3 class="font-title-lg text-title-lg text-deep-forest mt-1 mb-3 font-bold"><?= e(ps_text('गाँव / विद्यालय में \'ग्रीन चौपाल\'', 'Host Green Chaupal')) ?></h3>
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
-              <?= e(ps_text('अपने संस्थान, पंचायत या विद्यालय में प्रदीप सारंग जी को जन-संवाद, तुलसी मानस विचार गोष्ठी अथवा पर्यावरण जागरूकता हेतु आमंत्रित करें।', 'Invite Pradeep Sarang to conduct environmental or Awadhi literature sessions.')) ?>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#C05632]"><?= e(ps_text('स्तम्भ २ • सामुदायिक संवाद', 'Pillar 2 • Community Outreach')) ?></span>
+            <h3 class="text-xl font-bold text-[#14532D] mt-1 mb-3"><?= e(ps_text('गाँव / विद्यालय में \'ग्रीन चौपाल\'', 'Host a Green Chaupal')) ?></h3>
+            <p class="text-sm text-[#475467] leading-relaxed mb-6">
+              <?= e(ps_text('अपने संस्थान, पंचायत या विद्यालय में प्रदीप सारंग जी को जन-संवाद, मानस विचार गोष्ठी, एकता चेतना अथवा पर्यावरण जागरूकता हेतु आमंत्रित करें।', 'Invite Pradeep Sarang to conduct environmental awareness or Awadhi literature sessions in your community.')) ?>
             </p>
           </div>
-          <a href="<?= e(base_url('/contact')) ?>" class="inline-flex items-center gap-2 text-secondary font-label-md text-label-md hover:text-deep-forest transition-colors font-bold">
-            <span><?= e(ps_text('कार्यक्रम का आमंत्रण भेजें', 'Invite for Event')) ?></span>
-            <span class="material-symbols-outlined text-[16px]">east</span>
+          <a href="<?= e(base_url('/contact')) ?>" class="inline-flex items-center gap-2 text-[#C05632] hover:text-[#A9472B] text-sm font-bold transition-colors">
+            <span><?= e(ps_text('कार्यक्रम का आमंत्रण भेजें', 'Send Event Invite')) ?></span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
 
         <!-- Pillar 3 -->
-        <div class="bg-pure-white rounded-2xl p-8 shadow-sm border border-border-warm hover:shadow-md transition-all flex flex-col justify-between">
+        <div class="bg-white rounded-3xl p-8 shadow-xs hover:shadow-lg border border-[#E5E7EB] transition-all flex flex-col justify-between">
           <div>
-            <div class="w-14 h-14 rounded-xl bg-surface-container flex items-center justify-center text-tertiary mb-6 border border-border-warm">
+            <div class="w-14 h-14 rounded-2xl bg-[#F1F7F2] flex items-center justify-center text-[#14532D] mb-6 border border-[#E2E8F0]">
               <span class="material-symbols-outlined text-[32px]">volunteer_activism</span>
             </div>
-            <span class="font-label-sm text-label-sm text-tertiary font-bold uppercase tracking-wider"><?= e(ps_text('स्तम्भ ३', 'Pillar 3')) ?></span>
-            <h3 class="font-title-lg text-title-lg text-deep-forest mt-1 mb-3 font-bold"><?= e(ps_text('सकोरे व पौध संरक्षण प्रायोजित करें', 'Sponsor Water Bowls & Saplings')) ?></h3>
-            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed mb-6">
-              <?= e(ps_text('गर्मी के मौसम में मिट्टी के सकोरे, दाना-पानी सामग्री अथवा फलदार व छायादार पौधे प्रायोजित कर मूक पक्षियों व धरा की सेवा में सहयोग दें।', 'Sponsor earthen water pots, bird grains, or tree-guards for environmental initiatives.')) ?>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#14532D]"><?= e(ps_text('स्तम्भ ३ • साधन सहयोग', 'Pillar 3 • Resource Support')) ?></span>
+            <h3 class="text-xl font-bold text-[#14532D] mt-1 mb-3"><?= e(ps_text('सकोरे व पौध संरक्षण प्रायोजित करें', 'Sponsor Water Bowls & Saplings')) ?></h3>
+            <p class="text-sm text-[#475467] leading-relaxed mb-6">
+              <?= e(ps_text('गर्मी के मौसम में मिट्टी के सकोरे, दाना-पानी सामग्री अथवा फलदार व छायादार पौधे प्रायोजित कर मूक पक्षियों व धरा की सेवा में सहयोग दें।', 'Sponsor earthen water pots, bird grains, or tree guards to empower frontline conservation.')) ?>
             </p>
           </div>
-          <a href="<?= e(base_url('/donation')) ?>" class="inline-flex items-center gap-2 text-tertiary font-label-md text-label-md hover:text-deep-forest transition-colors font-bold">
+          <a href="<?= e(base_url('/donation')) ?>" class="inline-flex items-center gap-2 text-[#14532D] hover:text-[#0F3D21] text-sm font-bold transition-colors">
             <span><?= e(ps_text('सहयोग राशि / सामग्री दान', 'Sponsor a Cause')) ?></span>
-            <span class="material-symbols-outlined text-[16px]">east</span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Quote Banner Section -->
-  <section class="w-full bg-cream-canvas py-space-3xl relative overflow-hidden border-b border-border-warm">
-    <div class="max-w-container-editorial mx-auto px-4 text-center">
-      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-soft-meadow text-primary-container mb-4 shadow-xs border border-border-warm">
-        <span class="material-symbols-outlined text-[28px]">format_quote</span>
+  <!-- 6. QUOTE BANNER SECTION -->
+  <section class="w-full bg-white py-12 lg:py-16 text-center border-b border-[#E5E7EB]">
+    <div class="max-w-3xl mx-auto px-4">
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#F1F7F2] text-[#15803D] mb-4 shadow-xs border border-[#E2E8F0]">
+        <span class="material-symbols-outlined text-[26px]">format_quote</span>
       </div>
-      <p class="font-quote-editorial text-headline-sm md:text-headline-md text-deep-forest leading-relaxed italic">
+      <p class="font-quote-editorial text-xl sm:text-2xl text-[#14532D] leading-relaxed italic font-medium">
         "<?= e(ps_text('धरती को हरी-भरी बनाना और बेज़ुबानों की प्यास बुझाना केवल कर्म नहीं, आत्मा का धर्म है।', 'Greening the Earth and slaking the thirst of wildlife is not merely duty; it is the soul\'s calling.')) ?>"
       </p>
-      <div class="flex items-center justify-center gap-3 mt-6">
-        <div class="w-10 h-0.5 bg-fresh-sprout"></div>
-        <span class="font-title-md text-title-md text-deep-forest font-bold"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
-        <div class="w-10 h-0.5 bg-fresh-sprout"></div>
+      <div class="flex items-center justify-center gap-3 mt-5">
+        <div class="w-8 h-0.5 bg-[#15803D]"></div>
+        <span class="text-base font-bold text-[#14532D]"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span>
+        <div class="w-8 h-0.5 bg-[#15803D]"></div>
       </div>
-      <span class="font-label-sm text-label-sm text-text-muted mt-1 block"><?= e(ps_text('पर्यावरणविद्, लोकसेवक एवं साहित्यकार, बाराबंकी', 'Environmentalist, Social Worker & Author, Barabanki')) ?></span>
+      <span class="text-xs text-[#64748B] mt-1 block"><?= e(ps_text('पर्यावरणविद्, लोकसेवक एवं साहित्यकार, बाराबंकी', 'Environmentalist, Social Worker & Author, Barabanki')) ?></span>
     </div>
   </section>
 
-  <!-- Call-to-Action Box & Outreach Form Trigger -->
-  <section class="w-full bg-cream-canvas py-space-4xl">
+  <!-- 7. LEADERSHIP CTA BANNER -->
+  <section class="w-full bg-[#FAF8F3] py-12 lg:py-16">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
-      <div class="bg-gradient-to-r from-deep-forest to-primary-container rounded-3xl p-8 sm:p-12 text-pure-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 border border-border-warm">
+      <div class="bg-gradient-to-r from-[#14532D] via-[#18392B] to-[#15803D] rounded-3xl p-8 sm:p-12 text-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 border border-white/10">
         <div class="max-w-2xl">
-          <div class="inline-flex items-center gap-2 bg-pure-white/10 px-3 py-1 rounded-full font-label-sm text-label-sm text-primary-fixed mb-4 font-semibold border border-white/10">
-            <span class="material-symbols-outlined text-[16px]">leaderboard</span>
-            <span><?= e(ps_text('नेतृत्व एवं स्थानीय पहल', 'Leadership & Local Outreach')) ?></span>
+          <div class="inline-flex items-center gap-2 bg-white/10 px-3.5 py-1 rounded-full text-xs text-[#F4C96B] mb-3 font-bold border border-white/15">
+            <span class="material-symbols-outlined text-[15px]">leaderboard</span>
+            <span><?= e(ps_text('स्थानीय नेतृत्व एवं जन-पहल', 'Leadership & Local Outreach')) ?></span>
           </div>
-          <h3 class="font-headline-md text-headline-md text-pure-white font-bold leading-tight mb-3">
+          <h3 class="text-2xl sm:text-3xl text-white font-bold leading-tight mb-3">
             <?= e(ps_text('क्या आप अपने क्षेत्र में हमारे किसी अभियान का नेतृत्व करना चाहते हैं?', 'Would You Like to Lead a Campaign in Your Village or School?')) ?>
           </h3>
-          <p class="font-body-md text-body-md text-surface-container-high leading-relaxed">
-            <?= e(ps_text('यदि आप अपने गाँव, कस्बे, विद्यालय अथवा संस्था में हरियाली, परिंदा दाना-पानी या अवधी साहित्य गोष्ठी का आयोजन करना चाहते हैं, तो हमसे सीधा संपर्क करें।', 'If you want to organize a Green Morning drive or Awadhi literature session in your institution, contact us directly.')) ?>
+          <p class="text-sm sm:text-base text-white/80 leading-relaxed">
+            <?= e(ps_text('यदि आप अपने गाँव, कस्बे, विद्यालय अथवा संस्था में हरियाली, परिंदा दाना-पानी या अवधी साहित्य गोष्ठी का आयोजन कराना चाहते हैं, तो हमसे सीधा संपर्क करें।', 'If you want to organize a Green Morning drive or Awadhi literature session in your institution, contact us directly.')) ?>
           </p>
         </div>
 
         <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-          <a href="tel:<?= e($phoneClean) ?>" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-cream-canvas text-deep-forest hover:bg-pure-white px-6 py-3.5 rounded-xl font-title-md text-title-md font-bold transition-all shadow-md">
-            <span class="material-symbols-outlined text-primary-container text-[20px]">call</span>
+          <a href="tel:<?= e($phoneClean) ?>" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#F4C96B] hover:bg-[#E5BA5A] text-[#14532D] px-6 py-3.5 rounded-xl text-base font-bold transition-all shadow-md">
+            <span class="material-symbols-outlined text-[20px]">call</span>
             <span><?= e(ps_text('सीधा संवाद (', 'Direct Call (')) ?><?= e($phone) ?>)</span>
           </a>
-          <a href="<?= e(base_url('/contact')) ?>" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-deep-forest/80 text-pure-white hover:bg-deep-forest px-6 py-3.5 rounded-xl font-title-md text-title-md transition-all shadow-sm border border-white/20 font-semibold">
+          <a href="<?= e(base_url('/contact')) ?>" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/15 hover:bg-white/25 text-white px-6 py-3.5 rounded-xl text-base font-bold transition-all border border-white/20">
             <span class="material-symbols-outlined text-[20px]">edit_note</span>
-            <span><?= e(ps_text('ऑनलाइन आवेदन प्रपत्र भरें', 'Fill Outreach Form')) ?></span>
+            <span><?= e(ps_text('संपर्क प्रपत्र भरें', 'Fill Contact Form')) ?></span>
           </a>
         </div>
       </div>
@@ -507,7 +657,7 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
   </section>
 </div>
 
-<!-- Interactive Filter Logic (Vanilla JS) -->
+<!-- Interactive Category Filter Script -->
 <script>
   (function() {
     const tabs = document.querySelectorAll('.campaign-tab-btn');
@@ -517,15 +667,15 @@ $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
       tab.addEventListener('click', () => {
         const filter = tab.getAttribute('data-filter');
 
-        // Style tabs
+        // Toggle active tab styles
         tabs.forEach(t => {
-          t.classList.remove('bg-primary-container', 'text-on-primary', 'shadow-sm');
-          t.classList.add('text-on-surface-variant');
+          t.classList.remove('bg-[#14532D]', 'text-white', 'shadow-xs');
+          t.classList.add('text-[#475467]');
         });
-        tab.classList.add('bg-primary-container', 'text-on-primary', 'shadow-sm');
-        tab.classList.remove('text-on-surface-variant');
+        tab.classList.add('bg-[#14532D]', 'text-white', 'shadow-xs');
+        tab.classList.remove('text-[#475467]');
 
-        // Filter cards
+        // Filter cards smoothly
         cards.forEach(card => {
           const category = card.getAttribute('data-category');
           if (filter === 'all' || category === filter) {
