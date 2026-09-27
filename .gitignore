@@ -19,6 +19,7 @@ ads.txt
 /uploads/
 /assets/images/
 
+
 # Cache & Temporary Files
 /tmp/
 /temp/
