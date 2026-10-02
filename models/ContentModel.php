@@ -50,6 +50,16 @@ class ContentModel extends BaseModel
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+            // Ensure id column is AUTO_INCREMENT
+            try {
+                $idCol = $this->db->query("SHOW COLUMNS FROM campaigns WHERE Field = 'id'")->fetch(PDO::FETCH_ASSOC);
+                if ($idCol && strpos(strtolower($idCol['Extra'] ?? ''), 'auto_increment') === false) {
+                    $this->db->exec("ALTER TABLE campaigns MODIFY COLUMN id INT NOT NULL AUTO_INCREMENT");
+                }
+            } catch (Throwable $e) {
+                // Ignore alter column error if limited DB permissions
+            }
+
             $cols = $this->db->query("SHOW COLUMNS FROM campaigns")->fetchAll(PDO::FETCH_COLUMN);
             if (!in_array('en_title', $cols, true)) {
                 $this->db->exec("ALTER TABLE campaigns ADD COLUMN en_title VARCHAR(190) NULL");
@@ -126,18 +136,35 @@ class ContentModel extends BaseModel
     public function createEvent(array $data): int
     {
         if (!$this->db) return 0;
-        $stmt = $this->db->prepare('INSERT INTO events (title, slug, excerpt, content, event_date, location, image, status) VALUES (:title, :slug, :excerpt, :content, :event_date, :location, :image, :status)');
-        $stmt->execute([
-            ':title' => $data['title'],
-            ':slug' => $data['slug'],
-            ':excerpt' => $data['excerpt'],
-            ':content' => $data['content'],
-            ':event_date' => $data['event_date'],
-            ':location' => $data['location'],
-            ':image' => $data['image'],
-            ':status' => $data['status']
-        ]);
-        return (int) $this->db->lastInsertId();
+        try {
+            $stmt = $this->db->prepare('INSERT INTO events (title, slug, excerpt, content, event_date, location, image, status) VALUES (:title, :slug, :excerpt, :content, :event_date, :location, :image, :status)');
+            $stmt->execute([
+                ':title' => $data['title'],
+                ':slug' => $data['slug'],
+                ':excerpt' => $data['excerpt'],
+                ':content' => $data['content'],
+                ':event_date' => $data['event_date'],
+                ':location' => $data['location'],
+                ':image' => $data['image'],
+                ':status' => $data['status']
+            ]);
+            return (int) $this->db->lastInsertId();
+        } catch (Throwable $e) {
+            $nextId = (int)$this->db->query('SELECT COALESCE(MAX(id), 0) + 1 FROM events')->fetchColumn();
+            $stmt = $this->db->prepare('INSERT INTO events (id, title, slug, excerpt, content, event_date, location, image, status) VALUES (:id, :title, :slug, :excerpt, :content, :event_date, :location, :image, :status)');
+            $stmt->execute([
+                ':id' => $nextId,
+                ':title' => $data['title'],
+                ':slug' => $data['slug'],
+                ':excerpt' => $data['excerpt'],
+                ':content' => $data['content'],
+                ':event_date' => $data['event_date'],
+                ':location' => $data['location'],
+                ':image' => $data['image'],
+                ':status' => $data['status']
+            ]);
+            return $nextId;
+        }
     }
 
     public function updateEvent(int $id, array $data): bool
@@ -233,22 +260,45 @@ class ContentModel extends BaseModel
         if ($isPrimary) {
             $this->db->exec('UPDATE campaigns SET is_primary = 0');
         }
-        $stmt = $this->db->prepare('INSERT INTO campaigns (title, en_title, slug, excerpt, content, goal_amount, raised_amount, image, status, is_primary, sort_order, category) VALUES (:title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status, :is_primary, :sort_order, :category)');
-        $stmt->execute([
-            ':title' => $data['title'],
-            ':en_title' => $data['en_title'] ?? '',
-            ':slug' => $data['slug'],
-            ':excerpt' => $data['excerpt'],
-            ':content' => $data['content'],
-            ':goal_amount' => $data['goal_amount'],
-            ':raised_amount' => $data['raised_amount'],
-            ':image' => $data['image'],
-            ':status' => $data['status'],
-            ':is_primary' => $isPrimary,
-            ':sort_order' => (int)($data['sort_order'] ?? 0),
-            ':category' => $data['category'] ?? 'unity'
-        ]);
-        return (int) $this->db->lastInsertId();
+
+        try {
+            $stmt = $this->db->prepare('INSERT INTO campaigns (title, en_title, slug, excerpt, content, goal_amount, raised_amount, image, status, is_primary, sort_order, category) VALUES (:title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status, :is_primary, :sort_order, :category)');
+            $stmt->execute([
+                ':title' => $data['title'],
+                ':en_title' => $data['en_title'] ?? '',
+                ':slug' => $data['slug'],
+                ':excerpt' => $data['excerpt'],
+                ':content' => $data['content'],
+                ':goal_amount' => $data['goal_amount'],
+                ':raised_amount' => $data['raised_amount'],
+                ':image' => $data['image'],
+                ':status' => $data['status'],
+                ':is_primary' => $isPrimary,
+                ':sort_order' => (int)($data['sort_order'] ?? 0),
+                ':category' => $data['category'] ?? 'unity'
+            ]);
+            return (int) $this->db->lastInsertId();
+        } catch (Throwable $e) {
+            // Fallback: Compute next available ID if MySQL table id column lacks AUTO_INCREMENT
+            $nextId = (int)$this->db->query('SELECT COALESCE(MAX(id), 0) + 1 FROM campaigns')->fetchColumn();
+            $stmt = $this->db->prepare('INSERT INTO campaigns (id, title, en_title, slug, excerpt, content, goal_amount, raised_amount, image, status, is_primary, sort_order, category) VALUES (:id, :title, :en_title, :slug, :excerpt, :content, :goal_amount, :raised_amount, :image, :status, :is_primary, :sort_order, :category)');
+            $stmt->execute([
+                ':id' => $nextId,
+                ':title' => $data['title'],
+                ':en_title' => $data['en_title'] ?? '',
+                ':slug' => $data['slug'],
+                ':excerpt' => $data['excerpt'],
+                ':content' => $data['content'],
+                ':goal_amount' => $data['goal_amount'],
+                ':raised_amount' => $data['raised_amount'],
+                ':image' => $data['image'],
+                ':status' => $data['status'],
+                ':is_primary' => $isPrimary,
+                ':sort_order' => (int)($data['sort_order'] ?? 0),
+                ':category' => $data['category'] ?? 'unity'
+            ]);
+            return $nextId;
+        }
     }
 
     public function updateCampaign(int $id, array $data): bool
@@ -805,6 +855,11 @@ class ContentModel extends BaseModel
         try {
             $this->db->exec("CREATE TABLE IF NOT EXISTS volunteers (
                 id INT AUTO_INCREMENT PRIMARY KEY,
+                membership_type VARCHAR(50) DEFAULT 'Volunteer',
+                validity VARCHAR(50) DEFAULT '1 Year',
+                amount DECIMAL(10,2) DEFAULT 0.00,
+                transaction_id VARCHAR(100) NULL,
+                payment_screenshot VARCHAR(255) NULL,
                 full_name VARCHAR(150) NOT NULL,
                 volunteer_id VARCHAR(50) UNIQUE NULL,
                 father_name VARCHAR(150) NULL,
@@ -825,6 +880,11 @@ class ContentModel extends BaseModel
                 status ENUM('Active', 'Inactive', 'Pending') DEFAULT 'Pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )");
+            $this->db->exec("ALTER TABLE volunteers ADD COLUMN membership_type VARCHAR(50) DEFAULT 'Volunteer'");
+            $this->db->exec("ALTER TABLE volunteers ADD COLUMN validity VARCHAR(50) DEFAULT '1 Year'");
+            $this->db->exec("ALTER TABLE volunteers ADD COLUMN amount DECIMAL(10,2) DEFAULT 0.00");
+            $this->db->exec("ALTER TABLE volunteers ADD COLUMN transaction_id VARCHAR(100) NULL");
+            $this->db->exec("ALTER TABLE volunteers ADD COLUMN payment_screenshot VARCHAR(255) NULL");
         } catch (Throwable $e) {}
 
         $stateVal = $data['state'] ?? '';
@@ -839,10 +899,15 @@ class ContentModel extends BaseModel
             } catch (Throwable $e) {}
         }
 
-        $stmt = $this->db->prepare("INSERT INTO volunteers (volunteer_id, full_name, father_name, email, gender, dob, phone, state, district, pincode, occupation, photo, skills, interests, availability, message, status) 
-            VALUES (:vid, :fname, :father, :email, :gender, :dob, :phone, :state, :dist, :pin, :occ, :photo, :skills, :interests, :avail, :msg, :status)");
+        $stmt = $this->db->prepare("INSERT INTO volunteers (membership_type, validity, amount, transaction_id, payment_screenshot, volunteer_id, full_name, father_name, email, gender, dob, phone, state, district, pincode, occupation, photo, skills, interests, availability, message, status) 
+            VALUES (:mtype, :validity, :amount, :txnid, :pshot, :vid, :fname, :father, :email, :gender, :dob, :phone, :state, :dist, :pin, :occ, :photo, :skills, :interests, :avail, :msg, :status)");
         
         return $stmt->execute([
+            ':mtype' => $data['membership_type'] ?? 'Volunteer',
+            ':validity' => $data['validity'] ?? '1 Year',
+            ':amount' => $data['amount'] ?? 0.00,
+            ':txnid' => $data['transaction_id'] ?? null,
+            ':pshot' => $data['payment_screenshot'] ?? null,
             ':vid' => 'VOL-' . strtoupper(substr(uniqid(), -6)),
             ':fname' => $data['full_name'],
             ':father' => $data['father_name'] ?? null,

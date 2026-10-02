@@ -62,11 +62,29 @@ if ($loggedIn) {
 }
 
 if (is_post()) {
+    // Check if POST data was wiped due to exceeding post_max_size
+    $contentLength = (int)($_SERVER['CONTENT_LENGTH'] ?? 0);
+    if ($contentLength > 0 && empty($_POST) && empty($_FILES)) {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => false, 
+                'message' => 'Uploaded file is too large for the server (exceeds PHP post_max_size limit). Please choose an image under 10MB or compress it.'
+            ]);
+            exit;
+        } else {
+            flash('admin_error', 'Uploaded file exceeds server post_max_size limit. Please choose a smaller image.');
+            redirect('/admin/index.php?module=' . urlencode($module));
+        }
+    }
+
     verify_csrf();
     
     // AJAX Upload Media (Blogs, Events, Campaigns)
     if ($loggedIn && (($_POST['action'] ?? '') === 'upload_blog_media' || ($_POST['action'] ?? '') === 'upload_media')) {
-        header('Content-Type: application/json');
+        @ini_set('display_errors', '0');
+        while (ob_get_level()) { @ob_end_clean(); }
+        header('Content-Type: application/json; charset=utf-8');
         if (!isset($_FILES['media_file']) || $_FILES['media_file']['error'] === UPLOAD_ERR_NO_FILE) {
             echo json_encode(['success' => false, 'message' => 'No file uploaded.']);
             exit;
@@ -1344,13 +1362,27 @@ if (is_post()) {
 
 // AJAX Get Media Gallery (Blogs, Events, Campaigns)
 if ($loggedIn && (($_GET['action'] ?? '') === 'get_blog_media' || ($_POST['action'] ?? '') === 'get_blog_media' || ($_GET['action'] ?? '') === 'get_media')) {
-    header('Content-Type: application/json');
+    @ini_set('display_errors', '0');
+    while (ob_get_level()) { @ob_end_clean(); }
+    header('Content-Type: application/json; charset=utf-8');
     $root = realpath(__DIR__ . '/..') ?: dirname(__DIR__);
+
+    // Ensure all standard upload subdirectories exist
+    foreach (['blogs', 'events', 'campaigns', 'about', 'volunteers'] as $sub) {
+        $subPath = $root . '/uploads/' . $sub;
+        if (!is_dir($subPath)) {
+            @mkdir($subPath, 0775, true);
+        }
+    }
+
     $dirs = [
+        'campaigns' => [$root . '/uploads/campaigns', 'uploads/campaigns/'],
         'blogs' => [$root . '/uploads/blogs', 'uploads/blogs/'],
         'events' => [$root . '/uploads/events', 'uploads/events/'],
-        'campaigns' => [$root . '/uploads/campaigns', 'uploads/campaigns/'],
+        'about' => [$root . '/uploads/about', 'uploads/about/'],
+        'volunteers' => [$root . '/uploads/volunteers', 'uploads/volunteers/'],
         'uploads' => [$root . '/uploads', 'uploads/'],
+        'assets' => [$root . '/assets/images', 'assets/images/'],
     ];
     $allowedExts = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
     $images = [];
@@ -5183,6 +5215,7 @@ function filterMediaGallery() {
         filtered = filtered.filter(item => {
             if (item.folder === currentFolderFilter) return true;
             if (item.path && item.path.includes('/' + currentFolderFilter + '/')) return true;
+            if (item.folder === 'uploads' || item.folder === 'assets') return true;
             return false;
         });
     }
@@ -5357,64 +5390,128 @@ function removeCampaignImage() {
 
 function uploadMediaFileAjax(input) {
     if (!input || !input.files || input.files.length === 0) return;
-    const file = input.files[0];
+    const originalFile = input.files[0];
     const alertBox = document.getElementById('galleryUploadAlert');
     const alertText = document.getElementById('galleryUploadAlertText');
     const currentFolder = activeMediaTarget.context || 'blogs';
-    
+
     if (alertBox) {
         alertBox.className = 'alert alert-info py-2 px-3 small d-flex align-items-center mb-3';
-        if (alertText) alertText.innerText = 'Uploading and optimizing "' + file.name + '" to WebP (' + currentFolder + ')...';
+        if (alertText) alertText.innerText = 'Optimizing and uploading "' + originalFile.name + '"...';
     }
 
-    const formData = new FormData();
-    formData.append('action', 'upload_blog_media');
-    formData.append('media_file', file);
-    formData.append('folder', currentFolder);
-    formData.append('csrf_token', '<?= csrf_token() ?>');
+    // Helper to send actual fetch upload
+    function executeFetchUpload(fileToSend) {
+        const formData = new FormData();
+        formData.append('action', 'upload_blog_media');
+        formData.append('media_file', fileToSend);
+        formData.append('folder', currentFolder);
+        formData.append('csrf_token', '<?= csrf_token() ?>');
 
-    fetch('index.php', {
-        method: 'POST',
-        body: formData,
-        headers: { 'X-Requested-With': 'XMLHttpRequest' }
-    })
-    .then(r => r.json())
-    .then(res => {
-        input.value = '';
-        if (res.success) {
-            if (alertBox) {
-                alertBox.className = 'alert alert-success py-2 px-3 small d-flex align-items-center mb-3';
-                if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i> Successfully uploaded and added to media library!';
-                setTimeout(() => { alertBox.classList.add('d-none'); }, 3000);
+        fetch('index.php', {
+            method: 'POST',
+            body: formData,
+            headers: { 
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': '<?= csrf_token() ?>'
             }
-            const newItem = {
-                path: res.path,
-                url: res.url,
-                filename: res.filename,
-                folder: res.folder || currentFolder,
-                size: res.size,
-                date: res.date,
-                timestamp: Date.now() / 1000
-            };
-            mediaGalleryList.unshift(newItem);
-            filterMediaGallery();
-            selectMediaItemDirect(0);
-            const badge = document.getElementById('galleryCountBadge');
-            if (badge) badge.innerText = `${mediaGalleryList.length} images`;
-        } else {
+        })
+        .then(async r => {
+            const text = await r.text();
+            let res;
+            try {
+                const match = text.match(/\{[\s\S]*\}/);
+                res = match ? JSON.parse(match[0]) : JSON.parse(text);
+            } catch(e) {
+                res = { success: false, message: `Server error (HTTP ${r.status}). File upload may exceed server limits.` };
+            }
+            return res;
+        })
+        .then(res => {
+            input.value = '';
+            const isSuccess = res.success === true || res.status === 'success';
+            const errMsg = res.message || res.error || 'Upload failed.';
+            
+            if (isSuccess) {
+                if (alertBox) {
+                    alertBox.className = 'alert alert-success py-2 px-3 small d-flex align-items-center mb-3';
+                    if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-check me-2"></i> Successfully uploaded and added to media library!';
+                    setTimeout(() => { alertBox.classList.add('d-none'); }, 3000);
+                }
+                const newItem = {
+                    path: res.path,
+                    url: res.url,
+                    filename: res.filename,
+                    folder: res.folder || currentFolder,
+                    size: res.size,
+                    date: res.date,
+                    timestamp: Date.now() / 1000
+                };
+                mediaGalleryList.unshift(newItem);
+                filterMediaGallery();
+                selectMediaItemDirect(0);
+                const badge = document.getElementById('galleryCountBadge');
+                if (badge) badge.innerText = `${mediaGalleryList.length} images`;
+            } else {
+                if (alertBox) {
+                    alertBox.className = 'alert alert-danger py-2 px-3 small d-flex align-items-center mb-3';
+                    if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> ' + errMsg;
+                }
+            }
+        })
+        .catch(err => {
+            input.value = '';
             if (alertBox) {
                 alertBox.className = 'alert alert-danger py-2 px-3 small d-flex align-items-center mb-3';
-                if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> ' + (res.message || 'Upload failed.');
+                if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> Upload request failed. Please check network connection.';
             }
-        }
-    })
-    .catch(err => {
-        input.value = '';
-        if (alertBox) {
-            alertBox.className = 'alert alert-danger py-2 px-3 small d-flex align-items-center mb-3';
-            if (alertText) alertText.innerHTML = '<i class="fa-solid fa-circle-exclamation me-2"></i> Upload request failed.';
-        }
-    });
+        });
+    }
+
+    // Automatic Client-Side Image Compression for large images
+    if (originalFile.type && originalFile.type.startsWith('image/') && originalFile.type !== 'image/svg+xml') {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                const maxWidth = 1920;
+                const maxHeight = 1080;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > maxWidth || height > maxHeight) {
+                    const ratio = Math.min(maxWidth / width, maxHeight / height);
+                    width = Math.round(width * ratio);
+                    height = Math.round(height * ratio);
+                }
+
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                canvas.toBlob(function(blob) {
+                    if (blob && blob.size < originalFile.size) {
+                        const cleanName = originalFile.name.replace(/\.[^/.]+$/, "") + ".webp";
+                        const compressedFile = new File([blob], cleanName, {
+                            type: 'image/webp',
+                            lastModified: Date.now()
+                        });
+                        executeFetchUpload(compressedFile);
+                    } else {
+                        executeFetchUpload(originalFile);
+                    }
+                }, 'image/webp', 0.85);
+            };
+            img.onerror = function() { executeFetchUpload(originalFile); };
+            img.src = e.target.result;
+        };
+        reader.onerror = function() { executeFetchUpload(originalFile); };
+        reader.readAsDataURL(originalFile);
+    } else {
+        executeFetchUpload(originalFile);
+    }
 }
 
 function handleDirectBannerUpload(input) {

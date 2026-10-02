@@ -140,24 +140,18 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="relative rounded-2xl overflow-hidden shadow-xl bg-pure-white p-3.5 border border-border-warm">
           <div class="relative w-full h-[400px] sm:h-[440px] rounded-xl overflow-hidden bg-gradient-to-b from-[#1b8da0]/15 to-[#0e6070]/10 flex items-center justify-center">
             <?= ps_responsive_img($heroImg, ps_text('प्रदीप सारंग - समाजसेवी एवं पर्यावरणविद', 'Pradeep Sarang - Social Worker and Environmentalist'), 'w-full h-full object-contain', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
-            <!-- Top Float Badge -->
-            <div class="absolute top-3 left-3 bg-pure-white/95 backdrop-blur-md rounded-xl shadow-md px-3 py-2 flex items-center gap-2.5 border border-border-warm/80 z-10">
-              <div class="w-7 h-7 rounded-full bg-secondary text-pure-white flex items-center justify-center shrink-0 shadow-xs">
-                <span class="material-symbols-outlined text-[16px]">calendar_month</span>
-              </div>
-              <div class="flex flex-col leading-tight">
-                <span class="text-[10px] uppercase font-bold text-text-muted tracking-wider"><?= e(ps_text('सतत लोकसेवा', 'Continuous Service')) ?></span>
-                <span class="text-xs font-bold text-deep-forest"><?= e(ps_text('1987 से अनवरत', 'Since 1987')) ?></span>
-              </div>
-            </div>
           </div>
 
-          <!-- Clean Info Card Below Photo (Ensures face is completely unobstructed) -->
+          <!-- Clean Info Card Below Photo (Ensures face and photo are completely unobstructed) -->
           <div class="pt-4 pb-1 px-2 flex flex-col items-center text-center">
-            <div class="flex items-center justify-center gap-2 mb-2">
+            <div class="flex flex-wrap items-center justify-center gap-2 mb-2">
               <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#FAF8F3] border border-[#C05632]/30 text-[#14532D]">
                 <span class="w-2 h-2 rounded-full bg-[#15803D] inline-block animate-pulse"></span>
                 <span><?= e(ps_text('संस्थापक — ग्रीन गैंग (2019)', 'Founder — Green Gang (2019)')) ?></span>
+              </span>
+              <span class="inline-flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-white border border-[#E2E8F0] text-[#14532D] shadow-xs">
+                <span class="material-symbols-outlined text-[15px] text-[#C05632]">calendar_month</span>
+                <span><?= e(ps_text('1987 से अनवरत जनसेवा', 'Continuous Service Since 1987')) ?></span>
               </span>
             </div>
             <h2 class="font-headline-sm text-headline-sm font-bold text-[#14532D] mb-1">
@@ -342,10 +336,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span> <?= e(ps_text('अखंड भारत चेतना यात्रा', 'Unity Consciousness Drive')) ?></div>
             <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span> <?= e(ps_text('युवा नेतृत्व संवाद', 'Youth Leadership Forums')) ?></div>
           </div>
-          <div>
-            <a class="inline-flex items-center gap-2 bg-primary-container text-on-primary hover:bg-deep-forest px-5 py-2.5 rounded-lg font-label-md text-label-md shadow transition-colors font-semibold" href="<?= e(base_url('/campaigns/' . $patelSlug)) ?>">
-              <span><?= e(ps_text('सरदार पटेल अभियान से जुड़ें', 'Explore Sardar Patel Campaign')) ?></span>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="<?= e(base_url('/campaigns/sardar-patel-ekta')) ?>" class="inline-flex items-center gap-2 bg-primary-container text-on-primary hover:bg-deep-forest px-5 py-2.5 rounded-xl font-label-md text-label-md shadow-sm transition-all font-bold">
+              <span><?= e(ps_text('अभियान इतिहास व विस्तृत विवरण', 'Explore Sardar Patel Campaign')) ?></span>
               <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-white hover:bg-surface-variant text-deep-forest px-4 py-2.5 rounded-xl font-label-md text-label-md font-bold transition-all border border-border-warm shadow-sm">
+              <span class="material-symbols-outlined text-[16px] text-secondary">flag</span>
+              <span><?= e(ps_text('एकता दल से जुड़ें', 'Join Unity Wing')) ?></span>
             </a>
           </div>
         </div>
@@ -368,10 +366,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> <?= e(ps_text('50,000+ पौधे रोपित', '50,000+ Saplings Planted')) ?></div>
             <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-primary text-[18px]">check_circle</span> <?= e(ps_text('ग्रीन चौपाल संवाद', 'Green Chaupal Dialogues')) ?></div>
           </div>
-          <div>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
             <a class="inline-flex items-center gap-2 bg-secondary text-white hover:bg-deep-forest px-5 py-2.5 rounded-lg font-label-md text-label-md shadow transition-colors font-semibold" style="color: #ffffff !important; text-decoration: none;" href="<?= e(base_url('/campaigns/' . $greenSlug)) ?>">
               <span style="color: #ffffff !important; font-weight: 700;"><?= e(ps_text('ग्रीन गैंग की विस्तृत जानकारी', 'Detailed Info of Green Gang')) ?></span>
               <span class="material-symbols-outlined text-[16px]" style="color: #ffffff !important;">arrow_forward</span>
+            </a>
+            <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 bg-white hover:bg-surface-variant text-deep-forest px-4 py-2.5 rounded-xl font-label-md text-label-md font-bold transition-all border border-border-warm shadow-sm cursor-pointer" style="text-decoration: none;">
+              <span class="material-symbols-outlined text-[18px] text-primary">volunteer_activism</span>
+              <span><?= e(ps_text('ग्रीन गैंग से जुड़ें', 'Join Green Gang')) ?></span>
             </a>
           </div>
         </div>

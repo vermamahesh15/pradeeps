@@ -425,7 +425,16 @@ if (!function_exists('upload_file')) {
         }
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            $error = 'File upload error code: ' . $file['error'];
+            $errMsgs = [
+                1 => 'Selected image file is too large for the server (exceeds PHP upload_max_filesize limit). Please select an image under 10MB or compress it.',
+                2 => 'Selected image file exceeds form max size limit.',
+                3 => 'The file was only partially uploaded. Please try again.',
+                4 => 'No file was selected for upload.',
+                6 => 'Server temporary upload directory is missing.',
+                7 => 'Failed to write uploaded file to disk (check server permissions for uploads folder).',
+                8 => 'A PHP extension stopped the file upload.'
+            ];
+            $error = $errMsgs[$file['error']] ?? ('File upload failed (error code: ' . $file['error'] . ').');
             return null;
         }
 
@@ -911,4 +920,50 @@ if (!function_exists('ps_amp_content')) {
     }
 }
 
+function ps_get_campaigns(): array
+{
+    static $campaigns = null;
+    if ($campaigns !== null) {
+        return $campaigns;
+    }
+    try {
+        require_once __DIR__ . '/../models/ContentModel.php';
+        $contentModel = new ContentModel();
+        $list = $contentModel->all('campaigns');
+        if (is_array($list)) {
+            $campaigns = $list;
+            return $campaigns;
+        }
+    } catch (Throwable $e) {}
+
+    $campaigns = [];
+    return $campaigns;
+}
+
+function ps_get_donation_settings(): array
+{
+    static $settings = null;
+    if ($settings !== null) {
+        return $settings;
+    }
+    try {
+        require_once __DIR__ . '/../models/ContentModel.php';
+        $contentModel = new ContentModel();
+        $res = $contentModel->getDonationSettings();
+        if ($res) {
+            $settings = $res;
+            return $settings;
+        }
+    } catch (Throwable $e) {}
+
+    return [
+        'org_name' => 'प्रदीप सारंग जनसेवा एवं पर्यावरण न्यास',
+        'account_name' => 'Pradeep Sarang Trust',
+        'bank_name' => 'State Bank of India',
+        'account_number' => '38947291048',
+        'ifsc' => 'SBIN0005471',
+        'upi_id' => 'pradeepsarang@upi',
+        'qr_code' => null
+    ];
+}
 

@@ -28,8 +28,14 @@ $volunteers = $content->filterVolunteers($_POST);
                 <img src="<?= $v['photo'] ? base_url($v['photo']) : 'https://ui-avatars.com/api/?name='.urlencode($v['full_name']) ?>" class="volunteer-photo-sm">
             </td>
             <td>
-                <strong><?= e($v['full_name']) ?></strong><br>
+                <strong><?= e($v['full_name']) ?></strong>
+                <span class="badge <?= ($v['membership_type'] ?? '') === 'Membership' ? 'bg-primary' : 'bg-success' ?> ms-1" style="font-size: 11px;">
+                    <?= e($v['membership_type'] ?? 'Volunteer') ?> (<?= e($v['validity'] ?? '1 Year') ?>)
+                </span><br>
                 <small class="text-muted">ID: <?= e($v['volunteer_id'] ?? 'N/A') ?></small>
+                <?php if (!empty($v['payment_screenshot'])): ?>
+                    <br><a href="<?= base_url($v['payment_screenshot']) ?>" target="_blank" class="badge bg-light text-success border text-decoration-none mt-1"><i class="fa fa-receipt"></i> Receipt</a>
+                <?php endif; ?>
             </td>
             <td>
                 <?= e($v['phone']) ?><br>
