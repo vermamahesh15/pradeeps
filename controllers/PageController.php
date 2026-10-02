@@ -861,7 +861,22 @@ class PageController
             $photo = upload_file($_FILES['photo'], $error, 'volunteers');
         }
 
+        $payment_screenshot = null;
+        if (!empty($_FILES['payment_screenshot']['name'])) {
+            $payment_screenshot = upload_file($_FILES['payment_screenshot'], $error, 'volunteers');
+        }
+
+        $membershipType = trim($_POST['membership_type'] ?? 'Green Volunteer');
+        $isGreen = ($membershipType === 'Green Volunteer' || $membershipType === 'Membership');
+        $validity = $isGreen ? 'One-time / Lifetime' : '1 Year';
+        $amount = $isGreen ? 500.00 : 50.00;
+
         $this->content->saveVolunteer([
+            'membership_type' => $membershipType,
+            'validity' => $validity,
+            'amount' => $amount,
+            'transaction_id' => trim($_POST['transaction_id'] ?? ''),
+            'payment_screenshot' => $payment_screenshot,
             'full_name' => trim($_POST['full_name'] ?? ''),
             'father_name' => trim($_POST['father_name'] ?? ''),
             'email' => trim($_POST['email'] ?? ''),
@@ -880,7 +895,7 @@ class PageController
             'photo' => $photo,
             'status' => 'Pending'
         ]);
-        flash('success', 'Volunteer application received. Thank you for joining us.');
+        flash('success', 'पंजीकरण एवं भुगतान विवरण सफलतापूर्वक प्राप्त हुआ। सत्यापन उपरांत आपकी सदस्यता पुष्टि की जाएगी। (Application & payment submitted successfully.)');
         redirect('/volunteer');
     }
 

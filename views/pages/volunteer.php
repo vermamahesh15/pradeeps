@@ -4,6 +4,17 @@ declare(strict_types=1);
 $contactPhone = $settings['phone'] ?? '+91 9919007190';
 $contactEmail = $settings['email'] ?? 'volunteer@pradeepsarang.in';
 $states = $states ?? [];
+
+$dSettings = ps_get_donation_settings();
+$accountName = trim($dSettings['account_name'] ?? '') ?: ps_text('प्रदीप सारंग जनसेवा एवं पर्यावरण न्यास', 'Pradeep Sarang Trust');
+$bankName = trim($dSettings['bank_name'] ?? '') ?: ps_text('State Bank of India (भारतीय स्टेट बैंक)', 'State Bank of India (SBI)');
+$accountNumber = trim($dSettings['account_number'] ?? '') ?: '38947291048';
+$ifscCode = trim($dSettings['ifsc'] ?? '') ?: 'SBIN0005471';
+$upiId = trim($dSettings['upi_id'] ?? '') ?: 'pradeepsarang@upi';
+
+// Dynamic UPI QR Codes (Rs 500 for Green Volunteer, Rs 50 for Volunteer)
+$qrGreenVolunteer = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$upiId}&pn=" . rawurlencode($accountName) . "&am=500&cu=INR&tn=" . rawurlencode("Green Volunteer Fee Rs 500"));
+$qrVolunteer = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$upiId}&pn=" . rawurlencode($accountName) . "&am=50&cu=INR&tn=" . rawurlencode("Volunteer Fee 1 Year Rs 50"));
 ?>
 
 <div class="flex flex-col w-full">
@@ -57,381 +68,109 @@ $states = $states ?? [];
     </div>
   </div>
 </section>
-
-<!-- Impact Metrics Ribbon (Volunteering at a Glance) -->
-<section class="w-full bg-deep-forest text-on-primary py-8 px-4 sm:px-8">
-  <div class="max-w-container-max mx-auto">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <!-- Metric 1 -->
-      <div class="flex flex-col items-center p-3 rounded-lg bg-surface-container-low/10">
-        <div class="flex items-center gap-1.5 text-primary-fixed mb-1">
-          <span class="material-symbols-outlined text-[24px]">groups</span>
-          <span class="font-display-hero-mobile text-display-hero-mobile font-bold text-pure-white leading-none">1,500+</span>
-        </div>
-        <span class="font-label-md text-label-md text-pure-white font-semibold"><?= e(ps_text('सक्रिय स्वयंसेवक', 'Active Volunteers')) ?></span>
-        <span class="font-label-sm text-label-sm text-surface-container-high opacity-80 mt-0.5"><?= e(ps_text('गाँवों व नगरों में तत्पर', 'Ready across villages & towns')) ?></span>
-      </div>
-      <!-- Metric 2 -->
-      <div class="flex flex-col items-center p-3 rounded-lg bg-surface-container-low/10">
-        <div class="flex items-center gap-1.5 text-tertiary-fixed mb-1">
-          <span class="material-symbols-outlined text-[24px]">pin_drop</span>
-          <span class="font-display-hero-mobile text-display-hero-mobile font-bold text-pure-white leading-none">120+</span>
-        </div>
-        <span class="font-label-md text-label-md text-pure-white font-semibold"><?= e(ps_text('गाँव एवं कस्बे', 'Villages & Towns')) ?></span>
-        <span class="font-label-sm text-label-sm text-surface-container-high opacity-80 mt-0.5"><?= e(ps_text('अवध अंचल में आच्छादित', 'Covered across Awadh region')) ?></span>
-      </div>
-      <!-- Metric 3 -->
-      <div class="flex flex-col items-center p-3 rounded-lg bg-surface-container-low/10">
-        <div class="flex items-center gap-1.5 text-fresh-sprout mb-1">
-          <span class="material-symbols-outlined text-[24px]">nature</span>
-          <span class="font-display-hero-mobile text-display-hero-mobile font-bold text-pure-white leading-none">50,000+</span>
-        </div>
-        <span class="font-label-md text-label-md text-pure-white font-semibold"><?= e(ps_text('रोपित पौधों की देखभाल', 'Trees Planted & Protected')) ?></span>
-        <span class="font-label-sm text-label-sm text-surface-container-high opacity-80 mt-0.5"><?= e(ps_text('\'ग्रीन मॉर्निंग\' के तहत', 'Under Green Morning Drive')) ?></span>
-      </div>
-      <!-- Metric 4 -->
-      <div class="flex flex-col items-center p-3 rounded-lg bg-surface-container-low/10">
-        <div class="flex items-center gap-1.5 text-secondary-fixed mb-1">
-          <span class="material-symbols-outlined text-[24px]">favorite</span>
-          <span class="font-display-hero-mobile text-display-hero-mobile font-bold text-pure-white leading-none">04</span>
-        </div>
-        <span class="font-label-md text-label-md text-pure-white font-semibold"><?= e(ps_text('प्रमुख सेवा स्तम्भ', 'Core Pillars of Impact')) ?></span>
-        <span class="font-label-sm text-label-sm text-surface-container-high opacity-80 mt-0.5"><?= e(ps_text('प्रकृति, जीव, भाषा, मानव सेवा', 'Nature, Birds, Heritage, Relief')) ?></span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Volunteer Field Action Photo Showcase -->
-<section class="w-full py-space-xl bg-pure-white border-b border-border-warm">
-  <div class="max-w-container-max mx-auto px-4 sm:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Green Gang Tree Planting" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-fresh-sprout font-bold"><?= e(ps_text('ग्रीन गैंग कार्यदल', 'Green Gang Volunteer Squad')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('ग्रामीण अंचलों में युवाओं की पौधारोपण सहभागिता', 'Youth Tree Plantation Squad in Rural Awadh')) ?></p>
-        </div>
-      </div>
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdMQwsnVo2dk4ut7g6q_cAP6eTxbCJ79UEWEL6LMYJP9Bzoa711KY0DUcQDKRXxuQ_6LQhxi0vQ2STd8MG_7M8PMwLDKDbl4rkN0NWnrSqVTvaAamPZA23ot4DWOtvh7QMTvSKjQWd4KHteII-UyAePIVzkOU6Kjt18WGSoV63V45Zxnm-uJxCWTIYBFdLiZQTIIpMJ2BicU3nJOrp9TW5wTXMOaNdUj57zI1cu2Z0PJgk4oP02r7" alt="Parinda Water Bowl Drive" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('परिंदा जल-सकोरा सेवा', 'Parinda Water Bowl Network')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('पक्षियों हेतु जलदान व दाना-पानी संकल्प', 'Volunteers Distributing Water Bowls for Birds')) ?></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Core Volunteer Pillars (4 Interactive Category Cards) -->
-<section class="w-full py-space-3xl px-4 sm:px-8 bg-cream-canvas">
-  <div class="max-w-container-max mx-auto">
-    <div class="text-center max-w-2xl mx-auto mb-10">
-      <span class="inline-block px-3 py-1 rounded-md bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold mb-2">
-        <?= e(ps_text('सहभागिता के चार आयाम', 'Four Pillars of Service')) ?>
-      </span>
-      <h2 class="font-headline-lg text-headline-lg text-deep-forest"><?= e(ps_text('अपनी रुचि और समय अनुसार कार्यक्षेत्र चुनें', 'Choose Domain by Interest & Time')) ?></h2>
-      <p class="font-body-md text-body-md text-text-muted mt-2">
-        <?= e(ps_text('प्रत्येक स्वयंसेवक अपने कौशल, दिनचर्या और आवासीय क्षेत्र के अनुसार कार्यदल से जुड़ सकता है। कोई भी प्रयास छोटा नहीं होता।', 'Every volunteer can join according to skills, routine and location. No effort is small.')) ?>
-      </p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Pillar 1: Hariali Sanrakshak -->
-      <div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
-        <div>
-          <div class="w-12 h-12 rounded-lg bg-soft-meadow flex items-center justify-center text-primary mb-4">
-            <span class="material-symbols-outlined text-[28px]">potted_plant</span>
-          </div>
-          <span class="inline-block px-2.5 py-0.5 rounded bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold mb-2">
-            <?= e(ps_text('स्तम्भ १ : पर्यावरण', 'Pillar 1: Environment')) ?>
-          </span>
-          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('हरियाली संरक्षक (Green Gang)', 'Hariyali Protector (Green Gang)')) ?></h3>
-          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-            <?= e(ps_text('प्रभातकालीन \'ग्रीन मॉर्निंग\' पौधारोपण, ग्रामीण सड़कों पर वृक्ष सुरक्षा बाड़ (ट्री-गार्ड) निर्माण और \'एक छात्र, एक पौधा\' संकल्प का नेतृत्व।', 'Morning Green Morning tree planting drives, tree guard construction along village roads & student tree adoption.')) ?>
-          </p>
-          <div class="space-y-2 mb-6">
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-primary">schedule</span>
-              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('2-3 घंटे / सप्ताह (रविवार प्रभात)', '2-3 hrs / week (Sunday Morning)')) ?></span>
-            </div>
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-primary">person_check</span>
-              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('युवा, किसान, छात्र, प्रकृति प्रेमी', 'Youth, Farmers, Students, Nature Lovers')) ?></span>
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="selectPillar('हरियाली अभियान एवं ग्रीन गैंग')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
-          <span><?= e(ps_text('यह स्तम्भ चुनें', 'Select this pillar')) ?></span>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </button>
-      </div>
-
-      <!-- Pillar 2: Parinda Sanrakshak -->
-      <div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
-        <div>
-          <div class="w-12 h-12 rounded-lg bg-tertiary-fixed/30 flex items-center justify-center text-tertiary mb-4">
-            <span class="material-symbols-outlined text-[28px]">nest_cam_wired_stand</span>
-          </div>
-          <span class="inline-block px-2.5 py-0.5 rounded bg-tertiary-fixed/40 text-tertiary font-label-sm text-label-sm font-semibold mb-2">
-            <?= e(ps_text('स्तम्भ २ : बेजुबान सेवा', 'Pillar 2: Bird Welfare')) ?>
-          </span>
-          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('परिंदा व जीव रक्षक', 'Bird & Wildlife Protector')) ?></h3>
-          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-            <?= e(ps_text('भीषण गर्मी में मिट्टी के सकोरे वितरण, जल-पात्रों की नियमित निगरानी और छतों, दुकानों व खेतों पर दाना-पानी की निरंतर व्यवस्था।', 'Earthen water bowl distribution in summer, water bowl refills & maintaining seed-water feeders on roofs/farms.')) ?>
-          </p>
-          <div class="space-y-2 mb-6">
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-tertiary">schedule</span>
-              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('15 मिनट प्रतिदिन (घर/दुकान में)', '15 mins daily (Home/Shop)')) ?></span>
-            </div>
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-tertiary">person_check</span>
-              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('गृहणियाँ, दुकानदार, बुजुर्ग, बच्चे', 'Homemakers, Shopkeepers, Elders')) ?></span>
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="selectPillar('परिंदा संरक्षण अभियान')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
-          <span><?= e(ps_text('यह स्तम्भ चुनें', 'Select this pillar')) ?></span>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </button>
-      </div>
-
-      <!-- Pillar 3: Awadhi Sanskriti Doot -->
-      <div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
-        <div>
-          <div class="w-12 h-12 rounded-lg bg-secondary-fixed/40 flex items-center justify-center text-secondary mb-4">
-            <span class="material-symbols-outlined text-[28px]">menu_book</span>
-          </div>
-          <span class="inline-block px-2.5 py-0.5 rounded bg-secondary-fixed/50 text-secondary font-label-sm text-label-sm font-semibold mb-2">
-            <?= e(ps_text('स्तम्भ ३ : भाषा व संस्कृति', 'Pillar 3: Culture & Language')) ?>
-          </span>
-          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('अवधी भाषा व संस्कृति दूत', 'Awadhi Culture Ambassador')) ?></h3>
-          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-            <?= e(ps_text('गाँव चौपालों में अवधी काव्य-वाचन, लुप्तप्राय लोक कहावतों व शब्दों का संग्रह, तुलसी जयंती पखवारा में सहयोग और सांस्कृतिक प्रलेखन।', 'Awadhi poetry readings in village chaupals, collecting folk proverbs & organizing Tulsi Jayanti events.')) ?>
-          </p>
-          <div class="space-y-2 mb-6">
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-secondary">schedule</span>
-              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('पाक्षिक या मासिक आयोजनों में', 'Fortnightly / Monthly events')) ?></span>
-            </div>
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-secondary">person_check</span>
-              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('शिक्षक, साहित्य प्रेमी, शोधार्थी, कवि', 'Teachers, Scholars, Poets')) ?></span>
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="selectPillar('अवधी भाषा, साहित्य व तुलसी जयंती')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
-          <span><?= e(ps_text('यह स्तम्भ चुनें', 'Select this pillar')) ?></span>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </button>
-      </div>
-
-      <!-- Pillar 4: Aapat Seva Dal -->
-      <div class="bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
-        <div>
-          <div class="w-12 h-12 rounded-lg bg-error-container/40 flex items-center justify-center text-error mb-4">
-            <span class="material-symbols-outlined text-[28px]">emergency_share</span>
-          </div>
-          <span class="inline-block px-2.5 py-0.5 rounded bg-soft-meadow text-deep-forest font-label-sm text-label-sm font-semibold mb-2 border border-border-warm">
-            <?= e(ps_text('स्तम्भ ४ : पक्षी व परिंदा संरक्षण', 'Pillar 4: Bird Conservation')) ?>
-          </span>
-          <h3 class="font-title-lg text-title-lg text-deep-forest mb-2"><?= e(ps_text('जल-सकोरा व पक्षी संरक्षण दल', 'Water Bowl & Bird Protection Taskforce')) ?></h3>
-          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">
-            <?= e(ps_text('भीषण गर्मी में मिट्टी के जल-सकोरे वितरण, दाना-पानी प्रबंध, पक्षी आश्रय निर्माण और गौरैया संरक्षण जागरूकता में सहभागिता।', 'Participating in clay water bowl distribution, grain-feed setup, and sparrow protection drives.')) ?>
-          </p>
-          <div class="space-y-2 mb-6">
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-deep-forest">schedule</span>
-              <span><strong><?= e(ps_text('समय:', 'Time:')) ?></strong> <?= e(ps_text('ग्रीष्म ऋतु / नियमित साप्ताहिक', 'Summer Season / Weekly')) ?></span>
-            </div>
-            <div class="flex items-center gap-2 font-label-sm text-label-sm text-deep-forest">
-              <span class="material-symbols-outlined text-[16px] text-deep-forest">person_check</span>
-              <span><strong><?= e(ps_text('आदर्श:', 'Ideal:')) ?></strong> <?= e(ps_text('युवा, प्रकृति प्रेमी, छात्र, सामाजिक कार्यकर्ता', 'Youth, Nature Lovers, Students')) ?></span>
-            </div>
-          </div>
-        </div>
-        <button type="button" onclick="selectPillar('जल-सकोरा व परिंदा संरक्षण अभियान')" class="w-full py-2 px-3 rounded-lg bg-surface-container text-deep-forest hover:bg-primary hover:text-on-primary font-label-md text-label-md transition-colors flex items-center justify-center gap-1.5">
-          <span><?= e(ps_text('यह स्तम्भ चुनें', 'Select this pillar')) ?></span>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Split Section: Why Volunteer & Visual Highlight -->
-<section class="w-full bg-soft-meadow py-space-3xl px-4 sm:px-8 border-y border-border-warm">
-  <div class="max-w-container-max mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-      <!-- Visual Column -->
-      <div class="lg:col-span-5 relative">
-        <div class="relative rounded-2xl overflow-hidden shadow-md">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB35tR_pZ7AZzjgZ8O5JlP_sx8z9ydz5pE5MQuDVCesMq0jHByqzXV75UIgDh4UmGy6kW9_RalwFqez--7oIaDq09wP5-6tDXjPWtMrkesh_1Rfp3SCMildiHmJh0gDWFQRXj1FpI_RQQae_ENfDvjOqd9RIPzWzOfTNSyPmD0G-jn4NwyBPxrZxa3gUiFOYTBPg1o_60Wctd2VxLSQ9eL0SyB1QBL-DBXGcpFtjxtDnZ6cRJiDz8JZ" alt="<?= e(ps_text('प्रदीप सारंग युवाओं के साथ पौधारोपण करते हुए', 'Pradeep Sarang planting trees with youth volunteers')) ?>" class="w-full h-96 object-cover">
-          <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/40 to-transparent p-5 text-pure-white">
-            <span class="inline-flex items-center gap-1 text-primary-fixed text-label-sm font-semibold mb-1">
-              <span class="material-symbols-outlined text-[14px]">eco</span>
-              <?= e(ps_text('फील्ड रिपोर्ट — बाराबंकी', 'Field Report — Barabanki')) ?>
-            </span>
-            <p class="font-headline-sm text-headline-sm leading-snug"><?= ps_text('"जब एक हाथ पौधा रोपता है, और सौ हाथ उसे सींचते हैं — तब क्रांति होती है।"', '"When one hand plants a tree and a hundred hands nurture it — revolution happens."') ?></p>
-          </div>
-        </div>
-        <!-- Stamp Overlap -->
-        <div class="absolute -bottom-5 -right-4 bg-secondary text-pure-white p-3.5 rounded-xl shadow-lg hidden sm:flex items-center gap-3">
-          <span class="material-symbols-outlined text-[28px]">military_tech</span>
-          <div class="flex flex-col">
-            <span class="font-label-sm text-label-sm uppercase tracking-wider font-bold"><?= e(ps_text('100% निस्वार्थ भाव', '100% Volunteer Driven')) ?></span>
-            <span class="font-body-sm text-body-sm opacity-90"><?= e(ps_text('कोई शुल्क नहीं, केवल सेवा', 'No fees, pure service')) ?></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Content Column: 4 Value Principles -->
-      <div class="lg:col-span-7">
-        <span class="inline-block px-3 py-1 rounded-md bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold mb-2">
-          <?= e(ps_text('हमारे सिद्धांत व लाभ', 'Our Principles & Benefits')) ?>
-        </span>
-        <h2 class="font-headline-lg text-headline-lg text-deep-forest mb-4">
-          <?= e(ps_text('सारंग जी के जन-आंदोलन से क्यों जुड़ें?', 'Why Join Shri Sarang’s Movement?')) ?>
-        </h2>
-        <p class="font-body-md text-body-md text-on-surface-variant mb-6 leading-relaxed">
-          <?= e(ps_text('यह केवल एक डिजिटल पंजीकरण नहीं, बल्कि अपनी माटी, गाँव और समाज के प्रति निष्ठा का जीवित संकल्प है। यहाँ कोई औपचारिकता नहीं, सिर्फ ज़मीनी कर्म की प्रधानता है।', 'This is a living pledge towards soil, village & society. No empty formalities, only real ground action.')) ?>
-        </p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-border-warm flex items-start gap-3.5">
-            <span class="material-symbols-outlined text-primary text-[24px] shrink-0 mt-0.5">nature_people</span>
-            <div>
-              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('ज़मीनी प्रत्यक्ष प्रभाव', 'Direct Grassroots Impact')) ?></h4>
-              <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-                <?= e(ps_text('कागज़ी या सोशल मीडिया तक सीमित नहीं; हर कार्य बाराबंकी व अवध के गाँवों में आँखों के सामने घटित होता है।', 'Not limited to social media; work happens right before your eyes in Barabanki villages.')) ?>
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-border-warm flex items-start gap-3.5">
-            <span class="material-symbols-outlined text-secondary text-[24px] shrink-0 mt-0.5">sentiment_satisfied</span>
-            <div>
-              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('\'ग्रीन मॉर्निंग\' पहचान', '\'Green Morning\' Identity')) ?></h4>
-              <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-                <?= e(ps_text('एक-दूसरे को \'ग्रीन मॉर्निंग\' कह कर प्रकृति चेतना जगाने वाले अनूठे समुदाय का सम्मानजनक हिस्सा बनें।', 'Become part of a unique community greeting each other with Green Morning.')) ?>
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-border-warm flex items-start gap-3.5">
-            <span class="material-symbols-outlined text-tertiary text-[24px] shrink-0 mt-0.5">workspace_premium</span>
-            <div>
-              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('सेवा प्रमाण पत्र व सम्मान', 'Certificate & Recognition')) ?></h4>
-              <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-                <?= e(ps_text('सक्रिय स्वयंसेवकों को वार्षिक सामाजिक उत्सव में लोक सम्मान और विद्यार्थियों को सेवा-अनुभव प्रमाण पत्र।', 'Active volunteers receive public honors and students receive service experience certificates.')) ?>
-              </p>
-            </div>
-          </div>
-
-          <div class="bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-border-warm flex items-start gap-3.5">
-            <span class="material-symbols-outlined text-deep-forest text-[24px] shrink-0 mt-0.5">history_edu</span>
-            <div>
-              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('लोक-संस्कृति से सीधा जुड़ाव', 'Connection with Folk Culture')) ?></h4>
-              <p class="font-body-sm text-body-sm text-text-muted leading-relaxed">
-                <?= e(ps_text('बुजुर्गों के सान्निध्य में अवधी बोलियों, लोकगीतों, पारंपरिक जल-संरक्षण और वानिकी का व्यावहारिक ज्ञान।', 'Practical learning of Awadhi dialects, folk wisdom, water harvesting & forestry.')) ?>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Step-by-Step Onboarding Journey -->
-<section class="w-full py-space-3xl px-4 sm:px-8 bg-cream-canvas">
-  <div class="max-w-container-max mx-auto">
-    <div class="text-center max-w-2xl mx-auto mb-10">
-      <span class="inline-block px-3 py-1 rounded-md bg-surface-container text-deep-forest font-label-sm text-label-sm font-semibold mb-2">
-        <?= e(ps_text('सरल एवं पारदर्शी प्रक्रिया', 'Simple & Transparent Process')) ?>
-      </span>
-      <h2 class="font-headline-lg text-headline-lg text-deep-forest"><?= e(ps_text('स्वयंसेवक बनने की चार-चरणीय यात्रा', 'Four Steps to Become a Volunteer')) ?></h2>
-      <p class="font-body-md text-body-md text-text-muted mt-2">
-        <?= e(ps_text('आवेदन से लेकर ज़मीनी सेवा तक — हमारा तंत्र आपको पूर्ण सहयोग और मार्गदर्शन प्रदान करता है।', 'From application to field work — our network provides complete guidance.')) ?>
-      </p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-      <!-- Step 1 -->
-      <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-border-warm relative">
-        <div class="w-10 h-10 rounded-full bg-primary text-on-primary font-title-lg flex items-center justify-center font-bold mb-4">
-          १
-        </div>
-        <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('प्रपत्र भरें', 'Fill Application')) ?></h4>
-        <p class="font-body-sm text-body-sm text-text-muted">
-          <?= e(ps_text('नीचे दिए गए सरल फॉर्म में अपनी रुचि, गाँव/कस्बा और समय की उपलब्धता दर्ज करें।', 'Enter your interests, village/town and time availability below.')) ?>
-        </p>
-      </div>
-
-      <!-- Step 2 -->
-      <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-border-warm relative">
-        <div class="w-10 h-10 rounded-full bg-primary text-on-primary font-title-lg flex items-center justify-center font-bold mb-4">
-          २
-        </div>
-        <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('परिचयात्मक संवाद', 'Introductory Contact')) ?></h4>
-        <p class="font-body-sm text-body-sm text-text-muted">
-          <?= e(ps_text('तहसील स्तर के स्वयंसेवक समन्वयक द्वारा WhatsApp या फोन पर सौहार्दपूर्ण स्वागत व मार्गदर्शन।', 'Welcome call/WhatsApp message from your local block volunteer coordinator.')) ?>
-        </p>
-      </div>
-
-      <!-- Step 3 -->
-      <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-border-warm relative">
-        <div class="w-10 h-10 rounded-full bg-primary text-on-primary font-title-lg flex items-center justify-center font-bold mb-4">
-          ३
-        </div>
-        <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('ग्रीन गैंग किट व बैज', 'Green Gang Badge')) ?></h4>
-        <p class="font-body-sm text-body-sm text-text-muted">
-          <?= e(ps_text('\'ग्रीन मॉर्निंग\' बैज, पौधा सुरक्षा पुस्तिका, सकोरा सामग्री और आपात संपर्क निर्देशिका की प्राप्ति।', 'Receive Green Morning badge, tree protection guide & emergency donor contacts.')) ?>
-        </p>
-      </div>
-
-      <!-- Step 4 -->
-      <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-border-warm relative">
-        <div class="w-10 h-10 rounded-full bg-secondary text-on-secondary font-title-lg flex items-center justify-center font-bold mb-4">
-          ४
-        </div>
-        <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1"><?= e(ps_text('ज़मीनी सेवा आरंभ', 'Start Ground Service')) ?></h4>
-        <p class="font-body-sm text-body-sm text-text-muted">
-          <?= e(ps_text('अपने मोहल्ले, खेत या चौपाल में पौधारोपण, परिंदा जलपात्र अथवा सांस्कृतिक अभियान का शुभारम्भ।', 'Begin tree planting, bird feeding or cultural outreach in your area.')) ?>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Interactive Volunteer Registration Form Section -->
 <section class="w-full bg-soft-meadow py-space-3xl px-4 sm:px-8 border-t border-border-warm" id="registration-form">
   <div class="max-w-4xl mx-auto">
     <div class="bg-surface-container-lowest rounded-2xl shadow-md p-6 sm:p-10 border border-border-warm">
       <!-- Form Header -->
       <div class="border-b border-border-warm pb-6 mb-8">
-        <div class="flex flex-wrap items-center justify-between gap-3 mb-2">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold">
-            <span class="material-symbols-outlined text-[15px]">edit_note</span>
-            <?= e(ps_text('निःशुल्क जनसेवा पंजीकरण २०२६', 'Free Volunteer Enrollment 2026')) ?>
-          </span>
-          <span class="font-label-sm text-label-sm text-text-muted flex items-center gap-1">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+          <div class="inline-flex items-center gap-2 bg-emerald-100/90 text-emerald-950 px-4 py-2 rounded-xl font-label-md text-xs sm:text-sm font-bold border border-emerald-300 shadow-xs">
+            <span class="material-symbols-outlined text-[18px] text-emerald-700" style="font-variation-settings: 'FILL' 1;">eco</span>
+            <span><?= e(ps_text('आँखें फाउंडेशन द्वारा वित्त पोषित तथा प्रदीप सारंग द्वारा संस्थापित "ग्रीन गैंग"', 'Funded by Aankhein Foundation & Founded by Pradeep Sarang — "Green Gang"')) ?></span>
+          </div>
+          <span class="font-label-sm text-label-sm text-text-muted flex items-center gap-1 shrink-0">
             <span class="material-symbols-outlined text-[15px] text-primary">lock</span>
             <?= e(ps_text('आपकी जानकारी पूर्णतः सुरक्षित है', 'Your details are strictly confidential')) ?>
           </span>
         </div>
         <h2 class="font-headline-lg text-headline-lg text-deep-forest">
-          <?= e(ps_text('स्वयंसेवक सहभागिता प्रपत्र (Volunteer Enrollment Form)', 'Volunteer Registration Form')) ?>
+          <?= e(ps_text('स्वयंसेवक / सदस्यता सहभागिता प्रपत्र', 'Volunteer / Membership Registration Form')) ?>
         </h2>
         <p class="font-body-sm text-body-sm text-text-muted mt-1">
           <?= e(ps_text('कृपया अपनी सही जानकारी भरें ताकि आपके निकटतम क्षेत्र के ग्रीन गैंग समन्वयक आपसे संपर्क कर सकें।', 'Please enter your authentic details so your nearest Green Gang coordinator can reach out.')) ?>
         </p>
+      </div>
+      <!-- Membership Classification Notice -->
+      <div class="mb-8 p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-pure-white to-[#F2FBF5] border-2 border-emerald-500/30 shadow-sm">
+        <div class="flex items-start gap-3.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs shrink-0 mt-0.5">
+            <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">eco</span>
+          </div>
+          <div class="flex-1 space-y-3">
+            <h3 class="font-title-lg text-title-md sm:text-title-lg text-deep-forest font-bold tracking-tight">
+              <?= e(ps_text('सदस्यता दो प्रकार की है-', 'Two Types of Membership:')) ?>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+              <!-- Tier 1: Green Volunteer -->
+              <div class="p-4 rounded-xl bg-pure-white border-2 border-emerald-500/30 shadow-xs flex flex-col justify-between gap-2">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-1.5">
+                    <span class="font-bold text-emerald-800 text-body-md flex items-center gap-1.5">
+                      <span class="w-5 h-5 rounded-full bg-emerald-600 text-white text-xs flex items-center justify-center font-bold">1</span>
+                      <?= e(ps_text('ग्रीन स्वयंसेवक', 'Green Volunteer')) ?>
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-xs whitespace-nowrap">₹500 • <?= e(ps_text('एक बार', 'One-time')) ?></span>
+                  </div>
+                  <p class="font-body-sm text-xs text-deep-forest leading-relaxed">
+                    <?= e(ps_text('एक बार 500 रुपये जमा करने वाले व्यक्ति को ग्रीन स्वयं सेवक "ग्रीन वॉलंटियर" तथा "हरित स्वयंसेवक" कहा जायेगा।', 'A person contributing a one-time fee of ₹500 will be designated as a Green Volunteer ("Harit Swayamsevak").')) ?>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tier 2: Volunteer -->
+              <div class="p-4 rounded-xl bg-pure-white border border-border-warm shadow-xs flex flex-col justify-between gap-2">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-1.5">
+                    <span class="font-bold text-deep-forest text-body-md flex items-center gap-1.5">
+                      <span class="w-5 h-5 rounded-full bg-deep-forest text-white text-xs flex items-center justify-center font-bold">2</span>
+                      <?= e(ps_text('स्वयंसेवक', 'Volunteer')) ?>
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-bold text-xs whitespace-nowrap">₹50 • <?= e(ps_text('१ वर्ष', '1 Year')) ?></span>
+                  </div>
+                  <p class="font-body-sm text-xs text-text-muted leading-relaxed">
+                    <?= e(ps_text('50 रुपये जमा करके कोई व्यक्ति एक वर्ष के लिए "वालंटियर" तथा "स्वयंसेवक" कहा जायेगा।', 'A person contributing ₹50 will be designated as a "Volunteer" / "Swayamsevak" for one year.')) ?>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Form Body -->
       <form id="volunteerForm" method="post" action="<?= e(base_url('/volunteer')) ?>" enctype="multipart/form-data" class="space-y-6">
         <?= csrf_field() ?>
         <input type="hidden" name="form_type" value="volunteer">
+
+        <!-- Type Selection: Green Volunteer (One-time ₹500) vs Volunteer (1 Year ₹50) -->
+        <div>
+          <label class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
+            <?= e(ps_text('पंजीकरण का प्रकार चुनें (Select Category)', 'Select Registration Type')) ?> <span class="text-error">*</span>
+          </label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <label class="relative flex items-start gap-3 p-4 rounded-xl border-2 border-emerald-500/40 bg-pure-white hover:border-emerald-600 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50/30 has-[:checked]:ring-2 has-[:checked]:ring-emerald-500/20 shadow-xs">
+              <input type="radio" name="membership_type" value="Green Volunteer" checked onchange="updateVolunteerPaymentMode(this.value)" class="mt-1 w-4 h-4 accent-emerald-600 text-emerald-600 focus:ring-emerald-500">
+              <div class="flex flex-col flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-body-md font-bold text-emerald-900"><?= e(ps_text('१- ग्रीन स्वयंसेवक', '1- Green Volunteer')) ?></span>
+                  <span class="bg-emerald-100 text-emerald-900 font-bold text-xs px-2.5 py-0.5 rounded-full border border-emerald-300 whitespace-nowrap"><?= e(ps_text('₹500 • एक बार', '₹500 • One-time')) ?></span>
+                </div>
+                <span class="font-label-sm text-xs text-deep-forest mt-1"><?= e(ps_text('एक बार 500 रुपये जमा करने वाले व्यक्ति को "ग्रीन वॉलंटियर" तथा "हरित स्वयंसेवक" कहा जायेगा।', 'One-time ₹500 fee for Green Volunteer / Harit Swayamsevak designation.')) ?></span>
+              </div>
+            </label>
+            <label class="relative flex items-start gap-3 p-4 rounded-xl border border-border-warm bg-pure-white hover:border-primary cursor-pointer transition-all has-[:checked]:border-primary has-[:checked]:bg-primary/5 has-[:checked]:ring-2 has-[:checked]:ring-primary/20 shadow-xs">
+              <input type="radio" name="membership_type" value="Volunteer" onchange="updateVolunteerPaymentMode(this.value)" class="mt-1 w-4 h-4 accent-primary text-primary focus:ring-primary">
+              <div class="flex flex-col flex-1">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-body-md font-bold text-deep-forest"><?= e(ps_text('२- स्वयंसेवक', '2- Volunteer')) ?></span>
+                  <span class="bg-primary/10 text-primary font-bold text-xs px-2.5 py-0.5 rounded-full border border-primary/20 whitespace-nowrap"><?= e(ps_text('₹50 • १ वर्ष', '₹50 • 1 Year')) ?></span>
+                </div>
+                <span class="font-label-sm text-xs text-text-muted mt-1"><?= e(ps_text('50 रुपये जमा करके कोई व्यक्ति एक वर्ष के लिए "वालंटियर" तथा "स्वयंसेवक" कहा जायेगा।', '₹50 contribution for 1-year Volunteer active membership.')) ?></span>
+              </div>
+            </label>
+          </div>
+        </div>
 
         <!-- Row 1: Full Name & WhatsApp Number -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -520,12 +259,21 @@ $states = $states ?? [];
           </div>
         </div>
 
-        <!-- Selection: Domains of Contribution -->
+        <!-- Selection: Domains of Contribution (Abhiyan Selection) -->
         <div class="p-5 rounded-xl bg-soft-meadow border border-border-warm">
-          <label class="block font-title-md text-title-md text-deep-forest font-bold mb-3">
-            <?= e(ps_text('आप किस अभियान में सहभागिता करना चाहते हैं? (रुचि/कौशल)', 'Which initiatives interest you? (Interests & Skills)')) ?> <span class="text-error">*</span>
+          <label for="userInterests" class="block font-title-md text-title-md text-deep-forest font-bold mb-3">
+            <?= e(ps_text('आप किस अभियान में सहभागिता करना चाहते हैं? (अभियान सूची)', 'Which Campaign / Initiative do you wish to join?')) ?> <span class="text-error">*</span>
           </label>
-          <input type="text" id="userInterests" name="interests" required class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all">
+          <select id="userInterests" name="interests" required onchange="updateVolunteerPledge(this.value)" class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all cursor-pointer">
+            <option value=""><?= e(ps_text('-- अपना पसंदीदा अभियान चुनें --', '-- Select an Initiative / Campaign --')) ?></option>
+            <?php foreach (ps_get_campaigns() as $camp): ?>
+              <?php
+                $campTitle = ps_text($camp['title'] ?? '', $camp['en_title'] ?? ($camp['title'] ?? ''));
+                if (empty(trim($campTitle))) continue;
+              ?>
+              <option value="<?= e($campTitle) ?>"><?= e($campTitle) ?></option>
+            <?php endforeach; ?>
+          </select>
         </div>
 
         <!-- Selection: Time Availability -->
@@ -557,6 +305,108 @@ $states = $states ?? [];
           </div>
         </div>
 
+        <!-- Payment & Confirmation Section (QR Code, UPI, Screenshot Upload) -->
+        <div id="paymentSectionBox" class="p-6 sm:p-7 rounded-2xl bg-gradient-to-br from-[#F4F9F5] via-pure-white to-[#F7F9F6] border-2 border-emerald-500/30 shadow-sm space-y-6">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-border-warm">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-xs shrink-0">
+                <span class="material-symbols-outlined text-[24px]">payments</span>
+              </div>
+              <div>
+                <h3 id="paymentSectionTitle" class="font-title-lg text-title-lg text-deep-forest font-bold">
+                  <?= e(ps_text('ग्रीन स्वयंसेवक शुल्क भुगतान — ₹500', 'Green Volunteer Fee Payment — ₹500')) ?>
+                </h3>
+                <p id="paymentSectionSubtitle" class="font-label-sm text-xs text-text-muted mt-0.5">
+                  <?= e(ps_text('ग्रीन स्वयंसेवक ("ग्रीन वॉलंटियर" / "हरित स्वयंसेवक") हेतु ₹500/- का भुगतान कर स्क्रीनशॉट अपलोड करें।', 'Pay ₹500/- for Green Volunteer ("Harit Swayamsevak") and upload screenshot.')) ?>
+                </p>
+              </div>
+            </div>
+            <div id="paymentFeeBadge" class="self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-sm">
+              <?= e(ps_text('₹500 • एक बार / स्थायी', '₹500 • One-time')) ?>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <!-- QR Code Box -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center bg-pure-white p-5 rounded-xl border border-border-warm shadow-xs text-center">
+              <div class="relative p-3 bg-pure-white rounded-xl border-2 border-emerald-600/30 shadow-xs mb-3">
+                <img id="volunteerQrImg" src="<?= e($qrGreenVolunteer) ?>" data-green-qr="<?= e($qrGreenVolunteer) ?>" data-vol-qr="<?= e($qrVolunteer) ?>" alt="UPI QR Code" class="w-44 h-44 object-contain rounded-lg">
+                <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-emerald-800 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full shadow-xs tracking-wider uppercase whitespace-nowrap">
+                  BHIM UPI • GPay • PhonePe • Paytm
+                </div>
+              </div>
+              <p id="qrScanLabel" class="font-label-sm text-xs font-bold text-deep-forest mt-2">
+                <?= e(ps_text('ग्रीन स्वयंसेवक ₹500 QR कोड', 'Green Volunteer ₹500 QR Code')) ?>
+              </p>
+              <p class="font-label-sm text-[11px] text-text-muted"><?= e($accountName) ?></p>
+            </div>
+
+            <!-- UPI ID & Bank Details -->
+            <div class="md:col-span-7 space-y-3.5">
+              <!-- UPI ID Pill -->
+              <div>
+                <label class="block font-label-sm text-xs text-deep-forest font-bold mb-1.5">
+                  <?= e(ps_text('आधिकारिक UPI ID (क्लिक कर कॉपी करें):', 'Official UPI ID:')) ?>
+                </label>
+                <div class="flex items-center justify-between p-3 rounded-xl bg-soft-meadow border border-border-warm">
+                  <div class="flex items-center gap-2 overflow-hidden">
+                    <span class="material-symbols-outlined text-primary text-base">alternate_email</span>
+                    <span class="font-mono font-bold text-sm text-deep-forest select-all truncate"><?= e($upiId) ?></span>
+                  </div>
+                  <button type="button" onclick="navigator.clipboard.writeText('<?= e($upiId) ?>'); alert('UPI ID copied: <?= e($upiId) ?>');" class="px-3 py-1 bg-pure-white hover:bg-surface-container text-primary font-label-sm text-xs rounded-lg border border-border-warm font-semibold shadow-xs transition-all cursor-pointer shrink-0">
+                    <?= e(ps_text('कॉपी करें', 'Copy')) ?>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Bank Account Snapshot -->
+              <div class="p-3.5 rounded-xl bg-pure-white border border-border-warm text-xs space-y-1 text-on-surface">
+                <div class="flex justify-between">
+                  <span class="text-text-muted"><?= e(ps_text('खाता धारक:', 'Account Name:')) ?></span>
+                  <span class="font-semibold text-right"><?= e($accountName) ?></span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-text-muted"><?= e(ps_text('बैंक व खाता संख्या:', 'Bank & A/C:')) ?></span>
+                  <span class="font-mono font-semibold text-right"><?= e($bankName) ?> (<?= e($accountNumber) ?>)</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-text-muted"><?= e(ps_text('IFSC कोड:', 'IFSC:')) ?></span>
+                  <span class="font-mono font-semibold text-right"><?= e($ifscCode) ?></span>
+                </div>
+              </div>
+
+              <!-- Important Note -->
+              <div id="paymentInstructionNote" class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs flex items-start gap-2">
+                <span class="material-symbols-outlined text-emerald-700 text-base shrink-0 mt-0.5">eco</span>
+                <span><?= e(ps_text('एक बार 500 रुपये जमा करने वाले व्यक्ति को ग्रीन स्वयं सेवक "ग्रीन वॉलंटियर" तथा "हरित स्वयंसेवक" कहा जायेगा।', 'A person contributing a one-time fee of ₹500 will be designated as a Green Volunteer ("Harit Swayamsevak").')) ?></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transaction ID & Screenshot Upload Row (MANDATORY) -->
+          <div class="pt-4 border-t border-border-warm grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="paymentScreenshot" class="block font-label-md text-label-md text-deep-forest font-bold mb-1.5">
+                <?= e(ps_text('भुगतान का स्क्रीनशॉट (Payment Screenshot)', 'Payment Screenshot')) ?> <span class="text-error">*</span>
+              </label>
+              <input type="file" id="paymentScreenshot" name="payment_screenshot" required accept="image/*,.pdf" class="w-full px-3 py-2.5 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-sm text-body-sm file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-label-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-deep-forest cursor-pointer">
+              <span class="block font-label-sm text-[11px] text-text-muted mt-1">
+                <?= e(ps_text('UPI / बैंक भुगतान की रसीद या स्क्रीनशॉट (JPG, PNG, PDF)', 'Upload receipt/screenshot of UPI or bank transfer')) ?>
+              </span>
+            </div>
+
+            <div>
+              <label for="transactionId" class="block font-label-md text-label-md text-deep-forest font-bold mb-1.5">
+                <?= e(ps_text('ट्रांजैक्शन / UTR आईडी (Transaction / UTR ID)', 'Transaction / UTR ID')) ?> <span class="text-error">*</span>
+              </label>
+              <input type="text" id="transactionId" name="transaction_id" required placeholder="उदा. UTR: 4289XXXXXXXX / UPI Ref No." class="w-full px-4 py-3 rounded-xl border border-border-warm bg-pure-white text-on-surface font-body-md text-body-md focus:border-primary-container focus:outline-none focus:ring-2 focus:ring-fresh-sprout/20 transition-all font-mono">
+              <span class="block font-label-sm text-[11px] text-text-muted mt-1">
+                <?= e(ps_text('12 अंकों का UPI UTR नंबर या बैंक रेफरेंस नंबर दर्ज करें', 'Enter 12-digit UPI UTR number or bank reference')) ?>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <!-- Message / Motivation -->
         <div>
           <label for="userMessage" class="block font-label-md text-label-md text-deep-forest font-semibold mb-2">
@@ -566,11 +416,11 @@ $states = $states ?? [];
         </div>
 
         <!-- Pledge Checkbox -->
-        <div class="bg-tertiary-fixed/20 p-4 rounded-xl border border-tertiary-fixed/40">
+        <div class="bg-tertiary-fixed/20 p-4 rounded-xl border border-tertiary-fixed/40 transition-all duration-300" id="pledgeBox">
           <label class="flex items-start gap-3 cursor-pointer">
             <input type="checkbox" required class="mt-1 w-5 h-5 rounded border-border-warm text-primary-container focus:ring-fresh-sprout/30 shrink-0">
             <span class="font-body-sm text-body-sm text-deep-forest leading-relaxed">
-              <strong><?= e(ps_text('हमारा संकल्प:', 'Our Pledge:')) ?></strong> <?= e(ps_text('मैं \'ग्रीन मॉर्निंग\' की उदात्त भावना, निस्वार्थ समाजसेवा और पर्यावरण रक्षा के प्रति पूर्ण निष्ठावान रहने का वचन देता/देती हूँ।', 'I pledge commitment to Green Morning, selfless public service and environmental protection.')) ?>
+              <strong><?= e(ps_text('हमारा संकल्प:', 'Our Pledge:')) ?></strong> <span id="volunteerPledgeText"><?= e(ps_text('मैं \'ग्रीन मॉर्निंग\' की उदात्त भावना, निस्वार्थ समाजसेवा और पर्यावरण रक्षा के प्रति पूर्ण निष्ठावान रहने का वचन देता/देती हूँ।', 'I pledge commitment to Green Morning, selfless public service and environmental protection.')) ?></span>
             </span>
           </label>
         </div>
@@ -801,10 +651,22 @@ $states = $states ?? [];
     const input = document.getElementById('userInterests');
     if (input) {
       input.value = pillarName;
+      updateVolunteerPledge(pillarName);
       const formElem = document.getElementById('registration-form');
       if (formElem) {
         formElem.scrollIntoView({ behavior: 'smooth' });
       }
+    }
+  }
+
+  function updateVolunteerPledge(val) {
+    const textEl = document.getElementById('volunteerPledgeText');
+    if (!textEl) return;
+    const str = (val || '').toLowerCase();
+    if (str.includes('पटेल') || str.includes('patel') || str.includes('सरदार') || str.includes('sardar') || str.includes('एकता')) {
+      textEl.innerText = '<?= e(ps_text('आधुनिक भारत के शिल्पी सरदार वल्लभ भाई पटेल के विचारों के अनुरूप भारत की एकता अखंडता को बनाये रखने का संकल्प लेता हूँ।', 'In accordance with the ideals of Sardar Vallabhbhai Patel, the architect of modern India, I pledge to preserve the unity and integrity of India.')) ?>';
+    } else {
+      textEl.innerText = '<?= e(ps_text('मैं \'ग्रीन मॉर्निंग\' की उदात्त भावना, निस्वार्थ समाजसेवा और पर्यावरण रक्षा के प्रति पूर्ण निष्ठावान रहने का वचन देता/देती हूँ।', 'I pledge commitment to Green Morning, selfless public service and environmental protection.')) ?>';
     }
   }
 
@@ -818,6 +680,37 @@ $states = $states ?? [];
     } else {
       el.classList.add('hidden');
       if (icon) icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function updateVolunteerPaymentMode(mode) {
+    const qrImg = document.getElementById('volunteerQrImg');
+    const title = document.getElementById('paymentSectionTitle');
+    const subtitle = document.getElementById('paymentSectionSubtitle');
+    const badge = document.getElementById('paymentFeeBadge');
+    const scanLabel = document.getElementById('qrScanLabel');
+    const note = document.getElementById('paymentInstructionNote');
+
+    if (mode === 'Green Volunteer' || mode === 'Membership') {
+      if (qrImg) qrImg.src = qrImg.getAttribute('data-green-qr');
+      if (title) title.innerText = '<?= e(ps_text('ग्रीन स्वयंसेवक शुल्क भुगतान — ₹500', 'Green Volunteer Fee Payment — ₹500')) ?>';
+      if (subtitle) subtitle.innerText = '<?= e(ps_text('ग्रीन स्वयंसेवक ("ग्रीन वॉलंटियर" / "हरित स्वयंसेवक") हेतु ₹500/- का भुगतान कर स्क्रीनशॉट अपलोड करें।', 'Pay ₹500/- for Green Volunteer ("Harit Swayamsevak") and upload screenshot.')) ?>';
+      if (badge) {
+        badge.className = 'self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 font-bold text-sm';
+        badge.innerText = '<?= e(ps_text('₹500 • एक बार / स्थायी', '₹500 • One-time')) ?>';
+      }
+      if (scanLabel) scanLabel.innerText = '<?= e(ps_text('ग्रीन स्वयंसेवक ₹500 QR कोड', 'Green Volunteer ₹500 QR Code')) ?>';
+      if (note) note.innerHTML = '<span class="material-symbols-outlined text-emerald-700 text-base shrink-0 mt-0.5">eco</span><span><?= e(ps_text('एक बार 500 रुपये जमा करने वाले व्यक्ति को ग्रीन स्वयं सेवक "ग्रीन वॉलंटियर" तथा "हरित स्वयंसेवक" कहा जायेगा।', 'A person contributing a one-time fee of ₹500 will be designated as a Green Volunteer ("Harit Swayamsevak").')) ?></span>';
+    } else {
+      if (qrImg) qrImg.src = qrImg.getAttribute('data-vol-qr');
+      if (title) title.innerText = '<?= e(ps_text('स्वयंसेवक शुल्क भुगतान — ₹50 (१ वर्ष)', 'Volunteer Contribution & Fee (1 Year) — ₹50')) ?>';
+      if (subtitle) subtitle.innerText = '<?= e(ps_text('१ वर्ष के लिए "वालंटियर" / "स्वयंसेवक" नामांकन हेतु ₹50/- का भुगतान कर स्क्रीनशॉट अपलोड करें।', 'Pay ₹50/- for 1-year volunteer enrollment and upload transaction screenshot.')) ?>';
+      if (badge) {
+        badge.className = 'self-start sm:self-auto px-3.5 py-1.5 rounded-xl bg-primary/10 border border-primary/30 text-primary font-bold text-sm';
+        badge.innerText = '<?= e(ps_text('₹50 • १ वर्ष', '₹50 • 1 Year')) ?>';
+      }
+      if (scanLabel) scanLabel.innerText = '<?= e(ps_text('स्वयंसेवक शुल्क ₹50 QR कोड', 'Volunteer ₹50 QR Code')) ?>';
+      if (note) note.innerHTML = '<span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5">info</span><span><?= e(ps_text('50 रुपये जमा करके कोई व्यक्ति एक वर्ष के लिए "वालंटियर" तथा "स्वयंसेवक" कहा जायेगा।', 'A person contributing ₹50 will be designated as a "Volunteer" / "Swayamsevak" for one year.')) ?></span>';
     }
   }
 </script>

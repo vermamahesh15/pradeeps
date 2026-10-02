@@ -868,61 +868,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
     </div>
   </section>
 
-  <!-- Join Green Gang Registration Form & Callout -->
-  <section id="join-green-gang-section" class="w-full bg-soft-meadow py-space-3xl">
-    <div class="max-w-container-editorial mx-auto px-4 sm:px-8">
-      <div class="text-center mb-8">
-        <span class="inline-block bg-cream-canvas border border-border-warm text-primary-container px-3 py-1 rounded-md font-label-md text-label-md uppercase mb-2 font-semibold">
-          <?= e(ps_text('अपने गाँव / विद्यालय में ग्रीन गैंग शाखा खोलें', 'Start a Green Gang Unit')) ?>
-        </span>
-        <h2 class="font-headline-lg text-headline-lg text-deep-forest mb-3 font-bold">
-          <?= e(ps_text('ग्रीन गैंग में शामिल हों अथवा पौध मंगवाएं', 'Join Green Gang or Request Saplings')) ?>
-        </h2>
-        <p class="font-body-md text-body-md text-on-surface-variant">
-          <?= e(ps_text('यदि आप अपने गाँव, पंचायत अथवा विद्यालय में ग्रीन गैंग की शाखा शुरू करना चाहते हैं, तो विवरण दर्ज करें।', 'Enroll to start a Green Gang chapter or request native tree saplings for your area.')) ?>
-        </p>
-      </div>
 
-      <div class="bg-pure-white rounded-3xl p-6 sm:p-10 shadow-md border border-border-warm">
-        <form method="post" action="<?= e(base_url('/contact')) ?>" class="space-y-5">
-          <?= csrf_field() ?>
-          <input type="hidden" name="form_type" value="contact">
-          <input type="hidden" name="subject" value="ग्रीन गैंग शाखा पंजीकरण / पौध मांग">
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('आपका नाम *', 'Full Name *')) ?></label>
-              <input type="text" name="name" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
-            </div>
-            <div>
-              <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('मोबाइल / WhatsApp *', 'Mobile / WhatsApp *')) ?></label>
-              <input type="tel" name="phone" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <div>
-              <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('गाँव / स्कूल / संस्था का नाम *', 'Village / School / Org Name *')) ?></label>
-              <input type="text" name="address" required class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
-            </div>
-            <div>
-              <label class="block font-label-md text-label-md text-on-surface mb-1.5 font-semibold"><?= e(ps_text('कितने पौधों की आवश्यकता है?', 'Required Sapling Count')) ?></label>
-              <select name="message" class="w-full bg-soft-meadow border border-border-warm text-on-surface px-4 py-3 rounded-xl font-body-md text-body-md focus:outline-none focus:ring-2 focus:ring-primary-container">
-                <option value="10-50 पौध (छोटे स्तर पर)"><?= e(ps_text('10 — 50 पौध (छोटे स्तर पर)', '10 — 50 Saplings (Small Scale)')) ?></option>
-                <option value="50-200 पौध (गाँव / स्कूल स्तर)"><?= e(ps_text('50 — 200 पौध (गाँव / स्कूल स्तर)', '50 — 200 Saplings (Village Level)')) ?></option>
-                <option value="200+ पौध (पंचायत स्तर)"><?= e(ps_text('200+ पौध (पंचायत स्तर)', '200+ Saplings (Panchayat Scale)')) ?></option>
-              </select>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-primary-container hover:bg-deep-forest text-on-primary py-4 px-6 rounded-xl font-label-md text-label-md font-bold transition-colors flex items-center justify-center gap-2 shadow-sm">
-            <span class="material-symbols-outlined text-[20px]">eco</span>
-            <span><?= e(ps_text('ग्रीन गैंग पंजीकरण जमा करें (Submit Enrollment)', 'Submit Enrollment')) ?></span>
-          </button>
-        </form>
-      </div>
-    </div>
-  </section>
 </div>
 
 <!-- ========================================================================= -->

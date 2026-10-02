@@ -94,6 +94,14 @@ $route = current_path();
                 <a class="navbar-brand" href="<?= e(base_url('/')) ?>">
                     <img src="<?= e(!empty($settings['logo']) ? base_url($settings['logo']) : asset('images/logo.png')) ?>" alt="<?= e(app_config('name')) ?>" style="max-height: 48px; width: auto; max-width: 220px; object-fit: contain;"> 
                 </a>
+                <div class="d-flex align-items-center gap-1.5 ms-auto d-lg-none me-2">
+                    <a class="btn btn-success btn-sm px-2 py-1 text-white font-weight-bold d-inline-flex align-items-center gap-1 shadow-sm" style="background-color: #14532d; border-color: #14532d; border-radius: 6px; font-size: 11.5px;" href="<?= e(base_url('/donation')) ?>">
+                        <i class="fa-solid fa-heart text-white"></i> <span><?= e(lang('donate', 'Donate')) ?></span>
+                    </a>
+                    <a class="btn btn-sm px-2 py-1 text-white font-weight-bold d-inline-flex align-items-center gap-1 shadow-sm" style="background-color: #c05632; border-color: #c05632; border-radius: 6px; font-size: 11.5px;" href="<?= e(base_url('/volunteer')) ?>">
+                        <i class="fa-solid fa-handshake-angle text-white"></i> <span><?= e(lang('volunteer', 'Join')) ?></span>
+                    </a>
+                </div>
                 <button class="navbar-toggler border-0 shadow-none px-2" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -244,7 +252,7 @@ $route = current_path();
             <a href="<?= e(base_url('/donation')) ?>" class="speed-dial-btn donate" title="सहयोग करें">
                 <i class="fa-solid fa-heart"></i>
             </a>
-            <a href="<?= e(base_url('/volunteer')) ?>" onclick="openVolunteerModal(event)" class="speed-dial-btn volunteer" title="स्वयंसेवक बनें">
+            <a href="<?= e(base_url('/volunteer')) ?>" onclick="if(typeof openVolunteerModal === 'function'){ openVolunteerModal(event); }" class="speed-dial-btn volunteer" title="स्वयंसेवक बनें">
                 <i class="fa-solid fa-handshake-angle"></i>
             </a>
         </div>

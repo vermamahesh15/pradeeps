@@ -17,7 +17,6 @@ ads.txt
 /vendor/
 /node_modules/
 /uploads/
-/assets/images/
 
 # Cache & Temporary Files
 /tmp/

@@ -198,21 +198,25 @@ if (!isset($nav) || !is_array($nav)) {
             </nav>
 
             <!-- Actions: CTA, Admin, Mobile Toggle -->
-            <div class="flex items-center gap-2 sm:gap-3.5">
+            <div class="flex items-center gap-1.5 sm:gap-3">
 
-                <a class="inline-flex items-center justify-center gap-1 sm:gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-xs sm:text-label-md font-semibold transition-colors whitespace-nowrap shadow-sm cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>">
-                    <span class="material-symbols-outlined text-[16px] sm:text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
-                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें', 'Donate Now')) ?></span>
+                <!-- 1. Donate Now Button -->
+                <a class="inline-flex items-center justify-center gap-1 sm:gap-1.5 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11.5px] sm:text-label-md font-bold transition-all whitespace-nowrap shadow-xs cursor-pointer active:scale-95" style="color: #ffffff !important; background-color: #14532d !important;" href="<?= e(base_url('/donation')) ?>" onclick="openDonationModal(event)" title="<?= e(ps_text('दान करें (Donate Now)', 'Donate Now')) ?>">
+                    <span class="material-symbols-outlined text-[15px] sm:text-[17px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                    <span class="!text-white font-bold" style="color: #ffffff !important;"><?= e(ps_text('दान करें', 'Donate')) ?></span>
                 </a>
 
-                <a class="hidden md:inline-flex items-center justify-center gap-1.5 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2 rounded-lg font-label-md text-label-md transition-colors whitespace-nowrap shadow-sm font-semibold cursor-pointer" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="openVolunteerModal(event)">
-                    <span class="material-symbols-outlined text-[17px] !text-white" style="color: #ffffff !important;">handshake</span>
-                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
+                <!-- 2. Join Movement / Volunteer Button -->
+                <a class="inline-flex items-center justify-center gap-1 sm:gap-1.5 bg-[#C05632] !text-white hover:bg-[#A9472B] px-2 sm:px-3.5 py-1.5 sm:py-2 rounded-lg text-[11.5px] sm:text-label-md font-bold transition-all whitespace-nowrap shadow-xs cursor-pointer active:scale-95" style="color: #ffffff !important; background-color: #c05632 !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="openVolunteerModal(event)" title="<?= e(ps_text('जुड़ें अभियान से (Volunteer)', 'Join Movement')) ?>">
+                    <span class="material-symbols-outlined text-[15px] sm:text-[17px] !text-white" style="color: #ffffff !important;">handshake</span>
+                    <span class="!text-white font-bold" style="color: #ffffff !important;">
+                        <span class="inline sm:hidden"><?= e(ps_text('जुड़ें', 'Join')) ?></span>
+                        <span class="hidden sm:inline"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
+                    </span>
                 </a>
 
-                <!-- CTA Buttons & Mobile Toggle -->
-
-                <button id="ps-mobile-toggle" class="xl:hidden w-11 h-11 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
+                <!-- Mobile Toggle -->
+                <button id="ps-mobile-toggle" class="xl:hidden w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none shrink-0" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
@@ -259,7 +263,7 @@ if (!isset($nav) || !is_array($nav)) {
                     $isDonation = ($url === '/donation');
             ?>
                     <a href="<?= e(base_url($url)) ?>" 
-                       onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
+                       onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); <?= $isDonation ? 'openDonationModal(event);' : '' ?>"
                        class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : ($isDonation ? 'text-[#14532D] font-bold hover:bg-emerald-50' : 'text-on-surface hover:text-primary') ?>">
                         <?php if ($isBlog): ?>
                             <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-primary' ?>">menu_book</span>
@@ -273,9 +277,9 @@ if (!isset($nav) || !is_array($nav)) {
             endforeach; 
             ?>
             <div class="pt-3 border-t border-border-warm flex flex-col gap-2.5">
-                <a class="inline-flex items-center justify-center gap-2 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden');">
+                <a class="inline-flex items-center justify-center gap-2 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-bold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openDonationModal(event);">
                     <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
-                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('सहयोग करें (दान)', 'Donate Now')) ?></span>
+                    <span class="!text-white font-bold" style="color: #ffffff !important;"><?= e(ps_text('दान करें (Donate Now)', 'Donate Now')) ?></span>
                 </a>
                 <a class="inline-flex items-center justify-center gap-2 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
                     <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">handshake</span>

@@ -84,10 +84,6 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
                     <div class="relative rounded-2xl overflow-hidden bg-pure-white shadow-xl border border-border-warm p-3.5">
                         <div class="relative w-full h-[400px] sm:h-[440px] rounded-xl overflow-hidden bg-gradient-to-b from-[#1b8da0]/15 to-[#0e6070]/10 flex items-center justify-center">
                             <?= ps_responsive_img('uploads/slider_final_1.webp', ps_text('प्रदीप सारंग - सामाजिक कार्यकर्ता व साहित्यकार', 'Pradeep Sarang - Social Worker & Scholar'), 'w-full h-full object-contain', '(max-width: 1024px) 100vw, 40vw', 'eager') ?>
-                            <div class="absolute top-3 left-3 bg-pure-white/95 backdrop-blur-md rounded-xl shadow-md px-3 py-1.5 flex items-center gap-2 border border-border-warm/80 z-10">
-                                <span class="material-symbols-outlined text-[16px] text-primary">verified</span>
-                                <span class="text-xs font-bold text-deep-forest"><?= e(ps_text('सहानुभूतिपूर्ण व तार्किक दृष्टिकोण', 'Empathetic & Logical Guidance')) ?></span>
-                            </div>
                         </div>
                         <div class="pt-4 pb-1 px-2 flex flex-col items-center text-center">
                             <h2 class="font-headline-sm text-headline-sm font-bold text-deep-forest mb-1"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></h2>
@@ -328,44 +324,7 @@ $whatsappUrl = "https://api.whatsapp.com/send?phone=" . urlencode($phoneClean) .
         </div>
     </section>
 
-    <!-- Privacy Guarantee Banner & WhatsApp Connect -->
-    <section class="w-full bg-deep-forest text-pure-white py-12 md:py-16">
-        <div class="max-w-container-max mx-auto px-4 sm:px-8">
-            <div class="rounded-3xl bg-surface-container-highest/10 p-6 sm:p-10 backdrop-blur-sm shadow-xl flex flex-col lg:flex-row items-center justify-between gap-8 border border-white/10">
-                <div class="flex items-start gap-4 sm:gap-6 max-w-2xl">
-                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary-container flex items-center justify-center text-pure-white shrink-0 shadow-md">
-                        <span class="material-symbols-outlined text-[36px]">security</span>
-                    </div>
-                    <div class="flex flex-col">
-                        <div class="inline-flex items-center gap-1.5 text-[#F0B45C] font-label-md text-xs uppercase font-bold tracking-wider mb-1">
-                            <span class="material-symbols-outlined text-[16px] text-[#F0B45C]">verified_user</span>
-                            <span><?= e(ps_text('पूर्ण व्यक्तिगत गोपनीयता की गारंटी', '100% Confidentiality Guarantee')) ?></span>
-                        </div>
-                        <h3 class="font-headline-md text-2xl sm:text-3xl text-pure-white mb-2 font-bold">
-                            <?= e(ps_text('आपकी पहचान और चर्चा पूर्णतः सुरक्षित है', 'Your Identity & Conversations are Completely Private')) ?>
-                        </h3>
-                        <p class="font-body-md text-base text-white/90 leading-relaxed">
-                            <?= e(ps_text(
-                                'यह प्रदीप सारंग जी का निजी एवं व्यक्तिगत फोन/व्हाट्सएप नंबर है। आपकी व्यक्तिगत, पारिवारिक अथवा सामाजिक बातें किसी भी परिस्थिति में सार्वजनिक नहीं की जाती हैं। बिना किसी संकोच के अपनी बात साझा करें।',
-                                'This is Pradeep Sarang’s direct phone and WhatsApp number. Your personal or family concerns are strictly private and never shared.'
-                            )) ?>
-                        </p>
-                    </div>
-                </div>
 
-                <div class="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto shrink-0">
-                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white font-title-md text-base rounded-xl transition-all shadow-md font-bold" href="<?= e($whatsappUrl) ?>" rel="noopener noreferrer" target="_blank">
-                        <span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">chat</span>
-                        <span><?= e($phone) ?></span>
-                    </a>
-                    <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-gray-100 text-deep-forest font-title-md text-base rounded-xl transition-all shadow-sm font-bold" href="tel:<?= e($phoneClean) ?>">
-                        <span class="material-symbols-outlined text-[20px]">call</span>
-                        <span><?= e(ps_text('कॉल करें', 'Call Directly')) ?></span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Interactive Form & Guidance Desk Layout -->
     <section class="w-full bg-cream-canvas py-14 md:py-20 border-b border-border-warm/60" id="consultation-form">

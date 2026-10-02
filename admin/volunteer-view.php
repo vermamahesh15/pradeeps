@@ -46,6 +46,22 @@ if (!$v) {
         </div>
         <div class="col-12">
             <hr>
+            <h6>Payment & Verification Details</h6>
+            <div class="p-3 bg-light rounded small mb-3 border">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <strong>Enrollment Type:</strong> 
+                        <span class="badge <?= ($v['membership_type'] ?? '') === 'Membership' ? 'bg-primary' : 'bg-success' ?>">
+                            <?= e($v['membership_type'] ?? 'Volunteer') ?> (<?= e($v['validity'] ?? '1 Year') ?>)
+                        </span><br>
+                        <strong>Fee / Amount:</strong> ₹<?= number_format((float)($v['amount'] ?? 0), 2) ?>
+                    </div>
+                    <div class="col-sm-6">
+                        <strong>Transaction / UTR ID:</strong> <span class="font-monospace text-primary"><?= e($v['transaction_id'] ?? 'N/A') ?></span>
+                    </div>
+                </div>
+            </div>
+
             <h6>Skills & Interests</h6>
             <p class="text-muted small mb-3">
                 <strong>Skills:</strong> <?= e($v['skills'] ?: 'None specified') ?><br>
@@ -58,13 +74,19 @@ if (!$v) {
                 <?= nl2br(e($v['message'] ?: 'No message provided.')) ?>
             </div>
 
-            <?php if ($v['resume']): ?>
-                <a href="<?= base_url($v['resume']) ?>" target="_blank" class="btn btn-sm btn-outline-primary">
-                    <i class="fa fa-file-pdf me-1"></i> View Resume
-                </a>
-            <?php else: ?>
-                <button class="btn btn-sm btn-light disabled"><i class="fa fa-file-excel me-1"></i> No Resume Uploaded</button>
-            <?php endif; ?>
+            <div class="d-flex gap-2">
+                <?php if (!empty($v['payment_screenshot'])): ?>
+                    <a href="<?= base_url($v['payment_screenshot']) ?>" target="_blank" class="btn btn-sm btn-success">
+                        <i class="fa fa-receipt me-1"></i> View Payment Screenshot
+                    </a>
+                <?php endif; ?>
+
+                <?php if ($v['resume']): ?>
+                    <a href="<?= base_url($v['resume']) ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="fa fa-file-pdf me-1"></i> View Resume
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
