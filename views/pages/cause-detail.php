@@ -47,8 +47,7 @@ $isGreen = preg_match('/हरियाली|green|hariyali/iu', ($item['title'
         <!-- Pradeep Sarang Emotive Quote Box -->
         <div class="bg-soft-meadow rounded-xl p-5 sm:p-6 mb-8 relative border border-border-warm shadow-sm">
           <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary rounded-l-xl"></div>
-          <span class="material-symbols-outlined text-secondary/30 text-4xl absolute right-4 top-3 select-none">format_quote</span>
-          <p class="font-quote-editorial text-quote-editorial text-deep-forest italic mb-3 pr-6">
+          <p class="font-quote-editorial text-quote-editorial text-deep-forest italic mb-3">
             <?= ps_text('"जब भीषण गर्मी में नदियां और तालाब सूख जाते हैं, तब हमारे आंगन और छतों पर रखे मिट्टी के सकोरे ही परिंदों के लिए जीवन बन जाते हैं। यह केवल जलदान नहीं, मानवता का संवेदनशील कर्तव्य है।"', '"When rivers and ponds dry up in summer heat, earthen water bowls on our roofs become life for birds. This is a sensitive duty of humanity."') ?>
           </p>
           <div class="flex items-center gap-3">

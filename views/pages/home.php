@@ -241,6 +241,25 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span class="font-title-md text-title-md font-semibold text-deep-forest"><?= e(ps_text('20 अक्टूबर 1969 • ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', '20 October 1969 • Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></span>
           </div>
         </div>
+
+        <!-- Key Pillar Chips -->
+        <div class="flex flex-wrap gap-2 pt-3">
+          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
+            <span class="material-symbols-outlined text-[15px] text-primary">forest</span><?= e(ps_text('पर्यावरणविद', 'Environmentalist')) ?>
+          </span>
+          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
+            <span class="material-symbols-outlined text-[15px] text-secondary">history_edu</span><?= e(ps_text('साहित्यकार व कवि', 'Writer & Poet')) ?>
+          </span>
+          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
+            <span class="material-symbols-outlined text-[15px] text-tertiary">commute</span><?= e(ps_text('संयोजक, पटेल चेतना रथ', 'Convener, Patel Chetna Rath')) ?>
+          </span>
+          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
+            <span class="material-symbols-outlined text-[15px] text-primary">campaign</span><?= e(ps_text('सामाजिक सलाहकार एवं उत्प्रेरक', 'Social Advisor & Catalyst')) ?>
+          </span>
+          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
+            <span class="material-symbols-outlined text-[15px] text-fresh-sprout">translate</span><?= e(ps_text('अवधी भाषा संरक्षक', 'Awadhi Advocate')) ?>
+          </span>
+        </div>
       </div>
 
       <!-- Narrative Content -->
@@ -255,7 +274,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </h2>
 
         <p class="font-body-md text-body-md text-on-surface leading-relaxed">
-          <?= e(ps_text('वर्ष 1969 की 20 अक्टूबर को बाराबंकी के ग्राम कमरावां में जन्मे प्रदीप सारंग एक समर्पित सामाजिक कार्यकर्ता, साहित्यकार एवं जनसेवक हैं, जो कि समाज के विभिन्न क्षेत्रों में अपने निरंतर सक्रिय योगदान से युवाओं में सकारात्मक एवं प्रेरणादायक वातावरण सृजित करते रहते हैं।', 'Born on 20 October 1969 in Kamrawan village, Barabanki, Pradeep Sarang is a devoted social worker, writer and public servant who creates an inspiring, positive environment for youth through sustained grassroots leadership.')) ?>
+          <?= e(ps_text('वर्ष 1969 की 20 अक्टूबर को भारत के प्रांत उत्तर प्रदेश में स्थित जिला बाराबंकी के ग्राम- कमरावां में जन्मे प्रदीप सारंग एक समर्पित सामाजिक कार्यकर्ता, साहित्यकार एवं जनसेवक हैं, जो कि समाज के विभिन्न क्षेत्रों में अपने निरंतर सक्रिय योगदान से युवाओं में सकारात्मक एवं प्रेरणादायक वातावरण सृजित करते रहते हैं।', 'Born on 20 October 1969 in Kamrawan village, Barabanki, Pradeep Sarang is a devoted social worker, writer and public servant who creates an inspiring, positive environment for youth through sustained grassroots leadership.')) ?>
         </p>
 
         <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
@@ -268,28 +287,12 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span>“</span>
           </div>
           <p class="font-quote-editorial text-quote-editorial text-[#172033] italic leading-relaxed">
-            <?= ps_text('"हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>जुगनुओं का संग है, इंसानियत का मीत हूँ।"', '"I have not learned to lose; I am a song of victory.<br/>Accompanied by fireflies, I am a friend to humanity."') ?>
+            <?= ps_text('"सुंदरता है सुमन की, मनमोहक पहचान। किन्तु सुवासित सुमन ही, चाहे सकल जहान।।<br/>आकर्षण का माध्यम, सुंदरता की चाह। सुमनों से संसार को, सिर्फ सुरभि की चाह।।"', '"Beauty is the flower\'s enchanting identity, yet only a fragrant blossom is cherished by all.<br/>Beauty attracts the eye and draws desire, yet from flowers, the world seeks only their fragrance."') ?>
           </p>
           <div class="mt-3 flex items-center justify-between pt-2 border-t border-[#E5E7EB]">
             <span class="font-label-md text-label-md font-bold uppercase tracking-widest text-[#14532D]">— <span style="color: #ef4444 !important; font-weight: bold;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span></span>
             <span class="font-label-sm text-label-sm text-[#667085]"><?= e(ps_text('कवि एवं सामाजिक विचारक', 'Poet & Social Thinker')) ?></span>
           </div>
-        </div>
-
-        <!-- Key Pillar Chips -->
-        <div class="flex flex-wrap gap-2 pt-2">
-          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
-            <span class="material-symbols-outlined text-[15px] text-primary">forest</span><?= e(ps_text('पर्यावरणविद', 'Environmentalist')) ?>
-          </span>
-          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
-            <span class="material-symbols-outlined text-[15px] text-secondary">history_edu</span><?= e(ps_text('साहित्यकार व कवि', 'Writer & Poet')) ?>
-          </span>
-          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
-            <span class="material-symbols-outlined text-[15px] text-tertiary">cottage</span><?= e(ps_text('ग्रामीण विकास प्रेरक', 'Rural Catalyst')) ?>
-          </span>
-          <span class="bg-pure-white text-deep-forest px-3 py-1.5 rounded-lg font-label-sm text-label-sm shadow-sm flex items-center gap-1.5 border border-border-warm">
-            <span class="material-symbols-outlined text-[15px] text-fresh-sprout">translate</span><?= e(ps_text('अवधी भाषा संरक्षक', 'Awadhi Advocate')) ?>
-          </span>
         </div>
       </div>
     </div>
@@ -333,7 +336,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <?= e(ps_text('लौह पुरुष सरदार वल्लभभाई पटेल के अखंड भारत, राष्ट्रीय अखंडता और सामाजिक समरसता के विचारों को युवाओं तक पहुँचाने हेतु संचालित प्रमुख अभियान। इसके माध्यम से समाज को जाति-धर्म की संकीर्णताओं से ऊपर उठाकर एक सशक्त राष्ट्र निर्माण के लिए प्रेरित किया जाता है।', 'The primary national integration campaign advancing Sardar Vallabhbhai Patel’s message of a united India, youth empowerment, civic responsibility, and social harmony across rural regions.')) ?>
           </p>
           <div class="flex flex-wrap items-center gap-4 text-deep-forest font-body-sm text-body-sm py-2">
-            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span> <?= e(ps_text('अखंड भारत चेतना यात्रा', 'Unity Consciousness Drive')) ?></div>
+            <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span> <?= e(ps_text('पटेल चेतना रथ यात्रा', 'Patel Chetna Rath Yatra')) ?></div>
             <div class="flex items-center gap-1.5"><span class="material-symbols-outlined text-secondary text-[18px]">verified</span> <?= e(ps_text('युवा नेतृत्व संवाद', 'Youth Leadership Forums')) ?></div>
           </div>
           <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -477,26 +480,26 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 <section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-deep-forest text-on-primary" id="greengang">
   <div class="max-w-container-max mx-auto">
     <div class="max-w-3xl mx-auto text-center mb-14">
-      <div class="inline-flex items-center gap-2 bg-primary-container px-3.5 py-1 rounded-full text-on-primary font-label-sm text-label-sm mb-4">
-        <span class="material-symbols-outlined text-[16px] text-primary-fixed">psychiatry</span>
+      <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/30 px-3.5 py-1 rounded-full text-amber-300 font-label-sm text-label-sm mb-4 font-semibold">
+        <span class="material-symbols-outlined text-[16px] text-amber-300">psychiatry</span>
         <span><?= e(ps_text('प्रकृति-केंद्रित जीवन शैली आंदोलन', 'Nature-Centric Lifestyle Movement')) ?></span>
       </div>
       <h2 class="font-headline-lg text-headline-lg font-bold text-pure-white">
         <?= e(ps_text('ग्रीन गैंग — हरियाली को जन-आंदोलन बनाने की ऐतिहासिक पहल', 'Green Gang — A Historic Initiative Turning Greenery into a Movement')) ?>
       </h2>
-      <p class="font-body-md text-body-md text-surface-container-high mt-3 leading-relaxed">
+      <p class="font-body-md text-body-md text-emerald-100/90 mt-3 leading-relaxed">
         <?= e(ps_text('विश्व पर्यावरण दिवस 05 जून 2019 को स्थापित। प्रदीप सारंग का विचार है कि जब हमारी जुबां पर हरियाली होगी, तभी हमारे आंगन और धरा पर हरियाली टिकेगी।', 'Founded on World Environment Day, 05 June 2019. Pradeep Sarang believes when greenery lives in our words, it thrives in our courtyards and earth.')) ?>
       </p>
     </div>
 
     <!-- Green Morning Inception Story (वैचारिकी एवं उत्पत्ति - 2 मुख्य अंश) -->
-    <div class="max-w-4xl mx-auto mb-12 bg-surface-container-low/15 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/15 shadow-xl relative overflow-hidden">
-      <div class="flex items-center gap-2.5 mb-4 text-primary-fixed font-label-sm text-label-sm font-bold uppercase tracking-wider">
-        <span class="material-symbols-outlined text-[20px]">lightbulb</span>
+    <div class="max-w-4xl mx-auto mb-12 bg-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-white/15 shadow-xl relative overflow-hidden">
+      <div class="flex items-center gap-2.5 mb-4 text-amber-300 font-label-sm text-label-sm font-bold uppercase tracking-wider">
+        <span class="material-symbols-outlined text-[20px] text-amber-300">lightbulb</span>
         <span><?= e(ps_text('वैचारिक पृष्ठभूमि • अभिनव अभिवादन क्रांति का उदय', 'Ideological Inception • The Birth of Green Morning')) ?></span>
       </div>
 
-      <div class="space-y-4 font-body-md text-body-md text-surface-container-high leading-relaxed">
+      <div class="space-y-4 font-body-md text-body-md text-emerald-100/90 leading-relaxed">
         <p>
           <?= e(ps_text('धरती पर हरियाली बढ़ाने के उद्देश्य से 05 जून 2019 को विश्व पर्यावरण दिवस पर ग्रीन गैंग की स्थापना हो जाने के बाद, इसकी वैचारिकी का साहित्य सृजित करना था। इसी चिन्तन में श्री सारंग के मन मे विचार आया कि क्यों न हरियाली पर काम करने वालों के लिए अलग अभिवादन शैली का विकास किया जाए। जितने धर्म, सम्प्रदाय, वैचारिकी, अस्तित्व और प्रचलन में हैं सभी के अनुयायी स्वतः एक अलग अभिवादन शैली अपनाते हैं। जैसे— जै राम, जै श्रीराम, ऊँ नमः शिवाय, राधे राधे, जय गुरुदेव, आदाब अर्ज, अस्सलाम वालेकुम, सत श्री अकाल, गुड मॉर्निंग, जय जिनेन्द्र, नमो बुद्धाय, जय हिंद, जय सरदार, जय पटेल, जय भीम आदि इत्यादि।', 'Following the foundation of Green Gang on World Environment Day, 05 June 2019 to nurture earth\'s greenery, shaping its literature and ethos became essential. Pradeep Sarang contemplated that while all faiths, philosophies, and communities naturally adopt distinctive greetings, environmental champions too deserved a dedicated greeting of their own.')) ?>
         </p>
@@ -506,11 +509,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <div class="mt-6 pt-5 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center gap-2 text-xs text-surface-container-high">
-          <span class="material-symbols-outlined text-primary-fixed text-[16px]">menu_book</span>
+        <div class="flex items-center gap-2 text-xs text-emerald-100/90 font-medium">
+          <span class="material-symbols-outlined text-amber-300 text-[16px]">menu_book</span>
           <span><?= e(ps_text('संवाद, स्व. हरिप्रसाद वर्मा जी से चर्चा एवं 6 अकाट्य तर्क', 'Historical Dialogue & The 6 Philosophical Arguments')) ?></span>
         </div>
-        <a href="<?= e(base_url('/green-gang#green-morning-philosophy')) ?>" class="inline-flex items-center gap-1.5 text-primary-fixed hover:text-pure-white font-label-md text-label-md font-bold transition-all group">
+        <a href="<?= e(base_url('/green-gang#green-morning-philosophy')) ?>" class="inline-flex items-center gap-1.5 text-amber-300 hover:text-white font-label-md text-label-md font-bold transition-all group">
           <span><?= e(ps_text('सम्पूर्ण वैचारिक दर्शन व 6 तर्क पढ़ें', 'Read Full Philosophy & 6 Arguments')) ?></span>
           <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </a>
@@ -519,62 +522,62 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 
     <!-- The 4 Green Greetings Interactive Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-      <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-primary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-primary-fixed flex items-center justify-center mb-4">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border-b-4 border-amber-400 border-t border-l border-r border-white/10 flex flex-col items-center text-center shadow-lg">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-amber-300 flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">wb_twilight</span>
         </div>
-        <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-मॉर्निंग', 'Green-Morning')) ?></span>
-        <span class="font-label-sm text-label-sm text-primary-fixed mt-0.5 font-bold">Green Morning</span>
-        <p class="font-body-sm text-body-sm text-surface-container-high mt-3">
+        <span class="font-headline-sm text-headline-sm text-white font-bold"><?= e(ps_text('ग्रीन-मॉर्निंग', 'Green-Morning')) ?></span>
+        <span class="font-label-sm text-label-sm text-amber-300 mt-0.5 font-bold tracking-wide">Green Morning</span>
+        <p class="font-body-sm text-body-sm text-emerald-100/90 mt-3 leading-relaxed">
           <?= e(ps_text("'गुड मॉर्निंग' का हरित विकल्प। सुबह की पहली किरण के साथ धरती के प्रति कृतज्ञता और पौधे लगाने का संकल्प।", "The green greeting to start the day with gratitude to mother earth and a commitment to plant.")) ?>
         </p>
       </div>
 
-      <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-tertiary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-tertiary-fixed flex items-center justify-center mb-4">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border-b-4 border-yellow-400 border-t border-l border-r border-white/10 flex flex-col items-center text-center shadow-lg">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-yellow-300 flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">light_mode</span>
         </div>
-        <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-आफ्टरनून', 'Green-Afternoon')) ?></span>
-        <span class="font-label-sm text-label-sm text-tertiary-fixed mt-0.5 font-bold">Green Afternoon</span>
-        <p class="font-body-sm text-body-sm text-surface-container-high mt-3">
+        <span class="font-headline-sm text-headline-sm text-white font-bold"><?= e(ps_text('ग्रीन-आफ्टरनून', 'Green-Afternoon')) ?></span>
+        <span class="font-label-sm text-label-sm text-yellow-300 mt-0.5 font-bold tracking-wide">Green Afternoon</span>
+        <p class="font-body-sm text-body-sm text-emerald-100/90 mt-3 leading-relaxed">
           <?= e(ps_text('दोपहर के श्रम में छायादार वृक्षों और पक्षियों के लिए पानी की व्यवस्था की याद दिलाता हरित अभिवादन।', 'A midday reminder of shade-giving trees and providing fresh water for birds in summer.')) ?>
         </p>
       </div>
 
-      <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-secondary-fixed flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-secondary-fixed flex items-center justify-center mb-4">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border-b-4 border-orange-400 border-t border-l border-r border-white/10 flex flex-col items-center text-center shadow-lg">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-orange-300 flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">wb_sunny</span>
         </div>
-        <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-इवनिंग', 'Green-Evening')) ?></span>
-        <span class="font-label-sm text-label-sm text-secondary-fixed mt-0.5 font-bold">Green Evening</span>
-        <p class="font-body-sm text-body-sm text-surface-container-high mt-3">
+        <span class="font-headline-sm text-headline-sm text-white font-bold"><?= e(ps_text('ग्रीन-इवनिंग', 'Green-Evening')) ?></span>
+        <span class="font-label-sm text-label-sm text-orange-300 mt-0.5 font-bold tracking-wide">Green Evening</span>
+        <p class="font-body-sm text-body-sm text-emerald-100/90 mt-3 leading-relaxed">
           <?= e(ps_text('शाम के वक्त चौपालों और परिवारों में हरियाली, स्वच्छता व पर्यावरण संवाद को प्रेरित करता संवाद।', 'Evening chaupal discussions encouraging cleanliness, tree care and ecological stewardship.')) ?>
         </p>
       </div>
 
-      <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 border-b-4 border-on-primary-container flex flex-col items-center text-center">
-        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-on-primary-container flex items-center justify-center mb-4">
+      <div class="bg-white/10 backdrop-blur rounded-2xl p-6 border-b-4 border-emerald-300 border-t border-l border-r border-white/10 flex flex-col items-center text-center shadow-lg">
+        <div class="w-14 h-14 rounded-full bg-white/15 border border-white/20 text-emerald-200 flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl">dark_mode</span>
         </div>
-        <span class="font-headline-sm text-headline-sm text-pure-white font-semibold"><?= e(ps_text('ग्रीन-नाइट', 'Green-Night')) ?></span>
-        <span class="font-label-sm text-label-sm text-on-primary-container mt-0.5 font-bold">Green Night</span>
-        <p class="font-body-sm text-body-sm text-surface-container-high mt-3">
+        <span class="font-headline-sm text-headline-sm text-white font-bold"><?= e(ps_text('ग्रीन-नाइट', 'Green-Night')) ?></span>
+        <span class="font-label-sm text-label-sm text-emerald-200 mt-0.5 font-bold tracking-wide">Green Night</span>
+        <p class="font-body-sm text-body-sm text-emerald-100/90 mt-3 leading-relaxed">
           <?= e(ps_text('दिन के समापन पर प्रकृति के संतुलन और आने वाले कल को और अधिक हरा-भरा बनाने का शांत संकल्प।', 'A peaceful evening resolution to sustain nature balance and nurture tomorrow greenery.')) ?>
         </p>
       </div>
     </div>
 
     <!-- Green Morning Manifesto (नियमावली धारा 38 से 43) -->
-    <div class="bg-surface-container-low/10 backdrop-blur rounded-2xl p-6 sm:p-10 border border-white/15 shadow-xl mb-12">
+    <div class="bg-white/10 backdrop-blur rounded-2xl p-6 sm:p-10 border border-white/15 shadow-xl mb-12">
       <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
-        <div class="inline-flex items-center gap-2 bg-primary-container/80 px-3.5 py-1 rounded-full text-primary-fixed font-label-sm text-label-sm mb-3">
+        <div class="inline-flex items-center gap-2 bg-amber-400/20 text-amber-300 border border-amber-300/30 px-4 py-1.5 rounded-full font-label-sm text-label-sm mb-3 font-semibold">
           <span class="material-symbols-outlined text-[18px]">menu_book</span>
           <span><?= e(ps_text('ग्रीन गैंग / पर्यावरण सेना नियमावली • धारा 38 से 43', 'Green Gang / Paryavaran Sena Manual • Sections 38 to 43')) ?></span>
         </div>
-        <h3 class="font-headline-md text-headline-md sm:font-headline-lg sm:text-headline-lg font-bold text-pure-white">
+        <h3 class="font-headline-md text-headline-md sm:font-headline-lg sm:text-headline-lg font-bold text-white">
           <?= e(ps_text('गुड मॉर्निंग की जगह ग्रीन मॉर्निंग क्यों...?', 'Why \'Green Morning\' instead of \'Good Morning\'...?')) ?>
         </h3>
-        <p class="font-body-sm text-body-sm sm:font-body-md sm:text-body-md text-surface-container-high mt-2 leading-relaxed">
+        <p class="font-body-sm text-body-sm sm:font-body-md sm:text-body-md text-emerald-100/90 mt-2 leading-relaxed">
           <?= e(ps_text('ग्रीन गैंग/पर्यावरण सेना की नियमावली की धारा 38 से 43 को पढ़ें और जानें कि गुड मार्निंग की जगह ग्रीन मार्निंग क्यों...?', 'Read Sections 38 to 43 of the Green Gang / Paryavaran Sena manual to discover the philosophy behind choosing \'Green Morning\' over \'Good Morning\'.')) ?>
         </p>
       </div>
@@ -584,10 +587,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">38</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('सांस्कृतिक पहचान', 'Cultural Identity')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">38</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('सांस्कृतिक पहचान', 'Cultural Identity')) ?></span>
             </div>
-            <p class="font-body-sm text-body-sm text-pure-white leading-relaxed">
+            <p class="font-body-sm text-body-sm text-white leading-relaxed">
               <?= e(ps_text('प्रत्येक पर्यावरण सैनिक गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग, सुप्रभात या शुभ प्रभात के स्थान पर हरित प्रात व हरित प्रभात, लिखे और बोले ऐसी अपेक्षा है। यही ग्रीन गैंग के कल्चर की अपनी विशेष पहचान होगी।', 'Every environmental volunteer is expected to write and say \'Green Morning\' instead of \'Good Morning\', and \'Harit Prat\' or \'Harit Prabhat\' instead of Suprabhat. This forms the distinct cultural identity of the Green Gang.')) ?>
             </p>
           </div>
@@ -597,10 +600,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">39</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('रंग व अर्थ', 'Color & Meaning')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">39</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('रंग व अर्थ', 'Color & Meaning')) ?></span>
             </div>
-            <p class="font-body-sm text-body-sm text-pure-white leading-relaxed">
+            <p class="font-body-sm text-body-sm text-white leading-relaxed">
               <?= e(ps_text('ग्रीन=हरा और हरा का अर्थ होता है खुशहाली और सुख समृद्धि संपन्नता। भारत देश के राष्ट्रीय ध्वज में प्रयुक्त हरा रंग भी यही अर्थ देता है।', 'Green signifies prosperity, happiness, and flourishing abundance. The green band in India\'s national flag represents this very essence.')) ?>
             </p>
           </div>
@@ -610,17 +613,17 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between md:col-span-2 lg:col-span-1 hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">40</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('साहित्यिक प्रमाण', 'Literary Evidence')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">40</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('साहित्यिक प्रमाण', 'Literary Evidence')) ?></span>
             </div>
-            <div class="bg-deep-forest/80 rounded-lg p-3 border-l-2 border-primary-fixed mb-3 text-center">
-              <p class="text-xs sm:text-sm font-semibold text-pure-white italic font-serif leading-relaxed">
+            <div class="bg-white/10 rounded-lg p-3 border-l-4 border-amber-400 mb-3 text-center">
+              <p class="text-xs sm:text-sm font-semibold text-amber-200 italic font-serif leading-relaxed">
                 “मेरी भव बाधा हरो, राधा नागरि सोय।<br>
                 जा तन की झाईं पड़े, श्याम हरित दुति होय।।”
               </p>
-              <span class="text-[11px] text-surface-container-high block mt-1"><?= e(ps_text('— महाकवि बिहारी', '— Mahakavi Bihari')) ?></span>
+              <span class="text-[11px] text-emerald-200 block mt-1 font-semibold"><?= e(ps_text('— महाकवि बिहारी', '— Mahakavi Bihari')) ?></span>
             </div>
-            <p class="font-body-xs text-xs text-pure-white/90 leading-relaxed">
+            <p class="font-body-xs text-xs text-white/90 leading-relaxed">
               <?= e(ps_text('हिंदी के प्रसिद्ध लेखक बिहारी जी ने भी हरित-दुति का अर्थ प्रसन्न मुद्रा से लगाया है। राधा गोरी है यानी पीली हैं। श्याम नीले, सांवरे रँग के हैं। बिहारी जी ने लिखा है कि जब राधा की परछाई पड़ती है तो श्याम यानी कृष्ण भी प्रसत्र हो जाया करते हैं। वैसे भी नीला+ पीला रंग मिलने पर हरा रंग बनकर तैयार होता है।', 'Celebrated poet Bihari associated \'Harit-Duti\' with cheerful radiance. When Radha\'s golden reflection touches dark/blue Shyam, Krishna illuminates with bliss. Optically too, blue and yellow blend into green.')) ?>
             </p>
           </div>
@@ -630,10 +633,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">41</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('खिला बनाम मुरझाया', 'Blooming vs Withered')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">41</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('खिला बनाम मुरझाया', 'Blooming vs Withered')) ?></span>
             </div>
-            <p class="font-body-sm text-body-sm text-pure-white leading-relaxed">
+            <p class="font-body-sm text-body-sm text-white leading-relaxed">
               <?= e(ps_text('फूलों और पेड़ों की तरह मनुष्य के चेहरे के लिए भी "खिला है, मुरझाया है" बोला जाता है। इसका भी अर्थ खिला यानी हरा भरा यानी प्रसन्न है। हरियाली कम यानी मुरझाया हुआ है, यानी प्रसन्नता कम।', 'Just as with plants, human expressions are termed \'blooming\' or \'withered\'. Blooming signifies fresh, flourishing joy, whereas fading greenery signifies reduced happiness.')) ?>
             </p>
           </div>
@@ -643,10 +646,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">42</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('एवरग्रीन (Evergreen)', 'Evergreen')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">42</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('एवरग्रीन (Evergreen)', 'Evergreen')) ?></span>
             </div>
-            <p class="font-body-sm text-body-sm text-pure-white leading-relaxed">
+            <p class="font-body-sm text-body-sm text-white leading-relaxed">
               <?= e(ps_text('अंग्रेजी में प्रायः बोला जाता है- एवरग्रीन/Evergreen. इसका अर्थ है सदाबहार यानी सदैव हरा भरा रहने वाला। मनुष्य के सदाबहार अथवा हरा भरा रहने से मतलब है खुशहाल/प्रसन्न रहना।', 'The English term \'Evergreen\' stands for perpetual vibrancy. For individuals, remaining evergreen translates directly to living a cheerful and contented life.')) ?>
             </p>
           </div>
@@ -656,10 +659,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         <div class="bg-white/5 rounded-xl p-5 border border-white/10 flex flex-col justify-between hover:bg-white/[0.08] transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary-fixed text-deep-forest font-bold text-sm">43</span>
-              <span class="text-xs font-semibold uppercase tracking-wider text-primary-fixed"><?= e(ps_text('सिद्ध निष्कर्ष', 'Conclusion')) ?></span>
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-amber-400 text-deep-forest font-bold text-sm">43</span>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-300"><?= e(ps_text('सिद्ध निष्कर्ष', 'Conclusion')) ?></span>
             </div>
-            <p class="font-body-sm text-body-sm text-pure-white leading-relaxed">
+            <p class="font-body-sm text-body-sm text-white leading-relaxed">
               <?= e(ps_text('ग्रीन गैंग/पर्यावरण सेना नियम निर्देश की धारा 38 से 43 द्वारा सिद्ध हो जाता है कि गुड मॉर्निंग का अर्थ सिर्फ सुप्रभात अथवा शुभ प्रभात होगा, जबकि ग्रीन मॉर्निंग का अर्थ हरित प्रभात यानी खुशहाल प्रात अथवा सुख सम्पन्न प्रात/प्रभात होगा।', 'Rules 38 to 43 prove that while \'Good Morning\' simply means a good morning, \'Green Morning\' implies a flourishing, joyful, and ecologically mindful dawn.')) ?>
             </p>
           </div>
@@ -667,18 +670,18 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <!-- Signoff & Appeal Banner -->
-      <div class="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/[0.04] p-4 sm:p-5 rounded-xl">
+      <div class="mt-6 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/5 p-4 sm:p-5 rounded-xl border border-white/10">
         <div class="flex items-start gap-3 text-left">
-          <span class="material-symbols-outlined text-amber-300 text-2xl shrink-0 mt-0.5" style="color: #fde68a !important;">eco</span>
-          <p class="font-body-sm text-body-sm text-pure-white leading-relaxed" style="color: #ffffff !important;">
+          <span class="material-symbols-outlined text-amber-300 text-2xl shrink-0 mt-0.5">eco</span>
+          <p class="font-body-sm text-body-sm text-white leading-relaxed">
             <?= e(ps_text('हमें विश्वास है कि आप आगे से गुड मॉर्निंग की जगह ग्रीन मॉर्निंग बोलना अवश्य आरम्भ करेंगे। साथ ही कुछ मित्रों परिचितों को ग्रीन मॉर्निंग बोलने हेतु प्रेरित भी करेंगे।', 'We believe you will begin using Green Morning instead of Good Morning, and inspire your friends and loved ones to embrace it as well.')) ?>
           </p>
         </div>
         <div class="shrink-0 text-right sm:border-l sm:border-white/10 sm:pl-5">
-          <span class="block font-title-sm text-title-sm font-bold" style="color: #fca5a5 !important;">
+          <span class="block font-title-md text-title-md font-bold text-amber-300">
             <?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?>
           </span>
-          <span class="block text-xs font-semibold" style="color: #fde68a !important;">
+          <span class="block text-xs font-semibold text-emerald-200">
             <?= e(ps_text('संस्थापक — ग्रीन गैंग / पर्यावरण सेना', 'Founder — Green Gang / Paryavaran Sena')) ?>
           </span>
         </div>
@@ -1420,7 +1423,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
 <!-- 14. INSPIRATIONAL QUOTE BANNER -->
 <section class="w-full px-4 sm:px-8 py-14 bg-deep-forest text-pure-white text-center relative overflow-hidden">
   <div class="max-w-3xl mx-auto relative z-10 flex flex-col items-center">
-    <span class="material-symbols-outlined text-fresh-sprout text-4xl mb-3">format_quote</span>
     <blockquote class="font-headline-lg text-headline-sm sm:text-headline-lg font-bold leading-tight m-0">
       <?= ps_text('"पेड़ केवल लकड़ी नहीं, हमारी सांसों का ऋण हैं।<br class="hidden sm:inline"/> हर दिन की शुरुआत ग्रीन मॉर्निंग से करें।"', '"Trees are not merely wood; they are our debt of breath.<br class="hidden sm:inline"/> Begin each day with Green Morning."') ?>
     </blockquote>
@@ -1452,7 +1454,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('स्वयंसेवक (Volunteer) बनें', 'Become a Volunteer')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text('अपने गाँव या शहर में ग्रीन गैंग व परिंदा संरक्षण अभियानों में सक्रिय भागीदारी दें।', 'Take active part in tree plantation and bird conservation initiatives in your locality.')) ?>
+            <?= e(ps_text('अपने गाँव या शहर में ग्रीन गैंग व परिंदा संरक्षण इत्यादि अभियानों में सक्रिय भागीदारी दें।', 'Take active part in Green Gang, bird conservation and related initiatives in your locality.')) ?>
           </p>
         </div>
         <div class="mt-6">
@@ -1467,16 +1469,16 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="bg-pure-white rounded-2xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
           <div class="w-12 h-12 rounded-xl bg-secondary-fixed/50 text-secondary flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-2xl">volunteer_activism</span>
+            <span class="material-symbols-outlined text-2xl">group_add</span>
           </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('अभियान में सहयोग दें', 'Contribute Resources')) ?></h3>
+          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('इकाई गठित करें', 'Form Local Unit')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text('सकोरा वितरण, पौधरोपण या कपड़ा-बैंक के लिए आवश्यक सामग्री व संसाधन साझा करें।', 'Contribute saplings, earthen bird water pots or warm clothes for winter cloth banks.')) ?>
+            <?= e(ps_text('अभियानों को गतिशील बनाने हेतु अपने रुचि अनुरूप स्थानीय स्तर पर इकाई के गठन करें।', 'Form local units based on your interest to drive campaigns forward.')) ?>
           </p>
         </div>
         <div class="mt-6">
           <a class="inline-flex items-center gap-1.5 font-label-md text-label-md text-secondary font-bold hover:text-deep-forest" href="#contact">
-            <span><?= e(ps_text('सहयोग हेतु लिखें', 'Contact to Support')) ?></span>
+            <span><?= e(ps_text('मार्गदर्शन हेतु लिखें', 'Write for Guidance')) ?></span>
             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
@@ -1488,14 +1490,14 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <div class="w-12 h-12 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4">
             <span class="material-symbols-outlined text-2xl">groups</span>
           </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('ग्रीन चौपाल आयोजित करें', 'Host Green Chaupal')) ?></h3>
+          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest"><?= e(ps_text('अभियान आयोजित करें', 'Host Campaign')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text('अपने विद्यालय, ग्राम पंचायत या संस्थान में हरियाली चौपाल का आयोजन करवाएं।', 'Organize environmental dialogues in your school, village panchayat or campus.')) ?>
+            <?= e(ps_text('अपने विद्यालय, ग्राम पंचायत या संस्थान में अभियान का आयोजन करवाएं।', 'Organize campaigns in your school, village panchayat or campus.')) ?>
           </p>
         </div>
         <div class="mt-6">
           <a class="inline-flex items-center gap-1.5 font-label-md text-label-md text-deep-forest font-bold hover:text-primary" href="#contact">
-            <span><?= e(ps_text('आयोजन अनुरोध भेजें', 'Request Session')) ?></span>
+            <span><?= e(ps_text('आयोजन सूचना भेजें', 'Send Event Notice')) ?></span>
             <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
@@ -1573,20 +1575,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
                 </p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- Location Snapshot Card -->
-        <div class="rounded-2xl overflow-hidden shadow-sm bg-pure-white p-4 border border-border-warm">
-          <div class="w-full h-32 rounded-xl bg-cover bg-center flex items-center justify-center bg-surface-container" 
-               style="background-image: linear-gradient(rgba(20,83,45,0.45), rgba(20,83,45,0.45)), url('<?= e(ps_resolve_img('assets/images/slider_final_1.webp')) ?>');">
-            <span class="text-pure-white font-title-lg text-title-lg font-bold drop-shadow text-center px-2">ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत</span>
-          </div>
-          <div class="p-2 flex items-center justify-between text-text-muted font-label-sm text-label-sm mt-1">
-            <span><?= e(ps_text('बाराबंकी जनपद (अवध अंचल)', 'Barabanki District, Awadh Region')) ?></span>
-            <span class="text-primary font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-[14px]">my_location</span><?= e(ps_text('सक्रिय केंद्र', 'Active Hub')) ?>
-            </span>
           </div>
         </div>
       </div>

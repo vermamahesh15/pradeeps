@@ -37,9 +37,6 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
       <!-- Signature Editorial Card -->
       <div class="lg:col-span-4">
         <div class="bg-cream-canvas rounded-2xl p-6 border-l-4 border-secondary shadow-[0_8px_24px_-4px_rgba(23,34,27,0.06)] relative overflow-hidden">
-          <div class="absolute -right-4 -bottom-4 opacity-5 pointer-events-none">
-            <span class="material-symbols-outlined text-[120px] text-deep-forest">format_quote</span>
-          </div>
           <div class="flex items-center gap-2 text-secondary mb-2">
             <span class="material-symbols-outlined text-[18px]">menu_book</span>
             <span class="font-label-sm text-label-sm uppercase tracking-wider font-bold"><?= e(ps_text('लोककवि सारंग संकल्प', 'Poetic Resolution')) ?></span>

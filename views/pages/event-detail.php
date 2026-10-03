@@ -174,8 +174,7 @@ $contentHtml = !empty($item['content']) ? ps_rich_text($item['content']) : null;
           <!-- Emotive Quote Banner by Pradeep Sarang -->
           <div class="relative bg-soft-meadow rounded-2xl p-6 border border-border-warm shadow-sm">
             <div class="absolute left-0 top-0 bottom-0 w-2 bg-primary rounded-l-2xl"></div>
-            <span class="material-symbols-outlined text-primary/20 text-5xl absolute right-4 top-3 select-none">format_quote</span>
-            <p class="text-deep-forest font-serif italic text-base sm:text-lg leading-relaxed mb-4 pr-6">
+            <p class="text-deep-forest font-serif italic text-base sm:text-lg leading-relaxed mb-4">
               <?= ps_text('"ग्रामीण जीवन की चेतना, किसानों की आत्मनिर्भरता और राष्ट्रनायकों का विचार ही हमारे समाज की असली शक्ति है। इस यात्रा के माध्यम से हम हर गांव में सद्भाव और स्वावलंबन का दीप प्रज्वलित कर रहे हैं।"', '"The consciousness of rural life, the self-reliance of farmers, and the ideology of national heroes are the true strength of our society. Through this yatra, we are lighting the lamp of harmony in every village."') ?>
             </p>
             <div class="flex items-center gap-3">

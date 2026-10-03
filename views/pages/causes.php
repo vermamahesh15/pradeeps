@@ -206,7 +206,6 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
           <div class="bg-white rounded-3xl p-6 sm:p-7 shadow-md hover:shadow-xl border-l-4 border-[#C05632] border-t border-r border-b border-[#E5E7EB] w-full max-w-md transition-all relative overflow-hidden">
             <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-[#F1F7F2] rounded-full pointer-events-none -z-0"></div>
             <div class="relative z-10">
-              <span class="material-symbols-outlined text-[#C05632] text-3xl mb-2 block select-none">format_quote</span>
               <p class="font-quote-editorial text-lg text-[#1E293B] italic leading-snug font-medium mb-4">
                 "<?= e(ps_text('हारना सीखा नहीं है, जीत का मैं गीत हूँ। जुगनुओं का संग है, इंसानियत का मीत हूँ।', 'I have not learned to lose; I am a song of victory. With fireflies as companions, I am a friend to humanity.')) ?>"
               </p>
@@ -325,7 +324,7 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
                   <span class="material-symbols-outlined text-[#C05632] text-[18px]">verified</span>
                   <span>सरदार पटेल समाजोत्थान ट्रस्ट • 1987</span>
                 </span>
-                <span class="font-bold text-[#14532D] bg-[#F1F7F2] px-2.5 py-1 rounded-md border border-[#15803D]/20">अखंड भारत चेतना</span>
+                <span class="font-bold text-[#14532D] bg-[#F1F7F2] px-2.5 py-1 rounded-md border border-[#15803D]/20"><?= e(ps_text('पटेल चेतना रथ यात्रा', 'Patel Chetna Rath Yatra')) ?></span>
               </div>
             </div>
 
@@ -574,9 +573,6 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
   <!-- 6. QUOTE BANNER SECTION -->
   <section class="w-full bg-white py-14 lg:py-18 text-center border-b border-[#E5E7EB]">
     <div class="max-w-3xl mx-auto px-4">
-      <div class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-[#F1F7F2] text-[#15803D] mb-5 shadow-xs border border-[#E2E8F0]">
-        <span class="material-symbols-outlined text-[30px]">format_quote</span>
-      </div>
       <p class="font-quote-editorial text-xl sm:text-2xl text-[#14532D] leading-relaxed italic font-medium">
         "<?= e(ps_text('धरती को हरी-भरी बनाना और बेज़ुबानों की प्यास बुझाना केवल कर्म नहीं, आत्मा का धर्म है।', 'Greening the Earth and slaking the thirst of wildlife is not merely duty; it is the soul\'s calling.')) ?>"
       </p>

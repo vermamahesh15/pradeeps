@@ -231,7 +231,6 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
           <!-- Main Philosophy Intro Card -->
           <div class="bg-pure-white rounded-3xl p-6 sm:p-8 shadow-sm border border-border-warm">
-            <span class="material-symbols-outlined text-primary-container text-[36px] mb-2 block opacity-80">format_quote</span>
             <p class="font-quote-editorial text-headline-sm md:text-title-lg text-deep-forest leading-relaxed font-bold mb-4">
               <?= e(ps_text('समय ही जीवन है, ऐसा मानकर अपने जीवन का यानी समय का नियोजन कर रखा है। श्री प्रदीप सारंग ने तीन दायित्व मानकर, पाँच आयाम निर्धारित करके जीवन समर्पित किया हुआ है—', 'Believing time to be life itself, Shri Pradeep Sarang has planned his life across 3 obligations and 5 dimensions.')) ?>
             </p>

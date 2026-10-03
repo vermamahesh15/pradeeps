@@ -528,7 +528,6 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
               <div class="flex items-center justify-between mb-4">
                 <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-pure-white font-bold text-base">2</span>
                 <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[16px]">format_quote</span>
                   <?= e(ps_text('अर्थ की व्यापकता', 'Depth of Meaning')) ?>
                 </span>
               </div>
@@ -630,42 +629,42 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
       <!-- Part 4: The Proven Conclusion & The 4 Daily Prahar Expansion -->
       <div class="bg-deep-forest text-pure-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
         <div class="relative z-10">
-          <div class="max-w-3xl mb-8">
-            <span class="text-xs font-bold uppercase tracking-widest text-primary-fixed block mb-2">
+          <div class="w-full mb-8">
+            <span class="text-xs font-bold uppercase tracking-widest text-amber-300 block mb-2">
               <?= e(ps_text('स्वतः सिद्ध निष्कर्ष • भाव संपदा की श्रेष्ठता', 'Self-Evident Conclusion • Superiority of Emotional Wealth')) ?>
             </span>
             <h3 class="font-headline-md text-headline-md font-bold text-pure-white mb-4">
               <?= e(ps_text('गुड शब्द की अपेक्षा ग्रीन शब्द कई गुना उत्तम व श्रेष्ठ है', 'Green is Incomparably Superior to Good in Meaning')) ?>
             </h3>
-            <p class="font-body-md text-body-md text-surface-container-high leading-relaxed mb-4">
+            <p class="font-body-md text-body-md text-emerald-100/90 leading-relaxed mb-4">
               <?= e(ps_text('इस प्रकार श्री सारंग जी के द्वारा खोजे गए उपरोक्त तर्कों से स्वतः सिद्ध हो जाता है कि गुड मॉर्निंग का अर्थ सिर्फ सुप्रभात अथवा शुभ प्रभात होगा, जबकि ग्रीन मॉर्निंग का अर्थ— हरित प्रभात यानी खुशहाल प्रात अथवा सुख सम्पन्न, समृद्ध प्रात/प्रभात होगा। यहाँ ग्रीन मॉर्निंग की इस विश में हृदय की भावनाओं में आह्लाद की उपस्थिति की स्थिति से भी है। भाव संपदा की दृष्टि से गुड शब्द की अपेक्षा ग्रीन शब्द कई गुना उत्तम है, श्रेष्ठ है।', 'Thus, Shri Sarang\'s rationale conclusively establishes that while Good Morning simply means an auspicious morning, Green Morning implies a flourishing, joyful, and ecologically enriched dawn. In emotional wealth and depth, Green is vastly superior to Good.')) ?>
             </p>
-            <p class="font-body-sm text-body-sm text-surface-container-high/90 leading-relaxed">
+            <p class="font-body-sm text-body-sm text-emerald-100/80 leading-relaxed">
               <?= e(ps_text('प्रेरणादायक चर्चाओं का परिणाम है कि आज हजारों लोग अभिवादन शैली में गुड मॉर्निंग के स्थान पर ग्रीन मॉर्निंग, गुड अफ्टरनून के स्थान पर ग्रीन आफ्टरनून, गुड इवनिंग के स्थान पर ग्रीन इवनिंग और गुड नाइट के स्थान पर ग्रीन नाइट को अपना रहे हैं। इसी प्रकार सुप्रभात या शुभ प्रात के स्थान पर हरित प्रभात, हरित प्रात, हरित सुबह तथा क्रमशः हरित दोपहर, हरित संध्या, हरित साँझ, हरित रात्रि आदि।', 'As a result of these inspiring dialogues, thousands have embraced Green greetings across the four times of day: Green Morning, Green Afternoon, Green Evening, and Green Night (Harit Prabhat, Harit Dopahar, Harit Sandhya, Harit Ratri).')) ?>
             </p>
           </div>
 
           <!-- The 4 Daily Greetings Cards -->
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-white/10">
-            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
-              <div class="text-primary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('प्रातः काल • Morning', 'Morning')) ?></div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15 border-b-4 border-b-amber-400">
+              <div class="text-amber-300 font-bold text-xs uppercase mb-1"><?= e(ps_text('प्रातः काल • Morning', 'Morning')) ?></div>
               <div class="text-lg font-bold text-pure-white">ग्रीन मॉर्निंग</div>
-              <div class="text-xs text-primary-fixed/80 mt-1">हरित प्रभात • हरित प्रात • हरित सुबह</div>
+              <div class="text-xs text-amber-200/80 mt-1">हरित प्रभात • हरित प्रात • हरित सुबह</div>
             </div>
-            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
-              <div class="text-tertiary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('दोपहर काल • Afternoon', 'Afternoon')) ?></div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15 border-b-4 border-b-yellow-400">
+              <div class="text-yellow-300 font-bold text-xs uppercase mb-1"><?= e(ps_text('दोपहर काल • Afternoon', 'Afternoon')) ?></div>
               <div class="text-lg font-bold text-pure-white">ग्रीन आफ्टरनून</div>
-              <div class="text-xs text-tertiary-fixed/80 mt-1">हरित दोपहर</div>
+              <div class="text-xs text-yellow-200/80 mt-1">हरित दोपहर</div>
             </div>
-            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
-              <div class="text-secondary-fixed font-bold text-xs uppercase mb-1"><?= e(ps_text('सायं काल • Evening', 'Evening')) ?></div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15 border-b-4 border-b-orange-400">
+              <div class="text-orange-300 font-bold text-xs uppercase mb-1"><?= e(ps_text('सायं काल • Evening', 'Evening')) ?></div>
               <div class="text-lg font-bold text-pure-white">ग्रीन इवनिंग</div>
-              <div class="text-xs text-secondary-fixed/80 mt-1">हरित संध्या • हरित साँझ</div>
+              <div class="text-xs text-orange-200/80 mt-1">हरित संध्या • हरित साँझ</div>
             </div>
-            <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
-              <div class="text-on-primary-container font-bold text-xs uppercase mb-1"><?= e(ps_text('रात्रि काल • Night', 'Night')) ?></div>
+            <div class="bg-white/10 rounded-2xl p-4 border border-white/15 border-b-4 border-b-emerald-300">
+              <div class="text-emerald-200 font-bold text-xs uppercase mb-1"><?= e(ps_text('रात्रि काल • Night', 'Night')) ?></div>
               <div class="text-lg font-bold text-pure-white">ग्रीन नाइट</div>
-              <div class="text-xs text-on-primary-container/80 mt-1">हरित रात्रि</div>
+              <div class="text-xs text-emerald-200/80 mt-1">हरित रात्रि</div>
             </div>
           </div>
         </div>

@@ -162,7 +162,6 @@ $spotlightClip = !empty($clips) ? $clips[0] : null;
         </div>
         <div class="relative z-10 bg-pure-white/95 rounded-xl p-5 shadow-sm mt-12 backdrop-blur-sm border border-border-warm">
           <div class="flex items-center gap-2 text-secondary font-label-sm text-label-sm font-semibold mb-1">
-            <span class="material-symbols-outlined text-[16px]">format_quote</span>
             <span><?= e(ps_text('अखबार की मूल सुर्खी', 'Original Press Headline')) ?></span>
           </div>
           <p class="font-headline-sm text-headline-sm text-deep-forest leading-snug font-bold">
