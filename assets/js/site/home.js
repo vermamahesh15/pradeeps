@@ -56,6 +56,9 @@
                 if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
                 event.preventDefault();
                 opener = link;
+                image.hidden = false;
+                image.removeAttribute('hidden');
+                image.style.display = '';
                 image.src = link.href;
                 image.alt = link.dataset.caption || link.querySelector('img')?.alt || '';
                 if (caption) caption.textContent = image.alt;
@@ -71,8 +74,9 @@
     }
     // Keep real image links usable even without JS. Failed images do not show broken icons.
     document.querySelectorAll('img').forEach(img => {
+        if (img.id === 'ps-lightbox-img' || img.closest('#ps-lightbox')) return;
         const fail = () => { img.hidden = true; const parent = img.closest('[data-ps-lightbox]'); if (parent) { parent.removeAttribute('data-ps-lightbox'); parent.setAttribute('aria-label', img.alt); } };
         img.addEventListener('error', fail, { once: true });
-        if (img.complete && img.naturalWidth === 0) fail();
+        if (img.src && img.complete && img.naturalWidth === 0) fail();
     });
 })();
