@@ -387,13 +387,12 @@ $trustees = [
           <!-- Grand Statement / Motto Box -->
           <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 md:p-6 border-l-4 border-amber-600 border-t border-r border-b border-stone-200 shadow-sm mb-8 relative">
             <div>
-                <p class="font-serif text-base sm:text-lg text-stone-900 italic font-semibold leading-snug mb-2">
-                  "न अन्याय करेंगे, न अन्याय सहेंगे — एकीकरण के द्वारा सामूहिक शक्ति का एहसास कराना ही हमारा प्रमुख लक्ष्य है।"
-                </p>
-                <div class="flex items-center justify-between flex-wrap gap-2 text-xs text-stone-600 border-t border-stone-100 pt-2 mt-2">
-                  <span class="font-bold text-amber-900">सरदार पटेल समाजोत्थान ट्रस्ट</span>
-                  <span class="text-stone-500 font-medium">— <span style="color: #ef4444 !important; font-weight: bold;">प्रदीप सारंग</span> (सचिव)</span>
-                </div>
+              <p class="font-serif text-base sm:text-lg text-stone-900 italic font-semibold leading-snug mb-2">
+                "न अन्याय करेंगे, न अन्याय सहेंगे — एकीकरण के द्वारा सामूहिक शक्ति का एहसास कराना ही हमारा प्रमुख लक्ष्य है।"
+              </p>
+              <div class="flex items-center justify-between flex-wrap gap-2 text-xs text-stone-600 border-t border-stone-100 pt-2 mt-2">
+                <span class="font-bold text-amber-900">सरदार पटेल समाजोत्थान ट्रस्ट</span>
+                <span class="text-stone-500 font-medium">— <span style="color: #ef4444 !important; font-weight: bold;">प्रदीप सारंग</span> (सचिव)</span>
               </div>
             </div>
           </div>
