@@ -48,19 +48,16 @@ $qrVolunteer = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' 
       <!-- Signature Quote Card -->
       <div class="lg:col-span-4">
         <div class="bg-surface-container-lowest rounded-xl p-5 shadow-sm border border-border-warm">
-          <div class="flex items-start gap-3">
-            <span class="material-symbols-outlined text-secondary text-[26px] shrink-0 mt-0.5">format_quote</span>
-            <div>
-              <p class="font-quote-editorial text-body-md text-deep-forest italic leading-relaxed mb-2">
-                <?= ps_text('"हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>जुगनुओं का संग है, इंसानियत का मीत हूँ।"', '"I have not learned to lose; I am a song of victory.<br/>Accompanied by fireflies, I am a friend to humanity."') ?>
-              </p>
-              <div class="flex items-center justify-between pt-2 border-t border-border-warm">
-                <span class="font-label-sm text-label-sm font-bold tracking-wider">— <span style="color: #ef4444 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span></span>
-                <span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-primary font-semibold">
-                  <span class="material-symbols-outlined text-[13px]">verified</span>
-                  <?= e(ps_text('लोकसेवक, बाराबंकी', 'Social Worker, Barabanki')) ?>
-                </span>
-              </div>
+          <div>
+            <p class="font-quote-editorial text-body-md text-deep-forest italic leading-relaxed mb-2">
+              <?= ps_text('"हारना सीखा नहीं है, जीत का मैं गीत हूँ।<br/>जुगनुओं का संग है, इंसानियत का मीत हूँ।"', '"I have not learned to lose; I am a song of victory.<br/>Accompanied by fireflies, I am a friend to humanity."') ?>
+            </p>
+            <div class="flex items-center justify-between pt-2 border-t border-border-warm">
+              <span class="font-label-sm text-label-sm font-bold tracking-wider">— <span style="color: #ef4444 !important;"><?= e(ps_text('प्रदीप सारंग', 'Pradeep Sarang')) ?></span></span>
+              <span class="inline-flex items-center gap-1 text-[11px] font-label-sm text-primary font-semibold">
+                <span class="material-symbols-outlined text-[13px]">verified</span>
+                <?= e(ps_text('लोकसेवक, बाराबंकी', 'Social Worker, Barabanki')) ?>
+              </span>
             </div>
           </div>
         </div>

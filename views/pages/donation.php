@@ -50,7 +50,6 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
         <!-- Editorial Quote Card -->
         <div class="lg:col-span-4 bg-surface-container-lowest rounded-2xl p-6 shadow-sm border-l-4 border-l-secondary border border-border-warm relative">
-          <span class="material-symbols-outlined text-secondary/30 text-4xl absolute top-3 right-3 select-none">format_quote</span>
           <p class="font-quote-editorial text-quote-editorial text-on-surface leading-snug italic mb-4">
             <?= ps_text('"जनसेवा कोई व्यापार नहीं, यह समाज का समाज को समर्पण है। हर पाई का हिसाब और हर पौधे की ज़िम्मेदारी हमारी निष्ठा है।"', '"Community service is not business; it is society\'s devotion to society. Accountability for every rupee and every tree is our vow."') ?>
           </p>

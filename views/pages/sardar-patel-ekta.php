@@ -386,9 +386,7 @@ $trustees = [
 
           <!-- Grand Statement / Motto Box -->
           <div class="bg-white/90 backdrop-blur-sm rounded-2xl p-5 md:p-6 border-l-4 border-amber-600 border-t border-r border-b border-stone-200 shadow-sm mb-8 relative">
-            <div class="flex items-start gap-3">
-              <span class="material-symbols-outlined text-amber-600 text-3xl shrink-0 mt-0.5 select-none">format_quote</span>
-              <div>
+            <div>
                 <p class="font-serif text-base sm:text-lg text-stone-900 italic font-semibold leading-snug mb-2">
                   "न अन्याय करेंगे, न अन्याय सहेंगे — एकीकरण के द्वारा सामूहिक शक्ति का एहसास कराना ही हमारा प्रमुख लक्ष्य है।"
                 </p>

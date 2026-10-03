@@ -589,7 +589,6 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
 
           <!-- Pull Quote Block -->
           <div class="relative p-4 sm:p-5 rounded-2xl bg-emerald-50/70 border-l-4 border-emerald-700 shadow-inner overflow-hidden">
-            <span class="material-symbols-outlined absolute -right-2 -bottom-3 text-[72px] text-emerald-900/5 select-none pointer-events-none">format_quote</span>
             <blockquote class="font-serif italic text-emerald-950 text-base sm:text-lg leading-snug font-medium relative z-10">
               “<?= e($authorQuoteVal) ?>”
             </blockquote>
@@ -803,7 +802,6 @@ $progressPercent = (int)round((($currentIndex + 1) / max(1, $totalArticles)) * 1
                 <span class="font-label-sm text-label-sm text-text-muted">लखनऊ विश्वविद्यालय • 21 May 2026</span>
               </div>
             </div>
-            <span class="material-symbols-outlined text-secondary text-[20px]">format_quote</span>
           </div>
           <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
             "श्रद्धेय डॉ. भगवान वत्स जी के प्रति व्यक्त आदर और राष्ट्रीय सेवा योजना की वह दृष्टि आज भी आपकी जीवनशैली में झलकती है। रात को 1 बजे तक अखबार का संपादन और सुबह पक्षियों का कलरव—यह संस्मरण मात्र एक आलेख नहीं, ग्रामीण जीवन का सांस्कृतिक दस्तावेज है।"
