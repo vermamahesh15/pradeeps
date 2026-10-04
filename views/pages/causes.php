@@ -53,9 +53,9 @@ $defaultCatalog = [
         'slug' => 'tulsi-pakhwara',
         'category' => 'culture',
         'is_primary' => 0,
-        'excerpt' => ps_text('गोस्वामी तुलसीदास जी के जीवन दर्शन, रामचरितमानस की सामाजिक समरसता एवं अवधी भाषा की मिठास को समर्पित 16-दिवसीय भव्य सांस्कृतिक उत्सव।', 'An annual 16-day cultural fest honoring Goswami Tulsidas, moral living, and social fraternity.'),
+        'excerpt' => ps_text('आँखे फाउंडेशन द्वारा समाज कल्याण, नैतिक मूल्यों और सामाजिक चेतना हेतु संचालित जन जागरण अभियान।', 'Jan Gajaran Abhiyan initiative by Ankhee Foundation for social awareness and welfare.'),
         'image' => 'assets/images/slider_final_1.webp',
-        'highlights' => [ps_text('16-दिवसीय व्याख्यानमाला', '16-Day Lecture Series'), ps_text('मानस वक्तृत्व प्रतियोगिता', 'Recitation Contests')]
+        'highlights' => [ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan'), ps_text('सामाजिक चेतना', 'Social Awareness')]
     ]
 ];
 

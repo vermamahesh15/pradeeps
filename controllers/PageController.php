@@ -748,8 +748,8 @@ class PageController
                     'title' => 'तुलसी जयंती पखवारा (16 से 31 अगस्त)',
                     'slug' => $slug,
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDNOtpSZS1SiMog6MZDa71DZSMfh6EnAA77Ymmt7zKpBOaoF2T1kWglq8Y53Zsa7euU3rS45qwNdtPbOCAvU8DxMXXSuSW8gAKL7TrAh3UL63gGDIxTMAgC3LukNGRs-_8I2A4TvGb7cVawrjP4eHZn4vCttQfvJgSJxC3lGfMoqJThtsk31BlhWfn-Tl3NqXbIas9Z_rC1JGQtFVyUukAuxzurqbr99QVnyPNLwWoq03MVbPtd27MK',
-                    'excerpt' => 'संस्कृति, लोक-चेतना व मानस दर्शन हेतु प्रतिवर्ष 16 से 31 अगस्त तक आयोजित तुलसी जयंती पखवारा।',
-                    'content' => '<p>प्रतिवर्ष 16 से 31 अगस्त तक आयोजित तुलसी जयंती पखवारा के अंतर्गत श्रीरामचरितमानस के अवधी आध्यात्मिक दर्शन, संत तुलसीदास की लोक-साहित्य परंपरा और युवाओं में नैतिक मूल्यों के संवर्धन हेतु गोष्ठियाँ व काव्य-सत्र आयोजित किए जाते हैं।</p>',
+                    'excerpt' => 'आँखे फाउंडेशन द्वारा समाज कल्याण एवं जागरूकता हेतु संचालित जन जागरण अभियान।',
+                    'content' => '<p>आँखे फाउंडेशन द्वारा संचालित जन जागरण अभियान का मुख्य उद्देश्य समाज में सकारात्मक बदलाव, शिक्षा, पर्यावरण एवं नैतिक मूल्यों का संवर्धन करना है।</p>',
                 ];
             } elseif (str_contains($slugLower, 'awadhi') || str_contains($slugLower, 'avadhi') || str_contains($slugLower, 'language')) {
                 $item = [
