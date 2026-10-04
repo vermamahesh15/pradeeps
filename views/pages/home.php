@@ -398,9 +398,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span class="material-symbols-outlined text-2xl">diversity_3</span>
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <a href="<?= e(base_url('/campaigns/' . $patelSlug)) ?>" class="hover:text-secondary transition-colors">
-              <?= e(ps_text('सरदार पटेल अभियान', 'Sardar Patel Campaign')) ?>
-            </a>
+            <?= e(ps_text('सरदार पटेल अभियान', 'Sardar Patel Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
             <?= e(ps_text('राष्ट्रीय एकता और अखंडता के संदेश को जन-जन तक पहुँचाने हेतु संचालित अभियान, जिससे युवाओं में राष्ट्रप्रेम जागृत हो सके।', 'Spreading ideals of national integrity, unity and civic leadership among youth.')) ?>
@@ -408,7 +406,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-secondary font-bold"><?= e(ps_text('राष्ट्रीय एकता व सद्भाव', 'National Integration')) ?></span>
-          <a href="<?= e(base_url('/campaigns/' . $patelSlug)) ?>" class="text-secondary hover:text-deep-forest">↗</a>
+          <span class="text-secondary opacity-60">↗</span>
         </div>
       </div>
 
@@ -419,9 +417,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span class="material-symbols-outlined text-2xl">auto_stories</span>
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <a href="<?= e(base_url('/campaigns/' . $awadhiSlug)) ?>" class="hover:text-primary transition-colors">
-              <?= e(ps_text('अवधी अभियान', 'Awadhi Campaign')) ?>
-            </a>
+            <?= e(ps_text('अवधी अभियान', 'Awadhi Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
             <?= e(ps_text('हिंदी एवं अवधी भाषा, साहित्य और लोक संस्कृति के संवर्धन के लिए निरंतर काव्य-गोष्ठियों और अवधी गद्य लेखन का जन-प्रसार।', 'Promotion of Hindi & Awadhi language, folk culture, and poetic symposiums across rural regions.')) ?>
@@ -429,7 +425,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-tertiary font-bold"><?= e(ps_text('साहित्यिक धरोहर संरक्षण', 'Literary Preservation')) ?></span>
-          <a href="<?= e(base_url('/campaigns/' . $awadhiSlug)) ?>" class="text-tertiary hover:text-deep-forest">↗</a>
+          <span class="text-tertiary opacity-60">↗</span>
         </div>
       </div>
 
@@ -440,9 +436,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span class="material-symbols-outlined text-2xl">visibility</span>
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <a href="<?= e(base_url('/campaigns/' . $tulsiSlug)) ?>" class="hover:text-primary transition-colors">
-              <?= e(ps_text('तुलसी जयंती पखवारा', 'Tulsi Jayanti Fortnight')) ?>
-            </a>
+            <?= e(ps_text('आँखे फाउंडेशन', 'Aankhee Foundation')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
             <?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?>
@@ -450,7 +444,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?></span>
-          <a href="<?= e(base_url('/campaigns/' . $tulsiSlug)) ?>" class="text-deep-forest hover:text-primary">↗</a>
+          <span class="text-deep-forest opacity-60">↗</span>
         </div>
       </div>
 
@@ -469,7 +463,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जीव-दया व प्रकृति प्रेम', 'Animal Compassion')) ?></span>
-          <a href="<?= e(base_url('/volunteer')) ?>" class="text-deep-forest hover:text-primary">↗</a>
+          <span class="text-deep-forest opacity-60">↗</span>
         </div>
       </div>
     </div>
