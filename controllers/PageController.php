@@ -745,7 +745,7 @@ class PageController
                 ];
             } elseif (str_contains($slugLower, 'tulsi')) {
                 $item = [
-                    'title' => 'तुलसी जयंती पखवारा (16 से 31 अगस्त)',
+                    'title' => 'आँखे फाउंडेशन',
                     'slug' => $slug,
                     'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDNOtpSZS1SiMog6MZDa71DZSMfh6EnAA77Ymmt7zKpBOaoF2T1kWglq8Y53Zsa7euU3rS45qwNdtPbOCAvU8DxMXXSuSW8gAKL7TrAh3UL63gGDIxTMAgC3LukNGRs-_8I2A4TvGb7cVawrjP4eHZn4vCttQfvJgSJxC3lGfMoqJThtsk31BlhWfn-Tl3NqXbIas9Z_rC1JGQtFVyUukAuxzurqbr99QVnyPNLwWoq03MVbPtd27MK',
                     'excerpt' => 'आँखे फाउंडेशन द्वारा समाज कल्याण एवं जागरूकता हेतु संचालित जन जागरण अभियान।',
@@ -907,5 +907,214 @@ class PageController
         ]);
         flash('success', 'You have been subscribed to the newsletter.');
         redirect('/');
+    }
+
+    public function searchPage(): void
+    {
+        $query = trim($_GET['q'] ?? '');
+        $results = $this->getSearchResults($query);
+        
+        $this->render('search', [
+            'title' => $query !== '' ? ps_text('खोज परिणाम: ' . $query, 'Search Results: ' . $query) : ps_text('खोज', 'Search'),
+            'searchQuery' => $query,
+            'results' => $results
+        ]);
+    }
+
+    public function getSearchResults(string $query): array
+    {
+        $query = trim($query);
+        if ($query === '') {
+            return [];
+        }
+        $results = [];
+
+        // 1. Search Campaigns catalog & DB campaigns
+        $defaultCatalog = [
+            'tulsi-abhiyan-16-31-2026' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('आँखे फाउंडेशन (जन जागरण अभियान)', 'Aankhee Foundation (Jan Gajaran Abhiyan)'),
+                'slug' => 'tulsi-abhiyan-16-31-2026',
+                'url' => base_url('/campaigns/tulsi-abhiyan-16-31-2026'),
+                'excerpt' => ps_text('आँखे फाउंडेशन व प्रदीप सारंग जी द्वारा समाज कल्याण, अवधी चौपाई गायन, दोहा वाचन एवं 5,000 तुलसी पौधों के वितरण हेतु संचालित जन जागरण अभियान।', 'Aankhee Foundation Jan Gajaran Abhiyan organized for social welfare and community development.'),
+                'image' => 'assets/images/slider_final_1.webp',
+                'keywords' => ['aankhee', 'foundation', 'आँखे', 'फाउंडेशन', 'tulsi', 'तुलसी', 'पखवारा', 'pakhwara', 'abhiyan', 'अभियान', '16-31', 'august', 'अगस्त', 'jayanti', 'जयंती', 'अवधी', 'चौपाई']
+            ],
+            'sardar-patel-ekta' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('सरदार पटेल अभियान (राष्ट्रीय एकता, समरसता व युवा प्रेरणा)', 'Sardar Patel National Integration Drive'),
+                'slug' => 'sardar-patel-ekta',
+                'url' => base_url('/sardar-patel-ekta'),
+                'excerpt' => ps_text('लौह पुरुष सरदार वल्लभभाई पटेल के अखंड भारत, राष्ट्रीय एकता और सामाजिक समरसता के संदेश को जन-जन तक पहुँचाने हेतु संचालित प्रमुख अभियान।', 'The flagship national integration initiative promoting Sardar Vallabhbhai Patel’s vision across Uttar Pradesh.'),
+                'image' => 'assets/images/sardar_patel.webp',
+                'keywords' => ['sardar', 'patel', 'सरदार', 'पटेल', 'एकता', 'ekta', 'samrasata']
+            ],
+            'hariyali-campaign' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('हरियाली अभियान (\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\')', 'Hariyali Abhiyan (Green Gang & Green Morning)'),
+                'slug' => 'hariyali-campaign',
+                'url' => base_url('/green-gang'),
+                'excerpt' => ps_text('50,000+ वृक्षारोपण एवं दैनिक जीवन में \'गुड मॉर्निंग\' की जगह \'ग्रीन-मॉर्निंग\' (Green Morning) बोलने का अभिनव शिष्टाचार आंदोलन।', '50,000+ Trees Planted & Green Morning Greetings across schools and rural panchayats.'),
+                'image' => 'assets/images/hariyali_abhiyan.webp',
+                'keywords' => ['hariyali', 'green', 'gang', 'हरियाली', 'ग्रीन', 'गैंग', 'वृक्षारोपण']
+            ],
+            'bird-conservation-campaign' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation (Water Bowls)'),
+                'slug' => 'bird-conservation-campaign',
+                'url' => base_url('/campaigns/bird-conservation-campaign'),
+                'excerpt' => ps_text('भीषण गर्मी में बेजुबान पक्षियों हेतु 10,000+ मिट्टी के सकोरे, दाना-पानी प्रबंध एवं विलुप्त होती गौरैया के लिए घोंसला निर्माण अभियान।', 'Distributing 10,000+ clay water bowls and food shelters for sparrows and birds.'),
+                'image' => 'assets/images/slider_final_2.webp',
+                'keywords' => ['bird', 'sparrow', 'parinda', 'परिंदा', 'सकोरा', 'गौरैया', 'जल-सकोरा']
+            ],
+            'language-and-literature-promotion-campaign' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('अवधी भाषा व लोक-संस्कृति संवर्धन अभियान', 'Awadhi Language & Folk Culture Promotion'),
+                'slug' => 'language-and-literature-promotion-campaign',
+                'url' => base_url('/campaigns/language-and-literature-promotion-campaign'),
+                'excerpt' => ps_text('अवधी भाषा, लोकगीतों, सारंग-कुंडलियों और विस्मृत होते ग्रामीण साहित्यिक मूल्यों को सहेजने हेतु मासिक चौपाल संगोष्ठियों का आयोजन।', 'Preserving Awadhi language, folk songs, rural dialects, and poetic heritage through village chaupals.'),
+                'image' => 'assets/images/slider_final_3.webp',
+                'keywords' => ['awadhi', 'अवधी', 'साहित्य', 'literature', 'kundaliyan', 'कुंडलियाँ', 'सारंग-कुंडलियाँ']
+            ]
+        ];
+
+        foreach ($defaultCatalog as $item) {
+            $matched = false;
+            if (mb_stripos($item['title'], $query, 0, 'UTF-8') !== false || mb_stripos($item['excerpt'], $query, 0, 'UTF-8') !== false) {
+                $matched = true;
+            } else {
+                foreach ($item['keywords'] as $kw) {
+                    if (mb_stripos($kw, $query, 0, 'UTF-8') !== false || mb_stripos($query, $kw, 0, 'UTF-8') !== false) {
+                        $matched = true;
+                        break;
+                    }
+                }
+            }
+            if ($matched) {
+                $results[] = $item;
+            }
+        }
+
+        // 2. Database Campaigns
+        try {
+            $dbCampaigns = $this->content->all('campaigns');
+            foreach ($dbCampaigns as $c) {
+                $cTitle = $c['title'] ?? '';
+                $cExcerpt = $c['excerpt'] ?? ($c['content'] ?? '');
+                $cSlug = $c['slug'] ?? '';
+                if ($cTitle !== '' && (mb_stripos($cTitle, $query, 0, 'UTF-8') !== false || mb_stripos($cExcerpt, $query, 0, 'UTF-8') !== false)) {
+                    $url = base_url('/campaigns/' . $cSlug);
+                    $exists = false;
+                    foreach ($results as $res) {
+                        if ($res['url'] === $url) { $exists = true; break; }
+                    }
+                    if (!$exists) {
+                        $results[] = [
+                            'type' => 'campaign',
+                            'type_label' => ps_text('अभियान', 'Campaign'),
+                            'title' => $cTitle,
+                            'slug' => $cSlug,
+                            'url' => $url,
+                            'excerpt' => ps_excerpt(strip_tags($cExcerpt), 160),
+                            'image' => ps_resolve_img($c['image'] ?? '', 'assets/images/slider_final_1.webp')
+                        ];
+                    }
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 3. Blogs search
+        try {
+            $blogs = $this->blogModel->allPublished(20, 0, $query);
+            foreach ($blogs as $b) {
+                $bSlug = $b['slug'] ?? ((string)($b['id'] ?? ''));
+                $results[] = [
+                    'type' => 'blog',
+                    'type_label' => ps_text('आलेख / विचार', 'Article'),
+                    'title' => $b['title'] ?? '',
+                    'slug' => $bSlug,
+                    'url' => base_url('/blog/' . $bSlug),
+                    'excerpt' => ps_excerpt(strip_tags($b['content'] ?? $b['excerpt'] ?? ''), 160),
+                    'image' => ps_resolve_img($b['image'] ?? '', 'assets/images/slider_final_1.webp'),
+                    'date' => !empty($b['published_at']) ? date('d M Y', strtotime($b['published_at'])) : ''
+                ];
+            }
+        } catch (\Throwable $e) {}
+
+        // 4. Events search
+        try {
+            $events = $this->content->all('events');
+            foreach ($events as $ev) {
+                $evTitle = $ev['title'] ?? '';
+                $evDesc = $ev['description'] ?? ($ev['content'] ?? '');
+                if (mb_stripos($evTitle, $query, 0, 'UTF-8') !== false || mb_stripos($evDesc, $query, 0, 'UTF-8') !== false) {
+                    $evSlug = $ev['slug'] ?? ((string)($ev['id'] ?? ''));
+                    $results[] = [
+                        'type' => 'event',
+                        'type_label' => ps_text('कार्यक्रम', 'Event'),
+                        'title' => $evTitle,
+                        'slug' => $evSlug,
+                        'url' => base_url('/events/' . $evSlug),
+                        'excerpt' => ps_excerpt(strip_tags($evDesc), 160),
+                        'image' => ps_resolve_img($ev['image'] ?? '', 'assets/images/slider_final_1.webp'),
+                        'date' => $ev['event_date'] ?? ''
+                    ];
+                }
+            }
+        } catch (\Throwable $e) {}
+
+        // 5. Special pages & awards checks
+        $staticPages = [
+            [
+                'title' => ps_text('जनकवि बंशीधर शुक्ल व स्वामी तुलसीदास सम्मान (पुरस्कार एवं उपलब्धि)', 'Banshidhar Shukla & Tulsidas Award'),
+                'url' => base_url('/awards'),
+                'excerpt' => ps_text('प्रकृति साहित्य रत्न, जनकवि बंशीधर शुक्ल पुरस्कार एवं अवधी भाषा की दीर्घकालिक सेवा हेतु प्रतिष्ठित गोस्वामी तुलसीदास सम्मान से विभूषित।', 'Honored with Banshidhar Shukla Award & Goswami Tulsidas Award for lifetime Awadhi literature service.'),
+                'keywords' => ['award', 'tulsi', 'तुलसी', 'पुरस्कार', 'सम्मान', 'बंशीधर']
+            ],
+            [
+                'title' => ps_text('प्रदीप सारंग जी का जीवन-परिचय एवं सेवा यात्रा', 'Biography & Service Journey of Pradeep Sarang'),
+                'url' => base_url('/about'),
+                'excerpt' => ps_text('चार दशकों की समर्पित जनसेवा, संत कबीर व तुलसीदास की लोक-परंपरा से निःसृत आत्मबल और पर्यावरण चेतना।', 'Four decades of selfless community service, literary creation and environmental advocacy.'),
+                'keywords' => ['about', 'biography', 'परिचय', 'जीवन', 'सारंग']
+            ],
+            [
+                'title' => ps_text('सलाहकार एवं जन-मार्गदर्शन (Advisor Desk)', 'Advisor & Guidance'),
+                'url' => base_url('/salahkaar'),
+                'excerpt' => ps_text('कबीर, तुलसी और महात्मा गांधी के सिद्धांतों पर आधारित व्यावहारिक जीवन-दर्शन एवं नैतिक परामर्श।', 'Moral counseling & guidance rooted in Kabir, Tulsi and Gandhi philosophy.'),
+                'keywords' => ['advisor', 'salahkaar', 'सलाहकार', 'परामर्श']
+            ]
+        ];
+
+        foreach ($staticPages as $sp) {
+            $spMatched = false;
+            if (mb_stripos($sp['title'], $query, 0, 'UTF-8') !== false || mb_stripos($sp['excerpt'], $query, 0, 'UTF-8') !== false) {
+                $spMatched = true;
+            } else {
+                foreach ($sp['keywords'] as $kw) {
+                    if (mb_stripos($kw, $query, 0, 'UTF-8') !== false || mb_stripos($query, $kw, 0, 'UTF-8') !== false) {
+                        $spMatched = true;
+                        break;
+                    }
+                }
+            }
+            if ($spMatched) {
+                $results[] = [
+                    'type' => 'page',
+                    'type_label' => ps_text('मुख्य पृष्ठ', 'Page'),
+                    'title' => $sp['title'],
+                    'slug' => '',
+                    'url' => $sp['url'],
+                    'excerpt' => $sp['excerpt'],
+                    'image' => 'assets/images/slider_final_1.webp'
+                ];
+            }
+        }
+
+        return $results;
     }
 }

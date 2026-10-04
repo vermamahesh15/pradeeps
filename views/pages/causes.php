@@ -49,7 +49,7 @@ $defaultCatalog = [
     ],
     'tulsi-pakhwara' => [
         'id' => 5,
-        'title' => ps_text('तुलसी जयंती पखवारा (16 से 31 अगस्त)', 'Goswami Tulsidas Jayanti Fortnight'),
+        'title' => ps_text('आँखे फाउंडेशन (जन जागरण अभियान)', 'Aankhee Foundation (Jan Gajaran Abhiyan)'),
         'slug' => 'tulsi-pakhwara',
         'category' => 'culture',
         'is_primary' => 0,
