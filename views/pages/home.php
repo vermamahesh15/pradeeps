@@ -437,7 +437,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
           <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4">
-            <span class="material-symbols-outlined text-2xl">menu_book</span>
+            <span class="material-symbols-outlined text-2xl">visibility</span>
           </div>
           <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
             <a href="<?= e(base_url('/campaigns/' . $tulsiSlug)) ?>" class="hover:text-primary transition-colors">
@@ -445,11 +445,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </a>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('16 से 31 अगस्त 2026: गोस्वामी तुलसीदास जी के जीवन मूल्यों, रामचरितमानस की सामाजिक समरसता और अवधी संस्कृति का आयोजन।', '16-31 August 2026: Celebrations honoring Goswami Tulsidas and the social harmony of Ramcharitmanas.')) ?>
+            <?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
-          <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('वार्षिक सांस्कृतिक उत्सव', 'Annual Cultural Event')) ?></span>
+          <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?></span>
           <a href="<?= e(base_url('/campaigns/' . $tulsiSlug)) ?>" class="text-deep-forest hover:text-primary">↗</a>
         </div>
       </div>
@@ -702,84 +702,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
   </div>
 </section>
 
-<!-- 6. SOCIAL IMPACT AREAS (कार्यक्षेत्र मैट्रिक्स) -->
-<section class="w-full px-4 sm:px-8 py-8 lg:py-12" id="impact">
-  <div class="max-w-container-max mx-auto">
-    <div class="text-center max-w-2xl mx-auto mb-12">
-      <span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold"><?= e(ps_text('समग्र समाज-सुधार', 'Holistic Social Reforms')) ?></span>
-      <h2 class="font-headline-lg text-headline-lg text-deep-forest font-bold mt-1"><?= e(ps_text('कार्यक्षेत्र मैट्रिक्स', 'Impact Areas Matrix')) ?></h2>
-      <p class="font-body-md text-body-md text-text-muted mt-2">
-        <?= e(ps_text('पर्यावरण से लेकर मानवीय गरिमा तक — प्रदीप सारंग की सक्रियता के 8 प्रमुख स्तंभ', 'From ecological conservation to human dignity — 8 key pillars of active community engagement')) ?>
-      </p>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-primary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">park</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('पर्यावरण एवं पौधरोपण', 'Environment & Plantation')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('सघन ग्रामीण सरोकार, बंजर भूमि पर हरियाली और सतरिख क्षेत्र में सघन ग्रीन चौपाल।', 'Grassroots afforestation, green cover revival and regular Chaupal sessions.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-tertiary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">agriculture</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('ग्रामीण विकास व स्वावलंबन', 'Rural Development & Self-Reliance')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('कमरावां व समीपवर्ती गांवों में स्व-सहायता, स्वच्छता और पंचायती जन-जागरूकता।', 'Sanitation drives, self-help facilitation and active panchayat participation in Kamrawan.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">water_drop</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('जल-सकोरा व पक्षी संरक्षण', 'Bird & Water Conservation')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('गर्मी में पक्षियों के लिए 10,000+ मिट्टी के जल-सकोरों का वितरण और बेजुबान परिंदों का संरक्षण।', 'Free distribution of 10,000+ earthen water bowls for birds and sparrow protection.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-secondary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">how_to_vote</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('मतदाता जागरूकता अभियान', 'Voter Awareness')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('शत-प्रतिशत निष्पक्ष मतदान और ग्रामीण अंचलों में लोकतंत्र के अधिकार का शिक्षण।', 'Mobilizing ethical voter turnout and constitutional awareness in rural hamlets.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-primary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">nest_multi_room</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('परिंदा व गौरैया संरक्षण', 'Bird & Sparrow Protection')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('घोंसला निर्माण, सुरक्षित जल सकोरे और ग्रीष्मकाल में पक्षी-मित्र स्वयंसेवक दल।', 'Nest creation, earthen water pots and summer volunteer squads for birds.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-deep-forest flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">sports_gymnastics</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('युवा प्रेरणा व नशामुक्ति', 'Youth Motivation & Anti-Addiction')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('स्वामी विवेकानंद के आदर्शों पर आधारित युवा गोष्ठियां और नशामुक्त समाज संकल्प।', 'Youth conclaves inspired by Swami Vivekananda and de-addiction campaigns.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-tertiary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">history_edu</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('अवधी भाषा एवं साहित्य', 'Awadhi Language & Literature')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('लोक मुहावरे, कुंडलियाँ छंद, अवधी पत्रिकाएं और क्षेत्रीय कवियों का मंचन।', 'Preserving Awadhi idioms, Kundaliyan meters and hosting regional poetic meets.')) ?></p>
-      </div>
-
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col items-start hover:shadow-md transition-shadow">
-        <div class="w-12 h-12 rounded-xl bg-soft-meadow text-secondary flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-2xl">public</span>
-        </div>
-        <h3 class="font-headline-sm text-headline-sm text-deep-forest font-semibold"><?= e(ps_text('राष्ट्रीय एकता व सद्भाव', 'National Unity & Harmony')) ?></h3>
-        <p class="font-body-sm text-body-sm text-text-muted mt-2"><?= e(ps_text('सरदार पटेल जयंती आयोजन और सर्वधर्म सद्भावना यात्राओं का नेतृत्व।', 'Sardar Patel Jayanti commemorative programs and inter-community goodwill walks.')) ?></p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- 7. IMPACT STORIES / FIELD CASE STUDIES (बदलाव की कहानियाँ) -->
 <section class="w-full px-4 sm:px-8 py-8 lg:py-12 bg-soft-meadow">
@@ -1181,13 +1103,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </a>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-      <!-- Upcoming Events Column (7 Cols) -->
-      <div class="lg:col-span-7 space-y-6">
-        <div class="flex items-center gap-2 pb-2">
-          <span class="w-3 h-3 rounded-full bg-fresh-sprout animate-pulse"></span>
-          <h3 class="font-title-lg text-title-lg font-bold text-deep-forest"><?= e(ps_text('आगामी कार्यक्रम (Upcoming Events)', 'Upcoming Events')) ?></h3>
-        </div>
+    <div class="max-w-4xl mx-auto space-y-6">
+      <div class="flex items-center gap-2 pb-2">
+        <span class="w-3 h-3 rounded-full bg-fresh-sprout animate-pulse"></span>
+        <h3 class="font-title-lg text-title-lg font-bold text-deep-forest"><?= e(ps_text('आगामी कार्यक्रम (Upcoming Events)', 'Upcoming Events')) ?></h3>
+      </div>
 
         <?php 
         $todayStr = date('Y-m-d');
@@ -1260,72 +1180,6 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </div>
           </div>
         <?php endforeach; ?>
-      </div>
-
-      <!-- Past Events Column (5 Cols) -->
-      <div class="lg:col-span-5 space-y-6">
-        <div class="flex items-center gap-2 pb-2">
-          <span class="w-3 h-3 rounded-full bg-text-muted"></span>
-          <h3 class="font-title-lg text-title-lg font-bold text-deep-forest"><?= e(ps_text('सम्पन्न आयोजन (Past Events)', 'Past Events')) ?></h3>
-        </div>
-
-        <?php 
-        if (empty($realPast)) {
-            $realPast = [
-                [
-                    'title' => ps_text('स्वरचित 151 कुंडलियों का संग्रह "सारंग-कुंडलियाँ" का प्रकाशन', 'Publication of 151 Kundaliyan Anthology "Sarang-Kundaliyan"'),
-                    'event_date' => '2026-07-05',
-                    'excerpt' => ps_text('काव्य-कार्यशाला एवं सारस्वत विमोचन समारोह। अवधी व हिंदी के सुधी साहित्यकारों का समागम।', 'Poetic symposium and book release with distinguished Hindi & Awadhi scholars.'),
-                    'location' => ps_text('बाराबंकी, उत्तर प्रदेश, भारत', 'Barabanki, Uttar Pradesh, India'),
-                    'slug' => '151'
-                ],
-                [
-                    'title' => ps_text('नाट्य अभिनय कार्यशाला बाराबंकी', 'Theatre Acting Workshop Barabanki'),
-                    'event_date' => '2026-06-10',
-                    'excerpt' => ps_text('वरिष्ठ रंगकर्मी चंद्रभाष सिंह जी के निर्देशन में ग्रामीण युवाओं हेतु 7-दिवसीय नाट्य एवं लोक-संवाद प्रशिक्षण।', '7-day rural youth theatre & dialogue training directed by senior artist Chandra Bhash Singh.'),
-                    'location' => ps_text('बाराबंकी में', 'Barabanki'),
-                    'slug' => 'event'
-                ]
-            ];
-        }
-
-        foreach (array_slice($realPast, 0, 3) as $pEvent):
-            $pTitle = $pEvent['title'];
-            $pDateStr = format_date($pEvent['event_date'] ?? '2026-07-05');
-            $pLoc = !empty($pEvent['location']) ? $pEvent['location'] : ps_text('बाराबंकी', 'Barabanki');
-            $pSlug = $pEvent['slug'] ?? 'events';
-            $pDesc = !empty($pEvent['excerpt']) ? $pEvent['excerpt'] : (!empty($pEvent['content']) ? ps_excerpt($pEvent, 120) : '');
-        ?>
-        <div class="bg-pure-white rounded-xl p-5 shadow-sm border border-border-warm">
-          <div class="flex items-center justify-between">
-            <span class="bg-surface-container text-on-surface-variant text-[11px] font-semibold px-2 py-0.5 rounded"><?= e(ps_text('सम्पन्न', 'Past')) ?></span>
-            <span class="font-label-sm text-label-sm text-text-muted"><?= e($pDateStr) ?></span>
-          </div>
-          <h4 class="font-headline-sm text-headline-sm font-semibold text-deep-forest mt-2">
-            <a href="<?= e(base_url('/events/' . $pSlug)) ?>" class="hover:text-primary transition-colors">
-              <?= e($pTitle) ?>
-            </a>
-          </h4>
-          <p class="font-body-sm text-body-sm text-text-muted mt-1">
-            <?= e($pDesc) ?>
-          </p>
-          <div class="mt-3 flex items-center gap-1 text-text-muted font-label-sm text-label-sm">
-            <span class="material-symbols-outlined text-[15px]">location_on</span>
-            <span><?= e($pLoc) ?></span>
-          </div>
-        </div>
-        <?php endforeach; ?>
-
-        <!-- Mini Calendar Highlight Card -->
-        <div class="bg-soft-meadow rounded-xl p-5 border-l-4 border-primary border border-border-warm">
-          <div class="flex items-center gap-3">
-            <span class="material-symbols-outlined text-primary text-3xl shrink-0">event_available</span>
-            <div>
-              <h4 class="font-title-md text-title-md font-bold text-deep-forest"><?= e(ps_text('अपने गाँव में चौपाल कराएं', 'Host a Green Chaupal')) ?></h4>
-              <p class="font-body-sm text-body-sm text-text-muted mt-0.5"><?= e(ps_text('प्रदीप सारंग को अपने क्षेत्र में पर्यावरण या साहित्य सभा हेतु आमंत्रित करें।', 'Invite Pradeep Sarang for environmental dialogues or literary gatherings in your village.')) ?></p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

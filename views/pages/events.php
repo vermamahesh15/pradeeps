@@ -71,23 +71,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
       </div>
     </div>
 
-    <!-- 2-Photo Event Gallery Spotlight -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Green Chaupal Gathering" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-fresh-sprout font-bold"><?= e(ps_text('ग्रीन मॉर्निंग चौपाल', 'Green Morning Chaupal')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('ग्रामीण चौपालों में पर्यावरण संकल्प एवं पौधरोपण', 'Environmental Pledge & Tree Planting in Village Chaupal')) ?></p>
-        </div>
-      </div>
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNOtpSZS1SiMog6MZDa71DZSMfh6EnAA77Ymmt7zKpBOaoF2T1kWglq8Y53Zsa7euU3rS45qwNdtPbOCAvU8DxMXXSuSW8gAKL7TrAh3UL63gGDIxTMAgC3LukNGRs-_8I2A4TvGb7cVawrjP4eHZn4vCttQfvJgSJxC3lGfMoqJThtsk31BlhWfn-Tl3NqXbIas9Z_rC1JGQtFVyUukAuxzurqbr99QVnyPNLwWoq03MVbPtd27MK" alt="Tulsi Jayanti Meet" class="w-full h-52 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('तुलसी जयंती काव्य मंच', 'Tulsi Jayanti Poetry Stage')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('मानस जयंती पखवारा एवं अवधी साहित्य गोष्ठी', 'Ramcharitmanas Recital & Awadhi Literature Seminar')) ?></p>
-        </div>
-      </div>
-    </div>
+
     <!-- Quick Filter Pills -->
     <div class="mt-8 flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none" id="event-filters">
       <button type="button" data-filter="all" class="filter-btn active-filter px-4 py-2 rounded-full font-label-md text-label-md transition-all whitespace-nowrap bg-deep-forest text-pure-white shadow-sm flex items-center gap-1.5">
@@ -225,10 +209,7 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
         </div>
         <!-- CTAs -->
         <div class="flex flex-wrap items-center gap-3 pt-2">
-          <button type="button" onclick="document.getElementById('rsvp-modal').classList.remove('hidden')" class="bg-primary-container hover:bg-deep-forest text-on-primary font-label-md text-label-md px-6 py-3 rounded-xl font-semibold transition-all shadow-sm flex items-center gap-2">
-            <span class="material-symbols-outlined text-[18px]">how_to_reg</span>
-            <span><?= e(ps_text('सहभागिता दर्ज करें (RSVP)', 'RSVP / Register Attendance')) ?></span>
-          </button>
+
           <a href="https://maps.google.com/?q=Gandhi+Bhawan+Barabanki" target="_blank" rel="noopener noreferrer" class="bg-surface-container-lowest hover:bg-soft-meadow text-on-surface font-label-md text-label-md px-4 py-3 rounded-xl border border-border-warm transition-colors flex items-center gap-1.5">
             <span class="material-symbols-outlined text-primary text-[18px]">map</span>
             <span><?= e(ps_text('स्थल का नक्शा देखें', 'View Location Map')) ?></span>
@@ -245,11 +226,8 @@ $featuredUpcoming = !empty($upcoming) ? $upcoming[0] : [
     <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
       <div>
         <div class="font-label-md text-label-md text-primary font-semibold uppercase tracking-wider mb-2"><?= e(ps_text('अभियान कैलेंडर • 2026', 'Initiative Calendar 2026')) ?></div>
-        <h2 class="font-headline-md text-headline-md text-deep-forest font-bold"><?= e(ps_text('आगामी जन-कार्यक्रम एवं चौपालें', 'Upcoming Public Events & Chaupals')) ?></h2>
+        <h2 class="font-headline-md text-headline-md text-deep-forest font-bold"><?= e(ps_text('आगामी जन-कार्यक्रम', 'Upcoming Public Events')) ?></h2>
       </div>
-      <p class="font-body-sm text-body-sm text-text-muted max-w-md">
-        <?= e(ps_text('ग्राम स्तर से नगर केंद्र तक होने वाली चौपालों एवं साहित्यानुष्ठानों की समय-सारणी। हर आयोजन में जन-भागीदारी सादर आमंत्रित है।', 'Schedule of upcoming village chaupals and literary gathers.')) ?>
-      </p>
     </div>
 
     <!-- Events Grid -->
