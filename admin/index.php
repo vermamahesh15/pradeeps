@@ -1037,6 +1037,8 @@ if (is_post()) {
             } catch (Throwable $e) {
                 flash('admin_error', 'Delete failed: ' . $e->getMessage());
             }
+        } else {
+            flash('admin_error', 'Sticker not found or already deleted.');
         }
         redirect('/admin/index.php?module=green_gang_stickers');
     }
