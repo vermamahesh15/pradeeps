@@ -432,6 +432,38 @@ class ContentModel extends BaseModel
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+            // Seed default stickers into DB table if empty and not yet seeded
+            $countStmt = $this->db->query("SELECT COUNT(*) FROM green_gang_stickers");
+            $count = $countStmt ? (int)$countStmt->fetchColumn() : 0;
+            if ($count === 0) {
+                $seeded = false;
+                try {
+                    $this->ensureSettingsTable();
+                    $stmt = $this->db->prepare("SELECT setting_value FROM settings WHERE setting_key = 'green_gang_stickers_seeded'");
+                    $stmt->execute();
+                    if ($stmt->fetchColumn() === '1') {
+                        $seeded = true;
+                    }
+                } catch (Throwable $e) {}
+
+                if (!$seeded) {
+                    $defaults = $this->defaultGreenGangStickers();
+                    $insertStmt = $this->db->prepare('INSERT INTO green_gang_stickers (title, tagline, image, sort_order, status) VALUES (:title, :tagline, :image, :sort_order, :status)');
+                    foreach ($defaults as $d) {
+                        $insertStmt->execute([
+                            ':title' => $d['title'],
+                            ':tagline' => $d['tagline'] ?? '',
+                            ':image' => $d['image'],
+                            ':sort_order' => (int)($d['sort_order'] ?? 0),
+                            ':status' => $d['status'] ?? 'active'
+                        ]);
+                    }
+                    try {
+                        $this->db->exec("INSERT INTO settings (setting_key, setting_value) VALUES ('green_gang_stickers_seeded', '1') ON DUPLICATE KEY UPDATE setting_value = '1'");
+                    } catch (Throwable $e) {}
+                }
+            }
         } catch (Throwable $e) {}
     }
 
@@ -443,10 +475,7 @@ class ContentModel extends BaseModel
                 $stmt = $this->db->prepare('SELECT * FROM green_gang_stickers WHERE status = "active" ORDER BY sort_order ASC, created_at DESC LIMIT :limit');
                 $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
                 $stmt->execute();
-                $results = $stmt->fetchAll();
-                if (!empty($results)) {
-                    return $results;
-                }
+                return $stmt->fetchAll();
             } catch (Throwable $e) {}
         }
         return $this->defaultGreenGangStickers();
@@ -459,9 +488,9 @@ class ContentModel extends BaseModel
         try {
             $stmt = $this->db->query('SELECT * FROM green_gang_stickers ORDER BY sort_order ASC, created_at DESC');
             $res = $stmt->fetchAll();
-            return !empty($res) ? $res : $this->defaultGreenGangStickers();
+            return is_array($res) ? $res : [];
         } catch (Throwable $e) {
-            return $this->defaultGreenGangStickers();
+            return [];
         }
     }
 
