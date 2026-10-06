@@ -949,6 +949,98 @@ if (is_post()) {
         redirect('/admin/index.php?module=gallery');
     }
 
+    if ($loggedIn && ($_POST['action'] ?? '') === 'create_green_gang_sticker') {
+        $title = trim($_POST['title'] ?? '');
+        $tagline = trim($_POST['tagline'] ?? '');
+        $sortOrder = (int)($_POST['sort_order'] ?? 0);
+        $status = $_POST['status'] ?? 'active';
+
+        $files = [];
+        if (!empty($_FILES['sticker_images']['name'])) {
+            if (is_array($_FILES['sticker_images']['name'])) {
+                foreach ($_FILES['sticker_images']['name'] as $i => $name) {
+                    if (!empty($name)) {
+                        $files[] = [
+                            'name'     => $_FILES['sticker_images']['name'][$i],
+                            'type'     => $_FILES['sticker_images']['type'][$i],
+                            'tmp_name' => $_FILES['sticker_images']['tmp_name'][$i],
+                            'error'    => $_FILES['sticker_images']['error'][$i],
+                            'size'     => $_FILES['sticker_images']['size'][$i],
+                        ];
+                    }
+                }
+            } elseif (!empty($_FILES['sticker_images']['name'])) {
+                $files[] = $_FILES['sticker_images'];
+            }
+        } elseif (!empty($_FILES['sticker_image']['name'])) {
+            $files[] = $_FILES['sticker_image'];
+        }
+
+        if (empty($files)) {
+            flash('admin_error', 'Please select one or more sticker image files to upload.');
+            redirect('/admin/index.php?module=green_gang_stickers');
+        }
+
+        $successCount = 0;
+        $errors = [];
+        $totalFiles = count($files);
+
+        foreach ($files as $idx => $file) {
+            $errorUpload = '';
+            $uploaded = upload_file($file, $errorUpload, 'stickers');
+            if ($uploaded) {
+                $currentTitle = $title;
+                if (empty($currentTitle)) {
+                    $origName = pathinfo($file['name'], PATHINFO_FILENAME);
+                    $currentTitle = ucwords(str_replace(['_', '-'], ' ', $origName));
+                } elseif ($totalFiles > 1) {
+                    $currentTitle = $title . ' #' . ($idx + 1);
+                }
+
+                try {
+                    $content->createGreenGangSticker([
+                        'title' => $currentTitle,
+                        'tagline' => $tagline,
+                        'image' => $uploaded,
+                        'sort_order' => $sortOrder + $idx,
+                        'status' => $status
+                    ]);
+                    $successCount++;
+                } catch (Throwable $e) {
+                    $errors[] = "Error saving {$file['name']}: " . $e->getMessage();
+                }
+            } else {
+                $errors[] = "Upload failed for {$file['name']}: " . ($errorUpload ?: 'Unknown error');
+            }
+        }
+
+        if ($successCount > 0) {
+            flash('admin_success', "$successCount Green Gang Sticker(s) successfully uploaded and published.");
+        }
+        if (!empty($errors)) {
+            flash('admin_error', implode(' ', $errors));
+        }
+
+        redirect('/admin/index.php?module=green_gang_stickers');
+    }
+
+    if ($loggedIn && ($_POST['action'] ?? '') === 'delete_green_gang_sticker') {
+        $id = (int)($_POST['id'] ?? 0);
+        $item = $content->findGreenGangSticker($id);
+        if ($item) {
+            if (!empty($item['image']) && strpos($item['image'], 'uploads/') !== false) {
+                @unlink(__DIR__ . '/../' . $item['image']);
+            }
+            try {
+                $content->deleteGreenGangSticker($id);
+                flash('admin_success', 'Sticker successfully removed.');
+            } catch (Throwable $e) {
+                flash('admin_error', 'Delete failed: ' . $e->getMessage());
+            }
+        }
+        redirect('/admin/index.php?module=green_gang_stickers');
+    }
+
     // Blog Status Updates (Approval / Rejection workflow - Restricted to Admin Pradeep Sarang)
     if ($loggedIn && ($_POST['action'] ?? '') === 'update_blog_status') {
         if (is_role('admin')) {
@@ -1583,6 +1675,7 @@ $metrics = $content->metrics();
                     <a href="?module=donation_settings" class="<?= $module === 'donation_settings' ? 'active' : '' ?>">Donation Settings</a>
                     <a href="?module=gallery" class="<?= $module === 'gallery' ? 'active' : '' ?>">Gallery Bank</a>
                     <a href="?module=newspaper" class="<?= $module === 'newspaper' ? 'active' : '' ?>">Newspaper Cuttings</a>
+                    <a href="?module=green_gang_stickers" class="<?= $module === 'green_gang_stickers' ? 'active' : '' ?>"><i class="fa-solid fa-note-sticky text-success me-1"></i> Green Gang Stickers</a>
                     <a href="?module=about_photos" class="<?= $module === 'about_photos' ? 'active' : '' ?>"><i class="fa-solid fa-camera-retro text-warning me-1"></i> About: Personal Photos</a>
                     <a href="?module=videos" class="<?= $module === 'videos' ? 'active' : '' ?>"><i class="fa-solid fa-play-circle text-danger me-1"></i> YouTube Videos</a>
                     <a href="?module=volunteers" class="<?= $module === 'volunteers' ? 'active' : '' ?>">Volunteers</a>
@@ -3392,6 +3485,106 @@ $metrics = $content->metrics();
                                 </div>
                             </div>
                         <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php elseif ($module === 'green_gang_stickers'): ?>
+                <?php
+                $stickers = $content->allGreenGangStickersAdmin();
+                $success = flash('admin_success');
+                $adminErr = flash('admin_error');
+                ?>
+                <div class="admin-card">
+                    <?php if ($success): ?><div class="alert alert-success alert-dismissible fade show" role="alert"><i class="fa-solid fa-circle-check me-2"></i><?= e($success) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+                    <?php if ($adminErr): ?><div class="alert alert-danger alert-dismissible fade show" role="alert"><i class="fa-solid fa-triangle-exclamation me-2"></i><?= e($adminErr) ?><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div><?php endif; ?>
+                    
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                        <div>
+                            <h2 class="mb-1 text-success"><i class="fa-solid fa-note-sticky me-2"></i>Green Gang Stickers (ग्रीन गैंग स्टिकर्स)</h2>
+                            <p class="text-muted mb-0 small">Upload and manage shareable digital stickers and posters for the Green Gang movement page.</p>
+                        </div>
+                        <button class="btn btn-success" data-bs-toggle="collapse" data-bs-target="#stickerUploadForm">
+                            <i class="fa-solid fa-plus me-1"></i> Upload New Sticker
+                        </button>
+                    </div>
+
+                    <div class="collapse mb-4" id="stickerUploadForm">
+                        <div class="card card-body bg-light border-success">
+                            <h5 class="card-title text-success mb-3"><i class="fa-solid fa-upload me-2"></i>Upload Green Gang Digital Sticker</h5>
+                            <form method="post" enctype="multipart/form-data">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="action" value="create_green_gang_sticker">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label font-bold">Sticker Title (शीर्षक / स्लोगन)</label>
+                                        <input type="text" name="title" class="form-control" placeholder="e.g. ग्रीन मॉर्निंग • हरित प्रभात (Optional if uploading multiple)">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label font-bold">Tagline / Description (उप-शीर्षक / विवरण)</label>
+                                        <input type="text" name="tagline" class="form-control" placeholder="e.g. दैनिक प्रकृति व हरियाली संस्कार स्टिकर">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label font-bold">Sticker Image Files (स्टिकर चित्र - एक या अधिक चुनें) <span class="text-danger">*</span></label>
+                                        <input type="file" name="sticker_images[]" class="form-control" accept="image/*" multiple required>
+                                        <small class="text-muted">You can select multiple images at once (PNG / WebP / JPG recommended).</small>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label font-bold">Sort Order (क्रम)</label>
+                                        <input type="number" name="sort_order" class="form-control" value="0">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label font-bold">Status (स्थिति)</label>
+                                        <select name="status" class="form-select">
+                                            <option value="active">Active (सार्वजनिक)</option>
+                                            <option value="hidden">Hidden (छिपा हुआ)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <button type="submit" class="btn btn-success px-4"><i class="fa-solid fa-cloud-arrow-up me-1"></i> Save & Publish Sticker</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row g-4">
+                        <?php if (empty($stickers)): ?>
+                            <div class="col-12 text-center py-5 text-muted">
+                                <i class="fa-solid fa-note-sticky fa-3x mb-3 text-secondary"></i>
+                                <p>No stickers uploaded yet. Click "Upload New Sticker" to add one.</p>
+                            </div>
+                        <?php else: ?>
+                            <?php foreach ($stickers as $st): ?>
+                                <div class="col-md-4 col-lg-3">
+                                    <div class="card h-100 shadow-sm border-0 bg-white rounded-3 overflow-hidden position-relative group">
+                                        <div class="position-relative bg-light p-3 text-center border-bottom" style="height: 200px; display: flex; align-items: center; justify-content: center;">
+                                            <img src="<?= e(base_url($st['image'])) ?>" alt="<?= e($st['title']) ?>" class="img-fluid object-fit-contain" style="max-height: 170px;">
+                                            <span class="badge <?= ($st['status'] ?? 'active') === 'active' ? 'bg-success' : 'bg-secondary' ?> position-absolute top-0 start-0 m-2">
+                                                <?= e(ucfirst($st['status'] ?? 'active')) ?>
+                                            </span>
+                                        </div>
+                                        <div class="card-body p-3 d-flex flex-column justify-content-between">
+                                            <div>
+                                                <h6 class="card-title font-bold text-dark mb-1 text-truncate" title="<?= e($st['title']) ?>"><?= e($st['title']) ?></h6>
+                                                <p class="card-text text-muted small mb-2 text-truncate-2" style="min-height: 38px; font-size: 12px;"><?= e($st['tagline'] ?: 'No description') ?></p>
+                                            </div>
+                                            <div class="pt-2 border-top d-flex align-items-center justify-content-between">
+                                                <a href="<?= e(base_url($st['image'])) ?>" target="_blank" class="btn btn-sm btn-outline-success py-1 px-2" title="Preview Image">
+                                                    <i class="fa-solid fa-eye"></i> View
+                                                </a>
+                                                <form method="post" onsubmit="return confirm('Are you sure you want to delete this sticker?')" class="d-inline">
+                                                    <?= csrf_field() ?>
+                                                    <input type="hidden" name="action" value="delete_green_gang_sticker">
+                                                    <input type="hidden" name="id" value="<?= $st['id'] ?>">
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger py-1 px-2" title="Delete Sticker">
+                                                        <i class="fa-solid fa-trash"></i> Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php elseif ($module === 'about_photos'): ?>

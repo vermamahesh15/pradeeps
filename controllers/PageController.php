@@ -98,7 +98,7 @@ class PageController
             '/about' => ['view' => 'about', 'title' => ps_text('परिचय', 'About Us')],
             '/campaigns' => ['view' => 'causes', 'title' => ps_text('प्रमुख अभियान', 'Campaigns'), 'items' => $this->content->all('campaigns')],
             '/events' => ['view' => 'events', 'title' => ps_text('कार्यक्रम', 'Events'), 'items' => $this->content->all('events')],
-            '/portfolio' => ['view' => 'portfolio', 'title' => ps_text('छायाचित्र दीर्घा', 'Gallery'), 'items' => $this->content->allGallery(100)],
+            '/portfolio' => ['view' => 'portfolio', 'title' => ps_text('छायाचित्र दीर्घा', 'Gallery'), 'items' => $this->content->allGallery(100), 'stickers' => $this->content->allGreenGangStickers(100)],
             '/media' => ['view' => 'media', 'title' => ps_text('प्रेस व कतरनें', 'Media Coverage'), 'items' => $this->content->allNewspaperCuttings(100)],
             '/awards' => ['view' => 'awards', 'title' => ps_text('सम्मान व पुरस्कार', 'Awards & Achievements'), 'items' => $this->content->getTimeline()],
             '/contact' => ['view' => 'contact', 'title' => ps_text('संपर्क', 'Contact')],
@@ -179,7 +179,25 @@ class PageController
         if ($slug === '/green-gang' || $slug === '/greengang') {
             $this->render('green-gang', [
                 'title' => ps_text('ग्रीन गैंग — जानकारी, नियम व निर्देश', 'Green Gang Movement'),
-                'campaigns' => $this->content->all('campaigns')
+                'campaigns' => $this->content->all('campaigns'),
+                'stickers' => array_slice($this->content->allGreenGangStickers(), 0, 4)
+            ]);
+            return;
+        }
+
+        if ($slug === '/green-gang-stickers' || $slug === '/green-gang/stickers' || $slug === '/stickers') {
+            $search = trim($_GET['q'] ?? '');
+            $stickers = $this->content->allGreenGangStickers(500);
+            if (!empty($search)) {
+                $stickers = array_filter($stickers, function($s) use ($search) {
+                    $t = ($s['title'] ?? '') . ' ' . ($s['tagline'] ?? '');
+                    return mb_stripos($t, $search) !== false;
+                });
+            }
+            $this->render('green-gang-stickers', [
+                'title' => ps_text('ग्रीन गैंग स्टिकर्स व स्लोगन पोस्टर दीर्घा', 'Green Gang Stickers & Posters Gallery'),
+                'stickers' => array_values($stickers),
+                'searchQuery' => $search
             ]);
             return;
         }

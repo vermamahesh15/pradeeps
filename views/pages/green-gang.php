@@ -815,58 +815,92 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
     </div>
   </section>
 
-  <!-- Green Gang Drive Photo Showcase -->
-  <section class="w-full bg-cream-canvas py-space-3xl border-b border-border-warm">
+  <!-- Green Gang Official Digital Stickers Showcase (Uploaded from Backend) -->
+  <?php 
+  $stickersList = $stickers ?? [];
+  ?>
+  <section id="green-gang-stickers-section" class="w-full bg-cream-canvas py-space-3xl border-b border-border-warm scroll-mt-12">
     <div class="max-w-container-max mx-auto px-4 sm:px-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-space-xl gap-4">
         <div>
-          <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('सजीव झलकियाँ', 'Drive Spotlight')) ?></span>
+          <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('सजीव झलकियाँ • स्टिकर्स', 'Spotlight • Stickers')) ?></span>
           <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
-            <?= e(ps_text('ग्रीन गैंग अभियानों के सजीव छायाचित्र', 'Green Gang Drives Field Photographs')) ?>
+            <?= e(ps_text('ग्रीन गैंग अभियानों के आधिकारिक स्टिकर्स व स्लोगन पोस्टर', 'Green Gang Official Stickers & Slogan Posters')) ?>
           </h2>
+          <p class="font-body-md text-body-md text-text-muted mt-2 max-w-2xl">
+            <?= e(ps_text('नियम 31 के अनुसार समन्वयक एवं पर्यावरण सैनिक इन आधिकारिक स्टिकर्स को डाउनलोड करें एवं अपने व्हाट्सएप ग्रुप व सोशल मीडिया पर साझा करें।', 'Download official stickers to share across WhatsApp groups and social media as per Rule 31.')) ?>
+          </p>
         </div>
-        <a href="<?= e(base_url('/portfolio')) ?>" class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:text-deep-forest font-bold">
-          <span><?= e(ps_text('सम्पूर्ण दीर्घा देखें', 'View Full Gallery')) ?></span>
-          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="group relative rounded-2xl overflow-hidden shadow-sm border border-border-warm aspect-[4/3] bg-surface-container">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Green Gang Planting" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <a href="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" data-ps-lightbox data-caption="<?= e(ps_text('ग्रीन गैंग पौधारोपण — कमरावाँ', 'Green Gang Planting - Kamrawan')) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-1">
-            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-            <span><?= e(ps_text('चित्र देखें', 'View Photo')) ?></span>
-          </a>
-        </div>
-
-        <div class="group relative rounded-2xl overflow-hidden shadow-sm border border-border-warm aspect-[4/3] bg-surface-container">
-          <img src="https://picsum.photos/seed/greengang-2/900/700" alt="Village Tree Guard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <a href="https://picsum.photos/seed/greengang-2/900/700" data-ps-lightbox data-caption="<?= e(ps_text('ट्री-गार्ड सुरक्षा अभियान', 'Tree Guard Safety Drive')) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-1">
-            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-            <span><?= e(ps_text('चित्र देखें', 'View Photo')) ?></span>
-          </a>
-        </div>
-
-        <div class="group relative rounded-2xl overflow-hidden shadow-sm border border-border-warm aspect-[4/3] bg-surface-container">
-          <img src="https://picsum.photos/seed/greengang-3/900/700" alt="School Green Morning" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <a href="https://picsum.photos/seed/greengang-3/900/700" data-ps-lightbox data-caption="<?= e(ps_text('स्कूलों में ग्रीन मॉर्निंग संस्कार', 'School Green Morning Assembly')) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-1">
-            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-            <span><?= e(ps_text('चित्र देखें', 'View Photo')) ?></span>
-          </a>
-        </div>
-
-        <div class="group relative rounded-2xl overflow-hidden shadow-sm border border-border-warm aspect-[4/3] bg-surface-container">
-          <img src="https://picsum.photos/seed/greengang-4/900/700" alt="Green Chaupal Assembly" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <a href="https://picsum.photos/seed/greengang-4/900/700" data-ps-lightbox data-caption="<?= e(ps_text('ग्राम ग्रीन चौपाल', 'Village Green Chaupal')) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-1">
-            <span class="material-symbols-outlined text-[20px]">zoom_in</span>
-            <span><?= e(ps_text('चित्र देखें', 'View Photo')) ?></span>
+        <div class="shrink-0 flex items-center gap-3">
+          <span class="font-label-sm text-xs font-bold text-deep-forest bg-pure-white px-3.5 py-1.5 rounded-full border border-border-warm shadow-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px] text-primary">verified</span>
+            <span><?= e(ps_text('बैकएंड से अपलोड', 'Backend Uploaded')) ?></span>
+          </span>
+          <a href="<?= e(base_url('/green-gang-stickers')) ?>" class="inline-flex items-center gap-1 font-label-md text-label-md text-primary hover:text-deep-forest font-bold">
+            <span><?= e(ps_text('सम्पूर्ण स्टिकर्स देखें', 'View All Stickers')) ?></span>
+            <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
           </a>
         </div>
       </div>
+
+      <?php if (empty($stickersList)): ?>
+        <div class="text-center py-12 bg-pure-white rounded-3xl border border-border-warm p-8">
+          <span class="material-symbols-outlined text-4xl text-text-muted mb-2">note_alt</span>
+          <p class="font-body-md text-text-muted"><?= e(ps_text('वर्तमान में कोई स्टिकर उपलब्ध नहीं है।', 'No stickers currently published.')) ?></p>
+        </div>
+      <?php else: ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <?php foreach ($stickersList as $st): 
+            $imgUrl = base_url($st['image']);
+            $stTitle = $st['title'] ?? 'ग्रीन गैंग स्टिकर';
+            $stTagline = $st['tagline'] ?? '';
+            $waShareText = rawurlencode("🌿 " . $stTitle . ($stTagline ? " - " . $stTagline : "") . "\n\n" . "ग्रीन गैंग बाराबंकी official sticker: " . $imgUrl);
+          ?>
+            <div class="group bg-pure-white rounded-3xl p-5 shadow-sm border border-border-warm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+              <div>
+                <!-- Sticker Preview Box with Lightbox -->
+                <div class="relative w-full aspect-square rounded-2xl bg-gradient-to-br from-soft-meadow via-surface-container-low to-soft-meadow border border-border-warm flex items-center justify-center p-4 overflow-hidden mb-4 group-hover:border-primary transition-colors">
+                  <img src="<?= e($imgUrl) ?>" alt="<?= e($stTitle) ?>" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300">
+                  <span class="absolute top-3 left-3 bg-deep-forest/90 text-pure-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                    Sticker #<?= (int)($st['id'] ?? 1) ?>
+                  </span>
+                  <a href="<?= e($imgUrl) ?>" data-ps-lightbox data-caption="<?= e($stTitle . ($stTagline ? ' — ' . $stTagline : '')) ?>" class="absolute inset-0 bg-deep-forest/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-pure-white text-xs font-bold gap-1 rounded-2xl">
+                    <span class="material-symbols-outlined text-[20px]">zoom_in</span>
+                    <span><?= e(ps_text('चित्र देखें', 'Zoom')) ?></span>
+                  </a>
+                </div>
+
+                <h3 class="font-title-md text-title-sm sm:text-title-md text-deep-forest font-bold leading-snug mb-1">
+                  <?= e($stTitle) ?>
+                </h3>
+                <?php if ($stTagline): ?>
+                  <p class="font-body-xs text-xs text-text-muted leading-relaxed mb-4">
+                    <?= e($stTagline) ?>
+                  </p>
+                <?php endif; ?>
+              </div>
+
+              <!-- Action Bar: Download, WhatsApp Share & Copy Link -->
+              <div class="pt-3 border-t border-border-warm flex items-center justify-between gap-1.5">
+                <a href="<?= e($imgUrl) ?>" download="<?= e(basename($st['image'])) ?>" class="flex-1 inline-flex items-center justify-center gap-1 px-3 py-2 rounded-xl bg-deep-forest hover:bg-forest-night text-pure-white font-label-sm text-xs font-bold shadow-sm transition-all" title="स्टिकर डाउनलोड करें">
+                  <span class="material-symbols-outlined text-[16px]">download</span>
+                  <span><?= e(ps_text('डाउनलोड', 'Download')) ?></span>
+                </a>
+
+                <a href="https://api.whatsapp.com/send?text=<?= $waShareText ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center p-2 rounded-xl bg-[#25D366] hover:bg-[#1ebd59] text-pure-white transition-colors" title="व्हाट्सएप पर शेयर करें">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.124.555 4.197 1.608 6.021L.069 23.931l5.989-1.57A11.954 11.954 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm.016 21.84c-1.815 0-3.593-.487-5.148-1.41l-.369-.22-3.824 1.003 1.02-3.727-.241-.384a9.88 9.88 0 01-1.517-5.071c0-5.452 4.436-9.888 9.888-9.888 5.452 0 9.888 4.436 9.888 9.888 0 5.452-4.436 9.888-9.888 9.888z"/></svg>
+                </a>
+
+                <button type="button" onclick="copyStickerLink('<?= e($imgUrl) ?>', this)" class="inline-flex items-center justify-center p-2 rounded-xl bg-surface-container-high hover:bg-border-warm text-deep-forest transition-colors" title="लिंक कॉपी करें">
+                  <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                </button>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
     </div>
   </section>
-
 
 </div>
 
@@ -1000,5 +1034,21 @@ function filterCharterRules(query) {
       card.style.display = 'none';
     }
   });
+}
+
+function copyStickerLink(url, btn) {
+  const onSuccess = () => {
+    if (!btn) return;
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[16px] text-primary">check</span>';
+    setTimeout(() => { btn.innerHTML = orig; }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(onSuccess).catch(() => {
+      fallbackCopyText(url, onSuccess);
+    });
+  } else {
+    fallbackCopyText(url, onSuccess);
+  }
 }
 </script>

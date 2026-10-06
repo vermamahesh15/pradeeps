@@ -43,6 +43,24 @@ foreach ($items as $idx => $dbItem) {
     ];
 }
 
+// Include Green Gang Stickers from backend
+$stickersList = $stickers ?? [];
+foreach ($stickersList as $st) {
+    $img = trim($st['image'] ?? '');
+    if ($img === '') continue;
+    $allPhotos[] = [
+        'title' => $st['title'] ?? ps_text('ग्रीन गैंग स्टिकर', 'Green Gang Sticker'),
+        'tagline' => $st['tagline'] ?? '',
+        'category' => 'stickers',
+        'category_name' => ps_text('ग्रीन गैंग स्टिकर', 'Green Gang Sticker'),
+        'location' => ps_text('बाराबंकी', 'Barabanki'),
+        'year' => !empty($st['created_at']) ? date('Y', strtotime($st['created_at'])) : date('Y'),
+        'image' => base_url($img),
+        'featured' => false,
+        'is_sticker' => true,
+    ];
+}
+
 $featuredPhotos = array_filter($allPhotos, fn($p) => !empty($p['featured']));
 if (empty($featuredPhotos) && !empty($allPhotos)) {
     $featuredPhotos = array_slice($allPhotos, 0, min(3, count($allPhotos)));
@@ -81,6 +99,9 @@ if (empty($featuredPhotos) && !empty($allPhotos)) {
       <div class="flex items-center gap-2 mt-8 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap shrink-0 cursor-grab" id="gallery-filter-tabs">
         <button type="button" data-filter="all" class="gallery-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-primary-container text-on-primary shadow-sm font-semibold transition-all cursor-pointer">
           <?= e(ps_text('सभी चित्र (All)', 'All Photos')) ?>
+        </button>
+        <button type="button" data-filter="stickers" class="gallery-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-pure-white text-on-surface-variant hover:bg-surface-container border border-border-warm font-medium transition-all cursor-pointer">
+          🏷️ <?= e(ps_text('ग्रीन गैंग स्टिकर्स', 'Green Gang Stickers')) ?>
         </button>
         <button type="button" data-filter="eco" class="gallery-filter-btn px-4 py-2 rounded-full font-label-sm text-label-sm bg-pure-white text-on-surface-variant hover:bg-surface-container border border-border-warm font-medium transition-all cursor-pointer">
           🌿 <?= e(ps_text('पर्यावरण व \'ग्रीन गैंग\'', 'Environment & Green Gang')) ?>
@@ -166,16 +187,39 @@ if (empty($featuredPhotos) && !empty($allPhotos)) {
         </p>
       </div>
 
+      <!-- Green Gang Stickers Banner Callout -->
+      <div class="mb-10 p-5 sm:p-6 rounded-3xl bg-soft-meadow border border-border-warm flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-primary-fixed/40 text-deep-forest flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">note_stack</span>
+          </div>
+          <div>
+            <h3 class="font-title-md text-title-md text-deep-forest font-bold mb-1">
+              <?= e(ps_text('ग्रीन गैंग आधिकारिक स्टिकर्स व स्लोगन पोस्टर', 'Official Green Gang Stickers & Slogan Posters')) ?>
+            </h3>
+            <p class="font-body-xs text-xs text-text-muted mb-0 leading-relaxed">
+              <?= e(ps_text('व्हाट्सएप ग्रुप व सोशल मीडिया पर साझा करने हेतु सभी स्टिकर्स डाउनलोड करें।', 'Download official shareable digital stickers and posters for WhatsApp & social media.')) ?>
+            </p>
+          </div>
+        </div>
+        <a href="<?= e(base_url('/green-gang-stickers')) ?>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-xs sm:text-sm font-bold shadow-md shrink-0 transition-all">
+          <span><?= e(ps_text('सम्पूर्ण स्टिकर्स देखें →', 'View All Stickers →')) ?></span>
+        </a>
+      </div>
+
       <!-- Photo Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="gallery-grid">
         <?php if (!empty($allPhotos)): ?>
-        <?php foreach ($allPhotos as $photo): ?>
+        <?php foreach ($allPhotos as $photo): 
+          $isSticker = !empty($photo['is_sticker']);
+          $waShareText = rawurlencode("🌿 " . $photo['title'] . "\n" . $photo['image']);
+        ?>
           <div class="gallery-card group bg-pure-white rounded-2xl shadow-sm border border-border-warm overflow-hidden hover:shadow-md transition-all flex flex-col justify-between" data-category="<?= e($photo['category']) ?>">
-            <div class="relative overflow-hidden aspect-[4/3] bg-surface-container">
-              <img src="<?= e(base_url($photo['image'])) ?>" alt="<?= e($photo['title']) ?>" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="relative overflow-hidden aspect-[4/3] bg-surface-container <?= $isSticker ? 'p-4 bg-gradient-to-br from-soft-meadow via-surface-container-low to-soft-meadow flex items-center justify-center' : '' ?>">
+              <img src="<?= e($photo['image']) ?>" alt="<?= e($photo['title']) ?>" loading="lazy" class="w-full h-full <?= $isSticker ? 'object-contain' : 'object-cover' ?> group-hover:scale-105 transition-transform duration-500">
               
               <!-- Hover Overlay Button -->
-              <a href="<?= e(base_url($photo['image'])) ?>" data-ps-lightbox data-caption="<?= e($photo['title']) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-2">
+              <a href="<?= e($photo['image']) ?>" data-ps-lightbox data-caption="<?= e($photo['title']) ?>" class="absolute inset-0 bg-deep-forest/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center text-pure-white font-label-md text-label-md font-bold gap-2">
                 <span class="w-10 h-10 rounded-full bg-pure-white/20 backdrop-blur-md flex items-center justify-center border border-pure-white/40">
                   <span class="material-symbols-outlined text-[22px]">zoom_in</span>
                 </span>
@@ -183,22 +227,37 @@ if (empty($featuredPhotos) && !empty($allPhotos)) {
               </a>
 
               <!-- Category Badge Tag -->
-              <span class="absolute top-3 left-3 bg-deep-forest/90 backdrop-blur-sm text-pure-white font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold">
+              <span class="absolute top-3 left-3 <?= $isSticker ? 'bg-primary-container text-on-primary' : 'bg-deep-forest/90 text-pure-white' ?> backdrop-blur-sm font-label-sm text-label-sm px-2.5 py-0.5 rounded-full font-semibold">
                 <?= e($photo['category_name']) ?>
               </span>
             </div>
 
             <div class="p-4 sm:p-5 flex flex-col justify-between flex-1">
-              <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-2 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-                <?= e($photo['title']) ?>
-              </h4>
+              <div>
+                <h4 class="font-title-md text-title-md text-deep-forest font-bold mb-1 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                  <?= e($photo['title']) ?>
+                </h4>
+                <?php if ($isSticker && !empty($photo['tagline'])): ?>
+                  <p class="font-body-xs text-xs text-text-muted mb-2"><?= e($photo['tagline']) ?></p>
+                <?php endif; ?>
+              </div>
               
               <div class="mt-3 pt-3 border-t border-border-warm flex items-center justify-between text-text-muted font-label-sm text-label-sm">
-                <span class="flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px] text-secondary">location_on</span>
-                  <?= e($photo['location']) ?>
-                </span>
-                <span class="font-semibold text-deep-forest"><?= e($photo['year']) ?></span>
+                <?php if ($isSticker): ?>
+                  <a href="<?= e($photo['image']) ?>" download="<?= e(basename($photo['image'])) ?>" class="inline-flex items-center gap-1 text-primary font-bold hover:underline">
+                    <span class="material-symbols-outlined text-[15px]">download</span>
+                    <span><?= e(ps_text('डाउनलोड', 'Download')) ?></span>
+                  </a>
+                  <a href="https://api.whatsapp.com/send?text=<?= $waShareText ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-[#25D366] font-bold hover:underline">
+                    <span>Share</span>
+                  </a>
+                <?php else: ?>
+                  <span class="flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px] text-secondary">location_on</span>
+                    <?= e($photo['location']) ?>
+                  </span>
+                  <span class="font-semibold text-deep-forest"><?= e($photo['year']) ?></span>
+                <?php endif; ?>
               </div>
             </div>
           </div>

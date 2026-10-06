@@ -414,6 +414,150 @@ class ContentModel extends BaseModel
         return $stmt->execute([':id' => $id]);
     }
 
+    public function ensureGreenGangStickersTable(): void
+    {
+        if (!$this->db) return;
+        static $checked = false;
+        if ($checked) return;
+        $checked = true;
+
+        try {
+            $this->db->exec("CREATE TABLE IF NOT EXISTS green_gang_stickers (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                tagline VARCHAR(255) NULL,
+                image VARCHAR(255) NOT NULL,
+                sort_order INT DEFAULT 0,
+                status VARCHAR(50) DEFAULT 'active',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        } catch (Throwable $e) {}
+    }
+
+    public function allGreenGangStickers(int $limit = 100): array
+    {
+        $this->ensureGreenGangStickersTable();
+        if ($this->db) {
+            try {
+                $stmt = $this->db->prepare('SELECT * FROM green_gang_stickers WHERE status = "active" ORDER BY sort_order ASC, created_at DESC LIMIT :limit');
+                $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+                $stmt->execute();
+                $results = $stmt->fetchAll();
+                if (!empty($results)) {
+                    return $results;
+                }
+            } catch (Throwable $e) {}
+        }
+        return $this->defaultGreenGangStickers();
+    }
+
+    public function allGreenGangStickersAdmin(): array
+    {
+        $this->ensureGreenGangStickersTable();
+        if (!$this->db) return $this->defaultGreenGangStickers();
+        try {
+            $stmt = $this->db->query('SELECT * FROM green_gang_stickers ORDER BY sort_order ASC, created_at DESC');
+            $res = $stmt->fetchAll();
+            return !empty($res) ? $res : $this->defaultGreenGangStickers();
+        } catch (Throwable $e) {
+            return $this->defaultGreenGangStickers();
+        }
+    }
+
+    public function findGreenGangSticker(int $id): ?array
+    {
+        $this->ensureGreenGangStickersTable();
+        if (!$this->db) return null;
+        try {
+            $stmt = $this->db->prepare('SELECT * FROM green_gang_stickers WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch() ?: null;
+        } catch (Throwable $e) {
+            return null;
+        }
+    }
+
+    public function createGreenGangSticker(array $data): bool
+    {
+        $this->ensureGreenGangStickersTable();
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('INSERT INTO green_gang_stickers (title, tagline, image, sort_order, status) VALUES (:title, :tagline, :image, :sort_order, :status)');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':tagline' => $data['tagline'] ?? '',
+            ':image' => $data['image'],
+            ':sort_order' => (int)($data['sort_order'] ?? 0),
+            ':status' => $data['status'] ?? 'active'
+        ]);
+    }
+
+    public function updateGreenGangSticker(int $id, array $data): bool
+    {
+        $this->ensureGreenGangStickersTable();
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('UPDATE green_gang_stickers SET title = :title, tagline = :tagline, image = :image, sort_order = :sort_order, status = :status WHERE id = :id');
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':tagline' => $data['tagline'] ?? '',
+            ':image' => $data['image'],
+            ':sort_order' => (int)($data['sort_order'] ?? 0),
+            ':status' => $data['status'] ?? 'active',
+            ':id' => $id
+        ]);
+    }
+
+    public function deleteGreenGangSticker(int $id): bool
+    {
+        $this->ensureGreenGangStickersTable();
+        if (!$this->db) return false;
+        $stmt = $this->db->prepare('DELETE FROM green_gang_stickers WHERE id = :id');
+        return $stmt->execute([':id' => $id]);
+    }
+
+    public function defaultGreenGangStickers(): array
+    {
+        return [
+            [
+                'id' => 1,
+                'title' => 'ग्रीन मॉर्निंग • हरित प्रभात',
+                'tagline' => 'गुड मॉर्निंग नहीं, ग्रीन मॉर्निंग! दैनिक प्रकृति व हरियाली संस्कार स्टिकर',
+                'image' => 'assets/images/stickers/sticker_green_morning.png',
+                'sort_order' => 1,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'id' => 2,
+                'title' => 'पेड़ लगाएंगे, पेड़ लगवाएंगे, पेड़ बचाएंगे',
+                'tagline' => 'ग्रीन गैंग बाराबंकी — 50,000+ देशी छायादार वृक्षारोपण मुख्य संकल्प स्टिकर',
+                'image' => 'assets/images/stickers/sticker_tree_pledge.png',
+                'sort_order' => 2,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'id' => 3,
+                'title' => 'पर्यावरण सेना • 5 जून संकल्प',
+                'tagline' => 'विश्व पर्यावरण दिवस 2019 से निरंतर गतिशील हरियाली क्रांति स्टिकर',
+                'image' => 'assets/images/stickers/sticker_eco_army.png',
+                'sort_order' => 3,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s')
+            ],
+            [
+                'id' => 4,
+                'title' => 'हरित प्रात व हरित सायं',
+                'tagline' => 'व्हाट्सएप व सोशल मीडिया पर साझा करने योग्य हरित अभिवादन पोस्टर',
+                'image' => 'assets/images/stickers/sticker_green_greetings.png',
+                'sort_order' => 4,
+                'status' => 'active',
+                'created_at' => date('Y-m-d H:i:s')
+            ]
+        ];
+    }
+
+
     public function allPages(): array
     {
         if (!$this->db) return [];
