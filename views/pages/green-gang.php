@@ -825,7 +825,7 @@ preg_match_all("/(?:\r?\n|^)\s*(\d+)\s*[-–]\s*([\s\S]*?)(?=(?:\r?\n\s*\d+\s*[-
         <div>
           <span class="font-label-sm text-label-sm text-secondary tracking-widest font-bold uppercase"><?= e(ps_text('सजीव झलकियाँ • स्टिकर्स', 'Spotlight • Stickers')) ?></span>
           <h2 class="font-headline-lg text-headline-md md:text-headline-lg text-deep-forest font-bold mt-1">
-            <?= e(ps_text('ग्रीन गैंग अभियानों के आधिकारिक स्टिकर्स व स्लोगन पोस्टर', 'Green Gang Official Stickers & Slogan Posters')) ?>
+            <?= e(ps_text('ग्रीन मॉर्निंग स्टिकर्स', 'Green Morning Stickers')) ?>
           </h2>
           <p class="font-body-md text-body-md text-text-muted mt-2 max-w-2xl">
             <?= e(ps_text('नियम 31 के अनुसार समन्वयक एवं पर्यावरण सैनिक इन आधिकारिक स्टिकर्स को डाउनलोड करें एवं अपने व्हाट्सएप ग्रुप व सोशल मीडिया पर साझा करें।', 'Download official stickers to share across WhatsApp groups and social media as per Rule 31.')) ?>

@@ -120,6 +120,10 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <span><?= e(ps_text('प्रमुख अभियान देखें', 'View Key Campaigns')) ?></span>
             <span class="material-symbols-outlined text-[18px]">explore</span>
           </a>
+          <a class="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#166534] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold" href="<?= e(base_url('/green-gang-stickers')) ?>">
+            <span><?= e(ps_text('ग्रीन गैंग स्टिकर्स', 'Green Gang Stickers')) ?></span>
+            <span class="material-symbols-outlined text-[18px]">sticky_note_2</span>
+          </a>
         </div>
 
         <!-- Republic Day Honor Pill -->
