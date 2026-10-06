@@ -102,28 +102,6 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
   </div>
 </section>
 
-<!-- Field Headquarters & Outreach Image Showcase -->
-<section class="w-full py-space-xl bg-pure-white border-b border-border-warm">
-  <div class="max-w-container-max mx-auto px-4 sm:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuChrvMjaMrNe9mnv0wsNeczsA9QTsVBVexwNC6wWD2ITtZGUqAqC4rJlu14alM7uVOx3q6e6QMugj2k_SVptJFwJxqw4kgUmkZfc4oZSwOSInUiqwcST-ZVxWP0dQNinxgeGayBKo9MBnd0LReS_tvv8rW_e0uWQz8FI_1PBQ_sze_mt4-UezPUkio4HIFKvoUNP0kZ6gNLPilWihHeDYhJaX6ySBPHJHVKOu68a1dbF1aYaqyDO7Db" alt="Kamrawan Center" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-fresh-sprout font-bold"><?= e(ps_text('सेवा केंद्र कमरावां', 'Kamrawan Service Center')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('ग्राम कमरावां, जिला बाराबंकी, उत्तर प्रदेश, भारत', 'Gram Kamrawan, District Barabanki, Uttar Pradesh, India')) ?></p>
-        </div>
-      </div>
-      <div class="relative rounded-2xl overflow-hidden shadow-sm border border-border-warm group">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIdMQwsnVo2dk4ut7g6q_cAP6eTxbCJ79UEWEL6LMYJP9Bzoa711KY0DUcQDKRXxuQ_6LQhxi0vQ2STd8MG_7M8PMwLDKDbl4rkN0NWnrSqVTvaAamPZA23ot4DWOtvh7QMTvSKjQWd4KHteII-UyAePIVzkOU6Kjt18WGSoV63V45Zxnm-uJxCWTIYBFdLiZQTIIpMJ2BicU3nJOrp9TW5wTXMOaNdUj57zI1cu2Z0PJgk4oP02r7" alt="Village Chaupal Dialogue" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-300">
-        <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-deep-forest/90 via-deep-forest/50 to-transparent p-4 text-pure-white">
-          <span class="font-label-sm text-label-sm uppercase tracking-wider text-tertiary-fixed font-bold"><?= e(ps_text('ग्राम चौपाल व पर्यावरण संवाद', 'Village Green Chaupal')) ?></span>
-          <p class="font-title-md text-title-md font-bold mt-0.5"><?= e(ps_text('अवध अंचल के गांवों में प्रत्यक्ष जन-संवाद', 'Direct Grassroots Dialogue in Awadh Villages')) ?></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- 3 Primary Direct Connect Hubs (Featured Action Cards) -->
 <section class="w-full py-space-3xl bg-cream-canvas">
   <div class="max-w-container-max mx-auto px-4 sm:px-8">
@@ -596,73 +574,6 @@ $contactAddress = $settings['address'] ?? 'ग्राम कमरावां
           <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
             <?= e(ps_text('सारंग जी अक्सर ग्रामीण पौधारोपण दौरों व चौपालों पर रहते हैं। कृपया आगमन से कम से कम <strong>24 घंटे पूर्व दूरभाष पर समय अवश्य सुनिश्चित कर लें</strong> ताकि आपकी भेंट सुगमता से हो सके।', 'Shri Sarang is frequently on field visits for Green Chaupals. Please confirm an appointment 24 hours prior via phone.')) ?>
           </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Frequently Asked Questions (Accordion) -->
-<section class="w-full py-space-3xl bg-cream-canvas">
-  <div class="max-w-container-editorial mx-auto px-4 sm:px-8">
-    <div class="text-center mb-space-xl">
-      <span class="font-label-sm text-label-sm uppercase tracking-wider text-primary-container font-bold"><?= e(ps_text('अक्सर पूछे जाने वाले प्रश्न', 'Frequently Asked Questions')) ?></span>
-      <h2 class="font-headline-md text-headline-md text-deep-forest font-bold mt-1"><?= e(ps_text('संवाद व सहयोग संबंधी जिज्ञासाएँ', 'Dialogue & Inquiry Details')) ?></h2>
-      <p class="font-body-sm text-body-sm text-text-muted mt-1">
-        <?= e(ps_text('किसी भी संशय के समाधान हेतु सामान्य प्रश्नों के उत्तर नीचे दिए गए हैं।', 'Common questions and answers regarding contact & participation.')) ?>
-      </p>
-    </div>
-    <div class="space-y-3.5" id="faq-accordion">
-      <!-- FAQ 1 -->
-      <div class="bg-pure-white rounded-2xl border border-border-warm overflow-hidden shadow-sm">
-        <button type="button" onclick="toggleFaq('faq-1')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-soft-meadow transition-colors">
-          <span class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-primary-container shrink-0"></span>
-            <?= e(ps_text('क्या सारंग जी से मिलने के लिए पूर्व अनुमति या समय लेना आवश्यक है?', 'Is an advance appointment required to meet Shri Sarang?')) ?>
-          </span>
-          <span id="icon-faq-1" class="material-symbols-outlined text-[22px] text-text-muted transition-transform">expand_more</span>
-        </button>
-        <div id="faq-1" class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-border-warm bg-soft-meadow/50 leading-relaxed">
-          <?= e(ps_text('हाँ, सारंग जी ज़मीनी समाजसेवक हैं और निरंतर गाँवों में \'ग्रीन चौपाल\' तथा सकोरा वितरण यात्राओं में रहते हैं। असुविधा से बचने के लिए दूरभाष (+91 9919007190) अथवा WhatsApp पर समय निर्धारित कर आना सर्वथा उचित है।', 'Yes, Shri Sarang is actively in the field for village chaupals. Prior appointment via phone (+91 9919007190) or WhatsApp is highly recommended.')) ?>
-        </div>
-      </div>
-      <!-- FAQ 2 -->
-      <div class="bg-pure-white rounded-2xl border border-border-warm overflow-hidden shadow-sm">
-        <button type="button" onclick="toggleFaq('faq-2')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-soft-meadow transition-colors">
-          <span class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-primary-container shrink-0"></span>
-            <?= e(ps_text('अपने गाँव या विद्यालय में \'ग्रीन चौपाल\' अथवा पौधारोपण कैसे आयोजित करवाएं?', 'How to organize a Green Chaupal or tree drive in our village/school?')) ?>
-          </span>
-          <span id="icon-faq-2" class="material-symbols-outlined text-[22px] text-text-muted transition-transform">expand_more</span>
-        </button>
-        <div id="faq-2" class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-border-warm bg-soft-meadow/50 leading-relaxed">
-          <?= e(ps_text('आप इस पृष्ठ पर दिए गए फॉर्म में विषय श्रेणी \'अपने गाँव में ग्रीन चौपाल आमंत्रण\' चुनकर विवरण भेजें या सीधे हेल्पलाइन पर कॉल करें। स्थानीय ग्रीन गैंग समन्वयक 48 घंटे में संपर्क कर तिथि व पौधों की व्यवस्था सुनिश्चित करेंगे।', 'Select \'Invite Green Chaupal\' in the form or call our helpline. Our local coordinators will respond within 48 hours.')) ?>
-        </div>
-      </div>
-      <!-- FAQ 3 -->
-      <div class="bg-pure-white rounded-2xl border border-border-warm overflow-hidden shadow-sm">
-        <button type="button" onclick="toggleFaq('faq-3')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-soft-meadow transition-colors">
-          <span class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-primary-container shrink-0"></span>
-            <?= e(ps_text('क्या परिंदा संरक्षण के लिए सकोरे (मिट्टी के पात्र) निःशुल्क उपलब्ध होते हैं?', 'Are Sakoras (earthen water bowls) available for free?')) ?>
-          </span>
-          <span id="icon-faq-3" class="material-symbols-outlined text-[22px] text-text-muted transition-transform">expand_more</span>
-        </button>
-        <div id="faq-3" class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-border-warm bg-soft-meadow/50 leading-relaxed">
-          <?= e(ps_text('जी हाँ! ग्रीष्म ऋतु में पक्षियों के लिए सकोरा वितरण पूर्णतः निःशुल्क जनसेवा के रूप में किया जाता है। विद्यालय, सामाजिक संस्थाएं या ग्रामीण युवा अपने क्षेत्र के लिए सकोरे प्राप्त करने हेतु संपर्क कर सकते हैं।', 'Yes! Earthen bird water feeders are distributed 100% free of charge during summer for bird conservation.')) ?>
-        </div>
-      </div>
-      <!-- FAQ 4 -->
-      <div class="bg-pure-white rounded-2xl border border-border-warm overflow-hidden shadow-sm">
-        <button type="button" onclick="toggleFaq('faq-4')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-soft-meadow transition-colors">
-          <span class="font-title-md text-title-md text-deep-forest font-bold flex items-center gap-3">
-            <span class="w-2 h-2 rounded-full bg-primary-container shrink-0"></span>
-            <?= e(ps_text('क्या कोई भी व्यक्ति या संस्था उनसे सामाजिक परामर्श ले सकती है?', 'Can any individual or institution consult on social initiatives?')) ?>
-          </span>
-          <span id="icon-faq-4" class="material-symbols-outlined text-[22px] text-text-muted transition-transform">expand_more</span>
-        </button>
-        <div id="faq-4" class="hidden px-5 pb-5 pt-1 text-on-surface-variant font-body-md text-body-md border-t border-border-warm bg-soft-meadow/50 leading-relaxed">
-          <?= e(ps_text('अवश्य। ग्रामीण विकास, वृक्ष संरक्षण, नशामुक्ति, अवधी लोकसंस्कृति और युवा चेतना पर उनका मार्गदर्शन सभी के लिए सुलभ और निःस्वार्थ है।', 'Absolutely! Guidance on rural development, tree conservation, addiction-free movement & Awadhi culture is open to all.')) ?>
         </div>
       </div>
     </div>

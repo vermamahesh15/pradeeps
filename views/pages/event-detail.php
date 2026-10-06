@@ -95,19 +95,6 @@ $contentHtml = !empty($item['content']) ? ps_rich_text($item['content']) : null;
             </div>
           </div>
 
-          <!-- Hero Action Buttons -->
-          <div class="flex flex-wrap items-center gap-3">
-            <a href="https://api.whatsapp.com/send?phone=919919007190&text=<?= urlencode('नमस्कार प्रदीप सारंग जी, मैं कार्यक्रम "' . $title . '" के संबंध में जानकारी व सहभागिता दर्ज कराना चाहता/चाहती हूँ।') ?>" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1DA851] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition-all transform hover:-translate-y-0.5">
-              <i class="fa-brands fa-whatsapp text-lg"></i>
-              <span><?= e(ps_text('WhatsApp पर सहभागिता दर्ज करें', 'Join via WhatsApp')) ?></span>
-            </a>
-
-            <a href="#event-content" class="inline-flex items-center gap-2 bg-deep-forest hover:bg-deep-forest/90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-sm transition-colors">
-              <span class="material-symbols-outlined text-[18px]">menu_book</span>
-              <span><?= e(ps_text('विस्तृत विवरण पढ़ें', 'Read Event Details')) ?></span>
-            </a>
-          </div>
-
         </div>
 
         <!-- Right Quick Highlight Box -->
