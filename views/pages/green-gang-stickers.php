@@ -40,9 +40,9 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
         <!-- Quick Jump Buttons & Live Search -->
         <div class="flex flex-wrap items-center gap-4 mt-6">
-          <a href="<?= e(base_url('/green-gang')) ?>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-label-md font-bold shadow-md transition-all">
-            <span class="material-symbols-outlined text-[18px]">arrow_back</span>
-            <span><?= e(ps_text('ग्रीन गैंग संकल्प-पत्र पर लौटें', 'Back to Charter')) ?></span>
+          <a href="<?= e(base_url('/green-gang')) ?>" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-deep-forest hover:bg-forest-night !text-white font-label-md text-label-md font-bold shadow-md transition-all" style="color: #ffffff !important;">
+            <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">arrow_back</span>
+            <span style="color: #ffffff !important;"><?= e(ps_text('ग्रीन गैंग संकल्प-पत्र पर लौटें', 'Back to Charter')) ?></span>
           </a>
 
           <!-- Quick Search Filter Form -->
@@ -111,12 +111,12 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
               <!-- Interactive Buttons: Download, WhatsApp & Copy Link -->
               <div class="pt-3 border-t border-border-warm flex items-center justify-between gap-2">
-                <a href="<?= e($imgUrl) ?>" download="<?= e(basename($st['image'])) ?>" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-deep-forest hover:bg-forest-night text-pure-white font-label-sm text-xs font-bold shadow-sm transition-all" title="स्टिकर डाउनलोड करें">
-                  <span class="material-symbols-outlined text-[16px]">download</span>
-                  <span><?= e(ps_text('डाउनलोड', 'Download')) ?></span>
+                <a href="<?= e($imgUrl) ?>" download="<?= e(basename($st['image'])) ?>" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-deep-forest hover:bg-forest-night !text-white font-label-sm text-xs font-bold shadow-sm transition-all" style="color: #ffffff !important;" title="स्टिकर डाउनलोड करें">
+                  <span class="material-symbols-outlined text-[16px]" style="color: #ffffff !important;">download</span>
+                  <span style="color: #ffffff !important;"><?= e(ps_text('डाउनलोड', 'Download')) ?></span>
                 </a>
 
-                <a href="https://api.whatsapp.com/send?text=<?= $waShareText ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center p-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebd59] text-pure-white transition-colors" title="व्हाट्सएप पर शेयर करें">
+                <a href="https://api.whatsapp.com/send?text=<?= $waShareText ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center p-2.5 rounded-xl bg-[#25D366] hover:bg-[#1ebd59] !text-white transition-colors" style="color: #ffffff !important;" title="व्हाट्सएप पर शेयर करें">
                   <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 0C5.385 0 0 5.385 0 12.031c0 2.124.555 4.197 1.608 6.021L.069 23.931l5.989-1.57A11.954 11.954 0 0012.031 24c6.646 0 12.031-5.385 12.031-12.031S18.677 0 12.031 0zm.016 21.84c-1.815 0-3.593-.487-5.148-1.41l-.369-.22-3.824 1.003 1.02-3.727-.241-.384a9.88 9.88 0 01-1.517-5.071c0-5.452 4.436-9.888 9.888-9.888 5.452 0 9.888 4.436 9.888 9.888 0 5.452-4.436 9.888-9.888 9.888z"/></svg>
                 </a>
 
@@ -141,13 +141,13 @@ $email = trim($settings['email'] ?? 'contact@pradeepsarang.in');
           <?= e(ps_text('पेड़ लगाएंगे, पेड़ लगवाएंगे, पेड़ बचाएंगे के संकल्प के साथ अपने हर मांगलिक अवसर पर पौधे रोपें तथा दैनिक संवाद में \'ग्रीन मॉर्निंग\' अपनाएं।', 'Pledge to plant and protect trees on birthdays and milestones, and embrace Green Morning in daily greetings.')) ?>
         </p>
         <div class="flex flex-wrap justify-center items-center gap-4">
-          <a href="<?= e(base_url('/green-gang')) ?>" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-deep-forest hover:bg-forest-night text-pure-white font-label-md text-sm font-bold shadow-md transition-all">
-            <span class="material-symbols-outlined text-[18px]">history_edu</span>
-            <span><?= e(ps_text('43 स्वर्णिम नियम व संकल्प-पत्र पढ़ें', 'Read 43 Charter Rules')) ?></span>
+          <a href="<?= e(base_url('/green-gang')) ?>" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-deep-forest hover:bg-forest-night !text-white font-label-md text-sm font-bold shadow-md transition-all" style="color: #ffffff !important;">
+            <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">history_edu</span>
+            <span style="color: #ffffff !important;"><?= e(ps_text('43 स्वर्णिम नियम व संकल्प-पत्र पढ़ें', 'Read 43 Charter Rules')) ?></span>
           </a>
-          <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover text-pure-white font-label-md text-sm font-bold shadow-md transition-all">
-            <span class="material-symbols-outlined text-[18px]">group_add</span>
-            <span><?= e(ps_text('ग्रीन गैंग स्वयंसेवक बनें', 'Join as Volunteer')) ?></span>
+          <a href="<?= e(base_url('/volunteer')) ?>" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary hover:bg-primary-hover !text-white font-label-md text-sm font-bold shadow-md transition-all" style="color: #ffffff !important;">
+            <span class="material-symbols-outlined text-[18px]" style="color: #ffffff !important;">group_add</span>
+            <span style="color: #ffffff !important;"><?= e(ps_text('ग्रीन गैंग स्वयंसेवक बनें', 'Join as Volunteer')) ?></span>
           </a>
         </div>
       </div>
