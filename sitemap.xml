@@ -66,6 +66,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://pradeepsarang.in/campaigns/gauraiya-bachao-abhiyan</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
     <loc>https://pradeepsarang.in/campaigns/bird-conservation-campaign</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>

@@ -52,7 +52,7 @@ $greenSlug = $green['slug'] ?? 'hariyali-campaign';
 
 // Parinda campaign
 $parindaImg = ps_resolve_img($parinda['image'] ?? '', 'assets/images/slider_final_2.webp');
-$parindaSlug = $parinda['slug'] ?? 'bird-conservation-campaign';
+$parindaSlug = $parinda['slug'] ?? 'gauraiya-bachao-abhiyan';
 
 // Awadhi campaign
 $awadhiSlug = $awadhi['slug'] ?? 'language-and-literature-promotion-campaign';
@@ -111,16 +111,16 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </a>
 
         <!-- Hero Actions -->
-        <div class="flex flex-wrap items-center gap-4 pt-2">
-          <a class="inline-flex items-center gap-2.5 bg-[#14532D] hover:bg-[#0F3D21] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg shadow-md transition-all font-semibold" href="#story">
+        <div class="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
+          <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-[#14532D] hover:bg-[#0F3D21] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg shadow-md transition-all font-semibold text-center" href="#story">
             <span><?= e(ps_text('मेरी यात्रा जानें', 'Explore My Journey')) ?></span>
             <span class="material-symbols-outlined text-[18px]">arrow_downward</span>
           </a>
-          <a class="inline-flex items-center gap-2 bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold" href="#campaigns">
+          <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#C05632] hover:bg-[#A9472B] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold text-center" href="#campaigns">
             <span><?= e(ps_text('प्रमुख अभियान देखें', 'View Key Campaigns')) ?></span>
             <span class="material-symbols-outlined text-[18px]">explore</span>
           </a>
-          <a class="inline-flex items-center gap-2 bg-[#15803D] hover:bg-[#166534] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold" href="<?= e(base_url('/green-gang-stickers')) ?>">
+          <a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#15803D] hover:bg-[#166534] text-white font-label-md text-label-md px-6 py-3.5 rounded-lg transition-all shadow-sm font-semibold text-center" href="<?= e(base_url('/green-gang-stickers')) ?>">
             <span><?= e(ps_text('ग्रीन गैंग स्टिकर्स', 'Green Gang Stickers')) ?></span>
             <span class="material-symbols-outlined text-[18px]">sticky_note_2</span>
           </a>
@@ -405,7 +405,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <?= e(ps_text('सरदार पटेल अभियान', 'Sardar Patel Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('राष्ट्रीय एकता और अखंडता के संदेश को जन-जन तक पहुँचाने हेतु संचालित अभियान, जिससे युवाओं में राष्ट्रप्रेम जागृत हो सके।', 'Spreading ideals of national integrity, unity and civic leadership among youth.')) ?>
+            <?= e(ps_text('आधुनिक भारत के शिल्पी, भारतरत्न सरदार वल्लभ भाई पटेल जी के कृतित्व व्यक्तित्व से जन-जन को परिचित कराते हुए राष्ट्रीय एकता और अखंडता को अक्षुण्ण बनाये रखने की प्रेरणात्मक वातावरण बनाना।', 'Creating an inspiring environment to maintain national unity and integrity while introducing the life and legacy of Bharat Ratna Sardar Vallabhbhai Patel, the architect of modern India, to the public.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
@@ -424,7 +424,8 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <?= e(ps_text('अवधी अभियान', 'Awadhi Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('हिंदी एवं अवधी भाषा, साहित्य और लोक संस्कृति के संवर्धन के लिए निरंतर काव्य-गोष्ठियों और अवधी गद्य लेखन का जन-प्रसार।', 'Promotion of Hindi & Awadhi language, folk culture, and poetic symposiums across rural regions.')) ?>
+            <span class="block font-semibold text-deep-forest mb-1"><?= e(ps_text('"धनि अवधी जेहिं राम बखानी"', '"Dhani Awadhi Jehi Ram Bakhani"')) ?></span>
+            <?= e(ps_text('अवध क्षेत्र की मातृभाषा अवधी भाषा, साहित्य, संस्कृति और लोककला का संरक्षण एवं संवर्धन करना उद्देश्य है।', 'The goal is to preserve and promote the native Awadhi language, literature, culture, and folk arts of the Awadh region.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
@@ -453,23 +454,23 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
 
       <!-- Bird & Sparrow Conservation -->
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
+      <a href="<?= e(base_url('/campaigns/gauraiya-bachao-abhiyan')) ?>" class="group block bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4">
+          <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4 group-hover:scale-105 transition-transform">
             <span class="material-symbols-outlined text-2xl">nest_cam_iq_outdoor</span>
           </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <?= e(ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation')) ?>
+          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest group-hover:text-primary transition-colors">
+            <?= e(ps_text('गौरैया बचाओ अभियान', 'Save Sparrows Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('गर्मी के दिनों में बेजुबान पक्षियों हेतु मिट्टी के जल-सकोरे का वितरण, दाना-पानी प्रबंध और गौरैया संरक्षण जागरूकता।', 'Distributing clay water bowls and food shelters for sparrows and birds during hot summer months.')) ?>
+            <?= e(ps_text('गर्मियों में बेजुबान परिंदों के लिए दाना पानी की व्यवस्था हेतु प्रेरक अभियान।', 'An inspiring campaign for providing food and water to birds during summer.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जीव-दया व प्रकृति प्रेम', 'Animal Compassion')) ?></span>
-          <span class="text-deep-forest opacity-60">↗</span>
+          <span class="text-deep-forest group-hover:translate-x-1 transition-transform opacity-80">↗</span>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
@@ -757,11 +758,11 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             </div>
             <div class="bg-surface-container-low p-3 rounded-lg">
               <span class="font-bold text-secondary"><?= e(ps_text('पहल:', 'Initiative:')) ?></span>
-              <p class="text-on-surface mt-0.5"><?= e(ps_text('कमरावां और निकटवर्ती बाजारों में स्वयं सहायता समूहों द्वारा मिट्टी के 2,500 सकोरे निशुल्क वितरित।', 'Free distribution of 2,500 earthen bowls with community pledge in Kamrawan.')) ?></p>
+              <p class="text-on-surface mt-0.5"><?= e(ps_text('उत्तर प्रदेश के जिला बाराबंकी सहित आसपास के जिलों में आँखें फाउंडेशन के संस्थापक प्रदीप सारंग द्वारा हजारों जल सकोरों व घोंसलों के वितरण', 'Free distribution of thousands of water bowls and nests across Barabanki and neighboring districts led by Pradeep Sarang, founder of Aankhen Foundation.')) ?></p>
             </div>
             <div class="bg-surface-container-low p-3 rounded-lg">
               <span class="font-bold text-primary"><?= e(ps_text('परिणाम:', 'Outcome:')) ?></span>
-              <p class="text-on-surface mt-0.5"><?= e(ps_text('सैकड़ों पक्षी प्रेमियों का नेटवर्क बना जो प्रतिदिन प्रातः सकोरों में ताजा पानी भरते हैं।', 'A self-sustaining network of volunteers refilling fresh water bowls daily.')) ?></p>
+              <p class="text-on-surface mt-0.5"><?= e(ps_text('संचालित जागरूकता अभियान के परिणाम स्वरूप अनेक परिंदा-प्रेमी परिवारों को हरदिन छतों पर अवशेष जूठन व दाना तथा बर्तनों में पानी की व्यवस्था करने का अभिप्रेरण अभियान।', 'An awareness drive that inspired many bird-loving families to provide leftover food, grains, and water in pots on their rooftops every day.')) ?></p>
             </div>
           </div>
         </div>
@@ -983,7 +984,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <span class="font-label-sm text-label-sm text-secondary font-bold uppercase"><?= e(ps_text('1987 – 1988 • नई दिल्ली', '1987 – 1988 • New Delhi')) ?></span>
           <h3 class="font-title-lg text-title-lg font-bold text-deep-forest mt-1"><?= e(ps_text('गणतंत्र दिवस परेड सम्मान', 'Republic Day Parade Honor')) ?></h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2">
-            <?= e(ps_text('इंडिया गेट पर 26 जनवरी राष्ट्रीय गणतंत्र दिवस परेड में राष्ट्रीय सेवा कार्यों के प्रतिनिधित्व हेतु प्रशस्ति पत्र।', 'Certificate of honor for representing youth social service contingent at India Gate.')) ?>
+            <?= e(ps_text('इंडिया गेट पर 26 जनवरी राष्ट्रीय गणतंत्र दिवस परेड में राष्ट्रीय सेवा योजना अंतर्गत विश्वविद्यालय के श्रेष्ठ स्वयं सेवक के रूप में चयनित होकर राष्ट्रीय सेवा कार्यों के प्रतिनिधित्व हेतु प्रशस्ति पत्र।', 'Certificate of honor for representing national service activities after being selected as the best university volunteer in National Service Scheme for the Jan 26 Republic Day Parade at India Gate.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-3 border-t border-surface-container text-text-muted font-label-sm text-label-sm">

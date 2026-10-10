@@ -210,6 +210,13 @@ class PageController
             return;
         }
 
+        if ($slug === '/gauraiya-bachao-abhiyan' || $slug === '/gauraiya-bachao' || $slug === '/campaigns/gauraiya-bachao-abhiyan' || $slug === '/campaigns/gauraiya-bachao' || $slug === '/sparrow-conservation') {
+            $this->render('gauraiya-bachao-abhiyan', [
+                'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows')
+            ]);
+            return;
+        }
+
         if ($slug === '/salahkaar' || $slug === '/counsellor' || $slug === '/counsellor-guidance') {
             $this->render('salahkaar', [
                 'title' => ps_text('सलाहकार', 'Counsellor & Guidance')
@@ -724,6 +731,13 @@ class PageController
             $this->render('sardar-patel-ekta', [
                 'title' => ps_text('सरदार पटेल अभियान — सरदार पटेल समाजोत्थान ट्रस्ट', 'Sardar Patel Movement — Samajotthan Trust'),
                 'campaigns' => $this->content->all('campaigns')
+            ]);
+            return;
+        }
+
+        if ($slugLower === 'gauraiya-bachao-abhiyan' || $slugLower === 'gauraiya-bachao' || str_contains($slugLower, 'gauraiya')) {
+            $this->render('gauraiya-bachao-abhiyan', [
+                'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows')
             ]);
             return;
         }

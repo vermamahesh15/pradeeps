@@ -129,9 +129,9 @@ $hasLogo = !empty($siteLogo) && (file_exists($rootDir . '/' . ltrim($siteLogo, '
                         </a>
                     </li>
                     <li class="hover:text-[#F0B45C] transition-colors">
-                        <a class="flex items-center gap-2" href="<?= e(base_url('/campaigns/' . ($parinda['slug'] ?? 'bird-conservation-campaign'))) ?>">
+                        <a class="flex items-center gap-2" href="<?= e(base_url('/campaigns/' . ($parinda['slug'] ?? 'gauraiya-bachao-abhiyan'))) ?>">
                             <span class="material-symbols-outlined text-[15px] text-[#76B7D8]">flutter</span>
-                            <span><?= e(ps_text('परिंदा संरक्षण व जल-सकोरा अभियान', 'Bird Conservation')) ?></span>
+                            <span><?= e(ps_text('गौरैया बचाओ व परिंदा संवर्धन अभियान', 'Save Sparrows & Bird Conservation')) ?></span>
                         </a>
                     </li>
                     <li class="hover:text-[#F0B45C] transition-colors">

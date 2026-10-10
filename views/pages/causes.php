@@ -27,6 +27,16 @@ $defaultCatalog = [
         'image' => 'assets/images/hariyali_abhiyan.webp',
         'highlights' => [ps_text('50,000+ पौधरोपण', '50k+ Trees Planted'), ps_text('ग्रीन मॉर्निंग शिष्टाचार', 'Green Morning Greetings')]
     ],
+    'gauraiya-bachao-abhiyan' => [
+        'id' => 6,
+        'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows in Courtyards & Rooftops'),
+        'slug' => 'gauraiya-bachao-abhiyan',
+        'category' => 'bird',
+        'is_primary' => 0,
+        'excerpt' => ps_text('"छत पर और आँगन में आओ सहेजें गौरैया" रखें दाना और पानी। 10,000+ मिट्टी के सकोरों का जनसहयोग से नि:शुल्क वितरण।', 'Protect sparrows by keeping food and water on rooftops and courtyards. Distribution of 10,000+ clay water bowls.'),
+        'image' => 'uploads/campaigns/gauriya.webp',
+        'highlights' => [ps_text('10,000+ सकोरे', '10k+ Bowls'), ps_text('दाना-पानी व्यवस्था', 'Daily Bird Feeding')]
+    ],
     'bird-conservation-campaign' => [
         'id' => 3,
         'title' => ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation (Water Bowls)'),
@@ -80,7 +90,8 @@ foreach ($rawDbItems as $item) {
     $catDefaults = $matchedCatalogKey ? $defaultCatalog[$matchedCatalogKey] : [];
 
     $title = !empty($item['title']) ? $item['title'] : ($catDefaults['title'] ?? ps_text('जन-अभियान', 'Campaign'));
-    $excerpt = !empty($item['excerpt']) ? $item['excerpt'] : (!empty($item['short_description']) ? $item['short_description'] : (!empty($item['content']) ? ps_excerpt($item['content'], 180) : ($catDefaults['excerpt'] ?? '')));
+    $rawExcerpt = !empty($item['excerpt']) ? $item['excerpt'] : (!empty($item['short_description']) ? $item['short_description'] : (!empty($item['content']) ? $item['content'] : ($catDefaults['excerpt'] ?? '')));
+    $excerpt = trim(preg_replace('/\s+/', ' ', strip_tags(ps_decode_entities((string)$rawExcerpt))));
     $imageRaw = !empty($item['image']) ? $item['image'] : (!empty($item['banner_image']) ? $item['banner_image'] : ($catDefaults['image'] ?? 'assets/images/slider_final_1.webp'));
     $image = ps_resolve_img($imageRaw, $catDefaults['image'] ?? 'uploads/slider_final_1.webp');
     $category = !empty($item['category']) ? strtolower($item['category']) : ($catDefaults['category'] ?? 'unity');
@@ -181,7 +192,7 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
           </h1>
 
           <p class="text-base sm:text-lg text-[#475467] leading-relaxed max-w-3xl font-normal">
-            <?= e(ps_text('प्रदीप सारंग द्वारा बाराबंकी (अवध) की पावन माटी से संचालित राष्ट्रव्यापी व ग्रामीण जन-आंदोलन — पर्यावरण संरक्षण, गौरैया व पक्षी संवर्धन, राष्ट्रीय एकता, अवधी भाषा उत्थान और युवाओं में सकारात्मक चेतना का निरंतर संचार।', 'Grassroots public-interest initiatives led by Pradeep Sarang for environmental regeneration, bird conservation, national integration, and Awadhi cultural preservation.')) ?>
+            <?= e(ps_text('सोशल एक्टिविस्ट प्रदीप सारंग उत्तर प्रदेश के जनपद बाराबंकी व आसपास के जनपदों की वह शख्सियत हैं जिन्होंने सम्पूर्ण जीवन सामाजिक बदलाव के लिए समर्पित कर दिया। मार्गदर्शन और प्रेरणा और सुझाव प्रदान करना इनका मुख्य कार्य है।', 'Social activist Pradeep Sarang is a prominent figure in Barabanki and nearby districts of Uttar Pradesh who has dedicated his entire life to social transformation, focusing on guidance, inspiration, and community advocacy.')) ?>
           </p>
 
           <!-- Action Buttons -->
@@ -344,7 +355,7 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
 
                 <!-- Narrative Excerpt -->
                 <p class="text-base sm:text-lg text-[#334155] leading-relaxed mb-6 font-normal">
-                  <?= e($primaryCampaign['excerpt']) ?>
+                  <?= e(trim(preg_replace('/\s+/', ' ', strip_tags(ps_decode_entities((string)$primaryCampaign['excerpt']))))) ?>
                 </p>
 
                 <?php if ($primaryCampaign['goal_amount'] > 0): 
@@ -448,7 +459,7 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
               </h3>
 
               <p class="text-sm text-[#475467] leading-relaxed mb-5">
-                <?= e($c['excerpt']) ?>
+                <?= e(trim(preg_replace('/\s+/', ' ', strip_tags(ps_decode_entities((string)$c['excerpt']))))) ?>
               </p>
 
               <?php if ($c['goal_amount'] > 0): 
