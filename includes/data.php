@@ -48,9 +48,9 @@ return [
 
         ['id' => 4, 'title' => 'गौरैया बचाओ अभियान', 'slug' => 'gauraiya-bachao-abhiyan', 'goal' => 100000, 'raised' => 64000, 'image' => 'uploads/campaigns/gauriya.webp', 'excerpt' => '"छत पर और आँगन में आओ सहेजें गौरैया" रखें दाना और पानी। 10,000+ मिट्टी के सकोरों का जनसहयोग से नि:शुल्क वितरण।'],
 
-        ['id' => 5, 'title' => 'परिंदा संवर्धन व जल-सकोरा अभियान', 'slug' => 'bird-conservation-campaign', 'goal' => 200000, 'raised' => 133000, 'image' => 'assets/images/slider_final_2.webp', 'excerpt' => 'भीषण गर्मी में बेजुबान पक्षियों हेतु 10,000+ मिट्टी के सकोरे, दाना-पानी प्रबंध एवं विलुप्त होती गौरैया के लिए घोंसला निर्माण अभियान।'],
+        ['id' => 5, 'title' => 'अवधी-अभियान', 'slug' => 'language-and-literature-promotion-campaign', 'goal' => 120000, 'raised' => 76000, 'image' => 'assets/images/slider_final_3.webp', 'excerpt' => 'हिंदी एवं अवधी भाषा, साहित्य और संस्कृति के संरक्षण एवं प्रचार-प्रसार के लिए यह अभियान कार्यरत । साहित्यिक गतिविधियों के माध्यम से सांस्कृतिक धरोहर को जीवित रखा जा रहा है।'],
 
-        ['id' => 6, 'title' => 'अवधी-अभियान', 'slug' => 'language-and-literature-promotion-campaign', 'goal' => 120000, 'raised' => 76000, 'image' => 'assets/images/slider_final_3.webp', 'excerpt' => 'हिंदी एवं अवधी भाषा, साहित्य और संस्कृति के संरक्षण एवं प्रचार-प्रसार के लिए यह अभियान कार्यरत । साहित्यिक गतिविधियों के माध्यम से सांस्कृतिक धरोहर को जीवित रखा जा रहा है।'],
+        ['id' => 6, 'title' => 'युवा अभिप्रेरण व मार्गदर्शन अभियान', 'slug' => 'guidence', 'goal' => 100000, 'raised' => 55000, 'image' => 'uploads/campaigns/6abfe214be75d_chatgpt-image-oct-2-2026-10-23-35-pm-4.webp', 'excerpt' => 'युवाओं का मार्गदर्शन एवं सहयोग, संगोष्ठी सेमिनार, प्रेरक कक्षाएं (Motivational Classes) एवं व्यक्तित्व विकास।'],
     ],
     'events' => [
         ['id' => 1, 'title' => 'Youth Leadership Summit', 'slug' => 'youth-leadership-summit', 'date' => '2026-05-11', 'location' => 'Delhi', 'status' => 'upcoming', 'image' => 'https://picsum.photos/seed/event-one/900/700', 'excerpt' => 'A full-day summit on civic leadership, innovation, and collaboration.'],

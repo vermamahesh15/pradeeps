@@ -390,37 +390,15 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
       </div>
     </div>
 
-    <!-- Campaign Grid (4 Pillars) -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Sardar Patel Abhiyan (Card 1) -->
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border-2 border-secondary/30 flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
-        <div class="absolute top-0 right-0 bg-secondary text-pure-white px-3 py-0.5 rounded-bl-lg font-label-sm text-[10px] font-bold uppercase tracking-wider">
-          <?= e(ps_text('मुख्य संकल्प', 'Primary')) ?>
-        </div>
+    <!-- Campaign Grid (Key Community Initiatives) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Awadhi Abhiyan (Card 1) -->
+      <a href="<?= e(base_url('/campaigns/' . $awadhiSlug)) ?>" class="group block bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-secondary-fixed/50 flex items-center justify-center text-secondary mb-4">
-            <span class="material-symbols-outlined text-2xl">diversity_3</span>
-          </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <?= e(ps_text('सरदार पटेल अभियान', 'Sardar Patel Campaign')) ?>
-          </h3>
-          <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('आधुनिक भारत के शिल्पी, भारतरत्न सरदार वल्लभ भाई पटेल जी के कृतित्व व्यक्तित्व से जन-जन को परिचित कराते हुए राष्ट्रीय एकता और अखंडता को अक्षुण्ण बनाये रखने की प्रेरणात्मक वातावरण बनाना।', 'Creating an inspiring environment to maintain national unity and integrity while introducing the life and legacy of Bharat Ratna Sardar Vallabhbhai Patel, the architect of modern India, to the public.')) ?>
-          </p>
-        </div>
-        <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
-          <span class="font-label-sm text-label-sm text-secondary font-bold"><?= e(ps_text('राष्ट्रीय एकता व सद्भाव', 'National Integration')) ?></span>
-          <span class="text-secondary opacity-60">↗</span>
-        </div>
-      </div>
-
-      <!-- Awadhi Abhiyan (Card 2) -->
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary mb-4">
+          <div class="w-12 h-12 rounded-xl bg-tertiary-fixed flex items-center justify-center text-tertiary mb-4 group-hover:scale-105 transition-transform">
             <span class="material-symbols-outlined text-2xl">auto_stories</span>
           </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
+          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest group-hover:text-primary transition-colors">
             <?= e(ps_text('अवधी अभियान', 'Awadhi Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
@@ -430,30 +408,30 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
           <span class="font-label-sm text-label-sm text-tertiary font-bold"><?= e(ps_text('साहित्यिक धरोहर संरक्षण', 'Literary Preservation')) ?></span>
-          <span class="text-tertiary opacity-60">↗</span>
+          <span class="text-tertiary group-hover:translate-x-1 transition-transform opacity-80">↗</span>
         </div>
-      </div>
+      </a>
 
-      <!-- Tulsi Jayanti -->
-      <div class="bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
+      <!-- Aankhen Foundation (Card 2) -->
+      <a href="<?= e(base_url('/aankhein-foundation')) ?>" class="group block bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
-          <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4">
+          <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4 group-hover:scale-105 transition-transform">
             <span class="material-symbols-outlined text-2xl">visibility</span>
           </div>
-          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest">
-            <?= e(ps_text('आँखे फाउंडेशन', 'Aankhee Foundation')) ?>
+          <h3 class="font-headline-sm text-headline-sm font-semibold text-deep-forest group-hover:text-primary transition-colors">
+            <?= e(ps_text('आँखें फाउंडेशन', 'Aankhein Foundation')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?>
+            <?= e(ps_text('"जल और जंगल" संरक्षण, बाराबंकी नदी पुनरुद्धार (गोमती, घाघरा, रेठ, कल्याणी व जमुरिया), ग्रीन गैंग एवं पर्यावरण जन-जागरण अभियान।', 'Water & forest conservation, Barabanki river revival (Gomti, Ghaghra, Reth, Kalyani & Jamuriya), Green Gang and public awareness.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">
-          <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan')) ?></span>
-          <span class="text-deep-forest opacity-60">↗</span>
+          <span class="font-label-sm text-label-sm text-deep-forest font-bold"><?= e(ps_text('जल, जंगल व नदी पुनरुद्धार', 'Water, Forest & River Revival')) ?></span>
+          <span class="text-deep-forest group-hover:translate-x-1 transition-transform opacity-80">↗</span>
         </div>
-      </div>
+      </a>
 
-      <!-- Bird & Sparrow Conservation -->
+      <!-- Bird & Sparrow Conservation (Card 3) -->
       <a href="<?= e(base_url('/campaigns/gauraiya-bachao-abhiyan')) ?>" class="group block bg-pure-white rounded-xl p-6 shadow-sm border border-border-warm flex flex-col justify-between hover:shadow-md transition-shadow">
         <div>
           <div class="w-12 h-12 rounded-xl bg-soft-meadow flex items-center justify-center text-deep-forest mb-4 group-hover:scale-105 transition-transform">
@@ -463,7 +441,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
             <?= e(ps_text('गौरैया बचाओ अभियान', 'Save Sparrows Campaign')) ?>
           </h3>
           <p class="font-body-sm text-body-sm text-text-muted mt-2 leading-relaxed">
-            <?= e(ps_text('गर्मियों में बेजुबान परिंदों के लिए दाना पानी की व्यवस्था हेतु प्रेरक अभियान।', 'An inspiring campaign for providing food and water to birds during summer.')) ?>
+            <?= e(ps_text('गर्मियों में बेजुबान परिंदों के लिए दाना पानी की व्यवस्था व मिट्टी के सकोरों के वितरण हेतु प्रेरक अभियान।', 'An inspiring campaign for providing food and water to birds during summer.')) ?>
           </p>
         </div>
         <div class="mt-6 pt-4 border-t border-surface-container flex items-center justify-between">

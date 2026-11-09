@@ -5,9 +5,38 @@ $rawDbItems = $items ?? [];
 $phone = trim($settings['phone'] ?? '+91 9919007190');
 $phoneClean = preg_replace('/[^+0-9]/', '', $phone);
 
-// Default campaigns catalog definitions for fallback and metadata enrichment
+// Canonical key normalizer for campaign initiatives
+if (!function_exists('ps_canonical_campaign_key')) {
+    function ps_canonical_campaign_key(string $slug, string $title = ''): string {
+        $s = mb_strtolower(trim($slug . ' ' . $title));
+        if (str_contains($s, 'patel') || str_contains($s, 'sardar') || str_contains($s, 'पटेल') || str_contains($s, 'एकता')) {
+            return 'patel';
+        }
+        if (str_contains($s, 'aankh') || str_contains($s, 'आँख') || str_contains($s, 'jamuriya') || str_contains($s, 'जमुरिया') || str_contains($s, 'नदी')) {
+            return 'aankhen';
+        }
+        if (str_contains($s, 'bird') || str_contains($s, 'parinda') || str_contains($s, 'gauraiya') || str_contains($s, 'गौरैया') || str_contains($s, 'सकोरा') || str_contains($s, 'परिंदा')) {
+            return 'bird';
+        }
+        if (str_contains($s, 'green') || str_contains($s, 'hariyali') || str_contains($s, 'हरियाली') || str_contains($s, 'गैंग')) {
+            return 'hariyali';
+        }
+        if (str_contains($s, 'guidence') || str_contains($s, 'guidance') || str_contains($s, 'अभिप्रेरण') || str_contains($s, 'मार्गदर्शन') || str_contains($s, 'प्रेरणा')) {
+            return 'guidance';
+        }
+        if (str_contains($s, 'tulsi') || str_contains($s, 'तुलसी')) {
+            return 'tulsi';
+        }
+        if (str_contains($s, 'language') || str_contains($s, 'liturtare') || str_contains($s, 'literature') || str_contains($s, 'awadhi') || str_contains($s, 'भाषा') || str_contains($s, 'साहित्य') || str_contains($s, 'अवधी')) {
+            return 'culture';
+        }
+        return !empty($slug) ? $slug : 'campaign-' . md5($title);
+    }
+}
+
+// Master initiatives catalog definitions (keyed strictly by canonical initiative)
 $defaultCatalog = [
-    'sardar-patel-ekta' => [
+    'patel' => [
         'id' => 1,
         'title' => ps_text('सरदार पटेल अभियान (राष्ट्रीय एकता, समरसता व युवा प्रेरणा)', 'Sardar Patel Integration Drive (Primary Movement)'),
         'slug' => 'sardar-patel-ekta',
@@ -17,104 +46,117 @@ $defaultCatalog = [
         'image' => 'assets/images/sardar_patel.webp',
         'highlights' => [ps_text('NSS 1987-88 प्रेरणा', 'NSS 1987 Legacy'), ps_text('31 अक्टूबर दीपोत्सव', '31 Oct Deepotsav'), ps_text('पटेल चेतना रथ', 'Chetna Rath Drive')]
     ],
-    'aankhein-foundation' => [
+    'aankhen' => [
         'id' => 2,
         'title' => ps_text('आँखें फाउंडेशन ("जल और जंगल" संरक्षण, नदी पुनरुद्धार एवं ग्रीन गैंग)', 'Aankhein Foundation (Water & Forest Conservation, River Revival & Green Gang)'),
         'slug' => 'aankhein-foundation',
         'category' => 'eco',
         'is_primary' => 0,
         'excerpt' => ps_text('पंजीकरण सं. BAB/02650/2018-19 • उप रजिस्ट्रार अयोध्या मंडल से पंजीकृत। बाराबंकी की 4 नदियों (गोमती, घाघरा, रेठ, कल्याणी) का संरक्षण, ऐतिहासिक जमुरिया नाला (जम्बू-नद) पुनरुद्धार, जिला गंगा समिति सहभागिता, ग्रीन गैंग पर्यावरण सेना व "ग्रीन मॉर्निंग" शिष्टाचार क्रांति।', 'Registered NGO BAB/02650/2018-19 • Dedicated to water & forest conservation, 4 rivers of Barabanki, historic Jamuriya river revival, District Ganga Committee representation, Green Gang environmental army and Green Morning movement.'),
-        'image' => 'assets/images/hariyali_abhiyan.webp',
+        'image' => 'uploads/69eddd34de768_pradeepsarang.webp',
         'highlights' => [ps_text('पंजीकृत संस्था (BAB/02650/2018-19)', 'Reg. Society BAB/02650/2018-19'), ps_text('4 नदियाँ व जमुरिया पुनरुद्धार', '4 Rivers & Jamuriya Revival'), ps_text('ग्रीन गैंग व "ग्रीन मॉर्निंग" क्रांति', 'Green Gang & Green Morning')]
     ],
-    'hariyali-campaign' => [
+    'hariyali' => [
         'id' => 3,
         'title' => ps_text('हरियाली-अभियान (\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\')', 'Hariyali Abhiyan (\'Green Gang\' & \'Green Morning\')'),
         'slug' => 'hariyali-campaign',
         'category' => 'eco',
         'is_primary' => 0,
-        'excerpt' => ps_text('50,000+ वृक्षारोपण एवं दैनिक जीवन में \'गुड मॉर्निंग\' की जगह \'ग्रीन-मॉर्निंग\' (Green Morning) बोलने का अभिनव शिष्टाचार आंदोलन।', '50,000+ Trees Planted & Green Morning Greetings across schools and rural panchayats.'),
+        'excerpt' => ps_text('50,000+ वृक्षारोपण एवं दैनिक जीवन में \'गुड मॉर्निंग\' की जगह \'ग्रीन-मॉर्निंग\' (Green Morning) बोलने का अभिनव शिष्टाचार आंदोलन। 5 जून विश्व पर्यावरण दिवस से संचालित सघन हरित क्रांति।', '50,000+ Trees Planted & Green Morning Greetings across schools and rural panchayats.'),
         'image' => 'assets/images/hariyali_abhiyan.webp',
-        'highlights' => [ps_text('50,000+ पौधरोपण', '50k+ Trees Planted'), ps_text('ग्रीन मॉर्निंग शिष्टाचार', 'Green Morning Greetings')]
+        'highlights' => [ps_text('50,000+ पौधरोपण', '50k+ Trees Planted'), ps_text('ग्रीन मॉर्निंग शिष्टाचार', 'Green Morning Greetings'), ps_text('ग्रीन गैंग पर्यावरण सेना', 'Green Gang Army')]
     ],
-    'gauraiya-bachao-abhiyan' => [
+    'bird' => [
         'id' => 4,
         'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows in Courtyards & Rooftops'),
         'slug' => 'gauraiya-bachao-abhiyan',
         'category' => 'bird',
         'is_primary' => 0,
-        'excerpt' => ps_text('"छत पर और आँगन में आओ सहेजें गौरैया" रखें दाना और पानी। 10,000+ मिट्टी के सकोरों का जनसहयोग से नि:शुल्क वितरण।', 'Protect sparrows by keeping food and water on rooftops and courtyards. Distribution of 10,000+ clay water bowls.'),
+        'excerpt' => ps_text('"छत पर और आँगन में आओ सहेजें गौरैया" रखें दाना और पानी। भीषण ग्रीष्म ऋतु में बेजुबान पक्षियों की रक्षा हेतु 10,000+ मिट्टी के सकोरों व घोंसलों का निःशुल्क जनसहयोग से वितरण अभियान।', 'Protect sparrows by keeping food and water on rooftops and courtyards. Distribution of 10,000+ clay water bowls and nesting shelters.'),
         'image' => 'uploads/campaigns/gauriya.webp',
-        'highlights' => [ps_text('10,000+ सकोरे', '10k+ Bowls'), ps_text('दाना-पानी व्यवस्था', 'Daily Bird Feeding')]
+        'highlights' => [ps_text('10,000+ मिट्टी के सकोरे', '10k+ Water Bowls'), ps_text('दाना-पानी व्यवस्था', 'Daily Bird Feeding'), ps_text('गौरैया घोंसला संरक्षण', 'Sparrow Nest Shelters')]
     ],
-    'bird-conservation-campaign' => [
+    'culture' => [
         'id' => 5,
-        'title' => ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation (Water Bowls)'),
-        'slug' => 'bird-conservation-campaign',
-        'category' => 'bird',
-        'is_primary' => 0,
-        'excerpt' => ps_text('भीषण गर्मी में बेजुबान पक्षियों हेतु 10,000+ मिट्टी के सकोरे, दाना-पानी प्रबंध एवं विलुप्त होती गौरैया के लिए घोंसला निर्माण अभियान।', 'Distributing 10,000+ clay water bowls and food shelters for sparrows and birds to survive blistering summers.'),
-        'image' => 'assets/images/slider_final_2.webp',
-        'highlights' => [ps_text('10,000+ जल-सकोरे', '10k+ Water Pots'), ps_text('गौरैया संरक्षण घोंसले', 'Sparrow Shelters')]
-    ],
-    'language-and-literature-promotion-campaign' => [
-        'id' => 6,
-        'title' => ps_text('अवधी भाषा व लोक-संस्कृति संवर्धन अभियान', 'Awadhi Language & Folk Culture Promotion'),
+        'title' => ps_text('अवधी भाषा व साहित्य संवर्धन अभियान', 'Awadhi Language & Literature Promotion Campaign'),
         'slug' => 'language-and-literature-promotion-campaign',
         'category' => 'culture',
         'is_primary' => 0,
-        'excerpt' => ps_text('अवधी भाषा, लोकगीतों, सारंग-कुंडलियों और विस्मृत होते ग्रामीण साहित्यिक मूल्यों को सहेजने हेतु मासिक चौपाल संगोष्ठियों का आयोजन।', 'Preserving dying Awadhi idioms, folk songs, rural dialects, and poetic heritage through village chaupals.'),
-        'image' => 'assets/images/slider_final_3.webp',
-        'highlights' => [ps_text('सारंग-कुंडलियाँ', 'Sarang Kundaliyan'), ps_text('मासिक अवधी चौपाल', 'Awadhi Chaupal Gatherings')]
+        'excerpt' => ps_text('मातृभाषा अवधी एवं हिंदी के संरक्षण, सारंग-कुंडलियों, काव्यपाठ, विस्मृत होते ग्रामीण साहित्यिक मूल्यों तथा मासिक चौपाल गोष्ठियों के माध्यम से लोक-संस्कृति का पुनर्जागरण।', 'Preserving Awadhi language, rural idioms, folk poetry, Sarang-Kundaliyan, and literary heritage through monthly chaupals.'),
+        'image' => 'uploads/campaigns/6abfe1d8c5a0b_chatgpt-image-oct-2-2026-10-23-33-pm-3.webp',
+        'highlights' => [ps_text('सारंग-कुंडलियाँ सृजन', 'Sarang Kundaliyan'), ps_text('मासिक अवधी चौपाल', 'Awadhi Chaupal Sessions'), ps_text('मातृभाषा अवधी-हिंदी गौरव', 'Awadhi-Hindi Revival')]
     ],
-    'tulsi-pakhwara' => [
-        'id' => 7,
-        'title' => ps_text('तुलसी जयंती व राम-संस्कृति संवर्धन अभियान', 'Tulsi Jayanti & Ram-Sanskriti Campaign'),
-        'slug' => 'tulsi-pakhwara',
-        'category' => 'culture',
+    'guidance' => [
+        'id' => 6,
+        'title' => ps_text('युवा अभिप्रेरण व व्यक्तित्व विकास अभियान', 'Youth Motivation & Guidance Campaign'),
+        'slug' => 'guidence',
+        'category' => 'guidance',
         'is_primary' => 0,
-        'excerpt' => ps_text('गोस्वामी तुलसीदास जी की अमर रचनाओं, मानस मूल्यों, अवधी चौपाई गायन एवं 5,000 तुलसी पौधों के नि:शुल्क वितरण का पावन अभियान।', 'Promotion of Goswami Tulsidas works, Awadhi Ramcharitmanas recitations, and distribution of 5,000 holy basil saplings.'),
-        'image' => 'assets/images/slider_final_1.webp',
-        'highlights' => [ps_text('5,000+ तुलसी पौध वितरण', '5k+ Basil Plants'), ps_text('अवधी चौपाई गायन', 'Awadhi Recitations')]
+        'excerpt' => ps_text('युवाओं का मार्गदर्शन, निःस्वार्थ सामाजिक सेवा हेतु प्रेरणा, संगोष्ठी, सेमिनार, प्रेरक कक्षाएं (Motivational Classes) एवं स्वावलंबन मार्गदर्शन।', 'Youth guidance, seminars, motivational classes, leadership workshops, and personality development drives across schools and colleges.'),
+        'image' => 'uploads/campaigns/6abfe214be75d_chatgpt-image-oct-2-2026-10-23-35-pm-4.webp',
+        'highlights' => [ps_text('युवा मार्गदर्शन सेमिनार', 'Youth Guidance Seminars'), ps_text('प्रेरक व्याख्यान माला', 'Motivational Talks'), ps_text('नेतृत्व व स्वावलंबन', 'Leadership & Self-reliance')]
     ]
 ];
 
-// Normalize campaigns list from database
+// Normalize campaigns list using canonical deduplication
 $allCampaignsList = [];
 
-// 1. Convert DB items into standardized format
+// 1. Convert DB items into standardized format, deduplicating by canonical key
 foreach ($rawDbItems as $item) {
-    $slug = trim($item['slug'] ?? '');
-    if (empty($slug)) {
-        $slug = 'campaign-' . ($item['id'] ?? rand(100, 999));
-    }
+    $rawSlug = trim($item['slug'] ?? '');
+    $rawTitle = trim($item['title'] ?? '');
+    $canKey = ps_canonical_campaign_key($rawSlug, $rawTitle);
     
-    // Check if matching catalog exists to preserve default images/highlights if not explicitly set
-    $matchedCatalogKey = null;
-    foreach ($defaultCatalog as $catKey => $catData) {
-        if ($slug === $catKey || str_contains($slug, $catKey) || str_contains($catKey, $slug)) {
-            $matchedCatalogKey = $catKey;
-            break;
-        }
+    // Explicitly exclude non-campaigns such as Tulsi Jayanti
+    if ($canKey === 'tulsi') {
+        continue;
     }
-    $catDefaults = $matchedCatalogKey ? $defaultCatalog[$matchedCatalogKey] : [];
+    $catDefaults = $defaultCatalog[$canKey] ?? [];
 
-    $title = !empty($item['title']) ? $item['title'] : ($catDefaults['title'] ?? ps_text('जन-अभियान', 'Campaign'));
+    // Title: enhance minimal DB titles with rich catalog title
+    $title = !empty($rawTitle) ? $rawTitle : ($catDefaults['title'] ?? ps_text('जन-अभियान', 'Campaign'));
+    if (!empty($catDefaults['title']) && mb_strlen($title) < 18) {
+        $title = $catDefaults['title'];
+    }
+
     $rawExcerpt = !empty($item['excerpt']) ? $item['excerpt'] : (!empty($item['short_description']) ? $item['short_description'] : (!empty($item['content']) ? $item['content'] : ($catDefaults['excerpt'] ?? '')));
     $excerpt = trim(preg_replace('/\s+/', ' ', strip_tags(ps_decode_entities((string)$rawExcerpt))));
+    if (empty($excerpt) || mb_strlen($excerpt) < 30) {
+        $excerpt = $catDefaults['excerpt'] ?? $excerpt;
+    }
+
     $imageRaw = !empty($item['image']) ? $item['image'] : (!empty($item['banner_image']) ? $item['banner_image'] : ($catDefaults['image'] ?? 'assets/images/slider_final_1.webp'));
     $image = ps_resolve_img($imageRaw, $catDefaults['image'] ?? 'uploads/slider_final_1.webp');
-    $category = !empty($item['category']) ? strtolower($item['category']) : ($catDefaults['category'] ?? 'unity');
-    $isPrimary = isset($item['is_primary']) ? (int)$item['is_primary'] : ($catDefaults['is_primary'] ?? 0);
+
+    $category = $catDefaults['category'] ?? (!empty($item['category']) ? strtolower($item['category']) : 'unity');
+    if ($canKey === 'guidance') {
+        $category = 'guidance';
+    } elseif ($canKey === 'culture') {
+        $category = 'culture';
+    } elseif ($canKey === 'bird') {
+        $category = 'bird';
+    } elseif ($canKey === 'eco' || $canKey === 'hariyali' || $canKey === 'aankhen') {
+        $category = 'eco';
+    } elseif ($canKey === 'patel') {
+        $category = 'unity';
+    }
+
+    $isPrimary = isset($item['is_primary']) && (int)$item['is_primary'] === 1 ? 1 : ($catDefaults['is_primary'] ?? 0);
     $goalAmount = (float)($item['goal_amount'] ?? $item['target_amount'] ?? 0);
     $raisedAmount = (float)($item['raised_amount'] ?? 0);
     $highlights = !empty($catDefaults['highlights']) ? $catDefaults['highlights'] : [ps_text('जन-भागीदारी', 'Community Driven'), ps_text('सतत जनसेवा', 'Continuous Service')];
 
-    $allCampaignsList[$slug] = [
-        'id' => $item['id'] ?? 0,
+    // Deduplicate: If an item of this canonical key already exists, do not duplicate
+    if (isset($allCampaignsList[$canKey])) {
+        continue;
+    }
+
+    $allCampaignsList[$canKey] = [
+        'id' => $item['id'] ?? ($catDefaults['id'] ?? 0),
         'title' => $title,
-        'en_title' => $item['en_title'] ?? '',
-        'slug' => $slug,
+        'en_title' => $item['en_title'] ?? ($catDefaults['en_title'] ?? ''),
+        'slug' => !empty($rawSlug) ? $rawSlug : ($catDefaults['slug'] ?? $canKey),
+        'canonical_key' => $canKey,
         'excerpt' => $excerpt,
         'image' => $image,
         'category' => $category,
@@ -127,21 +169,15 @@ foreach ($rawDbItems as $item) {
     ];
 }
 
-// 2. Ensure all catalog campaigns exist in the list (merge catalog campaigns with DB items)
-foreach ($defaultCatalog as $catKey => $catData) {
-    $exists = false;
-    foreach ($allCampaignsList as $existingSlug => $existingCamp) {
-        if ($existingSlug === $catKey || str_contains($existingSlug, $catKey) || str_contains($catKey, $existingSlug)) {
-            $exists = true;
-            break;
-        }
-    }
-    if (!$exists) {
-        $allCampaignsList[$catKey] = [
+// 2. Ensure all catalog initiatives exist in the list (merge missing initiatives)
+foreach ($defaultCatalog as $canKey => $catData) {
+    if (!isset($allCampaignsList[$canKey])) {
+        $allCampaignsList[$canKey] = [
             'id' => $catData['id'],
             'title' => $catData['title'],
             'en_title' => $catData['en_title'] ?? '',
             'slug' => $catData['slug'],
+            'canonical_key' => $canKey,
             'excerpt' => $catData['excerpt'],
             'image' => ps_resolve_img($catData['image'], 'uploads/slider_final_1.webp'),
             'category' => $catData['category'],
@@ -155,17 +191,35 @@ foreach ($defaultCatalog as $catKey => $catData) {
     }
 }
 
-// Separate primary campaign from regular list
-$primaryCampaign = null;
-$regularCampaigns = [];
-
-foreach ($allCampaignsList as $camp) {
-    if ($camp['is_primary'] === 1 && $primaryCampaign === null) {
-        $primaryCampaign = $camp;
-    } else {
-        $regularCampaigns[] = $camp;
+// 3. Separate primary flagship campaign from regular cards
+$primaryCampaign = $allCampaignsList['patel'] ?? null;
+if ($primaryCampaign === null) {
+    foreach ($allCampaignsList as $camp) {
+        if ($camp['is_primary'] === 1) {
+            $primaryCampaign = $camp;
+            break;
+        }
     }
 }
+
+// Build regular cards list, strictly excluding the primary flagship campaign
+$regularCampaigns = [];
+foreach ($allCampaignsList as $cKey => $camp) {
+    if ($primaryCampaign !== null && ($cKey === $primaryCampaign['canonical_key'] || $camp['slug'] === $primaryCampaign['slug'])) {
+        continue; // Never repeat primary campaign in regular cards grid
+    }
+    $regularCampaigns[] = $camp;
+}
+
+// Enforce clean, balanced presentation order
+$desiredOrder = ['aankhen', 'hariyali', 'bird', 'culture', 'guidance'];
+usort($regularCampaigns, function($a, $b) use ($desiredOrder) {
+    $posA = array_search($a['canonical_key'] ?? '', $desiredOrder, true);
+    $posB = array_search($b['canonical_key'] ?? '', $desiredOrder, true);
+    $posA = $posA === false ? 999 : $posA;
+    $posB = $posB === false ? 999 : $posB;
+    return $posA <=> $posB;
+});
 
 // Fallback if no campaign was marked primary
 if ($primaryCampaign === null && !empty($regularCampaigns)) {
@@ -310,6 +364,9 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
           <button type="button" data-filter="culture" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
             <?= e(ps_text('अवधी संस्कृति व साहित्य', 'Culture & Literature')) ?>
           </button>
+          <button type="button" data-filter="guidance" class="campaign-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm text-[#475467] hover:text-[#14532D] hover:bg-[#F1F7F2] transition-all font-semibold cursor-pointer">
+            <?= e(ps_text('युवा अभिप्रेरण व मार्गदर्शन', 'Youth Guidance')) ?>
+          </button>
         </div>
       </div>
     </div>
@@ -436,28 +493,38 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
              SECONDARY CAMPAIGNS GRID (100% UNIFORM FULL-FILL IMAGE CARDS)
              ============================================== -->
         <?php foreach ($regularCampaigns as $c): 
+          $cKey = $c['canonical_key'] ?? '';
+          $cSlugLower = strtolower($c['slug'] ?? '');
           $catBadgeColor = 'text-[#15803D] bg-[#F1F7F2] border-[#15803D]/20';
           $catBadgeText = ps_text('पर्यावरण व हरियाली', 'Environment & Green');
-          if ($c['category'] === 'bird') {
+          $badgeDotColor = 'bg-[#86EFAC]';
+
+          if ($c['category'] === 'bird' || $cKey === 'bird') {
               $catBadgeColor = 'text-[#C05632] bg-[#FAF8F3] border-[#C05632]/20';
               $catBadgeText = ps_text('परिंदा व जीव-दया', 'Bird Protection');
-          } elseif ($c['category'] === 'culture') {
+              $badgeDotColor = 'bg-[#FB923C]';
+          } elseif ($c['category'] === 'culture' || $cKey === 'culture') {
               $catBadgeColor = 'text-[#78350F] bg-[#FFFBEB] border-[#F59E0B]/20';
               $catBadgeText = ps_text('अवधी संस्कृति व साहित्य', 'Culture & Literature');
-          } elseif ($c['category'] === 'unity') {
+              $badgeDotColor = 'bg-[#FBBF24]';
+          } elseif ($c['category'] === 'guidance' || $c['category'] === 'education' || $cKey === 'guidance') {
+              $catBadgeColor = 'text-[#1E40AF] bg-[#EFF6FF] border-[#3B82F6]/20';
+              $catBadgeText = ps_text('युवा प्रेरणा व मार्गदर्शन', 'Youth Inspiration & Guidance');
+              $badgeDotColor = 'bg-[#60A5FA]';
+          } elseif ($c['category'] === 'unity' || $cKey === 'patel') {
               $catBadgeColor = 'text-[#14532D] bg-[#F1F7F2] border-[#15803D]/20';
               $catBadgeText = ps_text('राष्ट्रीय चेतना व समरसता', 'National Integration');
+              $badgeDotColor = 'bg-[#86EFAC]';
           }
 
-          $cSlugLower = strtolower($c['slug']);
-          $campaignLink = base_url('/campaigns/' . $c['slug']);
-          if ($cSlugLower === 'aankhein-foundation' || $cSlugLower === 'aankhen-foundation' || str_contains($cSlugLower, 'aankh') || str_contains($cSlugLower, 'aankhen')) {
+          $campaignLink = base_url('/campaigns/' . ($c['slug'] ?? ''));
+          if ($cKey === 'aankhen' || str_contains($cSlugLower, 'aankh')) {
               $campaignLink = base_url('/aankhein-foundation');
-          } elseif ($cSlugLower === 'hariyali-campaign' || str_contains($cSlugLower, 'green') || str_contains($cSlugLower, 'hariyali')) {
+          } elseif ($cKey === 'hariyali' || str_contains($cSlugLower, 'green') || str_contains($cSlugLower, 'hariyali')) {
               $campaignLink = base_url('/green-gang');
-          } elseif ($cSlugLower === 'sardar-patel-ekta' || str_contains($cSlugLower, 'patel') || str_contains($cSlugLower, 'sardar')) {
+          } elseif ($cKey === 'patel' || str_contains($cSlugLower, 'patel') || str_contains($cSlugLower, 'sardar')) {
               $campaignLink = base_url('/sardar-patel-ekta');
-          } elseif ($cSlugLower === 'gauraiya-bachao-abhiyan' || str_contains($cSlugLower, 'gauraiya')) {
+          } elseif ($cKey === 'bird' || str_contains($cSlugLower, 'gauraiya') || str_contains($cSlugLower, 'parinda')) {
               $campaignLink = base_url('/gauraiya-bachao-abhiyan');
           }
         ?>
@@ -473,7 +540,7 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
               <!-- Top Floating Category Badge -->
               <div class="absolute top-4 left-4 z-10 pointer-events-none">
                 <span class="text-xs font-bold text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xs inline-flex items-center gap-1.5">
-                  <span class="w-2 h-2 rounded-full bg-[#86EFAC]"></span>
+                  <span class="w-2 h-2 rounded-full <?= e($badgeDotColor) ?>"></span>
                   <span><?= e($catBadgeText) ?></span>
                 </span>
               </div>
@@ -685,8 +752,8 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
         // Filter cards smoothly
         cards.forEach(card => {
           const category = card.getAttribute('data-category');
-          if (filter === 'all' || category === filter) {
-            card.style.display = 'flex';
+          if (filter === 'all' || category === filter || (filter === 'guidance' && (category === 'guidance' || category === 'education'))) {
+            card.style.display = '';
           } else {
             card.style.display = 'none';
           }

@@ -828,11 +828,11 @@ class PageController
                 ];
             } elseif (str_contains($slugLower, 'tulsi')) {
                 $item = [
-                    'title' => 'आँखे फाउंडेशन',
+                    'title' => ps_text('तुलसी जयंती व राम-संस्कृति संवर्धन अभियान', 'Tulsi Jayanti & Ram-Sanskriti Campaign'),
                     'slug' => $slug,
-                    'image' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDNOtpSZS1SiMog6MZDa71DZSMfh6EnAA77Ymmt7zKpBOaoF2T1kWglq8Y53Zsa7euU3rS45qwNdtPbOCAvU8DxMXXSuSW8gAKL7TrAh3UL63gGDIxTMAgC3LukNGRs-_8I2A4TvGb7cVawrjP4eHZn4vCttQfvJgSJxC3lGfMoqJThtsk31BlhWfn-Tl3NqXbIas9Z_rC1JGQtFVyUukAuxzurqbr99QVnyPNLwWoq03MVbPtd27MK',
-                    'excerpt' => 'आँखे फाउंडेशन द्वारा समाज कल्याण एवं जागरूकता हेतु संचालित जन जागरण अभियान।',
-                    'content' => '<p>आँखे फाउंडेशन द्वारा संचालित जन जागरण अभियान का मुख्य उद्देश्य समाज में सकारात्मक बदलाव, शिक्षा, पर्यावरण एवं नैतिक मूल्यों का संवर्धन करना है।</p>',
+                    'image' => 'assets/images/slider_final_1.webp',
+                    'excerpt' => 'गोस्वामी तुलसीदास जी की अमर रचनाओं, मानस मूल्यों, अवधी चौपाई गायन एवं 5,000 तुलसी पौधों के नि:शुल्क वितरण का पावन अभियान।',
+                    'content' => '<p>गोस्वामी तुलसीदास जी की अमर रचनाओं, मानस मूल्यों, अवधी चौपाई गायन एवं 5,000 तुलसी पौधों के नि:शुल्क वितरण का पावन अभियान। बाराबंकी जनपद में तुलसी जयंती पर प्रतिवर्ष व्यापक स्तर पर चौपाई पाठ एवं विचार गोष्ठियों का आयोजन किया जाता है।</p>',
                 ];
             } elseif (str_contains($slugLower, 'awadhi') || str_contains($slugLower, 'avadhi') || str_contains($slugLower, 'language')) {
                 $item = [
