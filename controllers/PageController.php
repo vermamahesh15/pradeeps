@@ -210,6 +210,14 @@ class PageController
             return;
         }
 
+        if ($slug === '/aankhein-foundation' || $slug === '/aankhen-foundation' || $slug === '/campaigns/aankhein-foundation' || $slug === '/campaigns/aankhen-foundation') {
+            $this->render('aankhein-foundation', [
+                'title' => ps_text('आँखें फाउंडेशन — "जल और जंगल" संरक्षण, बाराबंकी नदी पुनरुद्धार एवं ग्रीन गैंग', 'Aankhein Foundation — River Conservation, Jamuriya Revival & Green Gang'),
+                'campaigns' => $this->content->all('campaigns')
+            ]);
+            return;
+        }
+
         if ($slug === '/gauraiya-bachao-abhiyan' || $slug === '/gauraiya-bachao' || $slug === '/campaigns/gauraiya-bachao-abhiyan' || $slug === '/campaigns/gauraiya-bachao' || $slug === '/sparrow-conservation') {
             $this->render('gauraiya-bachao-abhiyan', [
                 'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows')
@@ -548,6 +556,41 @@ class PageController
             return;
         }
 
+        // 3.2 Aankhen Foundation Campaign AMP
+        if ($cleanSlug === '/aankhein-foundation' || $cleanSlug === '/campaigns/aankhein-foundation' || $cleanSlug === '/aankhen-foundation' || $cleanSlug === '/campaigns/aankhen-foundation') {
+            $this->renderAmp('amp-page', [
+                'title' => 'आँखें फाउंडेशन — "जल और जंगल" संरक्षण, बाराबंकी नदी पुनरुद्धार एवं ग्रीन गैंग',
+                'subtitle' => 'पंजीकरण संख्या BAB/02650/2018-19 • गोमती, घाघरा, रेठ, कल्याणी व जमुरिया नाला (जम्बू-नद) पुनरुद्धार',
+                'canonicalUrl' => $canonical,
+                'content' => '
+                    <p><strong>आँखें फाउंडेशन</strong> (पंजीकरण संख्या BAB/02650/2018-19) सोसायटी रजिस्ट्रेशन एक्ट 1860 के अंतर्गत उपनिबंधक अयोध्या मंडल से पंजीकृत है। संस्था गठन वर्ष 2010 (पूर्व नाम आँखें इंडिया) से अनवरत पर्यावरण व नदी संरक्षण में समर्पित है।</p>
+                    <h2>पंजीकृत कार्यालय एवं विवरण</h2>
+                    <p>• <strong>पंजीकृत कार्यालय:</strong> ग्राम व पोस्ट पाटमऊ, तहसील- नवाबगंज, जिला- बाराबंकी (उ.प्र.)</p>
+                    <p>• <strong>प्रधान-कार्यालय:</strong> ग्रीन गैंग रोड, हजाराबाग, बाराबंकी। उत्तर प्रदेश, भारत।</p>
+                    <p>• <strong>संस्थापक:</strong> श्री प्रदीप सारंग (मो. 9919007190)</p>
+                    <h2>बाराबंकी की 4 नदियाँ एवं जमुरिया (जम्बू-नद) पुनरुद्धार</h2>
+                    <p>बाराबंकी की 4 प्रमुख नदियाँ— गोमती व घाघरा (गंगा की सहायक नदियाँ) तथा रेठ व कल्याणी (गंगा की उप-नदियाँ)। साथ ही बाराबंकी के प्राचीन जम्बू-नद (जमुरिया नाला) का जिला प्रशासन व नगर पालिका परिषद के सहयोग से ऐतिहासिक पुनरुद्धार कराया गया, जो वर्तमान में पुनः नदी स्वरूप में है।</p>
+                    <h2>ग्रीन गैंग व "ग्रीन मॉर्निंग" क्रांति</h2>
+                    <p>5 जून 2019 विश्व पर्यावरण दिवस को शहीद उद्यान पार्क बाराबंकी में ग्रीन गैंग/पर्यावरण सेना का गठन हुआ। Good Morning के स्थान पर "ग्रीन मॉर्निंग" बोलकर दिल-दिमाग में हरियाली के प्रति प्रेम (Greenery Liking) का संचार करने की विश्वस्तरीय पहल की गई।</p>
+                    <h2>स्वागत में माला-फूल नहीं, गमला व पौध</h2>
+                    <p>आयोजनों में स्वागत में माला-फूल के स्थान पर गमला व पौध भेंट करने की स्वस्थ परम्परा स्थापित की गई तथा वर्ष 2011 से बेजुबान पक्षियों के लिए छतों पर मिट्टी के सकोरों में दाना-पानी रखने का अभियान निरंतर संचालित है।</p>
+                ',
+                'items' => [
+                    [
+                        'title' => 'बाराबंकी नदी पुनरुद्धार व 4 नदियाँ',
+                        'description' => 'गोमती, घाघरा, रेठ व कल्याणी नदी संरक्षण एवं जमुरिया नाला पुनरुद्धार।',
+                        'image' => 'assets/images/hariyali_abhiyan.webp',
+                    ],
+                    [
+                        'title' => 'ग्रीन गैंग व "ग्रीन मॉर्निंग" क्रांति',
+                        'description' => 'शहीद उद्यान पार्क में गठित पर्यावरण सेना एवं ग्रीन अभिवादन संस्कृति।',
+                        'image' => 'assets/images/slider_final_1.webp',
+                    ]
+                ]
+            ]);
+            return;
+        }
+
         // 4. Events
         if ($cleanSlug === '/events') {
             $events = $this->content->all('events');
@@ -727,6 +770,14 @@ class PageController
     public function campaignDetail(string $slug): void
     {
         $slugLower = strtolower($slug);
+        if ($slugLower === 'aankhein-foundation' || $slugLower === 'aankhen-foundation' || $slugLower === 'aankhe-foundation' || str_contains($slugLower, 'aankhein') || str_contains($slugLower, 'aankhen')) {
+            $this->render('aankhein-foundation', [
+                'title' => ps_text('आँखें फाउंडेशन — "जल और जंगल" संरक्षण, बाराबंकी नदी पुनरुद्धार एवं ग्रीन गैंग', 'Aankhein Foundation — River Conservation, Jamuriya Revival & Green Gang'),
+                'campaigns' => $this->content->all('campaigns')
+            ]);
+            return;
+        }
+
         if ($slugLower === 'sardar-patel-ekta' || $slugLower === 'sardar-patel' || $slugLower === 'sardar-patel-samajotthan-trust' || $slugLower === 'sardar-patel-campaign' || $slugLower === 'patel-campaign' || str_contains($slugLower, 'sardar') || str_contains($slugLower, 'patel')) {
             $this->render('sardar-patel-ekta', [
                 'title' => ps_text('सरदार पटेल अभियान — सरदार पटेल समाजोत्थान ट्रस्ट', 'Sardar Patel Movement — Samajotthan Trust'),
@@ -963,6 +1014,16 @@ class PageController
 
         // 1. Search Campaigns catalog & DB campaigns
         $defaultCatalog = [
+            'aankhein-foundation' => [
+                'type' => 'campaign',
+                'type_label' => ps_text('अभियान', 'Campaign'),
+                'title' => ps_text('आँखें फाउंडेशन ("जल और जंगल" संरक्षण, बाराबंकी नदी पुनरुद्धार एवं ग्रीन गैंग)', 'Aankhein Foundation (Water, Forest & River Revival)'),
+                'slug' => 'aankhein-foundation',
+                'url' => base_url('/aankhein-foundation'),
+                'excerpt' => ps_text('पंजीकरण सं. BAB/02650/2018-19 • बाराबंकी की 4 नदियाँ, जमुरिया नाला (जम्बू-नद) पुनरुद्धार, ग्रीन गैंग एवं ग्रीन मॉर्निंग क्रांति।', 'Registered NGO BAB/02650/2018-19 dedicated to water & forest conservation, 4 rivers of Barabanki, Jamuriya revival and Green Gang.'),
+                'image' => 'assets/images/hariyali_abhiyan.webp',
+                'keywords' => ['aankhein', 'foundation', 'aankhen', 'आँखें', 'फाउंडेशन', 'नदी', 'जमुरिया', 'जम्बू-नद', 'गोमती', 'घाघरा', 'रेठ', 'कल्याणी', 'ग्रीन गैंग', 'ग्रीन मॉर्निंग', 'गंगा समिति']
+            ],
             'tulsi-abhiyan-16-31-2026' => [
                 'type' => 'campaign',
                 'type_label' => ps_text('अभियान', 'Campaign'),

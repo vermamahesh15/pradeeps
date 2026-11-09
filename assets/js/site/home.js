@@ -2,36 +2,88 @@
 (() => {
     const header = document.querySelector('.ps-header') || document.querySelector('header');
     const toggle = document.querySelector('.ps-menu-toggle') || document.getElementById('ps-mobile-toggle');
-    const menu = document.getElementById('ps-mobile-menu') || document.getElementById('ps-mobile-menu-drawer');
-    const mobile = window.matchMedia('(max-width: 1199px)');
-    function closeMenu(restore = false) {
-        if (!menu) return;
-        menu.hidden = true;
-        menu.classList.add('hidden');
+    const drawer = document.getElementById('ps-mobile-menu-drawer');
+    const backdrop = document.getElementById('ps-mobile-backdrop');
+    const legacyMenu = document.getElementById('ps-mobile-menu');
+    const mobile = window.matchMedia('(max-width: 1279px)');
+
+    function openMobileDrawer() {
+        if (!drawer) return;
+        if (backdrop) {
+            backdrop.classList.remove('pointer-events-none', 'opacity-0');
+            backdrop.classList.add('opacity-100');
+        }
+        drawer.classList.remove('translate-x-full');
+        drawer.classList.add('translate-x-0');
+        document.body.style.overflow = 'hidden';
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMobileDrawer(restore = false) {
+        if (drawer) {
+            drawer.classList.remove('translate-x-0');
+            drawer.classList.add('translate-x-full');
+        }
+        if (backdrop) {
+            backdrop.classList.remove('opacity-100');
+            backdrop.classList.add('opacity-0', 'pointer-events-none');
+        }
+        document.body.style.overflow = '';
         if (toggle) toggle.setAttribute('aria-expanded', 'false');
         if (restore && toggle) toggle.focus();
     }
-    if (toggle && menu) {
+
+    function toggleMobileDrawer() {
+        if (!drawer) return;
+        if (drawer.classList.contains('translate-x-0')) {
+            closeMobileDrawer();
+        } else {
+            openMobileDrawer();
+        }
+    }
+
+    window.openMobileDrawer = openMobileDrawer;
+    window.closeMobileDrawer = closeMobileDrawer;
+    window.toggleMobileDrawer = toggleMobileDrawer;
+
+    if (toggle && drawer) {
+        drawer.addEventListener('click', (event) => {
+            if (event.target.closest('a')) closeMobileDrawer();
+        });
+        if (backdrop) {
+            backdrop.addEventListener('click', () => closeMobileDrawer());
+        }
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && drawer.classList.contains('translate-x-0')) closeMobileDrawer(true);
+        });
+        mobile.addEventListener('change', () => { if (!mobile.matches) closeMobileDrawer(); });
+    } else if (toggle && legacyMenu) {
+        function closeLegacy(restore = false) {
+            legacyMenu.hidden = true;
+            legacyMenu.classList.add('hidden');
+            if (toggle) toggle.setAttribute('aria-expanded', 'false');
+            if (restore && toggle) toggle.focus();
+        }
         toggle.addEventListener('click', () => {
-            const isHidden = menu.hidden || menu.classList.contains('hidden');
-            menu.hidden = !isHidden;
-            menu.classList.toggle('hidden', !isHidden);
+            const isHidden = legacyMenu.hidden || legacyMenu.classList.contains('hidden');
+            legacyMenu.hidden = !isHidden;
+            legacyMenu.classList.toggle('hidden', !isHidden);
             toggle.setAttribute('aria-expanded', String(isHidden));
             if (isHidden) {
-                const firstLink = menu.querySelector('a');
+                const firstLink = legacyMenu.querySelector('a');
                 if (firstLink) firstLink.focus();
             }
         });
-        menu.addEventListener('click', (event) => {
-            if (event.target.closest('a')) closeMenu();
+        legacyMenu.addEventListener('click', (event) => {
+            if (event.target.closest('a')) closeLegacy();
         });
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && (!menu.hidden || !menu.classList.contains('hidden'))) closeMenu(true);
+            if (event.key === 'Escape' && (!legacyMenu.hidden || !legacyMenu.classList.contains('hidden'))) closeLegacy(true);
         });
         document.addEventListener('click', (event) => {
-            if (header && !header.contains(event.target)) closeMenu();
+            if (header && !header.contains(event.target)) closeLegacy();
         });
-        mobile.addEventListener('change', () => { if (!mobile.matches) closeMenu(); });
+        mobile.addEventListener('change', () => { if (!mobile.matches) closeLegacy(); });
     }
     // This is an inline disclosure, not a modal drawer; keyboard focus remains free.
     let scrollQueued = false;

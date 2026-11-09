@@ -826,7 +826,7 @@ $tulsiSlug = $tulsi['slug'] ?? 'tulsi-abhiyan-16-31-2026';
           <?= e(ps_text('इंडिया गेट राष्ट्रीय गणतंत्र दिवस परेड में सहभागिता', 'Participation in National Republic Day Parade at India Gate')) ?>
         </h3>
         <p class="font-body-md text-body-md text-on-surface-variant mt-2 leading-relaxed">
-          <?= e(ps_text('नई दिल्ली में 26 जनवरी गणतंत्र दिवस राष्ट्रीय परेड में युवा दल के रूप में शामिल होकर अनुशासन, राष्ट्रीय सेवा और लोक कल्याण का सर्वोच्च पाठ सीखा।', 'Represented the youth contingent at the 26 January National Republic Day Parade at India Gate, New Delhi.')) ?>
+          <?= e(ps_text('नई दिल्ली में 26 जनवरी गणतंत्र दिवस राष्ट्रीय परेड में राष्ट्रीय सेवा योजना के श्रेष्ठ स्वयं सेवक चयनित होकर अनुशासन, राष्ट्रीय सेवा और लोक कल्याण का सर्वोच्च पाठ सीखा।', 'Selected as the exemplary NSS volunteer for the 26 January National Republic Day Parade at India Gate, New Delhi, learning discipline and public service.')) ?>
         </p>
       </div>
 

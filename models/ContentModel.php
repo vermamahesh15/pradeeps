@@ -73,6 +73,27 @@ class ContentModel extends BaseModel
             if (!in_array('category', $cols, true)) {
                 $this->db->exec("ALTER TABLE campaigns ADD COLUMN category VARCHAR(100) DEFAULT 'unity'");
             }
+
+            // Ensure core campaigns (including Aankhen Foundation) exist in database
+            try {
+                $existingSlugs = $this->db->query("SELECT slug FROM campaigns")->fetchAll(PDO::FETCH_COLUMN);
+                if (!in_array('aankhein-foundation', $existingSlugs, true) && !in_array('aankhen-foundation', $existingSlugs, true)) {
+                    $stmt = $this->db->prepare("INSERT INTO campaigns (title, en_title, slug, short_description, banner_image, category, is_primary, sort_order, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([
+                        'आँखें फाउंडेशन ("जल और जंगल" संरक्षण, नदी पुनरुद्धार एवं ग्रीन गैंग)',
+                        'Aankhein Foundation (Water & Forest Conservation, River Revival & Green Gang)',
+                        'aankhein-foundation',
+                        'पंजीकरण सं. BAB/02650/2018-19 • उप रजिस्ट्रार अयोध्या मंडल से पंजीकृत। बाराबंकी की 4 नदियों (गोमती, घाघरा, रेठ, कल्याणी) का संरक्षण, ऐतिहासिक जमुरिया नाला (जम्बू-नद) पुनरुद्धार, जिला गंगा समिति सहभागिता, ग्रीन गैंग पर्यावरण सेना व "ग्रीन मॉर्निंग" शिष्टाचार क्रांति।',
+                        'assets/images/hariyali_abhiyan.webp',
+                        'eco',
+                        0,
+                        2,
+                        'active'
+                    ]);
+                }
+            } catch (Throwable $e) {
+                // Ignore seeding errors
+            }
         } catch (Throwable $e) {
             // Ignore schema alter errors if user privileges limited
         }

@@ -17,8 +17,18 @@ $defaultCatalog = [
         'image' => 'assets/images/sardar_patel.webp',
         'highlights' => [ps_text('NSS 1987-88 प्रेरणा', 'NSS 1987 Legacy'), ps_text('31 अक्टूबर दीपोत्सव', '31 Oct Deepotsav'), ps_text('पटेल चेतना रथ', 'Chetna Rath Drive')]
     ],
-    'hariyali-campaign' => [
+    'aankhein-foundation' => [
         'id' => 2,
+        'title' => ps_text('आँखें फाउंडेशन ("जल और जंगल" संरक्षण, नदी पुनरुद्धार एवं ग्रीन गैंग)', 'Aankhein Foundation (Water & Forest Conservation, River Revival & Green Gang)'),
+        'slug' => 'aankhein-foundation',
+        'category' => 'eco',
+        'is_primary' => 0,
+        'excerpt' => ps_text('पंजीकरण सं. BAB/02650/2018-19 • उप रजिस्ट्रार अयोध्या मंडल से पंजीकृत। बाराबंकी की 4 नदियों (गोमती, घाघरा, रेठ, कल्याणी) का संरक्षण, ऐतिहासिक जमुरिया नाला (जम्बू-नद) पुनरुद्धार, जिला गंगा समिति सहभागिता, ग्रीन गैंग पर्यावरण सेना व "ग्रीन मॉर्निंग" शिष्टाचार क्रांति।', 'Registered NGO BAB/02650/2018-19 • Dedicated to water & forest conservation, 4 rivers of Barabanki, historic Jamuriya river revival, District Ganga Committee representation, Green Gang environmental army and Green Morning movement.'),
+        'image' => 'assets/images/hariyali_abhiyan.webp',
+        'highlights' => [ps_text('पंजीकृत संस्था (BAB/02650/2018-19)', 'Reg. Society BAB/02650/2018-19'), ps_text('4 नदियाँ व जमुरिया पुनरुद्धार', '4 Rivers & Jamuriya Revival'), ps_text('ग्रीन गैंग व "ग्रीन मॉर्निंग" क्रांति', 'Green Gang & Green Morning')]
+    ],
+    'hariyali-campaign' => [
+        'id' => 3,
         'title' => ps_text('हरियाली-अभियान (\'ग्रीन गैंग\' एवं \'ग्रीन मॉर्निंग\')', 'Hariyali Abhiyan (\'Green Gang\' & \'Green Morning\')'),
         'slug' => 'hariyali-campaign',
         'category' => 'eco',
@@ -28,7 +38,7 @@ $defaultCatalog = [
         'highlights' => [ps_text('50,000+ पौधरोपण', '50k+ Trees Planted'), ps_text('ग्रीन मॉर्निंग शिष्टाचार', 'Green Morning Greetings')]
     ],
     'gauraiya-bachao-abhiyan' => [
-        'id' => 6,
+        'id' => 4,
         'title' => ps_text('गौरैया बचाओ अभियान — "छत पर और आँगन में आओ सहेजें गौरैया"', 'Save Sparrows Campaign — Protect Sparrows in Courtyards & Rooftops'),
         'slug' => 'gauraiya-bachao-abhiyan',
         'category' => 'bird',
@@ -38,7 +48,7 @@ $defaultCatalog = [
         'highlights' => [ps_text('10,000+ सकोरे', '10k+ Bowls'), ps_text('दाना-पानी व्यवस्था', 'Daily Bird Feeding')]
     ],
     'bird-conservation-campaign' => [
-        'id' => 3,
+        'id' => 5,
         'title' => ps_text('परिंदा संवर्धन व जल-सकोरा अभियान', 'Sparrow & Bird Conservation (Water Bowls)'),
         'slug' => 'bird-conservation-campaign',
         'category' => 'bird',
@@ -48,7 +58,7 @@ $defaultCatalog = [
         'highlights' => [ps_text('10,000+ जल-सकोरे', '10k+ Water Pots'), ps_text('गौरैया संरक्षण घोंसले', 'Sparrow Shelters')]
     ],
     'language-and-literature-promotion-campaign' => [
-        'id' => 4,
+        'id' => 6,
         'title' => ps_text('अवधी भाषा व लोक-संस्कृति संवर्धन अभियान', 'Awadhi Language & Folk Culture Promotion'),
         'slug' => 'language-and-literature-promotion-campaign',
         'category' => 'culture',
@@ -58,14 +68,14 @@ $defaultCatalog = [
         'highlights' => [ps_text('सारंग-कुंडलियाँ', 'Sarang Kundaliyan'), ps_text('मासिक अवधी चौपाल', 'Awadhi Chaupal Gatherings')]
     ],
     'tulsi-pakhwara' => [
-        'id' => 5,
-        'title' => ps_text('आँखे फाउंडेशन (जन जागरण अभियान)', 'Aankhee Foundation (Jan Gajaran Abhiyan)'),
+        'id' => 7,
+        'title' => ps_text('तुलसी जयंती व राम-संस्कृति संवर्धन अभियान', 'Tulsi Jayanti & Ram-Sanskriti Campaign'),
         'slug' => 'tulsi-pakhwara',
         'category' => 'culture',
         'is_primary' => 0,
-        'excerpt' => ps_text('आँखे फाउंडेशन द्वारा समाज कल्याण, नैतिक मूल्यों और सामाजिक चेतना हेतु संचालित जन जागरण अभियान।', 'Jan Gajaran Abhiyan initiative by Ankhee Foundation for social awareness and welfare.'),
+        'excerpt' => ps_text('गोस्वामी तुलसीदास जी की अमर रचनाओं, मानस मूल्यों, अवधी चौपाई गायन एवं 5,000 तुलसी पौधों के नि:शुल्क वितरण का पावन अभियान।', 'Promotion of Goswami Tulsidas works, Awadhi Ramcharitmanas recitations, and distribution of 5,000 holy basil saplings.'),
         'image' => 'assets/images/slider_final_1.webp',
-        'highlights' => [ps_text('जन जागरण अभियान', 'Jan Gajaran Abhiyan'), ps_text('सामाजिक चेतना', 'Social Awareness')]
+        'highlights' => [ps_text('5,000+ तुलसी पौध वितरण', '5k+ Basil Plants'), ps_text('अवधी चौपाई गायन', 'Awadhi Recitations')]
     ]
 ];
 
@@ -117,26 +127,31 @@ foreach ($rawDbItems as $item) {
     ];
 }
 
-// 2. If database table has no campaigns yet, use default catalog as fallback
-if (empty($rawDbItems)) {
-    foreach ($defaultCatalog as $catKey => $catData) {
-        if (!isset($allCampaignsList[$catKey])) {
-            $allCampaignsList[$catKey] = [
-                'id' => $catData['id'],
-                'title' => $catData['title'],
-                'en_title' => $catData['en_title'] ?? '',
-                'slug' => $catData['slug'],
-                'excerpt' => $catData['excerpt'],
-                'image' => ps_resolve_img($catData['image'], 'uploads/slider_final_1.webp'),
-                'category' => $catData['category'],
-                'is_primary' => $catData['is_primary'],
-                'goal_amount' => 0,
-                'raised_amount' => 0,
-                'status' => 'active',
-                'highlights' => $catData['highlights'],
-                'from_db' => false
-            ];
+// 2. Ensure all catalog campaigns exist in the list (merge catalog campaigns with DB items)
+foreach ($defaultCatalog as $catKey => $catData) {
+    $exists = false;
+    foreach ($allCampaignsList as $existingSlug => $existingCamp) {
+        if ($existingSlug === $catKey || str_contains($existingSlug, $catKey) || str_contains($catKey, $existingSlug)) {
+            $exists = true;
+            break;
         }
+    }
+    if (!$exists) {
+        $allCampaignsList[$catKey] = [
+            'id' => $catData['id'],
+            'title' => $catData['title'],
+            'en_title' => $catData['en_title'] ?? '',
+            'slug' => $catData['slug'],
+            'excerpt' => $catData['excerpt'],
+            'image' => ps_resolve_img($catData['image'], 'uploads/slider_final_1.webp'),
+            'category' => $catData['category'],
+            'is_primary' => $catData['is_primary'],
+            'goal_amount' => 0,
+            'raised_amount' => 0,
+            'status' => 'active',
+            'highlights' => $catData['highlights'],
+            'from_db' => false
+        ];
     }
 }
 
@@ -422,15 +437,28 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
              ============================================== -->
         <?php foreach ($regularCampaigns as $c): 
           $catBadgeColor = 'text-[#15803D] bg-[#F1F7F2] border-[#15803D]/20';
-          if ($c['category'] === 'bird') $catBadgeColor = 'text-[#C05632] bg-[#FAF8F3] border-[#C05632]/20';
-          if ($c['category'] === 'culture') $catBadgeColor = 'text-[#78350F] bg-[#FFFBEB] border-[#F59E0B]/20';
+          $catBadgeText = ps_text('पर्यावरण व हरियाली', 'Environment & Green');
+          if ($c['category'] === 'bird') {
+              $catBadgeColor = 'text-[#C05632] bg-[#FAF8F3] border-[#C05632]/20';
+              $catBadgeText = ps_text('परिंदा व जीव-दया', 'Bird Protection');
+          } elseif ($c['category'] === 'culture') {
+              $catBadgeColor = 'text-[#78350F] bg-[#FFFBEB] border-[#F59E0B]/20';
+              $catBadgeText = ps_text('अवधी संस्कृति व साहित्य', 'Culture & Literature');
+          } elseif ($c['category'] === 'unity') {
+              $catBadgeColor = 'text-[#14532D] bg-[#F1F7F2] border-[#15803D]/20';
+              $catBadgeText = ps_text('राष्ट्रीय चेतना व समरसता', 'National Integration');
+          }
 
           $cSlugLower = strtolower($c['slug']);
           $campaignLink = base_url('/campaigns/' . $c['slug']);
-          if ($cSlugLower === 'hariyali-campaign' || str_contains($cSlugLower, 'green') || str_contains($cSlugLower, 'hariyali')) {
+          if ($cSlugLower === 'aankhein-foundation' || $cSlugLower === 'aankhen-foundation' || str_contains($cSlugLower, 'aankh') || str_contains($cSlugLower, 'aankhen')) {
+              $campaignLink = base_url('/aankhein-foundation');
+          } elseif ($cSlugLower === 'hariyali-campaign' || str_contains($cSlugLower, 'green') || str_contains($cSlugLower, 'hariyali')) {
               $campaignLink = base_url('/green-gang');
           } elseif ($cSlugLower === 'sardar-patel-ekta' || str_contains($cSlugLower, 'patel') || str_contains($cSlugLower, 'sardar')) {
               $campaignLink = base_url('/sardar-patel-ekta');
+          } elseif ($cSlugLower === 'gauraiya-bachao-abhiyan' || str_contains($cSlugLower, 'gauraiya')) {
+              $campaignLink = base_url('/gauraiya-bachao-abhiyan');
           }
         ?>
         <article class="campaign-card lg:col-span-6 bg-white rounded-3xl shadow-sm hover:shadow-xl border border-[#E5E7EB] transition-all duration-300 overflow-hidden flex flex-col justify-between hover:-translate-y-1" data-category="<?= e($c['category']) ?>">
@@ -439,8 +467,16 @@ if ($primaryCampaign === null && !empty($regularCampaigns)) {
             <div class="relative w-full h-64 sm:h-72 bg-[#18392B] overflow-hidden border-b border-[#E5E7EB] group">
               <a href="<?= e($campaignLink) ?>" class="block w-full h-full">
                 <img src="<?= e($c['image']) ?>" alt="<?= e($c['title']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/25 pointer-events-none"></div>
               </a>
+
+              <!-- Top Floating Category Badge -->
+              <div class="absolute top-4 left-4 z-10 pointer-events-none">
+                <span class="text-xs font-bold text-white bg-black/50 backdrop-blur-md px-3 py-1 rounded-full border border-white/20 shadow-xs inline-flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-[#86EFAC]"></span>
+                  <span><?= e($catBadgeText) ?></span>
+                </span>
+              </div>
 
               <!-- Top Floating Status Badge -->
               <?php if (!empty($c['status'])): ?>

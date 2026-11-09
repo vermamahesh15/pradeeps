@@ -40,16 +40,17 @@ return [
         ['title' => 'परिंदा-संरक्षण', 'icon' => 'fa-solid fa-dove', 'text' => 'ग्रीष्म काल में संचालित, कार्यक्षेत्र जनपद बाराबंकी'],
     ],
     'causes' => [
-        ['id' => 1, 'title' => 'सरदार पटेल अभियान', 'slug' => 'sardar-patel-campaign', 'goal' => 150000, 'raised' => 98000, 'image' => 'https://picsum.photos/seed/cause-one/900/700', 'excerpt' => 'राष्ट्रीय एकता और अखंडता के संदेश को जन-जन तक पहुँचाने हेतु यह अभियान संचालित है। इसके माध्यम से युवाओं को देशभक्ति और सामाजिक एकता के प्रति प्रेरित किया जाता है।'],
+        ['id' => 1, 'title' => 'सरदार पटेल अभियान', 'slug' => 'sardar-patel-ekta', 'goal' => 150000, 'raised' => 98000, 'image' => 'assets/images/sardar_patel.webp', 'excerpt' => 'राष्ट्रीय एकता और अखंडता के संदेश को जन-जन तक पहुँचाने हेतु यह अभियान संचालित है। इसके माध्यम से युवाओं को देशभक्ति और सामाजिक एकता के प्रति प्रेरित किया जाता है।'],
 
-        ['id' => 2, 'title' => 'अवधी-अभियान', 'slug' => 'language-and-literature-promotion-campaign', 'goal' => 120000, 'raised' => 76000, 'image' => 'https://picsum.photos/seed/cause-two/900/700', 'excerpt' => 'हिंदी एवं अवधी भाषा, साहित्य और संस्कृति के संरक्षण एवं प्रचार-प्रसार के लिए यह अभियान कार्यरत । साहित्यिक गतिविधियों के माध्यम से सांस्कृतिक धरोहर को जीवित रखा जा रहा है।'],
+        ['id' => 2, 'title' => 'आँखें फाउंडेशन ("जल और जंगल" संरक्षण, नदी पुनरुद्धार एवं ग्रीन गैंग)', 'slug' => 'aankhein-foundation', 'goal' => 250000, 'raised' => 180000, 'image' => 'assets/images/hariyali_abhiyan.webp', 'excerpt' => 'पंजीकरण सं. BAB/02650/2018-19 • बाराबंकी की 4 नदियाँ (गोमती, घाघरा, रेठ, कल्याणी), जमुरिया नाला (जम्बू-नद) पुनरुद्धार, ग्रीन गैंग एवं "ग्रीन मॉर्निंग" क्रांति।'],
 
-        ['id' => 3, 'title' => 'कपड़ा-बैंक ', 'slug' => 'rural-skills-lab', 'goal' => 200000, 'raised' => 133000, 'image' => 'https://picsum.photos/seed/cause-three/900/700', 'excerpt' => 'प्रदीप सारंग द्वारा संचालित “कपड़ा बैंक” अभियान समाज सेवा का एक अत्यंत मानवीय और सराहनीय प्रयास है। इस अभियान के अंतर्गत जरूरतमंद एवं आर्थिक रूप से ... '],
+        ['id' => 3, 'title' => 'हरियाली-अभियान', 'slug' => 'hariyali-campaign', 'goal' => 120000, 'raised' => 76000, 'image' => 'assets/images/hariyali_abhiyan.webp', 'excerpt' => 'प्रकृति संरक्षण, 50,000+ वृक्षारोपण एवं दैनिक जीवन में गुड मॉर्निंग के स्थान पर "ग्रीन मॉर्निंग" शिष्टाचार का राष्ट्रव्यापी अभियान।'],
 
-        ['id' => 4, 'title' => 'हरियाली-अभियान', 'slug' => 'nutrition-for-every-child', 'goal' => 120000, 'raised' => 76000, 'image' => 'https://picsum.photos/seed/cause-two/900/700', 'excerpt' => 'प्रकृति संरक्षण, वृक्षारोपण एवं जल-संरक्षण को बढ़ावा देने के लिए यह अभियान चलाया जाता है। लोगों को पर्यावरण के प्रति जागरूक कर स्वच्छ और हरित समाज बनाने का प्रयास ...'],
+        ['id' => 4, 'title' => 'गौरैया बचाओ अभियान', 'slug' => 'gauraiya-bachao-abhiyan', 'goal' => 100000, 'raised' => 64000, 'image' => 'uploads/campaigns/gauriya.webp', 'excerpt' => '"छत पर और आँगन में आओ सहेजें गौरैया" रखें दाना और पानी। 10,000+ मिट्टी के सकोरों का जनसहयोग से नि:शुल्क वितरण।'],
 
+        ['id' => 5, 'title' => 'परिंदा संवर्धन व जल-सकोरा अभियान', 'slug' => 'bird-conservation-campaign', 'goal' => 200000, 'raised' => 133000, 'image' => 'assets/images/slider_final_2.webp', 'excerpt' => 'भीषण गर्मी में बेजुबान पक्षियों हेतु 10,000+ मिट्टी के सकोरे, दाना-पानी प्रबंध एवं विलुप्त होती गौरैया के लिए घोंसला निर्माण अभियान।'],
 
-        ['id' => 5, 'title' => ' परिंदा-संरक्षण ', 'slug' => 'rural-skills-lab', 'goal' => 200000, 'raised' => 133000, 'image' => 'https://picsum.photos/seed/cause-five/900/700', 'excerpt' => 'प्रदीप सारंग द्वारा संचालित “परिंदा संरक्षण अभियान” प्रकृति और पक्षियों की रक्षा हेतु एक संवेदनशील पहल है। इस अभियान का उद्देश्य बढ़ती गर्मी, जल की कमी और पर्यावरणीय ...'],
+        ['id' => 6, 'title' => 'अवधी-अभियान', 'slug' => 'language-and-literature-promotion-campaign', 'goal' => 120000, 'raised' => 76000, 'image' => 'assets/images/slider_final_3.webp', 'excerpt' => 'हिंदी एवं अवधी भाषा, साहित्य और संस्कृति के संरक्षण एवं प्रचार-प्रसार के लिए यह अभियान कार्यरत । साहित्यिक गतिविधियों के माध्यम से सांस्कृतिक धरोहर को जीवित रखा जा रहा है।'],
     ],
     'events' => [
         ['id' => 1, 'title' => 'Youth Leadership Summit', 'slug' => 'youth-leadership-summit', 'date' => '2026-05-11', 'location' => 'Delhi', 'status' => 'upcoming', 'image' => 'https://picsum.photos/seed/event-one/900/700', 'excerpt' => 'A full-day summit on civic leadership, innovation, and collaboration.'],

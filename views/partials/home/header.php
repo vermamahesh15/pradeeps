@@ -14,6 +14,8 @@ if (!isset($nav) || !is_array($nav)) {
             'label' => ps_text('अभियान व पहल', 'Campaigns'),
             'children' => [
                 ['/campaigns', ps_text('सभी अभियान', 'All Campaigns')],
+                ['/sardar-patel-ekta', ps_text('सरदार पटेल अभियान', 'Sardar Patel Movement')],
+                ['/aankhein-foundation', ps_text('आँखें फाउंडेशन', 'Aankhein Foundation')],
                 ['/green-gang', ps_text('ग्रीन गैंग', 'Green Gang')],
                 ['/volunteer', ps_text('स्वयंसेवक बनें', 'Join as Volunteer')]
             ]
@@ -215,17 +217,57 @@ if (!isset($nav) || !is_array($nav)) {
                     </span>
                 </a>
 
-                <!-- Mobile Toggle -->
-                <button id="ps-mobile-toggle" class="xl:hidden w-9 h-9 sm:w-11 sm:h-11 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-lg focus:outline-none shrink-0" aria-label="Toggle navigation" type="button" onclick="document.getElementById('ps-mobile-menu-drawer').classList.toggle('hidden')">
+                <!-- Mobile Toggle Button (Opens right-side off-canvas drawer) -->
+                <button id="ps-mobile-toggle" 
+                        class="xl:hidden w-10 h-10 flex items-center justify-center text-[#172033] hover:bg-[#F3F5F1] rounded-xl focus:outline-none shrink-0 transition-colors active:scale-95 cursor-pointer" 
+                        aria-label="<?= e(ps_text('नेविगेशन मेनू खोलें', 'Open navigation menu')) ?>" 
+                        aria-expanded="false" 
+                        type="button" 
+                        onclick="openMobileDrawer()">
                     <span class="material-symbols-outlined text-2xl">menu</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Mobile Drawer Menu -->
-    <div id="ps-mobile-menu-drawer" class="hidden xl:hidden bg-pure-white border-b border-border-warm shadow-2xl px-6 py-5 max-h-[75vh] overflow-y-auto z-[10000] relative" style="background-color: #ffffff !important; opacity: 1 !important;">
-        <div class="flex flex-col space-y-3 font-label-md text-label-md">
+    <!-- Mobile Off-Canvas Navigation: Backdrop & Right-Side Drawer (xl:hidden) -->
+    <!-- 1. Semi-Transparent Backdrop Overlay (Allows user to see the page underneath; tap to close) -->
+    <div id="ps-mobile-backdrop" 
+         onclick="closeMobileDrawer()" 
+         class="fixed inset-0 bg-stone-900/50 backdrop-blur-[2px] z-[99998] xl:hidden opacity-0 pointer-events-none transition-opacity duration-300 ease-in-out" 
+         aria-hidden="true"></div>
+
+    <!-- 2. Right-Side Off-Canvas Drawer Panel -->
+    <div id="ps-mobile-menu-drawer" 
+         class="fixed top-0 right-0 bottom-0 h-full w-[82vw] max-w-[320px] sm:w-[340px] bg-white z-[99999] xl:hidden shadow-[-10px_0_35px_rgba(0,0,0,0.18)] flex flex-col justify-between transform translate-x-full transition-transform duration-300 ease-in-out overflow-hidden" 
+         role="dialog" 
+         aria-modal="true" 
+         aria-label="<?= e(ps_text('मुख्य नेविगेशन मेनू', 'Main Navigation Menu')) ?>">
+        
+        <!-- Drawer Top Header Bar -->
+        <div class="h-16 px-4 sm:px-5 border-b border-[#E5E7EB] flex items-center justify-between bg-[#FAFAFA] shrink-0">
+            <a href="<?= e(base_url('/')) ?>" onclick="closeMobileDrawer()" class="flex items-center group shrink-0" style="max-height: 44px;" title="<?= e(app_config('name', 'Pradeep Sarang')) ?>">
+                <?php if ($hasLogo): ?>
+                    <img src="<?= e(base_url($siteLogo)) ?>" alt="<?= e(app_config('name', 'Pradeep Sarang')) ?>" class="h-9 w-auto object-contain" style="max-height: 38px; width: auto; max-width: 190px; object-fit: contain;">
+                <?php else: ?>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-[#14532D] text-white flex items-center justify-center shadow-xs">
+                            <span class="material-symbols-outlined text-[18px] text-[#86EFAC]" style="font-variation-settings: 'FILL' 1;">eco</span>
+                        </div>
+                        <span class="font-serif text-base font-bold text-[#14532D]"><?= e(app_config('name', 'Pradeep Sarang')) ?></span>
+                    </div>
+                <?php endif; ?>
+            </a>
+            <button type="button" 
+                    onclick="closeMobileDrawer()" 
+                    class="w-9 h-9 rounded-full flex items-center justify-center text-stone-600 hover:text-stone-950 hover:bg-stone-200 transition-colors cursor-pointer" 
+                    aria-label="<?= e(ps_text('मेनू बंद करें', 'Close menu')) ?>">
+                <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+        </div>
+
+        <!-- Drawer Scrollable Navigation Links -->
+        <div class="flex-1 overflow-y-auto px-4 py-4 space-y-1.5 font-sans overscroll-contain">
             <?php foreach ($nav as $navItem): 
                 if (isset($navItem['children'])): 
                     $dropdownLabel = $navItem['label'];
@@ -237,20 +279,30 @@ if (!isset($nav) || !is_array($nav)) {
                             break;
                         }
                     }
+                    $iconName = 'folder';
+                    if (str_contains($dropdownLabel, 'अभियान')) $iconName = 'campaign';
+                    elseif (str_contains($dropdownLabel, 'प्रभाव') || str_contains($dropdownLabel, 'यात्रा')) $iconName = 'explore';
+                    elseif (str_contains($dropdownLabel, 'गैलरी') || str_contains($dropdownLabel, 'मीडिया')) $iconName = 'photo_library';
             ?>
-                <details class="group py-1" <?= $isParentActive ? 'open' : '' ?>>
-                    <summary class="flex items-center justify-between py-1.5 px-2 rounded-lg cursor-pointer transition-colors select-none <?= $isParentActive ? 'text-on-primary font-bold bg-primary-container' : 'text-on-surface hover:text-primary' ?>">
-                        <span><?= e($dropdownLabel) ?></span>
-                        <span class="material-symbols-outlined text-[18px] transition-transform duration-200 group-open:rotate-180">expand_more</span>
+                <details class="group rounded-xl border border-transparent transition-colors <?= $isParentActive ? 'bg-emerald-50/70 border-emerald-200/80' : '' ?>" <?= $isParentActive ? 'open' : '' ?>>
+                    <summary class="flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer select-none transition-colors <?= $isParentActive ? 'text-[#14532D] font-bold' : 'text-stone-800 hover:text-[#14532D] hover:bg-stone-100 font-medium' ?>">
+                        <span class="flex items-center gap-2.5 text-sm">
+                            <span class="material-symbols-outlined text-[19px] <?= $isParentActive ? 'text-[#14532D]' : 'text-stone-400' ?>"><?= $iconName ?></span>
+                            <span><?= e($dropdownLabel) ?></span>
+                        </span>
+                        <span class="material-symbols-outlined text-[18px] text-stone-400 transition-transform duration-200 group-open:rotate-180">expand_more</span>
                     </summary>
-                    <div class="pl-3 mt-1.5 space-y-1 border-l-2 border-primary-container/20 ml-2">
+                    <div class="pl-3 pr-2 pt-1 pb-2 space-y-1 ml-6 border-l-2 border-emerald-300">
                         <?php foreach ($children as [$subUrl, $subLabel]): 
                             $isSubActive = is_nav_item_active($subUrl, $currPath);
                         ?>
                             <a href="<?= e(base_url($subUrl)) ?>" 
-                               onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden')"
-                               class="block py-1.5 px-3 rounded-lg text-sm transition-colors <?= $isSubActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : 'text-on-surface-variant hover:text-primary' ?>">
-                                <?= e($subLabel) ?>
+                               onclick="closeMobileDrawer()" 
+                               class="flex items-center justify-between py-2 px-3 rounded-lg text-[13px] transition-colors <?= $isSubActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : 'text-stone-600 hover:text-[#14532D] hover:bg-stone-100 font-medium' ?>">
+                                <span><?= e($subLabel) ?></span>
+                                <?php if ($isSubActive): ?>
+                                    <span class="material-symbols-outlined text-[14px]">check</span>
+                                <?php endif; ?>
                             </a>
                         <?php endforeach; ?>
                     </div>
@@ -261,31 +313,97 @@ if (!isset($nav) || !is_array($nav)) {
                     $isActive = is_nav_item_active($url, $currPath);
                     $isBlog = ($url === '/blog');
                     $isDonation = ($url === '/donation');
+                    $icon = 'link';
+                    if ($url === '/') $icon = 'home';
+                    elseif ($url === '/about') $icon = 'person';
+                    elseif ($url === '/salahkaar') $icon = 'psychology';
+                    elseif ($url === '/events') $icon = 'calendar_month';
+                    elseif ($url === '/blog') $icon = 'menu_book';
+                    elseif ($url === '/donation') $icon = 'volunteer_activism';
+                    elseif ($url === '/contact') $icon = 'contact_support';
             ?>
                     <a href="<?= e(base_url($url)) ?>" 
-                       onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); <?= $isDonation ? 'openDonationModal(event);' : '' ?>"
-                       class="py-1.5 px-2.5 rounded-lg font-medium transition-colors flex items-center gap-1.5 <?= $isActive ? 'text-on-primary font-bold bg-primary-container shadow-xs' : ($isDonation ? 'text-[#14532D] font-bold hover:bg-emerald-50' : 'text-on-surface hover:text-primary') ?>">
-                        <?php if ($isBlog): ?>
-                            <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-primary' ?>">menu_book</span>
-                        <?php elseif ($isDonation): ?>
-                            <span class="material-symbols-outlined text-[18px] <?= $isActive ? 'text-on-primary' : 'text-[#14532D]' ?>">volunteer_activism</span>
+                       onclick="closeMobileDrawer(); <?= $isDonation ? 'openDonationModal(event);' : '' ?>"
+                       class="flex items-center justify-between px-3 py-2.5 rounded-xl font-medium text-sm transition-all <?= $isActive ? 'bg-[#14532D] text-white font-bold shadow-xs' : ($isDonation ? 'text-[#14532D] font-bold bg-emerald-50 hover:bg-emerald-100' : 'text-stone-800 hover:text-[#14532D] hover:bg-stone-100') ?>">
+                        <span class="flex items-center gap-2.5">
+                            <span class="material-symbols-outlined text-[19px] <?= $isActive ? 'text-white' : ($isDonation ? 'text-[#14532D]' : ($isBlog ? 'text-[#C05632]' : 'text-stone-400')) ?>">
+                                <?= $icon ?>
+                            </span>
+                            <span><?= e($label) ?></span>
+                        </span>
+                        <?php if ($isActive): ?>
+                            <span class="w-1.5 h-1.5 rounded-full bg-white"></span>
                         <?php endif; ?>
-                        <span><?= e($label) ?></span>
                     </a>
             <?php 
                 endif; 
             endforeach; 
             ?>
-            <div class="pt-3 border-t border-border-warm flex flex-col gap-2.5">
-                <a class="inline-flex items-center justify-center gap-2 bg-[#14532D] !text-white hover:bg-[#0F3D21] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-bold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/donation')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openDonationModal(event);">
-                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">volunteer_activism</span>
-                    <span class="!text-white font-bold" style="color: #ffffff !important;"><?= e(ps_text('दान करें (Donate Now)', 'Donate Now')) ?></span>
+        </div>
+
+        <!-- Drawer Bottom Action Panel -->
+        <div class="p-4 border-t border-[#E5E7EB] bg-[#FAFAFA] shrink-0 space-y-2.5">
+            <div class="grid grid-cols-2 gap-2">
+                <a href="<?= e(base_url('/donation')) ?>" 
+                   onclick="closeMobileDrawer(); openDonationModal(event);" 
+                   class="inline-flex items-center justify-center gap-1.5 bg-[#14532D] hover:bg-[#0F3D21] text-white py-2.5 px-2 rounded-xl font-bold text-xs shadow-xs transition-all text-center" 
+                   style="color: #ffffff !important; background-color: #14532d !important;">
+                    <span class="material-symbols-outlined text-[16px] text-white" style="color: #ffffff !important;">volunteer_activism</span>
+                    <span class="text-white font-bold" style="color: #ffffff !important;"><?= e(ps_text('दान करें', 'Donate')) ?></span>
                 </a>
-                <a class="inline-flex items-center justify-center gap-2 bg-[#C05632] !text-white hover:bg-[#A9472B] px-4 py-2.5 rounded-lg font-label-md text-label-md transition-colors text-center font-semibold cursor-pointer shadow-sm" style="color: #ffffff !important;" href="<?= e(base_url('/volunteer')) ?>" onclick="document.getElementById('ps-mobile-menu-drawer').classList.add('hidden'); openVolunteerModal(event);">
-                    <span class="material-symbols-outlined text-[18px] !text-white" style="color: #ffffff !important;">handshake</span>
-                    <span class="!text-white" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें अभियान से', 'Join Movement')) ?></span>
+                <a href="<?= e(base_url('/volunteer')) ?>" 
+                   onclick="closeMobileDrawer(); openVolunteerModal(event);" 
+                   class="inline-flex items-center justify-center gap-1.5 bg-[#C05632] hover:bg-[#A9472B] text-white py-2.5 px-2 rounded-xl font-bold text-xs shadow-xs transition-all text-center" 
+                   style="color: #ffffff !important; background-color: #c05632 !important;">
+                    <span class="material-symbols-outlined text-[16px] text-white" style="color: #ffffff !important;">handshake</span>
+                    <span class="text-white font-bold" style="color: #ffffff !important;"><?= e(ps_text('जुड़ें', 'Join')) ?></span>
                 </a>
             </div>
+            <div class="flex items-center justify-between pt-1 text-[11px] text-stone-500 font-medium">
+                <a href="tel:<?= e($phoneClean) ?>" class="flex items-center gap-1 hover:text-[#14532D] transition-colors">
+                    <span class="material-symbols-outlined text-[13px] text-[#B28A42]">call</span>
+                    <span><?= e($phone) ?></span>
+                </a>
+                <span class="inline-flex items-center gap-1 text-[#15803D] font-bold">
+                    <span class="material-symbols-outlined text-[13px]">eco</span>
+                    <span>ग्रीन मॉर्निंग!</span>
+                </span>
+            </div>
         </div>
+
     </div>
+
+    <script>
+    function openMobileDrawer() {
+        var drawer = document.getElementById('ps-mobile-menu-drawer');
+        var backdrop = document.getElementById('ps-mobile-backdrop');
+        if (!drawer || !backdrop) return;
+        backdrop.classList.remove('pointer-events-none', 'opacity-0');
+        backdrop.classList.add('opacity-100');
+        drawer.classList.remove('translate-x-full');
+        drawer.classList.add('translate-x-0');
+        document.body.style.overflow = 'hidden';
+        var toggle = document.getElementById('ps-mobile-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMobileDrawer() {
+        var drawer = document.getElementById('ps-mobile-menu-drawer');
+        var backdrop = document.getElementById('ps-mobile-backdrop');
+        if (!drawer || !backdrop) return;
+        drawer.classList.remove('translate-x-0');
+        drawer.classList.add('translate-x-full');
+        backdrop.classList.remove('opacity-100');
+        backdrop.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+        var toggle = document.getElementById('ps-mobile-toggle');
+        if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeMobileDrawer();
+        }
+    });
+    </script>
 </header>

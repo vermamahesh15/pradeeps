@@ -272,7 +272,8 @@ $isNotFoundPage = basename($viewFile) === '404.php' || http_response_code() >= 4
         'donate-now.php', 'about.php', 'portfolio.php', 'awards.php', 'journey.php', 
         'impact.php', 'green-gang.php', 'salahkaar.php', 'videos.php', 'privacy-policy.php', 
         'terms-and-conditions.php', 'cookie-policy.php', 'disclaimer.php', 
-        'editorial-policy.php', 'author-guidelines.php', 'authors.php', '404.php'
+        'editorial-policy.php', 'author-guidelines.php', 'authors.php', '404.php',
+        'aankhein-foundation.php', 'sardar-patel-ekta.php'
     ], true); ?>
 <body class="<?= $isFullPage ? 'bg-cream-canvas font-body-md text-body-md text-on-surface antialiased' : 'ps-site ps-inner-page' ?>">
     <?php if (!empty($isAdminPreview) && !empty($post)): ?>
