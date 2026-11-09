@@ -7,6 +7,7 @@ $bankName = trim($donation_settings['bank_name'] ?? '') ?: ps_text('State Bank o
 $accountNumber = trim($donation_settings['account_number'] ?? '') ?: '38947291048';
 $ifscCode = trim($donation_settings['ifsc'] ?? '') ?: 'SBIN0005471';
 $upiId = trim($donation_settings['upi_id'] ?? '') ?: 'pradeepsarang@upi';
+$qrCode = trim($donation_settings['qr_code'] ?? '');
 $contactPhone = trim($settings['phone'] ?? '+91 9919007190');
 $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 ?>
@@ -367,11 +368,14 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 
             <!-- UPI QR Container -->
             <div class="bg-soft-meadow rounded-xl p-6 flex flex-col items-center justify-center text-center mb-6 border border-border-warm">
-              <div class="bg-pure-white p-4 rounded-xl shadow-sm mb-4 border border-border-warm">
-                <!-- SVG Vector QR Mockup -->
-                <svg class="w-44 h-44 text-deep-forest" viewBox="0 0 100 100" fill="currentColor">
-                  <path d="M0 0h36v36H0zM8 8h20v20H8zm56-8h36v36H64zM72 8h20v20H72zm-72 64h36v36H0zm8 8h20v20H8zm56 2h10v10H64zm16 0h16v16H80zm-16 16h16v10H64zm26 0h10v16H90zm-46-24h10v10H44zm16 0h8v8h-8zm-16 16h12v12H44zm-14-36h10v10H30zm14-16h12v12H44zm14 0h10v10H58zm-14 36h8v8h-8zm30-22h12v12H74z"/>
-                </svg>
+              <div class="bg-pure-white p-3 rounded-xl shadow-sm mb-4 border border-border-warm flex items-center justify-center">
+                <?php if (!empty($qrCode)): ?>
+                  <img src="<?= e(base_url($qrCode)) ?>" alt="<?= e(ps_text('आधिकारिक UPI QR कोड', 'Official UPI QR Code')) ?>" class="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-lg">
+                <?php else: 
+                  $dynamicQr = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$upiId}&pn=" . rawurlencode($accountName) . "&cu=INR&tn=" . rawurlencode("Pradeep Sarang Donation"));
+                ?>
+                  <img src="<?= e($dynamicQr) ?>" alt="<?= e(ps_text('आधिकारिक UPI QR कोड', 'Official UPI QR Code')) ?>" class="w-48 h-48 sm:w-56 sm:h-56 object-contain rounded-lg">
+                <?php endif; ?>
               </div>
               <p class="font-label-sm text-label-sm text-deep-forest font-bold uppercase tracking-wide mb-1"><?= e(ps_text('आधिकारिक UPI QR कोड', 'Official UPI QR Code')) ?></p>
               <p class="font-body-sm text-body-sm text-text-muted"><?= e($accountName) ?></p>

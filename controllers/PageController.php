@@ -103,7 +103,7 @@ class PageController
             '/awards' => ['view' => 'awards', 'title' => ps_text('सम्मान व पुरस्कार', 'Awards & Achievements'), 'items' => $this->content->getTimeline()],
             '/contact' => ['view' => 'contact', 'title' => ps_text('संपर्क', 'Contact')],
             '/volunteer' => ['view' => 'volunteer', 'title' => ps_text('स्वयंसेवक पंजीकरण', 'Volunteer Registration'), 'states' => $this->content->getStates()],
-            '/donation' => ['view' => 'donation', 'title' => ps_text('सहयोग करें', 'Donate Now')],
+            '/donation' => ['view' => 'donate-now', 'title' => ps_text('सहयोग करें', 'Donate Now'), 'donation_settings' => $this->content->getDonationSettings()],
         ];
 
         if ($slug === '/about') {

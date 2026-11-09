@@ -788,7 +788,7 @@ if (is_post()) {
         $qrPath = $_POST['existing_qr'] ?? '';
         if (isset($_FILES['qr_code']) && $_FILES['qr_code']['error'] === UPLOAD_ERR_OK) {
             $errorUpload = '';
-            $uploaded = upload_file($_FILES['qr_code'], $errorUpload);
+            $uploaded = upload_file($_FILES['qr_code'], $errorUpload, 'donations', 1000, 1000);
             if ($uploaded) {
                 $qrPath = $uploaded;
             } else {
@@ -4421,8 +4421,15 @@ $metrics = $content->metrics();
                                 <input type="email" name="email" class="form-control" value="<?= e($dsettings['email'] ?? '') ?>">
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">QR Code Image</label>
+                                <label class="form-label font-weight-bold">QR Code Image</label>
+                                <?php if (!empty($dsettings['qr_code'])): ?>
+                                    <div class="mb-2 p-2 bg-light border rounded text-center" style="max-width: 180px;">
+                                        <img src="<?= e(base_url($dsettings['qr_code'])) ?>" alt="Current QR Code" class="img-fluid rounded" style="max-height: 140px; display: block; margin: 0 auto;">
+                                        <div class="small text-success font-weight-bold mt-1">✓ Active Uploaded QR</div>
+                                    </div>
+                                <?php endif; ?>
                                 <input type="file" name="qr_code" class="form-control" accept="image/*">
+                                <small class="form-text text-muted">Upload UPI QR code image (PNG, JPG, WEBP).</small>
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Thank You Message</label>

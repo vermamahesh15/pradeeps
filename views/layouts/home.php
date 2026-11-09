@@ -810,9 +810,10 @@ $isNotFoundPage = basename($viewFile) === '404.php' || http_response_code() >= 4
                         <div class="md:col-span-5 flex flex-col items-center justify-center bg-pure-white p-5 rounded-xl border border-border-warm shadow-xs text-center">
                             <div class="relative p-3 bg-pure-white rounded-xl border-2 border-emerald-600/30 shadow-xs mb-3">
                                 <?php
-                                $modalDonationQrDefault = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$modalUpiId}&pn=" . rawurlencode($modalAccountName) . "&cu=INR&tn=" . rawurlencode("Pradeep Sarang Donation"));
+                                $modalQrUploaded = !empty($modalDSettings['qr_code']) ? base_url($modalDSettings['qr_code']) : '';
+                                $modalDonationQrDefault = $modalQrUploaded ?: ('https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$modalUpiId}&pn=" . rawurlencode($modalAccountName) . "&cu=INR&tn=" . rawurlencode("Pradeep Sarang Donation")));
                                 ?>
-                                <img id="modalDonationQrImg" src="<?= e($modalDonationQrDefault) ?>" data-base-upi="<?= e($modalUpiId) ?>" data-base-name="<?= e($modalAccountName) ?>" alt="UPI QR Code" class="w-44 h-44 object-contain rounded-lg">
+                                <img id="modalDonationQrImg" src="<?= e($modalDonationQrDefault) ?>" data-custom-qr="<?= e($modalQrUploaded) ?>" data-base-upi="<?= e($modalUpiId) ?>" data-base-name="<?= e($modalAccountName) ?>" alt="UPI QR Code" class="w-44 h-44 object-contain rounded-lg">
                                 <div class="absolute -bottom-2.5 left-1/2 -translate-x-1/2 bg-emerald-800 text-white text-[9px] font-bold px-2.5 py-0.5 rounded-full shadow-xs tracking-wider uppercase whitespace-nowrap">
                                     BHIM UPI • GPay • PhonePe • Paytm
                                 </div>
@@ -1039,9 +1040,14 @@ $isNotFoundPage = basename($viewFile) === '404.php' || http_response_code() >= 4
     function updateModalDonationQr(amt) {
         const img = document.getElementById('modalDonationQrImg');
         if (!img) return;
+        const customQr = img.getAttribute('data-custom-qr');
+        const val = parseInt(amt, 10);
+        if (customQr && (!val || val <= 0)) {
+            img.src = customQr;
+            return;
+        }
         const upi = img.getAttribute('data-base-upi') || 'pradeepsarang@upi';
         const name = img.getAttribute('data-base-name') || 'Pradeep Sarang';
-        const val = parseInt(amt, 10);
         let upiUrl = 'upi://pay?pa=' + encodeURIComponent(upi) + '&pn=' + encodeURIComponent(name) + '&cu=INR&tn=' + encodeURIComponent('Pradeep Sarang Donation');
         if (val && val > 0) {
             upiUrl += '&am=' + val;

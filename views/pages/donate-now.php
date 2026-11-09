@@ -7,6 +7,7 @@ $bankName = trim($donation_settings['bank_name'] ?? '') ?: ps_text('State Bank o
 $accountNumber = trim($donation_settings['account_number'] ?? '') ?: '38947291048';
 $ifscCode = trim($donation_settings['ifsc'] ?? '') ?: 'SBIN0005471';
 $upiId = trim($donation_settings['upi_id'] ?? '') ?: 'pradeepsarang@upi';
+$qrCode = trim($donation_settings['qr_code'] ?? '');
 $contactPhone = trim($settings['phone'] ?? '+91 9919007190');
 $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
 ?>
@@ -56,11 +57,15 @@ $contactEmail = trim($settings['email'] ?? 'contact@pradeepsarang.in');
               <span><?= e(ps_text('क्यूआर कोड स्कैन करें', 'Scan QR Code')) ?></span>
             </div>
 
-            <!-- SVG Vector QR Code -->
-            <div class="bg-soft-meadow p-6 rounded-2xl border border-border-warm inline-block mb-4 shadow-inner">
-              <svg class="w-52 h-52 text-deep-forest mx-auto" viewBox="0 0 100 100" fill="currentColor">
-                <path d="M0 0h36v36H0zM8 8h20v20H8zm56-8h36v36H64zM72 8h20v20H72zm-72 64h36v36H0zm8 8h20v20H8zm56 2h10v10H64zm16 0h16v16H80zm-16 16h16v10H64zm26 0h10v16H90zm-46-24h10v10H44zm16 0h8v8h-8zm-16 16h12v12H44zm-14-36h10v10H30zm14-16h12v12H44zm14 0h10v10H58zm-14 36h8v8h-8zm30-22h12v12H74z"/>
-              </svg>
+            <!-- UPI QR Code Display -->
+            <div class="bg-soft-meadow p-4 sm:p-6 rounded-2xl border border-border-warm inline-flex items-center justify-center mb-4 shadow-inner max-w-full">
+              <?php if (!empty($qrCode)): ?>
+                <img src="<?= e(base_url($qrCode)) ?>" alt="<?= e(ps_text('आधिकारिक UPI QR कोड', 'Official UPI QR Code')) ?>" class="w-52 h-52 sm:w-60 sm:h-60 object-contain mx-auto rounded-xl shadow-xs bg-white p-2">
+              <?php else: 
+                $dynamicQr = 'https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=' . urlencode("upi://pay?pa={$upiId}&pn=" . rawurlencode($accountName) . "&cu=INR&tn=" . rawurlencode("Pradeep Sarang Donation"));
+              ?>
+                <img src="<?= e($dynamicQr) ?>" alt="<?= e(ps_text('आधिकारिक UPI QR कोड', 'Official UPI QR Code')) ?>" class="w-52 h-52 sm:w-60 sm:h-60 object-contain mx-auto rounded-xl shadow-xs bg-white p-2">
+              <?php endif; ?>
             </div>
             
             <h3 class="font-title-lg text-title-lg text-deep-forest font-bold mb-1">

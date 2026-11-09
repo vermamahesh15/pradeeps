@@ -794,18 +794,24 @@ class ContentModel extends BaseModel
     public function updateDonationSettings(array $data): bool
     {
         if (!$this->db) return false;
-        $stmt = $this->db->prepare('UPDATE donation_settings SET 
-            org_name = :org_name,
-            account_name = :account_name,
-            bank_name = :bank_name,
-            account_number = :account_number,
-            ifsc = :ifsc,
-            upi_id = :upi_id,
-            qr_code = :qr_code,
-            phone = :phone,
-            email = :email,
-            thank_you_msg = :thank_you_msg
-            WHERE id = 1');
+        $existing = $this->getDonationSettings();
+        if ($existing) {
+            $stmt = $this->db->prepare('UPDATE donation_settings SET 
+                org_name = :org_name,
+                account_name = :account_name,
+                bank_name = :bank_name,
+                account_number = :account_number,
+                ifsc = :ifsc,
+                upi_id = :upi_id,
+                qr_code = :qr_code,
+                phone = :phone,
+                email = :email,
+                thank_you_msg = :thank_you_msg
+                WHERE id = 1');
+            return $stmt->execute($data);
+        }
+
+        $stmt = $this->db->prepare('INSERT INTO donation_settings (id, org_name, account_name, bank_name, account_number, ifsc, upi_id, qr_code, phone, email, thank_you_msg) VALUES (1, :org_name, :account_name, :bank_name, :account_number, :ifsc, :upi_id, :qr_code, :phone, :email, :thank_you_msg)');
         return $stmt->execute($data);
     }
 

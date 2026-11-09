@@ -42,7 +42,7 @@ $settings = mysqli_fetch_assoc($query);
             <div class="card donation-card text-center p-4">
                 <h4 class="text-primary mb-3"><i class="fas fa-qrcode me-2"></i>Scan & Pay</h4>
                 <div class="qr-box mb-3">
-                    <img src="<?php echo $settings['qr_code'] ? $settings['qr_code'] : 'assets/images/default-qr.png'; ?>" alt="UPI QR">
+                    <img src="<?php echo !empty($settings['qr_code']) ? (function_exists('base_url') ? base_url($settings['qr_code']) : '/' . ltrim($settings['qr_code'], '/')) : 'assets/images/default-qr.png'; ?>" alt="UPI QR" class="img-fluid">
                 </div>
                 <p class="fw-bold mb-0">UPI ID: <?php echo $settings['upi_id']; ?></p>
             </div>
